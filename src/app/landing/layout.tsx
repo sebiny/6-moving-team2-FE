@@ -1,9 +1,16 @@
 "use client";
 
-import React from 'react'
+import Container from '@/components/container/PageContainer';
+import Gnb from '@/components/layout/Gnb';
+import React, { ReactNode } from 'react'
 
-export default function LandingPageLayout() {
+export default function LandingPageLayout({children} : {children: ReactNode}) {
   return (
-    <div>layout</div>
+    <div>
+        <Gnb />
+        <Container>
+            {children}
+        </Container>
+    </div>
   )
 }

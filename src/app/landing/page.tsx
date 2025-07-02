@@ -1,12 +1,12 @@
 "use client";
 
-import Container from '@/components/container/PageContainer';
 import React from 'react'
+import LandingPageLayout from './layout';
 
 export default function LandingPage() {
   return (
-    <Container>
+    <LandingPageLayout>
         <div className="border">랜딩페이지</div>
-    </Container>
+    </LandingPageLayout>
   )
 }
