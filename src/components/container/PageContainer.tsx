@@ -5,8 +5,8 @@ import React, { ReactNode } from 'react'
  * @param {Object} props - 컴포넌트 props
  * @param {React.ReactNode} props.children - 컨테이너 내부에 표시될 콘텐츠
  * @param {string} props.className - 추가 스타일링을 위한 클래스명
- * @param {string} props.maxWidth - 컨테이너 최대 너비 (기본값: 'max-w-7xl')
- * @param {string} props.padding - 컨테이너 패딩 (기본값: 'px-4 sm:px-6 lg:px-8')
+ * @param {string} props.maxWidth - 컨테이너 최대 너비 (기본값: 'max-w-[1920px]')
+ * @param {string} props.padding - 컨테이너 패딩 (기본값: 'px-6')
  * @param {string} props.margin - 컨테이너 마진 (기본값: 'mx-auto')
  * @returns {React.ReactElement} 컨테이너 컴포넌트
  */
