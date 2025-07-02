@@ -36,7 +36,7 @@ type Tlogotype = keyof typeof logotype;
 
 function getTypeByWidth(width: number): Tlogotype {
   if (width < 375 ) return 'default';
-  if (width < 744 && width >= 376 ) return 'sm';
+  if (width < 744 && width >= 375 ) return 'sm';
   if (width >= 745 ) return 'md';
   return 'md';
 }
