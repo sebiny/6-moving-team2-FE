@@ -1,5 +1,3 @@
-"use client";
-
 import Container from '@/components/container/PageContainer';
 import Gnb from '@/components/layout/Gnb';
 import React, { ReactNode } from 'react'

@@ -43,16 +43,19 @@ function getTypeByWidth(width: number): Tlogotype {
 
 export default function Logo() {
 
-  const [type, setType] = useState<Tlogotype>(() =>
-    getTypeByWidth(window.innerWidth));
+  const [type, setType] = useState<Tlogotype>('default'); // 기본값
 
   useEffect(() => {
-    function handleResize() {
+    const handleResize = () => {
       setType(getTypeByWidth(window.innerWidth));
-    }
+    };
+
+    // 컴포넌트가 마운트될 때 한 번 실행
+    handleResize();
+
     window.addEventListener('resize', handleResize);
-    return() => window.removeEventListener('resize', handleResize);
-  },[]);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className="flex justify-between items-center gap-2" >
