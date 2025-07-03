@@ -1,11 +1,18 @@
+import InputText from "@/components/InputText";
+import Header from "@/app/review/component/Header";
 import React from "react";
+import Main from "./component/Main";
 
-const page = () => {
+function page() {
   return (
     <div>
-      <div></div>
+      <div>
+        {/* <InputText /> */}
+        <Header />
+        <Main />
+      </div>
     </div>
   );
-};
+}
 
 export default page;
