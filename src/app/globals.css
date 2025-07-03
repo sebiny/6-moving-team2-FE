@@ -10,15 +10,15 @@
   --font-mono: var(--font-geist-mono);
 
   --color-gray-50: #ffffff;
-  --color-gray-100: #f5f5f5;
-  --color-gray-200: #e6e6e6;
-  --color-gray-300: #d9d9d9;
-  --color-gray-400: #b3b3b3;
-  --color-gray-500: #7a7a7a;
+  --color-gray-100: #dedede;
+  --color-gray-200: #c4c4c4;
+  --color-gray-300: #ababab;
+  --color-gray-400: #999999;
+  --color-gray-500: #808080;
   --color-black-100: #61605e;
   --color-black-200: #474643;
   --color-black-300: #302f2d;
-  --color-black-400: #1e1e1e;
+  --color-black-400: #262524;
   --color-black-500: #111111;
   --color-orange-100: #feeeea;
   --color-orange-200: #fed8d0;
@@ -51,6 +51,9 @@
   /* 데스크탑 */
   --container-lg: 1280px;
   --container-xl: 1920px;
+
+  /* Gnb */
+  --container-gnb: 1600px;
 
   /* ✅ 브레이크포인트 정의 (Tailwind screens 기준) */
 
