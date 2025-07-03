@@ -1,8 +1,11 @@
+"use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 function DriverSimpleInfo() {
   const driver = {
+    id: 1,
     nickname: "김코드",
     line: "고객님의 물품을 안전하게 운송해 드립니다.",
     description: "안녕하세요. 이사 업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.",
@@ -13,8 +16,15 @@ function DriverSimpleInfo() {
     count: 334,
     reviews: []
   };
+
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/drivers/${driver.id}`);
+  };
+
   return (
-    <div className="border-line-100 rounded-2xl border px-7 py-6">
+    <div className="border-line-100 rounded-2xl border px-7 py-6 shadow-sm" onClick={handleClick}>
       <div>소형이사</div>
       <div className="flex gap-5">
         <Image src="/assets/images/img_profile.svg" alt="프로필 이미지" width={134} height={134} />
@@ -23,7 +33,7 @@ function DriverSimpleInfo() {
           <p className="text-sm text-gray-500">{driver.description}</p>
           <div className="relative mt-5">
             <div>
-              <div className="flex">
+              <div className="flex gap-1">
                 <Image src="/assets/icons/ic_driver.svg" alt="기사님" width={20} height={23} />
                 <p className="font-semibold">{driver.nickname} 기사님</p>
               </div>
