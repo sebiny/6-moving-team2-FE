@@ -10,10 +10,11 @@
   },
   "dependencies": {
     "next": "15.3.4",
-    "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.13",
+    "prettier": "^3.6.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-simple-star-rating": "^5.1.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
