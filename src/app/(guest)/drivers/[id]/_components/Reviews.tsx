@@ -5,6 +5,7 @@ import StarIcon from "../../../../../components/StarIcon";
 
 function Reviews() {
   const reviews = [{ rating: 3 }, { rating: 2 }];
+  // const reviews = [];
   const result = {
     average: 0,
     total: 0,
@@ -67,8 +68,8 @@ function Reviews() {
           </div>
         </div>
       ) : (
-        <div>
-          <p>아직 등록된 리뷰가 없어요!</p>
+        <div className="mt-8 flex flex-col items-center">
+          <p className="font-semibold">아직 등록된 리뷰가 없어요!</p>
           <p className="text-sm text-gray-400">가장 먼저 리뷰를 등록해보세요</p>
         </div>
       )}
