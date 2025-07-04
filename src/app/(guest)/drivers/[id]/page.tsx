@@ -39,11 +39,16 @@ function DriverDetailPage() {
               ))}
             </div>
           </div>
+          <div className="mb-8 lg:hidden">
+            <div className="border-line-100 mb-8 border-b"></div>
+            <ShareDriver />
+            <div className="border-line-100 mt-8 border-b"></div>
+          </div>
           <Reviews />
         </div>
         <div className="mt-[109px] w-80">
           <RequestEstimate />
-          <div className="hidden sm:block">
+          <div className="hidden lg:block">
             <ShareDriver />
           </div>
         </div>

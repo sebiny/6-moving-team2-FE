@@ -5,13 +5,17 @@ import EstimateRequestModal from "./EstimateRequestModal";
 
 function RequestEstimate() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleClick = () => {
+    setIsModalOpen(true); //조건문 추가
+  };
   return (
     <div className="flex flex-col gap-4">
       <p className="text-xl font-semibold">
         김코드 기사님에게 <br></br>지정 견적을 요청해보세요!
       </p>
       <button
-        onClick={() => setIsModalOpen((isModalOpen) => !isModalOpen)}
+        onClick={handleClick}
         className="flex h-16 w-80 items-center justify-center rounded-2xl bg-orange-400 text-lg font-semibold text-white"
       >
         지정 견적 요청하기

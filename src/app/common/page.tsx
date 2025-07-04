@@ -3,6 +3,7 @@
 import ChipCircle from "@/components/ChipCircle";
 import Title from "../../components/Title/Title";
 import { titleMockData } from "../../components/Title/TitleData";
+import Button from "@/components/Button";
 
 function CommonPage() {
   return (
@@ -27,6 +28,9 @@ function CommonPage() {
         <ChipCircle type="region" color="orange" text="소형이사" />
         <ChipCircle type="region" color="gray" text="소형이사" />
         <ChipCircle type="region" color="orange" text="서울" click={true} />
+      </div>
+      <div>
+        <Button type="orange" text="작성" round="16" />
       </div>
     </div>
   );
