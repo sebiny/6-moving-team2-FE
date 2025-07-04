@@ -1,17 +1,17 @@
 "use client";
 
-import Title from "../../components/Title/Title";
-import { titleMockData } from "../../components/Title/TitleData";
+import Title from "../../components/title/Title";
+import { titleMockData } from "../../components/title/TitleData";
 
 function CommonPage() {
   return (
     /**
      * Title 컴포넌트
      */
-    <div className="p-6 flex flex-col gap-12 bg-white">
+    <div className="flex flex-col gap-12 bg-white p-6">
       {/* 임시 데이터 연결 */}
       {titleMockData.map((item) => (
-        <div key={item.id} className="max-w-2xl mx-auto">
+        <div key={item.id} className="">
           <Title
             status={item.status}
             labels={item.labels}
