@@ -26,7 +26,7 @@ function DriversPage() {
           ))}
         </div>
       </div>
-      <div className="mt-[260px] ml-[54px]">
+      <div className="block:sm mt-[260px] ml-[54px] hidden">
         <LikedDrivers />
       </div>
     </div>

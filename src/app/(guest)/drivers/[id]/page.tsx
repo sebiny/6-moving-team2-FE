@@ -2,7 +2,7 @@ import React from "react";
 import Reviews from "./_components/Reviews";
 import Image from "next/image";
 import DriverInfo from "./_components/DriverInfo";
-import ShareDriver from "./_components/\bShareDriver";
+import ShareDriver from "./_components/ShareDriver";
 
 function DriverDetailPage() {
   const driver = {
@@ -62,7 +62,9 @@ function DriverDetailPage() {
               <p className="text-lg font-semibold">기사님 찜하기</p>
             </button>
           </div>
-          <ShareDriver />
+          <div className="block:sm hidden">
+            <ShareDriver />
+          </div>
         </div>
       </div>
     </div>
