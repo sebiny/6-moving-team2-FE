@@ -2,7 +2,8 @@ import React from "react";
 import Reviews from "./_components/Reviews";
 import Image from "next/image";
 import DriverInfo from "./_components/DriverInfo";
-import ShareDriver from "./_components/\bShareDriver";
+import ShareDriver from "./_components/ShareDriver";
+import ChipCircle from "@/components/ChipCircle";
 
 function DriverDetailPage() {
   const driver = {
@@ -25,12 +26,7 @@ function DriverDetailPage() {
             <p className="text-black-400 text-xl font-semibold">제공 서비스</p>
             <div className="mt-4 flex gap-3">
               {driver.services.map((service) => (
-                <div
-                  key={service}
-                  className="rounded-[100px] border border-orange-400 bg-orange-100 px-5 py-[10px] text-lg font-medium text-orange-400"
-                >
-                  {service}
-                </div>
+                <ChipCircle key={service} type="region" color="orange" text={service} />
               ))}
             </div>
           </div>
@@ -38,12 +34,7 @@ function DriverDetailPage() {
             <p className="text-black-400 text-xl font-semibold">서비스 가능 지역</p>
             <div className="mt-4 flex gap-3">
               {driver.regions.map((region) => (
-                <div
-                  key={region}
-                  className="bg-background-100 text-black-400 rounded-[100px] border border-gray-100 px-5 py-[10px] text-lg font-medium"
-                >
-                  {region}
-                </div>
+                <ChipCircle key={region} type="region" color="gray" text={region} />
               ))}
             </div>
           </div>
@@ -62,7 +53,9 @@ function DriverDetailPage() {
               <p className="text-lg font-semibold">기사님 찜하기</p>
             </button>
           </div>
-          <ShareDriver />
+          <div className="block:sm hidden">
+            <ShareDriver />
+          </div>
         </div>
       </div>
     </div>
