@@ -1,12 +1,24 @@
+import Image from "next/image";
 import React from "react";
 
-function EstimateRequestModal() {
+interface EstimateRequestModalType {
+  setIsModalOpen: (value: boolean) => void;
+}
+
+function EstimateRequestModal({ setIsModalOpen }: EstimateRequestModalType) {
   return (
-    <div className="bg-opacity-50 fixed inset-0 z-40 flex items-center justify-center bg-black">
-      <div className="z-50 w-[90%] max-w-md rounded-xl bg-white p-6 shadow-lg">
-        <h2 className="mb-4 text-xl font-semibold">모달 제목</h2>
-        <p>모달 내용입니다</p>
-        <button className="mt-4 text-blue-500 hover:underline">닫기</button>
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
+      <div className="z-50 w-[293px] rounded-[32px] bg-white p-6 px-4 py-6 shadow-lg md:w-[608px] md:px-6 md:py-8">
+        <div className="flex items-center justify-between">
+          <p className="mb-4 text-lg font-semibold md:text-2xl">지정 견적 요청하기</p>
+          <button className="relative h-6 w-6 md:h-9 md:w-9" onClick={() => setIsModalOpen(false)}>
+            <Image src="/assets/icons/ic_X.svg" alt="닫기" fill className="object-contain" />
+          </button>
+        </div>
+        <p className="mt-[30px] mb-6 text-lg md:my-10">일반 견적 요청을 먼저 진행해주세요.</p>
+        <button className="md: h-[54px] w-[260px] rounded-xl bg-orange-400 text-lg font-semibold text-white md:h-[64px] md:w-[560px] md:rounded-2xl">
+          일반 견적 요청 하기
+        </button>
       </div>
     </div>
   );
