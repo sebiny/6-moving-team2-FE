@@ -19,7 +19,7 @@ function SortDropdown({ sortings, value }: SortDropdownType) {
   return (
     <div className="relative">
       <div onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-[10px] px-2 py-[7px]">
-        <div className="text-gray-400">{sort}</div>
+        <div className={`${isModalOpen ? "text-gray-400" : "text-black-400"}`}>{sort}</div>
         {isModalOpen ? (
           <Image src="/assets/icons/ic_chevron_up.svg" alt="정렬" width={20} height={20} />
         ) : (

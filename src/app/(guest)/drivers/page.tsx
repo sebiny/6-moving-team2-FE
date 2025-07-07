@@ -3,6 +3,8 @@ import DriverSimpleInfo from "./_components/DriverSimpleInfo";
 import Image from "next/image";
 import LikedDrivers from "./_components/LikedDrivers";
 import SortDropdown from "@/components/dropdown/SortDropdown";
+import FilterDropdown from "@/components/dropdown/FilterDropdown";
+import Filters from "./_components/Filters";
 
 function DriversPage() {
   const drivers = [{ id: 1 }];
@@ -15,8 +17,10 @@ function DriversPage() {
           <input className="absolute left-14 w-180" placeholder="텍스트를 입력해주세요." />
         </div>
         <div className="my-[38px] flex justify-between">
-          <div className="flex gap-8">
-            <div></div>
+          <div className="flex items-center gap-8">
+            <div>
+              <Filters />
+            </div>
             <p className="text-gray-300">초기화</p>
           </div>
           <SortDropdown sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]} value="리뷰 많은순" />

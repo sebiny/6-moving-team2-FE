@@ -4,13 +4,13 @@ import Image from "next/image";
 import MenuButton from "/public/assets/icons/ic_menu.svg";
 import { useRouter } from "next/navigation";
 
-export default function GnbList({ md }: { md?: string; className?: string }) {
+export default function GnbList({ lg }: { lg?: string; className?: string }) {
   //const md = breakpoint;
   const router = useRouter();
   return (
     <div>
-      {md ? (
-        <div className="sm:flex-1 md:ml-20 md:flex md:gap-10">
+      {lg ? (
+        <div className="md:flex-1 lg:ml-20 lg:flex lg:gap-10">
           {LIST_GNB.map(({ idx, label, path }) => (
             <button key={idx} onClick={() => router.push(path)} className="cursor-pointer">
               <span className="text-black-500 text-lg font-bold">{label}</span>

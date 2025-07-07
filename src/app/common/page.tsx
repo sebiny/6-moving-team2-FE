@@ -6,8 +6,12 @@ import SortDropdown from "@/components/dropdown/SortDropdown";
 import ChipCircle from "@/components/chip/ChipCircle";
 import Title from "../../components/title/Title";
 import { titleMockData } from "../../components/title/TitleData";
+import ChipRectangle from "../../components/chip/ChipRectangle";
+import { MoveType } from "../../constant/moveTypes";
 
 function CommonPage() {
+  const moveTypes: MoveType[] = ["small", "home", "office", "request"];
+
   return (
     /**
      * Title 컴포넌트
@@ -25,6 +29,8 @@ function CommonPage() {
           />
         </div>
       ))}
+
+      {/* ChipCircle 보여주기 */}
       <div className="flex gap-2">
         <ChipCircle type="address" color="gray" text="도로명" />
         <ChipCircle type="region" color="orange" text="소형이사" />
@@ -43,6 +49,16 @@ function CommonPage() {
       </div>
       <div className="ml-20 w-30">
         <SortDropdown sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]} value="리뷰 많은순" />
+      </div>
+
+      {/* ChipRectangle 4종 보여주기 */}
+      <div className="flex flex-wrap gap-3">
+        {moveTypes.map((type) => (
+          <ChipRectangle key={type} moveType={type} size="md" />
+        ))}
+        {moveTypes.map((type) => (
+          <ChipRectangle key={type} moveType={type} size="sm" />
+        ))}
       </div>
     </div>
   );
