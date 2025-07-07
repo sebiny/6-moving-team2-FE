@@ -8,11 +8,11 @@ function DriverMyPage() {
   return (
     <div className="flex flex-col items-center">
       <div>
-        <div>마이페이지</div>
+        <div className="text-lg font-semibold">마이페이지</div>
       </div>
       <div className="h-45 w-full bg-orange-400"></div>
-      <div className="flex w-205 flex-col">
-        <div className="mt-[43px] flex flex-col lg:flex-row">
+      <div className="flex w-300 flex-col">
+        <div className="mt-[43px] flex flex-col justify-between lg:flex-row">
           <div>
             <div className="flex">
               <Image src="/assets/images/img_profile.svg" alt="프로필" width={80} height={85} />
@@ -34,31 +34,33 @@ function DriverMyPage() {
               </p>
             </div>
           </div>
-          <div className="flex flex-col gap-4 md:flex-row lg:flex-col">
+          <div className="mt-7 flex w-80 flex-col gap-4 md:w-205 md:flex-row lg:w-70 lg:flex-col">
             <Button text="내 프로필 수정" type="orange" image={true} />
             <Button text="기본 정보 수정" type="white-gray" image={true} />
           </div>
         </div>
-        <div className="border-line-100 my-8 border-b"></div>
-        <div className="flex flex-col gap-4">
-          <p className="text-black-400 text-xl font-semibold">활동 현황</p>
-          <div className="bg-background-100 border-line-100 flex h-30 w-full items-center justify-evenly rounded-2xl border">
-            <div className="flex flex-col items-center">
-              <p>진행</p>
-              <p className="text-xl font-bold text-orange-400">334건</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <p>리뷰</p>
-              <p className="text-xl font-bold text-orange-400">5.0</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <p>총 경력</p>
-              <p className="text-xl font-bold text-orange-400">7년</p>
+        <div className="w-205">
+          <div className="border-line-100 my-8 border-b"></div>
+          <div className="flex flex-col gap-4">
+            <p className="text-black-400 text-xl font-semibold">활동 현황</p>
+            <div className="bg-background-100 border-line-100 flex h-30 w-full items-center justify-evenly rounded-2xl border">
+              <div className="flex flex-col items-center">
+                <p>진행</p>
+                <p className="text-xl font-bold text-orange-400">334건</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <p>리뷰</p>
+                <p className="text-xl font-bold text-orange-400">5.0</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <p>총 경력</p>
+                <p className="text-xl font-bold text-orange-400">7년</p>
+              </div>
             </div>
           </div>
+          <Service services={["소형이사"]} regions={["서울"]} />
+          <Reviews />
         </div>
-        <Service services={[]} regions={[]} />
-        <Reviews />
       </div>
     </div>
   );
