@@ -1,5 +1,6 @@
 "use client";
 
+import ChipCircle from "@/components/ChipCircle";
 import Title from "../../components/title/Title";
 import { titleMockData } from "../../components/title/TitleData";
 import ChipRectangle from "../../components/ChipRectangle";
@@ -25,6 +26,12 @@ function CommonPage() {
           />
         </div>
       ))}
+      <div>
+        <ChipCircle type="address" color="gray" text="도로명" />
+        <ChipCircle type="region" color="orange" text="소형이사" />
+        <ChipCircle type="region" color="gray" text="소형이사" />
+        <ChipCircle type="region" color="orange" text="서울" click={true} />
+      </div>
 
       {/* ChipRectangle 4종 보여주기 */}
       <div className="flex flex-wrap gap-3">
