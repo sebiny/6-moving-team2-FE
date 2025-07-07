@@ -27,13 +27,13 @@ export default function Gnb() {
 
   // ESC 키로 드롭다운 닫기
   useEffect(() => {
-    function handleKeyDown(event: any) {
+    function handleKeydown(event: any) {
       if (event.key === "Escape") {
         setOpenDropdown(null);
       }
     }
-    document.addEventListener("keyDown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeydown);
+    return () => document.removeEventListener("keydown", handleKeydown);
   }, []);
 
   useEffect(() => {
@@ -46,7 +46,10 @@ export default function Gnb() {
   }, []);
 
   return (
-    <header className="border-line-100 fixed z-10 flex h-14 w-full items-center justify-center border-b-1 bg-white px-6 md:h-22">
+    <header
+      ref={gnbRef}
+      className="border-line-100 fixed z-10 flex h-14 w-full items-center justify-center border-b-1 bg-white px-6 md:h-22"
+    >
       <div className="flex w-full max-w-[var(--container-gnb)] items-center justify-between">
         <Logo />
 
