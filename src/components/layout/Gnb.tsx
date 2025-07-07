@@ -38,7 +38,7 @@ export default function Gnb() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMd(window.innerWidth >= 745);
+      setIsMd(window.innerWidth > 744);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
