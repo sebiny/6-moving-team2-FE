@@ -9,7 +9,7 @@ import Profile from "../dropdown/ProfileDropdown";
 type DropDownType = "notification" | "profile" | null;
 
 export default function Gnb() {
-  const [isMd, setIsMd] = useState<boolean>(false);
+  const [isLg, setIsLg] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<DropDownType>(null);
 
   const gnbRef = useRef<HTMLDivElement>(null);
@@ -38,8 +38,7 @@ export default function Gnb() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMd(window.innerWidth > 744);
-
+      setIsLg(window.innerWidth > 1280);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -49,21 +48,21 @@ export default function Gnb() {
   return (
     <header
       ref={gnbRef}
-      className="border-line-100 fixed z-10 flex h-14 w-full items-center justify-center border-b-1 bg-white px-6 md:h-22"
+      className="border-line-100 fixed z-10 flex h-14 w-full items-center justify-center border-b-1 bg-white px-6 lg:h-22"
     >
       <div className="flex w-full max-w-[var(--container-gnb)] items-center justify-between">
         <Logo />
 
-        {isMd ? (
+        {isLg ? (
           <div className="flex flex-1 items-center justify-between">
-            <GnbList md="md" className="flex-1" />
+            <GnbList lg="lg" className="flex-1" />
             <div className="flex items-center justify-between gap-5">
               <Notification
                 isOpen={openDropdown === "notification"}
                 onToggle={() => setOpenDropdown(openDropdown === "notification" ? null : "notification")}
               />
               <Profile
-                md="md"
+                lg="lg"
                 isOpen={openDropdown === "profile"}
                 onToggle={() => setOpenDropdown(openDropdown === "profile" ? null : "profile")}
               />
