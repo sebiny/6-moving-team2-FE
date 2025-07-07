@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode } from "react";
 
 /**
  * 다양한 페이지에서 재사용 가능한 컨테이너 컴포넌트
@@ -27,7 +27,7 @@ export default function Container({
   padding = "px-6",
   margin = "mx-auto",
   style = {}
-} : ContainerProps) {
+}: ContainerProps) {
   return (
     <div style={style} className={`${maxWidth} ${padding} ${margin} ${className}`}>
       {children}

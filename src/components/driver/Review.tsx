@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import StarIcon from "../../../../../components/StarIcon";
+import StarIcon from "../icon/StarIcon";
 
 function Review() {
   const review = {
