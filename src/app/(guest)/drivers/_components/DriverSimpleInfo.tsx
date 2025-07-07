@@ -1,4 +1,5 @@
 "use client";
+import ChipRectangle from "@/components/chip/ChipRectangle";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -25,8 +26,8 @@ function DriverSimpleInfo() {
 
   return (
     <div className="border-line-100 rounded-2xl border px-7 py-6 shadow-sm" onClick={handleClick}>
-      <div>소형이사</div>
-      <div className="flex gap-5">
+      <ChipRectangle moveType="small" />
+      <div className="mt-3 flex gap-5">
         <Image src="/assets/images/img_profile.svg" alt="프로필 이미지" width={134} height={134} />
         <div>
           <p className="text-black-300 text-xl font-semibold">{driver.line}</p>

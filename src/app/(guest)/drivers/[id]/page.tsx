@@ -4,6 +4,7 @@ import DriverInfo from "./_components/DriverInfo";
 import ShareDriver from "../../../../components/ShareDriver";
 import RequestEstimate from "./_components/RequestEstimate";
 import Service from "../../../../components/Service";
+import BottomNav from "./_components/BottomButton";
 
 function DriverDetailPage() {
   const driver = {
@@ -37,6 +38,7 @@ function DriverDetailPage() {
           </div>
         </div>
       </div>
+      <BottomNav />
     </div>
   );
 }
