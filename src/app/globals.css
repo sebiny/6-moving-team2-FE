@@ -31,7 +31,7 @@
   --color-line-100: #f2f2f2;
   --color-line-200: #e6e6e6;
 
-    /* ✅ Typography */
+  /* ✅ Typography */
   --font-pretendard:
     "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
     "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
@@ -67,7 +67,6 @@
   --breakpoint-lg: 1280px;
   --breakpoint-xl: 1920px;
 }
-
 
 body {
   background: var(--background);

@@ -1,17 +1,21 @@
 "use client";
 
-import Title from "../../components/Title/Title";
-import { titleMockData } from "../../components/Title/TitleData";
+import Button from "@/components/Button";
+import ShareDriver from "@/components/ShareDriver";
+import SortDropdown from "@/components/dropdown/SortDropdown";
+import ChipCircle from "@/components/chip/ChipCircle";
+import Title from "../../components/title/Title";
+import { titleMockData } from "../../components/title/TitleData";
 
 function CommonPage() {
   return (
     /**
      * Title 컴포넌트
      */
-    <div className="p-6 flex flex-col gap-12 bg-white">
+    <div className="flex flex-col gap-12 bg-white p-6">
       {/* 임시 데이터 연결 */}
       {titleMockData.map((item) => (
-        <div key={item.id} className="max-w-2xl mx-auto">
+        <div key={item.id} className="">
           <Title
             status={item.status}
             labels={item.labels}
@@ -21,6 +25,25 @@ function CommonPage() {
           />
         </div>
       ))}
+      <div className="flex gap-2">
+        <ChipCircle type="address" color="gray" text="도로명" />
+        <ChipCircle type="region" color="orange" text="소형이사" />
+        <ChipCircle type="region" color="gray" text="소형이사" />
+        <div>
+          <ChipCircle type="region" color="orange" text="서울" click={true} />
+        </div>
+      </div>
+      <div className="flex w-50 flex-col gap-2">
+        <Button type="orange" text="작성" round={16} />
+        <Button type="white-orange" text="작성" round={12} />
+        <Button type="gray" text="작성" round={12} image={true} />
+      </div>
+      <div>
+        <ShareDriver text="견적서 공유하기" />
+      </div>
+      <div className="ml-20 w-30">
+        <SortDropdown sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]} value="리뷰 많은순" />
+      </div>
     </div>
   );
 }

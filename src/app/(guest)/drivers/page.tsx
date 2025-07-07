@@ -2,6 +2,7 @@ import React from "react";
 import DriverSimpleInfo from "./_components/DriverSimpleInfo";
 import Image from "next/image";
 import LikedDrivers from "./_components/LikedDrivers";
+import SortDropdown from "@/components/dropdown/SortDropdown";
 
 function DriversPage() {
   const drivers = [{ id: 1 }];
@@ -18,7 +19,7 @@ function DriversPage() {
             <div></div>
             <p className="text-gray-300">초기화</p>
           </div>
-          <div></div>
+          <SortDropdown sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]} value="리뷰 많은순" />
         </div>
         <div className="flex flex-col gap-5">
           {drivers.map((driver) => (
@@ -26,7 +27,7 @@ function DriversPage() {
           ))}
         </div>
       </div>
-      <div className="mt-[260px] ml-[54px]">
+      <div className="mt-[260px] ml-[54px] hidden lg:block">
         <LikedDrivers />
       </div>
     </div>
