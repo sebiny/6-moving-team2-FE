@@ -24,7 +24,7 @@ export default function Notification({ onToggle, isOpen }: Notification) {
 
       {/* 알림 레이어 */}
       {isOpen && (
-        <div className="border-line-200 absolute top-8 z-99 flex h-78 w-78 -translate-x-48 flex-col rounded-3xl border bg-gray-50 p-4 shadow-gray-300 md:top-10">
+        <div className="border-line-200 absolute top-8 z-99 flex h-78 w-78 -translate-x-48 flex-col rounded-3xl border bg-gray-50 p-4 shadow-gray-300 lg:top-10 xl:-translate-x-1/10">
           <div className="flex items-center justify-between px-3 py-[10px]">
             <span className="text-black-300 text-base font-bold">알림</span>
             <button className="cursor-pointer" onClick={onToggle}>
