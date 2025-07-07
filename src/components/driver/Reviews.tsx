@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import Review from "./Review";
-import StarIcon from "../../../../../components/StarIcon";
+import StarIcon from "../icon/StarIcon";
 
 function Reviews() {
   const reviews = [{ rating: 3 }, { rating: 2 }];
