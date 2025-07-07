@@ -36,10 +36,10 @@ export default function ChipRectangle({
   return (
     <div
       onClick={onClick}
-      className={`inline-flex items-center rounded-md bg-rose-50 shadow-[4px_4px_8px_0px_rgba(217,217,217,0.10)] font-['Pretendard'] font-semibold ${current.container} ${className} ${
+      className={`inline-flex items-center rounded-md bg-rose-50 shadow-[4px_4px_8px_0px_rgba(217,217,217,0.10)] font-[Pretendard] font-semibold ${current.container} ${className} ${
         selected ? 'ring-2 ring-red-300' : ''
       }`}
-    >
+    > 
       <div className="relative h-5 w-5">
         <Image src={iconSrc} alt={label} fill />
       </div>

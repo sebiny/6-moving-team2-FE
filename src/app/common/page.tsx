@@ -26,6 +26,7 @@ function CommonPage() {
           />
         </div>
       ))}
+      {/* ChipCircle 보여주기 */}
       <div>
         <ChipCircle type="address" color="gray" text="도로명" />
         <ChipCircle type="region" color="orange" text="소형이사" />
@@ -37,6 +38,9 @@ function CommonPage() {
       <div className="flex flex-wrap gap-3">
         {moveTypes.map((type) => (
           <ChipRectangle key={type} moveType={type} size="md" />
+        ))}
+        {moveTypes.map((type) => (
+          <ChipRectangle key={type} moveType={type} size="sm" />
         ))}
       </div>
     </div>
