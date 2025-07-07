@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { PendingData } from "./PendingData";
-import { iconAssets, labelIconMap } from "../../../../../components/title/LabelIcons";
+import { iconAssets, labelIconMap } from "@/components/title/LabelIcons";
 
 interface Props {
   data: PendingData;
@@ -12,21 +12,24 @@ export default function PendingCard({ data }: Props) {
   const { labels, driver, message, from, to, date, price } = data;
 
   return (
-    <div className="w-full space-y-6 rounded-xl bg-white px-10 py-8 shadow-lg">
-      {/* 라벨 */}
-      <div className="mb-2 flex">
-        {labels.map((label) => (
-          <Image key={label} src={labelIconMap[label]} alt={label} width={90} height={24} />
-        ))}
+    <div className="w-full space-y-6 rounded-2xl bg-white shadow-lg sm:p-4 md:px-8 md:py-6 lg:px-10 lg:py-8">
+      {/* 라벨 + 상태 */}
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex flex-wrap gap-1">
+          {labels.map((label) => (
+            <Image key={label} src={labelIconMap[label]} alt={label} width={90} height={24} />
+          ))}
+        </div>
+        <span className="text-sm text-gray-300">견적대기</span>
       </div>
 
       {/* 소개 메시지 */}
-      <p className="text-lg font-semibold text-gray-800">{message}</p>
+      <p className="font-semibold text-gray-800 sm:text-[16px] lg:text-[18px]">{message}</p>
 
       {/* 기사 프로필 */}
       <div className="flex items-start gap-3">
         {/* 프로필 이미지 */}
-        <Image src={driver.imageUrl} alt="기사 프로필" width={48} height={48} />
+        <Image src={driver.imageUrl} alt="기사 프로필" width={50} height={50} />
 
         {/* 기사 정보 영역 */}
         <div className="flex-1 space-y-2">
@@ -46,18 +49,18 @@ export default function PendingCard({ data }: Props) {
           </div>
 
           {/* 평점/경력/확정 */}
-          <div className="flex text-xs text-gray-300">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-300">
             <div className="flex items-center gap-1">
               <Image src={iconAssets.star} alt="별점" width={16} height={16} />
               <span className="flex gap-0.5">
                 <span className="font-medium text-black">{driver.rating.toFixed(1)}</span>({driver.reviewCount})
               </span>
             </div>
-            <div className="mx-1.5 text-gray-100">|</div>
+            <span className="text-gray-100">|</span>
             <span>
               경력 <span className="font-medium text-black">{driver.experienceYear}년</span>
             </span>
-            <div className="mx-1.5 text-gray-100">|</div>
+            <span className="text-gray-100">|</span>
             <span>
               <span className="font-medium text-black">{driver.confirmedCount}건</span> 확정
             </span>
@@ -66,37 +69,7 @@ export default function PendingCard({ data }: Props) {
       </div>
 
       {/* 구분선 */}
-      <div className="my-5 border-t border-gray-100" />
-
-      {/* 출발지/도착지/이사일 */}
-      <div className="flex justify-between">
-        {/* 출발지 + 도착지 */}
-        <div className="flex flex-col gap-1">
-          <div className="flex gap-20">
-            {/* 출발지 라벨 */}
-            <span className="text-[14px] text-gray-400">출발지</span>
-            {/* 도착지 라벨 */}
-            <span className="text-[14px] text-gray-400">도착지</span>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* 출발지 텍스트 */}
-            <span className="text-[16px] font-semibold text-gray-900">{from}</span>
-            {/* 화살표 이미지 */}
-            <Image src="/assets/icons/ic_arrow.svg" alt="화살표" width={17} height={17} />
-            {/* 도착지 텍스트 */}
-            <span className="text-[16px] font-semibold text-gray-900">{to}</span>
-          </div>
-        </div>
-
-        {/* 이사일 */}
-        <div className="flex flex-col gap-1 text-left">
-          <span className="text-[14px] text-gray-400">이사일</span>
-          <p className="text-[16px] font-semibold text-gray-900">{date}</p>
-        </div>
-      </div>
-
-      {/* 구분선 */}
-      <div className="my-6 border-t border-gray-100" />
+      <div className="my-7 border-t border-gray-100" />
 
       {/* 가격 */}
       <div className="flex items-center justify-between">
@@ -104,12 +77,14 @@ export default function PendingCard({ data }: Props) {
         <span className="text-[24px] font-bold text-gray-900">{price.toLocaleString()}원</span>
       </div>
 
-      {/* 버튼 - 버튼 컴포넌트 받으면 다시 연결할 예정 */}
-      <div className="mt-10 flex gap-3">
-        <button className="flex-1 rounded-xl border border-orange-500 py-3 font-semibold text-orange-500">
+      {/* 버튼 - 반응형 대응 */}
+      <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+        <button className="order-2 flex-1 rounded-xl border border-orange-500 py-4.5 font-semibold text-orange-500 sm:order-1">
           상세보기
         </button>
-        <button className="flex-1 rounded-xl bg-orange-500 py-4 font-semibold text-white">견적 확정하기</button>
+        <button className="order-1 flex-1 rounded-xl bg-orange-500 py-4.5 font-semibold text-white sm:order-2">
+          견적 확정하기
+        </button>
       </div>
     </div>
   );
