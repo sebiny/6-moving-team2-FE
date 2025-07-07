@@ -33,12 +33,12 @@ function LikedDriverInfo() {
                   <p>5.0</p>
                   <p className="text-gray-300">(178)</p>
                 </div>
-                <div className="border-line-200 w-[1px] border-l"></div>
+                <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
                 <div className="flex gap-1">
                   <p className="text-gray-300">경력</p>
                   <p>{driver.career}년</p>
                 </div>
-                <div className="border-line-200 w-[1px] border-l"></div>
+                <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
                 <div className="flex gap-1">
                   <div>{driver.count}건</div>
                   <p className="text-gray-300">확정</p>
