@@ -1,10 +1,9 @@
 import React from "react";
-import Reviews from "./_components/Reviews";
-import Image from "next/image";
+import Reviews from "../../../../components/driver/Reviews";
 import DriverInfo from "./_components/DriverInfo";
-import ShareDriver from "./_components/ShareDriver";
-import ChipCircle from "@/components/ChipCircle";
+import ShareDriver from "../../../../components/ShareDriver";
 import RequestEstimate from "./_components/RequestEstimate";
+import Service from "../../../../components/Service";
 
 function DriverDetailPage() {
   const driver = {
@@ -23,25 +22,10 @@ function DriverDetailPage() {
       <div className="flex gap-[116px]">
         <div className="w-[742px]">
           <DriverInfo />
-          <div className="mt-10">
-            <p className="text-black-400 text-xl font-semibold">제공 서비스</p>
-            <div className="mt-4 flex gap-3">
-              {driver.services.map((service) => (
-                <ChipCircle key={service} type="region" color="orange" text={service} />
-              ))}
-            </div>
-          </div>
-          <div className="mt-10 mb-20">
-            <p className="text-black-400 text-xl font-semibold">서비스 가능 지역</p>
-            <div className="mt-4 flex gap-3">
-              {driver.regions.map((region) => (
-                <ChipCircle key={region} type="region" color="gray" text={region} />
-              ))}
-            </div>
-          </div>
+          <Service services={driver.services} regions={driver.regions} />
           <div className="mb-8 lg:hidden">
             <div className="border-line-100 mb-8 border-b"></div>
-            <ShareDriver />
+            <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
             <div className="border-line-100 mt-8 border-b"></div>
           </div>
           <Reviews />
@@ -49,7 +33,7 @@ function DriverDetailPage() {
         <div className="mt-[109px] w-80">
           <RequestEstimate />
           <div className="hidden lg:block">
-            <ShareDriver />
+            <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
           </div>
         </div>
       </div>

@@ -2,12 +2,16 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-function SortDropdown() {
-  const [sort, setSort] = useState("리뷰 많은순");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const sortings = ["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"] as const;
+interface SortDropdownType {
+  sortings: string[];
+  value: string;
+}
 
-  const handleClick = (sorting: "리뷰 많은순" | "평점 높은순" | "경력 높은순" | "확정 많은순") => {
+function SortDropdown({ sortings, value }: SortDropdownType) {
+  const [sort, setSort] = useState(value);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleClick = (sorting: string) => {
     setIsModalOpen(false);
     setSort(sorting);
   };

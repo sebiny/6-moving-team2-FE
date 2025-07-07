@@ -9,7 +9,7 @@ function EstimateRequestModal({ setIsModalOpen }: EstimateRequestModalType) {
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
       <div className="z-50 w-[293px] rounded-[32px] bg-white p-6 px-4 py-6 shadow-lg md:w-[608px] md:px-6 md:py-8">
-        <div className="flex items-center justify-between">
+        <div className="flex justify-between">
           <p className="mb-4 text-lg font-semibold md:text-2xl">지정 견적 요청하기</p>
           <button className="relative h-6 w-6 md:h-9 md:w-9" onClick={() => setIsModalOpen(false)}>
             <Image src="/assets/icons/ic_X.svg" alt="닫기" fill className="object-contain" />

@@ -3,7 +3,7 @@ import React from "react";
 
 interface ButtonType {
   text: string;
-  round: 12 | 16;
+  round?: 12 | 16;
   type: "orange" | "gray" | "white-orange" | "white-gray";
   image?: boolean;
 }
@@ -20,9 +20,12 @@ function Button({ text, type, round = 16, image = false }: ButtonType) {
     color = "border border-gray-300 text-gray-300";
   }
   const roundClass = round === 12 ? "rounded-[12px]" : "rounded-[16px]";
+
+  const isDisabled = type === "gray";
   return (
     <button
-      className={`w-full py-4 text-lg font-semibold ${roundClass} ${color} items-centergap-2 flex justify-center`}
+      disabled={isDisabled}
+      className={`w-full py-4 text-lg font-semibold ${roundClass} ${color} items-centergap-2 flex cursor-pointer justify-center`}
     >
       <p>{text}</p>
       {image && <Image src="/assets/icons/ic_writing.svg" alt="작성하기" width={24} height={24} />}
