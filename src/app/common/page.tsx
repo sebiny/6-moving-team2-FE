@@ -1,11 +1,11 @@
 "use client";
 
-import ChipCircle from "@/components/chip/ChipCircle";
 import Button from "@/components/Button";
-import Title from "../../components/title/Title";
-import { titleMockData } from "../../components/title/TitleData";
 import ShareDriver from "@/components/ShareDriver";
 import SortDropdown from "@/components/dropdown/SortDropdown";
+import ChipCircle from "@/components/chip/ChipCircle";
+import Title from "../../components/title/Title";
+import { titleMockData } from "../../components/title/TitleData";
 
 function CommonPage() {
   return (
