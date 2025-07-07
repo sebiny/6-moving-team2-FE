@@ -17,7 +17,7 @@ export default function Gnb() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  //744이상이될때 데스크탑이 되고 있다.
+
   return (
     <header className="border-line-100 flex h-14 items-center justify-center border-b-1 bg-white px-6 md:h-22">
       <div className="flex w-full max-w-[var(--container-gnb)] items-center justify-between">
