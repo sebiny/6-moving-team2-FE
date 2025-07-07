@@ -2,7 +2,11 @@
 import Image from "next/image";
 import React from "react";
 
-function ShareDriver() {
+interface ShareDriverType {
+  text: string;
+}
+
+function ShareDriver({ text }: ShareDriverType) {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -13,7 +17,7 @@ function ShareDriver() {
   };
   return (
     <div className="mt-[70px]">
-      <p className="text-black-400 text-xl font-semibold">나만 알기엔 아쉬운 기사님인가요?</p>
+      <p className="text-black-400 text-xl font-semibold">{text}</p>
       <div className="mt-[22px] flex gap-4">
         <button
           className="border-line-200 flex h-16 w-16 items-center justify-center rounded-2xl border"
