@@ -2,6 +2,7 @@ import React from "react";
 import DriverSimpleInfo from "./_components/DriverSimpleInfo";
 import Image from "next/image";
 import LikedDrivers from "./_components/LikedDrivers";
+import SortDropdown from "./_components/SortDropdown";
 
 function DriversPage() {
   const drivers = [{ id: 1 }];
@@ -18,7 +19,7 @@ function DriversPage() {
             <div></div>
             <p className="text-gray-300">초기화</p>
           </div>
-          <div></div>
+          <SortDropdown />
         </div>
         <div className="flex flex-col gap-5">
           {drivers.map((driver) => (

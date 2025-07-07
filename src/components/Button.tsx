@@ -3,13 +3,12 @@ import React from "react";
 
 interface ButtonType {
   text: string;
-  round: string;
+  round: 12 | 16;
   type: "orange" | "gray" | "white-orange" | "white-gray";
-  size?: string;
   image?: boolean;
 }
 
-function Button({ text, type, round = "16", image = false, size = "" }: ButtonType) {
+function Button({ text, type, round = 16, image = false }: ButtonType) {
   let color = "";
   if (type === "orange") {
     color = "bg-orange-400 text-white";
@@ -20,10 +19,13 @@ function Button({ text, type, round = "16", image = false, size = "" }: ButtonTy
   } else {
     color = "border border-gray-300 text-gray-300";
   }
+  const roundClass = round === 12 ? "rounded-[12px]" : "rounded-[16px]";
   return (
-    <button className={`w-full py-4 text-lg font-semibold rounded-[${round}px] ${color} ${size}`}>
+    <button
+      className={`w-full py-4 text-lg font-semibold ${roundClass} ${color} items-centergap-2 flex justify-center`}
+    >
       <p>{text}</p>
-      {image && <Image src="/assets/icons/ic_writing.svg" alt="작성하기" />}
+      {image && <Image src="/assets/icons/ic_writing.svg" alt="작성하기" width={24} height={24} />}
     </button>
   );
 }

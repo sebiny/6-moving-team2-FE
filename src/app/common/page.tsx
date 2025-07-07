@@ -29,8 +29,10 @@ function CommonPage() {
         <ChipCircle type="region" color="gray" text="소형이사" />
         <ChipCircle type="region" color="orange" text="서울" click={true} />
       </div>
-      <div>
-        <Button type="orange" text="작성" round="16" />
+      <div className="flex flex-col gap-2">
+        <Button type="orange" text="작성" round={16} />
+        <Button type="white-orange" text="작성" round={12} />
+        <Button type="gray" text="작성" round={12} image={true} />
       </div>
     </div>
   );
