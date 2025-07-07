@@ -1,16 +1,17 @@
 import InputText from "@/components/InputText";
-import Header from "@/app/review/component/Header";
 import React from "react";
 import Main from "./component/Main";
 import Gnb from "@/components/layout/Gnb";
+import Header from "../../components/Header";
 
 function page() {
+  const headerType = "review";
   return (
     <div>
       <div>
         <Gnb />
         {/* <InputText /> */}
-        <Header />
+        <Header type={headerType} />
         <Main />
       </div>
     </div>
