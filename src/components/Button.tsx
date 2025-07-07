@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import WritingIcon from "./icon/WritingIcon";
 
 interface ButtonType {
   text: string;
@@ -25,10 +26,10 @@ function Button({ text, type, round = 16, image = false }: ButtonType) {
   return (
     <button
       disabled={isDisabled}
-      className={`w-full py-4 text-lg font-semibold ${roundClass} ${color} items-centergap-2 flex cursor-pointer justify-center`}
+      className={`w-full gap-[6px] py-4 text-lg font-semibold ${roundClass} ${color} items-centergap-2 flex cursor-pointer justify-center`}
     >
       <p>{text}</p>
-      {image && <Image src="/assets/icons/ic_writing.svg" alt="작성하기" width={24} height={24} />}
+      {image && <WritingIcon />}
     </button>
   );
 }
