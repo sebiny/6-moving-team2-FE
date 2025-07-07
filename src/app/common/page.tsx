@@ -6,7 +6,7 @@ import SortDropdown from "@/components/dropdown/SortDropdown";
 import ChipCircle from "@/components/chip/ChipCircle";
 import Title from "../../components/title/Title";
 import { titleMockData } from "../../components/title/TitleData";
-import ChipRectangle from "../../components/ChipRectangle";
+import ChipRectangle from "../../components/chip/ChipRectangle";
 import { MoveType } from "../../constant/moveTypes";
 
 function CommonPage() {
@@ -29,7 +29,7 @@ function CommonPage() {
           />
         </div>
       ))}
-      
+
       {/* ChipCircle 보여주기 */}
       <div className="flex gap-2">
         <ChipCircle type="address" color="gray" text="도로명" />
