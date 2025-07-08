@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { clsx } from "clsx";
 
 type HeaderType = "review" | "estimate";
@@ -21,15 +23,21 @@ export default function Header({ type }: HeaderProps) {
     { idx: "1", label: "대기 중인 견적", active: true },
     { idx: "2", label: "받았던 견적", active: false }
   ];
-  const LIST: TabItem[] = type === "estimate" ? ESTIMATE_LIST : REVIEW_LIST;
-
+  const [tabList, setTabList] = useState<TabItem[]>(type === "estimate" ? ESTIMATE_LIST : REVIEW_LIST);
   const SIZE_CLASSES = {
     base: ["lg:px-90 lg:gap-8 lg:pt-26"],
-    //pt 22+4해서 26 (임시)
     sm: ["sm:gap-6 sm:px-6 sm:pt-[54px]"],
-    //pt 54px (임시)
     md: ["md:gap-6 md:px-18"]
   }; //object
+
+  const handleTabClick = (clickedIdx: string) => {
+    setTabList((prev) =>
+      prev.map((item) => ({
+        ...item,
+        active: item.idx === clickedIdx
+      }))
+    );
+  };
   return (
     <div>
       <div
@@ -40,13 +48,15 @@ export default function Header({ type }: HeaderProps) {
           ...SIZE_CLASSES.sm
         )}
       >
-        {LIST.map(({ idx, label, active }) => (
+        {tabList.map(({ idx, label, active }) => (
           <div
             key={idx}
             className={clsx(
               "flex items-center justify-center gap-6 self-stretch py-[15px] lg:py-4",
-              active && "border-black-500 border-b-[2px]"
+              active && "border-black-500 border-b-[2px]",
+              "cursor-pointer"
             )}
+            onClick={() => handleTabClick(idx)}
           >
             <p
               className={clsx(
