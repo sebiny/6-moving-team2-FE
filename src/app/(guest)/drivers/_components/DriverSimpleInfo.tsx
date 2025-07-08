@@ -1,5 +1,6 @@
 "use client";
 import ChipRectangle from "@/components/chip/ChipRectangle";
+import LikeIcon from "@/components/icon/LikeIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -38,11 +39,11 @@ function DriverSimpleInfo() {
         <div className="w-full">
           <p className="text-black-300 text-xl font-semibold">{driver.line}</p>
           <p className="mt-2 text-sm text-gray-500">{driver.description}</p>
-          <div className="border-line-100 border-b md:hidden"></div>
+          <div className="border-line-100 mt-4 border-b md:hidden"></div>
           <div className="relative mt-5">
             <div className="flex gap-2">
               <Image
-                src="/assets/images/img_profile.svg"
+                src="/assets/icons/ic_profile_bear.svg"
                 alt="프로필 이미지"
                 width={50}
                 height={50}
@@ -50,16 +51,16 @@ function DriverSimpleInfo() {
               />
               <div className="w-full">
                 <div className="flex items-center justify-between">
-                  <div className="flex gap-1">
+                  <div className="flex items-center gap-1">
                     <Image src="/assets/icons/ic_driver.svg" alt="기사님" width={20} height={23} />
                     <p className="text-sm font-semibold md:text-base">{driver.nickname} 기사님</p>
                   </div>
-                  <div className="flex justify-center md:hidden">
-                    <Image src="/assets/icons/ic_like_red.svg" alt="좋아요" width={24} height={24} />
+                  <div className="flex items-center justify-center md:hidden">
+                    <LikeIcon color="red" />
                     <p className="pt-1 text-gray-500">{driver.like}</p>
                   </div>
                 </div>
-                <div className="mt-2 flex items-center gap-2 text-[13px]">
+                <div className="mt-[2px] flex items-center gap-2 text-[13px] md:mt-2">
                   <div className="flex gap-1">
                     <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={20} height={20} />
                     <p>5.0</p>

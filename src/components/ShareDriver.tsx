@@ -16,7 +16,7 @@ function ShareDriver({ text }: ShareDriverType) {
     }
   };
   return (
-    <div className="mt-[70px]">
+    <div className="mt-8 lg:mt-[70px]">
       <p className="text-black-400 text-xl font-semibold">{text}</p>
       <div className="mt-[22px] flex gap-4">
         <button

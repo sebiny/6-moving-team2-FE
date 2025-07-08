@@ -5,6 +5,7 @@ import ShareDriver from "../../../../components/ShareDriver";
 import RequestEstimate from "./_components/RequestEstimate";
 import Service from "../../../../components/Service";
 import BottomNav from "./_components/BottomButton";
+import OrangeBackground from "@/components/OrangeBackground";
 
 function DriverDetailPage() {
   const driver = {
@@ -19,23 +20,21 @@ function DriverDetailPage() {
   };
   return (
     <div className="flex flex-col items-center">
-      <div className="h-[225px] w-full bg-orange-400"></div>
-      <div className="flex gap-[116px]">
-        <div className="w-[742px]">
+      <OrangeBackground />
+      <div className="flex justify-center gap-[116px]">
+        <div className="w-full max-w-[742px]">
           <DriverInfo />
           <Service services={driver.services} regions={driver.regions} />
           <div className="mb-8 lg:hidden">
-            <div className="border-line-100 mb-8 border-b"></div>
+            <div className="border-line-100 border-b"></div>
             <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
             <div className="border-line-100 mt-8 border-b"></div>
           </div>
           <Reviews />
         </div>
-        <div className="mt-[109px] w-80">
+        <div className="mt-[109px] hidden w-80 lg:block">
           <RequestEstimate />
-          <div className="hidden lg:block">
-            <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
-          </div>
+          <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
         </div>
       </div>
       <BottomNav />

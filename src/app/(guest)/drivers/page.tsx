@@ -8,6 +8,7 @@ import Filters from "./_components/Filters";
 
 function DriversPage() {
   const drivers = [{ id: 1 }];
+
   return (
     <div className="flex justify-center">
       <div className="mx-6 w-full max-w-205">
@@ -17,12 +18,7 @@ function DriversPage() {
           <input className="absolute left-14 w-180" placeholder="텍스트를 입력해주세요." />
         </div>
         <div className="my-[38px] flex justify-between">
-          <div className="flex items-center gap-8">
-            <div>
-              <Filters />
-            </div>
-            <p className="hidden text-gray-300 lg:block">초기화</p>
-          </div>
+          <Filters />
           <SortDropdown sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]} value="리뷰 많은순" />
         </div>
         <div className="flex flex-col gap-5">

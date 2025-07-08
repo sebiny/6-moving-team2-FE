@@ -1,4 +1,5 @@
 import ChipRectangle from "@/components/chip/ChipRectangle";
+import LikeIcon from "@/components/icon/LikeIcon";
 import Image from "next/image";
 import React from "react";
 
@@ -26,7 +27,7 @@ function LikedDriverInfo() {
               <div className="flex gap-1">
                 <Image src="/assets/icons/ic_driver.svg" alt="기사님" width={20} height={23} />
                 <p className="font-semibold">{driver.nickname} 기사님</p>
-                <Image src="/assets/icons/ic_like_white.svg" alt="좋아요" height={20} width={20} />
+                <LikeIcon color="gray" isFilled={false} />
               </div>
               <div className="mt-1 flex gap-2">
                 <div className="flex gap-1">
