@@ -1,21 +1,18 @@
-import InputText from "@/components/InputText";
-import React from "react";
-import Main from "./component/Main";
+"use client";
+import React, { useState } from "react";
 import Gnb from "@/components/layout/Gnb";
 import Header from "../../components/Header";
+import Main from "./component/Main";
 
-function page() {
-  const headerType = "review";
+function Page() {
+  const [selectedIdx, setSelectedIdx] = useState("1");
   return (
     <div>
-      <div>
-        <Gnb />
-        {/* <InputText /> */}
-        <Header type={headerType} />
-        <Main />
-      </div>
+      <Gnb />
+      <Header type="review" selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} />
+      <Main selectedIdx={selectedIdx} />
     </div>
   );
 }
 
-export default page;
+export default Page;
