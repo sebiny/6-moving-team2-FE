@@ -40,9 +40,9 @@ function CommonPage() {
         </div>
       </div>
       <div className="flex w-50 flex-col gap-2">
-        <Button type="orange" text="작성" round={16} />
-        <Button type="white-orange" text="작성" round={12} />
-        <Button type="gray" text="작성" round={12} image={true} />
+        <Button type="orange" text="작성" />
+        <Button type="white-orange" text="작성" className="w-40 rounded-[10px] py-[20px]" />
+        <Button type="white-gray" text="작성" image={true} />
       </div>
       <div>
         <ShareDriver text="견적서 공유하기" />

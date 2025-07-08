@@ -4,29 +4,28 @@ import WritingIcon from "./icon/WritingIcon";
 
 interface ButtonType {
   text: string;
-  round?: 12 | 16;
   type: "orange" | "gray" | "white-orange" | "white-gray";
   image?: boolean;
+  className?: string;
+  isDisabled?: boolean;
 }
 
-function Button({ text, type, round = 16, image = false }: ButtonType) {
+function Button({ text, type, image = false, className = "w-full", isDisabled = false }: ButtonType) {
   let color = "";
-  if (type === "orange") {
-    color = "bg-orange-400 text-white";
-  } else if (type === "gray") {
+  if (type === "gray" || isDisabled) {
     color = "bg-gray-100 text-white";
+  } else if (type === "orange") {
+    color = "bg-orange-400 text-white";
   } else if (type === "white-orange") {
     color = "border border-orange-400 text-orange-400";
   } else {
     color = "border border-gray-300 text-gray-300";
   }
-  const roundClass = round === 12 ? "rounded-[12px]" : "rounded-[16px]";
 
-  const isDisabled = type === "gray";
   return (
     <button
       disabled={isDisabled}
-      className={`w-full gap-[6px] py-4 text-lg font-semibold ${roundClass} ${color} items-centergap-2 flex cursor-pointer justify-center`}
+      className={`flex cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold md:py-[17px] md:text-lg ${color} ${className}`}
     >
       <p>{text}</p>
       {image && <WritingIcon />}
