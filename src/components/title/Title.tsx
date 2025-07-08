@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { iconAssets, statusIconMap, labelIconMap, LabelText, EstimateStatus } from "./LabelIcons";
+import { iconAssets, statusIconMap, EstimateStatus } from "./LabelIcons";
 import { DriverInfo } from "./TitleData";
+import ChipRectangle from "../chip/ChipRectangle";
 
 interface TitleProps {
   status?: EstimateStatus;
-  labels: LabelText[];
+  labels: ("small" | "home" | "office" | "request")[];
   driver: DriverInfo;
   message: string;
   estimatePrice?: number;
@@ -15,21 +16,35 @@ interface TitleProps {
 function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
   return (
     <div className="w-full">
-      {/* 상단 라벨 */}
-      <div className="mb-2 flex items-center">
-        {labels.map((label) => (
-          <Image key={label} src={labelIconMap[label]} alt={label} width={90} height={24} />
-        ))}
+      {/* sm 전용 */}
+      <div className="mb-2 flex items-center justify-between md:hidden">
+        <div className="flex gap-2">
+          <ChipRectangle moveType="small" size="sm" />
+          <ChipRectangle moveType="request" size="sm" />
+        </div>
+        {status && <Image src={statusIconMap[status]} alt={status} width={60} height={24} className="shrink-0" />}
       </div>
 
-      {/* 소개 메시지 + 상태 아이콘 */}
-      <div className="flex justify-between">
+      {/* sm 전용 */}
+      <div className="text-lg font-semibold text-gray-900 md:hidden">{message}</div>
+
+      {/* sm 초과 */}
+      <div className="mb-2 flex-wrap gap-2 sm:hidden md:flex">
+        <ChipRectangle moveType="small" size="md" />
+        <ChipRectangle moveType="request" size="md" />
+      </div>
+
+      <div className="flex justify-between sm:hidden md:flex">
         <p className="text-xl font-semibold text-gray-900">{message}</p>
-        {status && <Image src={statusIconMap[status]} alt={status} width={60} height={24} />}
+        {status && (
+          <div>
+            <Image src={statusIconMap[status]} alt={status} width={60} height={0} />
+          </div>
+        )}
       </div>
 
       {/* 구분선 */}
-      <div className="my-5 border-t border-gray-200" />
+      <div className="my-5 border-t border-gray-100" />
 
       {/* 기사 정보 - 상단 */}
       <div className="mb-2 flex items-center justify-between">
@@ -63,12 +78,10 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       {/* 하단 견적가 (선택적으로 표시) */}
       {estimatePrice !== undefined && estimatePrice !== null && (
         <>
-          <div className="my-5 border-t border-gray-200" />
-          <div className="flex items-end justify-between">
-            <div className="flex items-center gap-14 text-sm text-gray-700">
-              <p className="text-lg font-medium">견적가</p>
-              <p className="ml-2 text-2xl font-bold text-gray-900">{estimatePrice.toLocaleString()}원</p>
-            </div>
+          <div className="my-5 border-t border-gray-100" />
+          <div className="flex items-center justify-between md:justify-start md:gap-14">
+            <p className="text-lg font-medium text-gray-700">견적가</p>
+            <p className="text-2xl font-bold text-gray-900 sm:ml-2">{estimatePrice.toLocaleString()}원</p>
           </div>
         </>
       )}
