@@ -1,8 +1,10 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import ImgArrow from "/public/assets/icons/ic_chevron_down.svg";
+import Image from "next/image";
 
 interface Route {
   path: string;
@@ -12,6 +14,7 @@ interface Route {
 
 export default function DevNav() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(true);
 
   const routes: Route[] = [
     // 공통 라우트
@@ -40,21 +43,29 @@ export default function DevNav() {
   );
 
   return (
-    <nav className="fixed bottom-0 flex w-full flex-col items-center justify-center gap-1 py-1">
-      {Object.entries(groupedRoutes).map(([group, routes]) => (
-        <div key={group} className="flex max-w-[1280px] gap-1">
-          <span>{group === "customer" ? "고객 :" : group === "driver" ? "기사" : "공통"}</span>
-          {routes.map((route) => (
-            <Link
-              key={route.path}
-              href={route.path}
-              className={`rounded border-gray-100 bg-gray-100 px-3 py-1 text-sm ${pathname === route.path ? "bg-orange-400 font-bold text-white" : ""}`}
-            >
-              {route.name}
-            </Link>
-          ))}
-        </div>
-      ))}
-    </nav>
+    <div className="fixed bottom-0 flex w-full flex-col items-center">
+      <nav className={`flex flex-col items-center justify-center gap-1 py-1 ${isOpen ? "" : "hidden"}`}>
+        {Object.entries(groupedRoutes).map(([group, routes]) => (
+          <div key={group} className="flex max-w-[1280px] gap-1">
+            <span>{group === "customer" ? "고객 :" : group === "driver" ? "기사" : "공통"}</span>
+            {routes.map((route) => (
+              <Link
+                key={route.path}
+                href={route.path}
+                className={`rounded border-gray-100 bg-gray-100 px-3 py-1 text-sm ${pathname === route.path ? "bg-orange-400 font-bold text-white" : ""}`}
+              >
+                {route.name}
+              </Link>
+            ))}
+          </div>
+        ))}
+      </nav>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`z-50 mb-1 cursor-pointer rounded-sm bg-gray-400 px-3 py-1 text-sm font-bold text-white ${isOpen ? "" : "bg-orange-500"}`}
+      >
+        {isOpen ? "DevNav 닫기" : "DevNav 열기"}
+      </button>
+    </div>
   );
 }
