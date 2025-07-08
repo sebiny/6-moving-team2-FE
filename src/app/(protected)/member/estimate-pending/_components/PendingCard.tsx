@@ -2,29 +2,39 @@
 
 import Image from "next/image";
 import { PendingData } from "./PendingData";
-import { iconAssets, labelIconMap } from "@/components/title/LabelIcons";
+import { iconAssets } from "@/components/title/LabelIcons";
+import ChipRectangle from "@/components/chip/ChipRectangle";
+import Button from "@/components/Button";
 
 interface Props {
   data: PendingData;
 }
 
 export default function PendingCard({ data }: Props) {
-  const { labels, driver, message, from, to, date, price } = data;
+  const { driver, message, price } = data;
 
   return (
-    <div className="w-full space-y-6 rounded-2xl bg-white shadow-lg sm:p-4 md:px-8 md:py-6 lg:px-10 lg:py-8">
+    <div className="w-full space-y-6 rounded-2xl bg-white shadow-lg sm:p-5 md:px-8 md:py-6 lg:px-10 lg:py-6">
       {/* 라벨 + 상태 */}
       <div className="mb-2 flex items-center justify-between">
-        <div className="flex flex-wrap gap-1">
-          {labels.map((label) => (
-            <Image key={label} src={labelIconMap[label]} alt={label} width={90} height={24} />
-          ))}
+        <div className="flex flex-wrap items-center">
+          {/* sm 이하 */}
+          <div className="flex gap-2 md:hidden">
+            <ChipRectangle moveType="small" size="sm" />
+            <ChipRectangle moveType="request" size="sm" />
+          </div>
+
+          {/* md 이상 */}
+          <div className="hidden gap-2 md:flex">
+            <ChipRectangle moveType="small" size="md" />
+            <ChipRectangle moveType="request" size="md" />
+          </div>
         </div>
         <span className="text-sm text-gray-300">견적대기</span>
       </div>
 
       {/* 소개 메시지 */}
-      <p className="font-semibold text-gray-800 sm:text-[16px] lg:text-[18px]">{message}</p>
+      <p className="mt-3 font-semibold text-gray-800 sm:text-[16px] lg:text-[18px]">{message}</p>
 
       {/* 기사 프로필 */}
       <div className="flex items-start gap-3">
@@ -78,13 +88,16 @@ export default function PendingCard({ data }: Props) {
       </div>
 
       {/* 버튼 - 반응형 대응 */}
-      <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-        <button className="order-2 flex-1 rounded-xl border border-orange-500 py-4.5 font-semibold text-orange-500 sm:order-1">
-          상세보기
-        </button>
-        <button className="order-1 flex-1 rounded-xl bg-orange-500 py-4.5 font-semibold text-white sm:order-2">
-          견적 확정하기
-        </button>
+      <div className="mt-10 flex w-full flex-col gap-3 md:flex-row md:gap-3">
+        {/* 견적 확정하기 버튼 */}
+        <div className="order-1 w-full md:order-2 md:w-1/2">
+          <Button type="orange" text="견적 확정하기" round={12} />
+        </div>
+
+        {/* 상세보기 버튼 */}
+        <div className="order-2 w-full md:order-1 md:w-1/2">
+          <Button type="white-orange" text="상세보기" round={12} />
+        </div>
       </div>
     </div>
   );
