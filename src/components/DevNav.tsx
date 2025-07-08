@@ -9,7 +9,7 @@ import Image from "next/image";
 interface Route {
   path: string;
   name: string;
-  group: "common" | "customer" | "driver";
+  group: "common" | "customer" | "driver" | "guest";
 }
 
 export default function DevNav() {
@@ -21,13 +21,17 @@ export default function DevNav() {
     { path: "/", name: "랜딩페이지", group: "common" },
     { path: "/login", name: "로그인", group: "common" },
     { path: "/signup", name: "회원가입", group: "common" },
+    { path: "/common", name: "컴포넌트", group: "common" },
 
     // 고객 관련 라우트 (@customer)
     { path: "/member/estimate-past", name: "페이지명", group: "customer" },
     { path: "/member/estimate-pending", name: "페이지명", group: "customer" },
 
     // 기사 관련 라우트 (@driver)
-    { path: "/driver/my-page", name: "페이지명", group: "driver" }
+    { path: "/driver/my-page", name: "페이지명", group: "driver" },
+
+    // 게스트 관련 라우트 (@guest)
+    { path: "/drivers", name: "페이지명", group: "guest" }
   ];
 
   // 라우트를 그룹별로 분류
@@ -39,7 +43,7 @@ export default function DevNav() {
       acc[route.group].push(route);
       return acc;
     },
-    { common: [], customer: [], driver: [] }
+    { common: [], customer: [], driver: [], guest: [] }
   );
 
   return (
@@ -47,7 +51,15 @@ export default function DevNav() {
       <nav className={`flex flex-col items-center justify-center gap-1 py-1 ${isOpen ? "" : "hidden"}`}>
         {Object.entries(groupedRoutes).map(([group, routes]) => (
           <div key={group} className="flex max-w-[1280px] gap-1">
-            <span>{group === "customer" ? "고객 :" : group === "driver" ? "기사" : "공통"}</span>
+            <span>
+              {group === "customer"
+                ? "고객 :"
+                : group === "driver"
+                  ? "기사 :"
+                  : group === "guest"
+                    ? "게스트 :"
+                    : "공통"}
+            </span>
             {routes.map((route) => (
               <Link
                 key={route.path}
