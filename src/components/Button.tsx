@@ -12,10 +12,10 @@ interface ButtonType {
 
 function Button({ text, type, image = false, className = "w-full", isDisabled = false }: ButtonType) {
   let color = "";
-  if (type === "orange") {
-    color = "bg-orange-400 text-white";
-  } else if (type === "gray" || !isDisabled) {
+  if (type === "gray" || isDisabled) {
     color = "bg-gray-100 text-white";
+  } else if (type === "orange") {
+    color = "bg-orange-400 text-white";
   } else if (type === "white-orange") {
     color = "border border-orange-400 text-orange-400";
   } else {
