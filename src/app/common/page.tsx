@@ -16,10 +16,10 @@ function CommonPage() {
     /**
      * Title 컴포넌트
      */
-    <div className="flex flex-col gap-12 bg-white p-6">
+    <div className="flex flex-col gap-12 bg-white p-6 md:p-10">
       {/* 임시 데이터 연결 */}
       {titleMockData.map((item) => (
-        <div key={item.id} className="">
+        <div key={item.id}>
           <Title
             status={item.status}
             labels={item.labels}
