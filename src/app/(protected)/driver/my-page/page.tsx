@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import Reviews from "@/components/driver/Reviews";
+import OrangeBackground from "@/components/OrangeBackground";
 import Service from "@/components/Service";
 import Image from "next/image";
 import React from "react";
@@ -10,7 +11,7 @@ function DriverMyPage() {
       <div>
         <div className="text-lg font-semibold">마이페이지</div>
       </div>
-      <div className="h-45 w-full bg-orange-400"></div>
+      <OrangeBackground />
       <div className="flex w-300 flex-col">
         <div className="mt-[43px] flex flex-col justify-between lg:flex-row">
           <div>

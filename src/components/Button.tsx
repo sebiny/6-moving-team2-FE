@@ -28,7 +28,7 @@ function Button({ text, type, image = false, className = "w-full", isDisabled = 
       className={`flex cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold md:py-[17px] md:text-lg ${color} ${className}`}
     >
       <p>{text}</p>
-      {image && <WritingIcon />}
+      {image && <WritingIcon color={type === "orange" ? "text-white" : "text-gray-300"} />}
     </button>
   );
 }

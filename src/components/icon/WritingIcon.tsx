@@ -1,6 +1,11 @@
 import React from "react";
 
-function WritingIcon({ size = 24, color = "tex-gray-100" }) {
+interface WritingIconType {
+  size?: number;
+  color?: string;
+}
+
+function WritingIcon({ size = 24, color = "text-gray-200" }: WritingIconType) {
   return (
     <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -8,7 +13,7 @@ function WritingIcon({ size = 24, color = "tex-gray-100" }) {
         fill="currentColor"
         className={color}
       />
-      <rect x="9" y="28" width="19" height="2" />
+      <rect x="9" y="28" width="19" height="2" fill="currentColor" className={color} />
     </svg>
   );
 }

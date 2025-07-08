@@ -8,7 +8,7 @@ interface ServiceType {
 
 function Service({ services, regions }: ServiceType) {
   return (
-    <div>
+    <div className="mb-8 lg:mb-20">
       <div className="mt-10">
         <p className="text-black-400 text-xl font-semibold">제공 서비스</p>
         <div className="mt-4 flex gap-3">
@@ -17,7 +17,7 @@ function Service({ services, regions }: ServiceType) {
           ))}
         </div>
       </div>
-      <div className="mt-10 mb-20">
+      <div className="mt-10">
         <p className="text-black-400 text-xl font-semibold">서비스 가능 지역</p>
         <div className="mt-4 flex gap-3">
           {regions.map((region) => (

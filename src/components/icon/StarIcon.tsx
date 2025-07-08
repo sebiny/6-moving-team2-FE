@@ -1,6 +1,12 @@
 import React from "react";
 
-function StarIcon({ width = 200, height = 40, rating = 5 }) {
+interface StarIconType {
+  width?: number;
+  height?: number;
+  rating?: number;
+}
+
+function StarIcon({ width = 200, height = 40, rating = 5 }: StarIconType) {
   const fullStars = Math.floor(rating);
   const partial = rating - fullStars;
   const starPath =
