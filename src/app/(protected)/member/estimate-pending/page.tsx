@@ -15,7 +15,7 @@ const mockEstimateInfo = {
 export default function ExamplePendingPage() {
   return (
     <>
-      {/* <EstimateSubHeader data={mockEstimateInfo} /> */}
+      <EstimateSubHeader data={mockEstimateInfo} />
       <div className="bg-background-200 grid gap-8 py-50 sm:grid-cols-1 sm:px-5 md:grid-cols-1 md:px-15 md:py-30 lg:grid-cols-2 lg:px-100">
         {pendingData.map((item) => (
           <PendingCard key={item.id} data={item} />
