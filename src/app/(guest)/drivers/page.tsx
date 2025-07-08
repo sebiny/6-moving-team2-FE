@@ -10,8 +10,8 @@ function DriversPage() {
   const drivers = [{ id: 1 }];
   return (
     <div className="flex justify-center">
-      <div className="w-205">
-        <p className="my-8 text-3xl font-semibold">기사님 찾기</p>
+      <div className="mx-6 w-full max-w-205">
+        <p className="my-8 hidden text-3xl font-semibold lg:block">기사님 찾기</p>
         <div className="bg-background-200 relative flex h-16 items-center rounded-2xl">
           <Image className="absolute left-6" src="/assets/icons/ic_search.svg" alt="검색" width={30} height={30} />
           <input className="absolute left-14 w-180" placeholder="텍스트를 입력해주세요." />
@@ -21,7 +21,7 @@ function DriversPage() {
             <div>
               <Filters />
             </div>
-            <p className="text-gray-300">초기화</p>
+            <p className="hidden text-gray-300 lg:block">초기화</p>
           </div>
           <SortDropdown sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]} value="리뷰 많은순" />
         </div>

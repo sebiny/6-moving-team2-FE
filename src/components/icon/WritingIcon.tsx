@@ -1,6 +1,6 @@
 import React from "react";
 
-function WritingIcon({ size = 30, color = "tex-gray-100" }) {
+function WritingIcon({ size = 24, color = "tex-gray-100" }) {
   return (
     <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
