@@ -28,7 +28,7 @@ export const titleMockData: TitleData[] = [
   {
     id: 1,
     status: EstimateStatus.PENDING,
-    labels: ["small", "request"],
+    labels: ["SMALL", "REQUEST"],
     driver: {
       name: "김코드",
       rating: 5.0,
@@ -43,7 +43,7 @@ export const titleMockData: TitleData[] = [
   {
     id: 2,
     status: EstimateStatus.CONFIRMED,
-    labels: ["small", "request"],
+    labels: ["SMALL", "REQUEST"],
     driver: {
       name: "김코드",
       rating: 5.0,

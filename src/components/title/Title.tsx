@@ -7,7 +7,7 @@ import ChipRectangle from "../chip/ChipRectangle";
 
 interface TitleProps {
   status?: EstimateStatus;
-  labels: ("small" | "home" | "office" | "request")[];
+  labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
   driver: DriverInfo;
   message: string;
   estimatePrice?: number;
@@ -19,8 +19,8 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       {/* sm 전용 */}
       <div className="mb-2 flex items-center justify-between md:hidden">
         <div className="flex gap-2">
-          <ChipRectangle moveType="small" size="sm" />
-          <ChipRectangle moveType="request" size="sm" />
+          <ChipRectangle moveType="SMALL" size="sm" />
+          <ChipRectangle moveType="REQUEST" size="sm" />
         </div>
         {status && <Image src={statusIconMap[status]} alt={status} width={60} height={24} className="shrink-0" />}
       </div>
@@ -30,8 +30,8 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
 
       {/* sm 초과 */}
       <div className="mb-2 flex-wrap gap-2 sm:hidden md:flex">
-        <ChipRectangle moveType="small" size="md" />
-        <ChipRectangle moveType="request" size="md" />
+        <ChipRectangle moveType="SMALL" size="md" />
+        <ChipRectangle moveType="REQUEST" size="md" />
       </div>
 
       <div className="flex justify-between sm:hidden md:flex">

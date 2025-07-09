@@ -1,14 +1,12 @@
 import React from "react";
-import DriverSimpleInfo from "./_components/DriverSimpleInfo";
+import DriverFindCard from "../../../components/card/DriverFindCard";
 import Image from "next/image";
 import LikedDrivers from "./_components/LikedDrivers";
 import SortDropdown from "@/components/dropdown/SortDropdown";
-import FilterDropdown from "@/components/dropdown/FilterDropdown";
 import Filters from "./_components/Filters";
+import { drivers } from "@/constant/driverType";
 
 function DriversPage() {
-  const drivers = [{ id: 1 }];
-
   return (
     <div className="flex justify-center">
       <div className="mx-6 w-full max-w-205">
@@ -23,7 +21,7 @@ function DriversPage() {
         </div>
         <div className="flex flex-col gap-5">
           {drivers.map((driver) => (
-            <DriverSimpleInfo key={driver.id} />
+            <DriverFindCard key={driver.id} driver={driver} />
           ))}
         </div>
       </div>
