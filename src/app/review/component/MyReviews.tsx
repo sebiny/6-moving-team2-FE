@@ -34,7 +34,7 @@ export default function MyReviews() {
                 <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[14px] leading-[24px] font-normal text-ellipsis text-gray-500">
                   이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.
                 </p>
-                <ChipRectangle moveType="small" size="sm" className="mt-2" />
+                <ChipRectangle moveType="SMALL" size="sm" className="mt-2" />
               </div>
             </div>
             <div className="flex gap-10">

@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import Reviews from "@/components/driver/Reviews";
+import LikeIcon from "@/components/icon/LikeIcon";
 import OrangeBackground from "@/components/OrangeBackground";
 import Service from "@/components/Service";
 import Image from "next/image";
@@ -23,7 +24,7 @@ function DriverMyPage() {
                   <p className="ml-1 text-2xl font-semibold">김코드</p>
                 </div>
                 <div className="mt-2 flex">
-                  <Image src="/assets/icons/ic_like_black.svg" alt="좋아요 수" width={24} height={24} />
+                  <LikeIcon color="black" />
                   <p className="text-gray-500">136</p>
                 </div>
               </div>
@@ -59,7 +60,7 @@ function DriverMyPage() {
               </div>
             </div>
           </div>
-          <Service services={["소형이사"]} regions={["서울"]} />
+          <Service services={["SMALL"]} regions={["SEOUL"]} />
           <Reviews />
         </div>
       </div>

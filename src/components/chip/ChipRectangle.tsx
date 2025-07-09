@@ -30,7 +30,7 @@ export default function ChipRectangle({ moveType, size = "md", className = "" }:
       <div className="relative h-5 w-5">
         <Image src={iconSrc} alt={label} fill />
       </div>
-      <div className={`${moveType === "request" ? "text-rose-500" : "text-red-500"} ${current.text}`}>{label}</div>
+      <div className={`${moveType === "REQUEST" ? "text-rose-500" : "text-red-500"} ${current.text}`}>{label}</div>
     </div>
   );
 }
