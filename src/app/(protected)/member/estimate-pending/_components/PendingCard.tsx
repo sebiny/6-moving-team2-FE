@@ -20,14 +20,14 @@ export default function PendingCard({ data }: Props) {
         <div className="flex flex-wrap items-center">
           {/* sm 이하 */}
           <div className="flex gap-2 md:hidden">
-            <ChipRectangle moveType="small" size="sm" />
-            <ChipRectangle moveType="request" size="sm" />
+            <ChipRectangle moveType="SMALL" size="sm" />
+            <ChipRectangle moveType="REQUEST" size="sm" />
           </div>
 
           {/* md 이상 */}
           <div className="hidden gap-2 md:flex">
-            <ChipRectangle moveType="small" size="md" />
-            <ChipRectangle moveType="request" size="md" />
+            <ChipRectangle moveType="SMALL" size="md" />
+            <ChipRectangle moveType="REQUEST" size="md" />
           </div>
         </div>
         <span className="text-sm text-gray-300">견적대기</span>

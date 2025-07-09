@@ -9,9 +9,11 @@ import { titleMockData } from "../../components/title/TitleData";
 import ChipRectangle from "../../components/chip/ChipRectangle";
 import { MoveType } from "../../constant/moveTypes";
 import OrangeBackground from "@/components/OrangeBackground";
+import DriverFindCard from "@/components/card/DriverFindCard";
+import { driver } from "@/constant/driverType";
 
 function CommonPage() {
-  const moveTypes: MoveType[] = ["small", "home", "office", "request"];
+  const moveTypes: MoveType[] = ["SMALL", "HOME", "OFFICE", "REQUEST"];
 
   return (
     /**
@@ -63,6 +65,9 @@ function CommonPage() {
       </div>
       <div>
         <OrangeBackground />
+      </div>
+      <div>
+        <DriverFindCard driver={driver} />
       </div>
     </div>
   );

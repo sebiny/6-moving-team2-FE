@@ -1,18 +1,11 @@
 import ChipRectangle from "@/components/chip/ChipRectangle";
+import LikeIcon from "@/components/icon/LikeIcon";
 import { DriverType } from "@/constant/driverType";
 import Image from "next/image";
 import React from "react";
+import { driver } from "@/constant/driverType";
 
 function DriverInfo() {
-  const driver: DriverType = {
-    nickname: "김코드",
-    shortIntro: "고객님의 물품을 안전하게 운송해 드립니다.",
-    detailIntro: "안녕하세요. 이사 업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.",
-    career: 7,
-    services: ["small", "home"],
-    serviceAreas: ["서울", "경기"],
-    favorite: 136
-  };
   return (
     <div className="relative mt-[35px] md:mt-[46px] lg:mt-[62px]">
       <Image
@@ -35,7 +28,7 @@ function DriverInfo() {
         </div>
         <div className="flex items-center">
           <p>{driver.favorite}</p>
-          <Image src="/assets/icons/ic_like_black.svg" alt="좋아요" width={24} height={24} />
+          <LikeIcon color="black" />
         </div>
       </div>
       <div className="mt-5 text-gray-500">{driver.detailIntro}</div>
