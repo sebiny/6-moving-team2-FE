@@ -7,4 +7,5 @@ export interface Request {
   fromAddress: string;
   toAddress: string;
   moveDate: string;
+  price?: number; // 추가 (optional)
 }
