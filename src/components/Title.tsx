@@ -16,13 +16,8 @@ export interface DriverInfo {
 
 // 전체 Title 정보 타입 정의
 interface TitleProps {
-<<<<<<< HEAD:src/components/Title.tsx
   status?: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
-  labels: ("small" | "home" | "office" | "request")[];
-=======
-  status?: EstimateStatus;
   labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
->>>>>>> 05d7631ab1f217e1a53451c01a70373899ddca37:src/components/title/Title.tsx
   driver: DriverInfo;
   message: string;
   estimatePrice?: number;
@@ -34,14 +29,9 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       {/* sm 전용 */}
       <div className="mb-2 flex items-center justify-between md:hidden">
         <div className="flex gap-2">
-<<<<<<< HEAD:src/components/Title.tsx
           {labels.map((label) => (
             <ChipRectangle key={label} moveType={label} size="sm" />
           ))}
-=======
-          <ChipRectangle moveType="SMALL" size="sm" />
-          <ChipRectangle moveType="REQUEST" size="sm" />
->>>>>>> 05d7631ab1f217e1a53451c01a70373899ddca37:src/components/title/Title.tsx
         </div>
         {status && <EstimateStatus status={status} />}
       </div>
@@ -51,14 +41,9 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
 
       {/* md 이상 */}
       <div className="mb-2 flex-wrap gap-2 sm:hidden md:flex">
-<<<<<<< HEAD:src/components/Title.tsx
         {labels.map((label) => (
           <ChipRectangle key={label} moveType={label} size="md" />
         ))}
-=======
-        <ChipRectangle moveType="SMALL" size="md" />
-        <ChipRectangle moveType="REQUEST" size="md" />
->>>>>>> 05d7631ab1f217e1a53451c01a70373899ddca37:src/components/title/Title.tsx
       </div>
 
       {/* md 이상 */}

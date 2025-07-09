@@ -1,7 +1,7 @@
 export interface PendingData {
   id: number;
   status: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
-  labels: ("small" | "home" | "office" | "request")[];
+  labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
   driver: {
     name: string;
     imageUrl: string;
@@ -22,7 +22,7 @@ export const pendingData: PendingData[] = [
   {
     id: 1,
     status: "PROPOSED",
-    labels: ["small", "request"],
+    labels: ["SMALL", "REQUEST"],
     driver: {
       name: "김코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg", // 실제 프로필 이미지
@@ -41,7 +41,7 @@ export const pendingData: PendingData[] = [
   {
     id: 2,
     status: "PROPOSED",
-    labels: ["office", "request"],
+    labels: ["OFFICE", "REQUEST"],
     driver: {
       name: "김코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg", // 실제 프로필 이미지
@@ -60,7 +60,7 @@ export const pendingData: PendingData[] = [
   {
     id: 3,
     status: "PROPOSED",
-    labels: ["home"],
+    labels: ["HOME"],
     driver: {
       name: "김코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg", // 실제 프로필 이미지
@@ -79,7 +79,7 @@ export const pendingData: PendingData[] = [
   {
     id: 4,
     status: "PROPOSED",
-    labels: ["office"],
+    labels: ["OFFICE"],
     driver: {
       name: "김코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg", // 실제 프로필 이미지

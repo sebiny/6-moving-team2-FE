@@ -20,26 +20,16 @@ export default function PendingCard({ data }: Props) {
         <div className="flex flex-wrap items-center">
           {/* sm 이하 */}
           <div className="flex gap-2 md:hidden">
-<<<<<<< HEAD:src/app/(protected)/member/my-estimates/estimate-pending/_components/PendingCard.tsx
             {data.labels.map((label) => (
               <ChipRectangle key={label} moveType={label} size="sm" />
             ))}
-=======
-            <ChipRectangle moveType="SMALL" size="sm" />
-            <ChipRectangle moveType="REQUEST" size="sm" />
->>>>>>> 05d7631ab1f217e1a53451c01a70373899ddca37:src/app/(protected)/member/estimate-pending/_components/PendingCard.tsx
           </div>
 
           {/* md 이상 */}
           <div className="hidden gap-2 md:flex">
-<<<<<<< HEAD:src/app/(protected)/member/my-estimates/estimate-pending/_components/PendingCard.tsx
             {data.labels.map((label) => (
               <ChipRectangle key={label} moveType={label} size="md" />
             ))}
-=======
-            <ChipRectangle moveType="SMALL" size="md" />
-            <ChipRectangle moveType="REQUEST" size="md" />
->>>>>>> 05d7631ab1f217e1a53451c01a70373899ddca37:src/app/(protected)/member/estimate-pending/_components/PendingCard.tsx
           </div>
         </div>
         <EstimateStatus status={status} />

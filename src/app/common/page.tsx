@@ -16,7 +16,7 @@ const mockData = [
   {
     id: 1,
     status: "PROPOSED",
-    labels: ["small", "request"],
+    labels: ["SMALL", "REQUEST"],
     driver: {
       name: "김코드",
       rating: 5.0,
@@ -31,7 +31,7 @@ const mockData = [
   {
     id: 2,
     status: "ACCEPTED",
-    labels: ["office", "request"],
+    labels: ["OFFICE", "REQUEST"],
     driver: {
       name: "최배달",
       rating: 4.8,
@@ -46,7 +46,7 @@ const mockData = [
 ] satisfies {
   id: number;
   status: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
-  labels: ("small" | "home" | "office" | "request")[];
+  labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
   driver: DriverInfo;
   message: string;
   estimatePrice?: number;

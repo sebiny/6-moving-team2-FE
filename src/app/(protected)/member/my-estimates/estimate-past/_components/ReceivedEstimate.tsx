@@ -15,7 +15,6 @@ export default function ReceivedEstimate({ data }: Props) {
   return (
     <div className="w-full space-y-3 bg-white md:space-y-4">
       {/* 라벨 목록 */}
-<<<<<<< HEAD:src/app/(protected)/member/my-estimates/estimate-past/_components/ReceivedEstimate.tsx
       {/* sm 이하 */}
       <div className="flex gap-2 md:hidden">
         {data.labels.map((label) => (
@@ -28,19 +27,6 @@ export default function ReceivedEstimate({ data }: Props) {
         {data.labels.map((label) => (
           <ChipRectangle key={label} moveType={label} size="md" />
         ))}
-=======
-      <div className="flex gap-2">
-        {/* sm 이하 (기본) */}
-        <div className="flex gap-2 md:hidden">
-          <ChipRectangle moveType="OFFICE" size="sm" />
-          <ChipRectangle moveType="REQUEST" size="sm" />
-        </div>
-        {/* md 이상 */}
-        <div className="hidden gap-2 md:flex">
-          <ChipRectangle moveType="OFFICE" size="md" />
-          <ChipRectangle moveType="REQUEST" size="md" />
-        </div>
->>>>>>> 05d7631ab1f217e1a53451c01a70373899ddca37:src/app/(protected)/member/estimate-past/_components/ReceivedEstimate.tsx
       </div>
 
       {/* 소개 메시지 */}

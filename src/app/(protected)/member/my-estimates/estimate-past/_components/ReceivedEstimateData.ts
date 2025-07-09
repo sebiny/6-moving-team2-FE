@@ -1,7 +1,7 @@
 export interface ReceivedEstimateData {
   id: number;
   status: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
-  labels: ("small" | "home" | "office" | "request")[];
+  labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
   driver: {
     name: string;
     imageUrl: string;
@@ -19,7 +19,7 @@ export const receivedEstimateData: ReceivedEstimateData[] = [
   {
     id: 1,
     status: "ACCEPTED",
-    labels: ["small", "request"],
+    labels: ["SMALL", "REQUEST"],
     driver: {
       name: "김코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg",
@@ -35,7 +35,7 @@ export const receivedEstimateData: ReceivedEstimateData[] = [
   {
     id: 2,
     status: "AUTO_REJECTED",
-    labels: ["office", "request"],
+    labels: ["OFFICE", "REQUEST"],
     driver: {
       name: "이노코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg",
