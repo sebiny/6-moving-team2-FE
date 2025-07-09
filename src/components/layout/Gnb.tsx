@@ -7,8 +7,11 @@ import Notification from "../dropdown/NotificationDropdown";
 import Profile from "../dropdown/ProfileDropdown";
 
 type DropDownType = "notification" | "profile" | null;
+interface GnbProps {
+  userRole: "guest" | "member" | "driver" | undefined;
+}
 
-export default function Gnb() {
+export default function Gnb({ userRole }: GnbProps) {
   const [isLg, setIsLg] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<DropDownType>(null);
 
@@ -55,7 +58,7 @@ export default function Gnb() {
 
         {isLg ? (
           <div className="flex flex-1 items-center justify-between">
-            <GnbList lg="lg" className="flex-1" />
+            <GnbList lg="lg" className="flex-1" userRole={userRole} />
             <div className="flex items-center justify-between gap-5">
               <Notification
                 isOpen={openDropdown === "notification"}

@@ -38,7 +38,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => setShow(true), 100);
-    return () => clearTimeout(timer); // 이미 한번 실행했는데 왜 굳이 클리어해주는지? useEffect가 최초 마운트에 한번 실행되는거고 이미 실행이 끝났는데 클리어하는 이유
+    return () => clearTimeout(timer); // 메모리 해제, 굳이 할 필요는 없을듯.. setinterval 이미 한번 실행했는데 왜 굳이 클리어해주는지? useEffect가 최초 마운트에 한번 실행되는거고 이미 실행이 끝났는데 클리어하는 이유
   }, []);
   return (
     <LandingPageLayout>
