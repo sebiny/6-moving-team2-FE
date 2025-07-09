@@ -4,13 +4,8 @@ import Image from "next/image";
 import clsx from "clsx";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import StarIcon from "@/components/icon/StarIcon";
+import { moveDetails } from "@/constant/moveDetails";
 export default function MyReviews() {
-  const boxes = [{ idx: "1" }, { idx: "2" }, { idx: "3" }]; //array
-  const details = [
-    { label: "출발지", content: "서울시 중구" },
-    { label: "도착지", content: "경기도 수원시" },
-    { label: "이사일", content: "2024년 07월 01일 (월)" }
-  ]; //array
   const SIZE_CLASSES = {
     base: ["h-[338px] w-[1120px] p-10 gap-5"], //나중에 반응형 할때 lg로 바꾸기
     sm: [],
@@ -19,9 +14,9 @@ export default function MyReviews() {
   return (
     <div>
       <div className="flex flex-col gap-5">
-        {boxes.map((box) => (
+        {[1, 2, 3].map((box) => (
           <div
-            key={box.idx}
+            key={box}
             className={clsx(
               ...SIZE_CLASSES.base,
               "border-line-100 mx-auto flex flex-col self-stretch rounded-[20px] border-[0.5px] bg-gray-50"
@@ -39,7 +34,7 @@ export default function MyReviews() {
             </div>
             <div className="flex gap-10">
               {/* //중간에 선 들어가야 함 */}
-              {details.map(({ label, content }) => (
+              {moveDetails.map(({ label, content }) => (
                 <div>
                   <p className="font-[Pretendard] text-[14px] leading-[24px] font-normal text-gray-500">{label}</p>
                   <p className="text-black-100 font-[Pretendard] text-[14px] leading-[24px] font-medium">{content}</p>
