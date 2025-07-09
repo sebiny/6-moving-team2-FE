@@ -1,40 +1,18 @@
 import React from "react";
-import Review from "./Review";
+import DriverReview from "./DriverReview";
 import StarIcon from "../icon/StarIcon";
 import Pagination from "../Pagination";
+import { ResultType, ReviewType } from "@/constant/reviewType";
 
-function Reviews() {
-  const reviews = [
-    { id: 1, rating: 3 },
-    { id: 2, rating: 2 }
-  ];
-  // const reviews = [];
-  const result = {
-    average: 0,
-    total: 0,
-    num: [0, 0, 0, 0, 0]
-  };
+interface ReviewsType {
+  reviews: ReviewType[];
+  result: ResultType;
+}
 
+function DriverReviews({ reviews, result }: ReviewsType) {
   function StarBar(count: number) {
     return (count / result.total) * 100;
   }
-
-  function calReviews() {
-    //후에 utils로 이동
-    let sum = 0;
-    result.total = reviews.length;
-    for (let i = 0; i < reviews.length; i++) {
-      sum += reviews[i].rating;
-      if (reviews[i].rating === 1) result.num[0] += 1;
-      else if (reviews[i].rating === 2) result.num[1] += 1;
-      else if (reviews[i].rating === 3) result.num[2] += 1;
-      else if (reviews[i].rating === 4) result.num[3] += 1;
-      else result.num[4] += 1;
-    }
-    result.average = Math.round((sum / result.total) * 10) / 10;
-  }
-
-  calReviews();
 
   const levels = [5, 4, 3, 2, 1];
 
@@ -68,7 +46,7 @@ function Reviews() {
           </div>
           <div>
             {reviews.map((review) => (
-              <Review key={review.id} />
+              <DriverReview key={review.id} review={review} />
             ))}
           </div>
           <div className="mt-10 flex justify-center">
@@ -85,4 +63,4 @@ function Reviews() {
   );
 }
 
-export default Reviews;
+export default DriverReviews;
