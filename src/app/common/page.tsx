@@ -4,11 +4,51 @@ import Button from "@/components/Button";
 import ShareDriver from "@/components/ShareDriver";
 import SortDropdown from "@/components/dropdown/SortDropdown";
 import ChipCircle from "@/components/chip/ChipCircle";
-import Title from "../../components/title/Title";
-import { titleMockData } from "../../components/title/TitleData";
+import Title, { DriverInfo } from "../../components/Title";
 import ChipRectangle from "../../components/chip/ChipRectangle";
 import { MoveType } from "../../constant/moveTypes";
 import OrangeBackground from "@/components/OrangeBackground";
+
+// Title 더미데이터
+const mockData = [
+  {
+    id: 1,
+    status: "PROPOSED",
+    labels: ["small", "request"],
+    driver: {
+      name: "김코드",
+      rating: 5.0,
+      reviewCount: 178,
+      experienceYear: 7,
+      confirmedCount: 334,
+      likes: 136
+    } as DriverInfo,
+    message: "고객님의 물품을 안전하게 운송해 드립니다.",
+    estimatePrice: 180000
+  },
+  {
+    id: 2,
+    status: "ACCEPTED",
+    labels: ["office", "request"],
+    driver: {
+      name: "최배달",
+      rating: 4.8,
+      reviewCount: 102,
+      experienceYear: 5,
+      confirmedCount: 210,
+      likes: 85
+    } as DriverInfo,
+    message: "이사 전문으로 다년간 활동해왔습니다.",
+    estimatePrice: 150000
+  }
+] satisfies {
+  id: number;
+  status: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
+  labels: ("small" | "home" | "office" | "request")[];
+  driver: DriverInfo;
+  message: string;
+  estimatePrice?: number;
+}[];
 
 function CommonPage() {
   const moveTypes: MoveType[] = ["small", "home", "office", "request"];
@@ -19,7 +59,7 @@ function CommonPage() {
      */
     <div className="flex flex-col gap-12 bg-white p-6 md:p-10">
       {/* 임시 데이터 연결 */}
-      {titleMockData.map((item) => (
+      {mockData.map((item) => (
         <div key={item.id}>
           <Title
             status={item.status}
