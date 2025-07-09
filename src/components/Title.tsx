@@ -1,12 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { iconAssets, statusIconMap, EstimateStatus } from "./LabelIcons";
-import { DriverInfo } from "./TitleData";
-import ChipRectangle from "../chip/ChipRectangle";
+import ChipRectangle from "./chip/ChipRectangle";
+import EstimateStatus from "./chip/EstimateStatus";
 
+// 기사 정보 타입 정의
+export interface DriverInfo {
+  name: string;
+  rating: number;
+  reviewCount: number;
+  experienceYear: number;
+  confirmedCount: number;
+  likes: number;
+}
+
+// 전체 Title 정보 타입 정의
 interface TitleProps {
-  status?: EstimateStatus;
+  status?: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
   labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
   driver: DriverInfo;
   message: string;
@@ -19,28 +29,27 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       {/* sm 전용 */}
       <div className="mb-2 flex items-center justify-between md:hidden">
         <div className="flex gap-2">
-          <ChipRectangle moveType="SMALL" size="sm" />
-          <ChipRectangle moveType="REQUEST" size="sm" />
+          {labels.map((label) => (
+            <ChipRectangle key={label} moveType={label} size="sm" />
+          ))}
         </div>
-        {status && <Image src={statusIconMap[status]} alt={status} width={60} height={24} className="shrink-0" />}
+        {status && <EstimateStatus status={status} />}
       </div>
 
       {/* sm 전용 */}
       <div className="text-lg font-semibold text-gray-900 md:hidden">{message}</div>
 
-      {/* sm 초과 */}
+      {/* md 이상 */}
       <div className="mb-2 flex-wrap gap-2 sm:hidden md:flex">
-        <ChipRectangle moveType="SMALL" size="md" />
-        <ChipRectangle moveType="REQUEST" size="md" />
+        {labels.map((label) => (
+          <ChipRectangle key={label} moveType={label} size="md" />
+        ))}
       </div>
 
+      {/* md 이상 */}
       <div className="flex justify-between sm:hidden md:flex">
         <p className="text-xl font-semibold text-gray-900">{message}</p>
-        {status && (
-          <div>
-            <Image src={statusIconMap[status]} alt={status} width={60} height={0} />
-          </div>
-        )}
+        {status && <EstimateStatus status={status} />}
       </div>
 
       {/* 구분선 */}
@@ -49,19 +58,19 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       {/* 기사 정보 - 상단 */}
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2 text-base text-gray-700">
-          <Image src={iconAssets.profileMark} alt="기사마크" width={18} height={18} />
+          <Image src="/assets/icons/ic_profileMark.svg" alt="기사마크" width={18} height={18} />
           <span className="font-semibold">{driver.name} 기사님</span>
         </div>
 
         <div className="flex items-center gap-0.5 text-base text-gray-500">
           <span>{driver.likes}</span>
-          <Image src={iconAssets.heartBlack} alt="좋아요" width={22} height={22} />
+          <Image src="/assets/icons/ic_like_black.svg" alt="좋아요" width={22} height={22} />
         </div>
       </div>
 
       {/* 기사 정보 - 평점, 경력, 확정 */}
       <div className="flex items-center gap-1 text-sm text-gray-600">
-        <Image src={iconAssets.star} alt="별점" width={14} height={14} />
+        <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={14} height={14} />
         <span className="font-medium text-gray-800">{driver.rating.toFixed(1)}</span>
         <span className="text-gray-300">({driver.reviewCount})</span>
         <span className="mx-1 text-gray-200">|</span>
