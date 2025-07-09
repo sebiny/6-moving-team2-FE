@@ -4,6 +4,7 @@ import { DriverType } from "@/constant/driverType";
 import Image from "next/image";
 import React from "react";
 import { driver } from "@/constant/driverType";
+import DriverSimpleInfo from "@/components/driver/DriverSimpleInfo";
 
 function DriverInfo() {
   return (
@@ -31,25 +32,8 @@ function DriverInfo() {
           <LikeIcon color="black" />
         </div>
       </div>
-      <div className="mt-5 text-gray-500">{driver.detailIntro}</div>
-      <div className="border-line-200 mt-[31px] flex h-30 items-center justify-around rounded-2xl border">
-        <div className="flex flex-col items-center gap-1">
-          <p>진행</p>
-          <p className="text-black-300 text-xl font-bold">344건</p>
-        </div>
-        <div className="flex flex-col items-center gap-1">
-          <p>리뷰</p>
-          <div className="flex items-center gap-[6px]">
-            <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={20} height={20} className="block" />
-            <p className="text-xl font-bold">5.0</p>
-            <p className="text-gray-300">(178)</p>
-          </div>
-        </div>
-        <div className="flex flex-col items-center gap-1">
-          <p>총 경력</p>
-          <p className="text-xl font-bold">{driver.career}년</p>
-        </div>
-      </div>
+      <div className="mt-5 mb-[31px] text-gray-500">{driver.detailIntro}</div>
+      <DriverSimpleInfo type="detail" career={7} averageRating={5.0} reviewCount={178} work={334} />
     </div>
   );
 }

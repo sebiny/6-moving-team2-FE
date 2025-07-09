@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import DriverSimpleInfo from "@/components/driver/DriverSimpleInfo";
 import Reviews from "@/components/driver/Reviews";
 import LikeIcon from "@/components/icon/LikeIcon";
 import OrangeBackground from "@/components/OrangeBackground";
@@ -43,22 +44,10 @@ function DriverMyPage() {
         </div>
         <div className="w-full max-w-205">
           <div className="border-line-100 my-8 border-b"></div>
+
           <div className="flex flex-col gap-4">
             <p className="text-black-400 text-xl font-semibold">활동 현황</p>
-            <div className="bg-background-100 border-line-100 flex h-30 w-full items-center justify-evenly rounded-2xl border">
-              <div className="flex flex-col items-center">
-                <p>진행</p>
-                <p className="text-xl font-bold text-orange-400">334건</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <p>리뷰</p>
-                <p className="text-xl font-bold text-orange-400">5.0</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <p>총 경력</p>
-                <p className="text-xl font-bold text-orange-400">7년</p>
-              </div>
-            </div>
+            <DriverSimpleInfo type="my-page" career={7} averageRating={5.0} work={334} />
           </div>
           <Service services={["SMALL"]} regions={["SEOUL"]} />
           <Reviews />
