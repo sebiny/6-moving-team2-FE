@@ -4,6 +4,7 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import clsx from "clsx";
 import Image from "next/image";
+import { generateCalendarDates } from "@/utills/dateUtils";
 
 interface MobileDatePickerProps {
   selectedDate: Date | null;
@@ -16,42 +17,7 @@ export default function MobileDatePicker({ selectedDate, onSelectDate }: MobileD
 
   const days = ["일", "월", "화", "수", "목", "금", "토"];
 
-  const getCalendarDates = () => {
-    const startOfMonth = current.startOf("month");
-    const endOfMonth = current.endOf("month");
-    const startDay = startOfMonth.day();
-    const daysInMonth = endOfMonth.date();
-
-    // TODO: 날짜 계산 유틸함수로 빼기
-    // 저번 달 날짜 계산
-    const prevMonth = current.subtract(1, "month");
-    const prevMonthDays = prevMonth.daysInMonth();
-
-    const prevDates = Array.from({ length: startDay }, (_, i) => ({
-      date: prevMonth.date(prevMonthDays - startDay + i + 1).toDate(),
-      isOtherMonth: true
-    }));
-
-    // 이번 달 날짜 계산
-    const thisDates = Array.from({ length: daysInMonth }, (_, i) => ({
-      date: current.date(i + 1).toDate(),
-      isOtherMonth: false
-    }));
-
-    const total = prevDates.length + thisDates.length;
-    const nextNeeded = total <= 35 ? 35 - total : 42 - total;
-
-    // 다음 달 날짜 계산
-    const nextDates = Array.from({ length: nextNeeded }, (_, i) => ({
-      date: current
-        .add(1, "month")
-        .date(i + 1)
-        .toDate(),
-      isOtherMonth: true
-    }));
-
-    return [...prevDates, ...thisDates, ...nextDates];
-  };
+  const gridDates = generateCalendarDates(current);
 
   const isSelected = (date: Date) => selectedDate && dayjs(date).isSame(dayjs(selectedDate), "date");
   const isPast = (date: Date) => dayjs(date).isBefore(today, "day");
@@ -81,7 +47,7 @@ export default function MobileDatePicker({ selectedDate, onSelectDate }: MobileD
 
         {/* 날짜 */}
         <div className="grid grid-cols-7">
-          {getCalendarDates().map(({ date, isOtherMonth }, idx) => {
+          {gridDates.map(({ date, isOtherMonth }, idx) => {
             const day = dayjs(date).date();
             const disabled = isPast(date);
             const selected = isSelected(date);

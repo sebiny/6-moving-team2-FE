@@ -8,7 +8,7 @@ interface OrangeBackgroundType {
 function OrangeBackground({ subTitle = false }: OrangeBackgroundType) {
   return (
     <div
-      className={`flex h-[112px] w-full justify-center overflow-hidden bg-orange-400 md:h-[157px] lg:h-${subTitle ? "[180px]" : "[225px]"}`}
+      className={`flex h-[112px] w-full justify-center overflow-hidden bg-orange-400 md:h-[157px] ${subTitle ? "lg:h-[180px]" : "lg:h-[225px]"}`}
     >
       <div className="relative flex w-[400px] justify-between md:w-[800px] lg:w-[1500px]">
         <Image

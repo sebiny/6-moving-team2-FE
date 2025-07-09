@@ -5,22 +5,55 @@ import { useState, useEffect } from "react";
 import Button from "@/components/Button";
 import AddressResultCard from "./AddressResultCard";
 
+interface Address {
+  id: number;
+  postalCode: string;
+  roadAddress: string;
+  jibunAddress: string;
+}
+
 interface AddressCardModalProps {
   title: string;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: (value: string) => void;
   confirmLabel: string;
   onChange: (value: string) => void;
+  selectedValue: string;
 }
 
-export default function AddressCardModal({ title, onClose, confirmLabel, onChange }: AddressCardModalProps) {
+export default function AddressCardModal({
+  title,
+  onClose,
+  confirmLabel,
+  onConfirm,
+  selectedValue
+}: AddressCardModalProps) {
   const [inputValue, setInputValue] = useState("");
-  const [selected, setSelected] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  // 외부 상태 전달
+  // mock 데이터
+  const addressList: Address[] = [
+    {
+      id: 1,
+      postalCode: "04538",
+      roadAddress: "서울 중구 삼일대로 343 (대신파이낸스센터)",
+      jibunAddress: "서울 중구 저동1가 114"
+    },
+    {
+      id: 2,
+      postalCode: "06236",
+      roadAddress: "서울 강남구 테헤란로 152",
+      jibunAddress: "서울 강남구 역삼동 737"
+    }
+  ];
+
+  // 선택된 주소를 외부로 전달
   useEffect(() => {
-    onChange(inputValue);
-  }, [inputValue, onChange]);
+    const index = addressList.findIndex((addr) => addr.roadAddress === selectedValue);
+    if (index !== -1) {
+      setSelectedIndex(index);
+    }
+  }, [selectedValue]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#141414]/40">
@@ -37,20 +70,15 @@ export default function AddressCardModal({ title, onClose, confirmLabel, onChang
           {/* 인풋 영역 */}
           <div className="mb-4 w-full md:mb-6">
             <div className="flex h-[52px] w-full items-center justify-between rounded-2xl bg-[var(--color-background-100)] px-4 md:h-[64px]">
-              {/* 입력 필드 */}
               <input
                 type="text"
                 placeholder="텍스트를 입력해주세요."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 className="h-[24px] w-[132px] flex-1 bg-transparent text-sm text-black outline-none placeholder:text-[var(--color-black-400)]"
-                style={{
-                  border: "none",
-                  caretColor: "black"
-                }}
+                style={{ border: "none", caretColor: "black" }}
               />
 
-              {/* 닫기, 검색 버튼 */}
               <div className="flex items-center gap-3 md:gap-4">
                 <button type="button" onClick={() => setInputValue("")}>
                   <Image
@@ -75,20 +103,31 @@ export default function AddressCardModal({ title, onClose, confirmLabel, onChang
           </div>
 
           {/* 검색 결과 */}
-          <div className="mb-6 w-full text-sm md:mb-10 md:text-base">
-            <AddressResultCard
-              postalCode="04538"
-              roadAddress="서울 중구 삼일대로 343 (대신파이낸스센터)"
-              jibunAddress="서울 중구 저동1가 114"
-              selected={selected}
-              onClick={() => setSelected(!selected)}
-            />
+          <div className="mb-6 flex w-full flex-col gap-4 text-sm md:mb-10 md:text-base">
+            {addressList.map((addr, idx) => (
+              <AddressResultCard
+                key={addr.id}
+                postalCode={addr.postalCode}
+                roadAddress={addr.roadAddress}
+                jibunAddress={addr.jibunAddress}
+                selected={selectedIndex === idx}
+                onClick={() => setSelectedIndex(idx)}
+              />
+            ))}
           </div>
         </div>
 
         {/* 확인 버튼 */}
-        {/* TODO: md 이상일 때 버튼 스타일 추가, 클릭 함수 추가*/}
-        <Button text={confirmLabel} type="orange" />
+        <Button
+          text={confirmLabel}
+          type="orange"
+          onClick={() => {
+            if (selectedIndex !== null) {
+              onConfirm(addressList[selectedIndex].roadAddress);
+            }
+          }}
+          isDisabled={selectedIndex === null}
+        />
       </div>
     </div>
   );

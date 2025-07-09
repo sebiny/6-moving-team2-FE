@@ -8,7 +8,6 @@ function Page() {
   const [selectedIdx, setSelectedIdx] = useState("1");
   return (
     <div>
-      <Gnb />
       <Header type="review" selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} />
       <Main selectedIdx={selectedIdx} />
     </div>

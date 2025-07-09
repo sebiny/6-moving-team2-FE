@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { ReceivedEstimateData } from "./ReceivedEstimateData";
-import { iconAssets } from "@/components/title/LabelIcons";
 import ChipRectangle from "@/components/chip/ChipRectangle";
+import EstimateStatus from "@/components/chip/EstimateStatus";
 
 interface Props {
   data: ReceivedEstimateData;
@@ -15,23 +15,26 @@ export default function ReceivedEstimate({ data }: Props) {
   return (
     <div className="w-full space-y-3 bg-white md:space-y-4">
       {/* 라벨 목록 */}
-      <div className="flex gap-2">
-        {/* sm 이하 (기본) */}
-        <div className="flex gap-2 md:hidden">
-          <ChipRectangle moveType="OFFICE" size="sm" />
-          <ChipRectangle moveType="REQUEST" size="sm" />
-        </div>
-        {/* md 이상 */}
-        <div className="hidden gap-2 md:flex">
-          <ChipRectangle moveType="OFFICE" size="md" />
-          <ChipRectangle moveType="REQUEST" size="md" />
-        </div>
+      {/* sm 이하 */}
+      <div className="flex gap-2 md:hidden">
+        {data.labels.map((label) => (
+          <ChipRectangle key={label} moveType={label} size="sm" />
+        ))}
+      </div>
+
+      {/* md 이상 */}
+      <div className="hidden gap-2 md:flex">
+        {data.labels.map((label) => (
+          <ChipRectangle key={label} moveType={label} size="md" />
+        ))}
       </div>
 
       {/* 소개 메시지 */}
       <div className="flex items-center justify-between">
         <p className="text-base font-semibold text-gray-800 md:text-xl">{message}</p>
-        <div className="hidden font-['Pretendard'] text-base font-semibold text-gray-400 md:flex">견적대기</div>
+        <div className="hidden md:block">
+          <EstimateStatus status={status} />
+        </div>
       </div>
 
       {/* 기사 프로필 */}
@@ -42,7 +45,7 @@ export default function ReceivedEstimate({ data }: Props) {
           {/* 이름 + 좋아요 */}
           <div className="flex items-center justify-between text-base font-medium">
             <div className="flex items-center gap-1">
-              <Image src={iconAssets.profileMark} alt="기사 마크" width={16} height={16} />
+              <Image src="/assets/icons/ic_profileMark.svg" alt="기사 마크" width={16} height={16} />
               <span>{driver.name} 기사님</span>
             </div>
 
@@ -55,7 +58,7 @@ export default function ReceivedEstimate({ data }: Props) {
           {/* 별점 및 상세 정보 */}
           <div className="mt-2 flex text-xs text-gray-400">
             <div className="flex items-center gap-1">
-              <Image src={iconAssets.star} alt="별점" width={16} height={16} />
+              <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={16} height={16} />
               <span className="flex gap-0.5 font-medium text-black">{driver.rating.toFixed(1)}</span>
               <span className="text-gray-400">({driver.reviewCount})</span>
             </div>
@@ -79,7 +82,7 @@ export default function ReceivedEstimate({ data }: Props) {
 
       {/* 견적 상태 및 가격 (sm) */}
       <div className="flex items-center justify-between py-2 md:hidden">
-        <div className="font-['Pretendard'] text-base font-semibold text-gray-300">견적대기</div>
+        <EstimateStatus status={status} />
         <div className="flex text-lg font-extrabold text-gray-900">
           <span className="mt-1 mr-2 text-sm font-normal text-gray-500">견적 금액</span>
           {price.toLocaleString()}원
