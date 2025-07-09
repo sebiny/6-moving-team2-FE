@@ -12,10 +12,10 @@ function DriverMyPage() {
       <div>
         <div className="text-lg font-semibold">마이페이지</div>
       </div>
-      <OrangeBackground />
-      <div className="flex w-300 flex-col">
-        <div className="mt-[43px] flex flex-col justify-between lg:flex-row">
-          <div>
+      <OrangeBackground subTitle={true} />
+      <div className="flex w-full max-w-300 flex-col items-center px-5 md:px-18 lg:items-stretch lg:px-0">
+        <div className="mt-[43px] flex w-full flex-col justify-between md:max-w-205 lg:max-w-300 lg:flex-row">
+          <div className="max-w-205">
             <div className="flex">
               <Image src="/assets/images/img_profile.svg" alt="프로필" width={80} height={85} />
               <div className="ml-3">
@@ -36,12 +36,12 @@ function DriverMyPage() {
               </p>
             </div>
           </div>
-          <div className="mt-7 flex w-80 flex-col gap-4 md:w-205 md:flex-row lg:w-70 lg:flex-col">
+          <div className="mt-7 flex w-full flex-col gap-4 md:flex-row lg:w-70 lg:flex-col">
             <Button text="내 프로필 수정" type="orange" image={true} />
             <Button text="기본 정보 수정" type="white-gray" image={true} />
           </div>
         </div>
-        <div className="w-205">
+        <div className="w-full max-w-205">
           <div className="border-line-100 my-8 border-b"></div>
           <div className="flex flex-col gap-4">
             <p className="text-black-400 text-xl font-semibold">활동 현황</p>
