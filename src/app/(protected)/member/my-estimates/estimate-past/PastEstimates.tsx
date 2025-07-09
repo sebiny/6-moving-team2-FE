@@ -6,13 +6,14 @@ import ReceivedEstimate from "./_components/ReceivedEstimate";
 import { receivedEstimateData } from "./_components/ReceivedEstimateData";
 import { useState } from "react";
 
-export default function EstimateExamplePage() {
+export default function PastEstimates() {
   const [selectedService, setSelectedService] = useState("");
+
   return (
-    <main className="md:bg-background-200">
-      <div className="px-6 py-6 md:m-15 md:rounded-xl md:bg-white md:p-8 md:shadow-md lg:mx-100 lg:flex lg:min-h-screen lg:gap-15 lg:p-13">
+    <main className="md:bg-background-200 bg-white">
+      <div className="px-6 py-6 md:m-15 md:rounded-xl md:bg-white md:p-8 md:shadow-md lg:mx-100 lg:flex lg:min-h-screen lg:gap-15 lg:px-10 lg:py-13">
         {/* 좌측 - 견적 상세 정보 */}
-        <div className="lg:w-[340px] lg:flex-shrink-0">
+        <div className="lg:w-[280px] lg:flex-shrink-0">
           <EstimateDetail
             moveType="사무실 이사"
             startAddress="서울 중구 삼일대로 343"
@@ -28,8 +29,8 @@ export default function EstimateExamplePage() {
         <div className="mt-5 flex flex-col gap-7 lg:mt-0 lg:flex-1">
           {/* 목록 상단: 제목 + 필터 */}
           <div className="mb-3 flex flex-col gap-5">
-            <div className="text-xl font-bold text-gray-900">
-              견적서 목록 <span className="text-orange-400">4</span>
+            <div className="flex gap-2 text-xl font-bold text-gray-900">
+              견적서 목록 <span className="font-semibold text-orange-400">4</span>
               {/* 4 - 데이터 연결시 변수로 바꾸기 */}
             </div>
             <FilterDropdown

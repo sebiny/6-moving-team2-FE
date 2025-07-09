@@ -2,16 +2,16 @@
 
 import Image from "next/image";
 import { PendingData } from "./PendingData";
-import { iconAssets } from "@/components/title/LabelIcons";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import Button from "@/components/Button";
+import EstimateStatus from "@/components/chip/EstimateStatus";
 
 interface Props {
   data: PendingData;
 }
 
 export default function PendingCard({ data }: Props) {
-  const { driver, message, price } = data;
+  const { driver, message, price, labels, status } = data;
 
   return (
     <div className="w-full space-y-6 rounded-2xl bg-white shadow-lg sm:p-5 md:px-8 md:py-6 lg:px-10 lg:py-6">
@@ -20,17 +20,19 @@ export default function PendingCard({ data }: Props) {
         <div className="flex flex-wrap items-center">
           {/* sm 이하 */}
           <div className="flex gap-2 md:hidden">
-            <ChipRectangle moveType="SMALL" size="sm" />
-            <ChipRectangle moveType="REQUEST" size="sm" />
+            {data.labels.map((label) => (
+              <ChipRectangle key={label} moveType={label} size="sm" />
+            ))}
           </div>
 
           {/* md 이상 */}
           <div className="hidden gap-2 md:flex">
-            <ChipRectangle moveType="SMALL" size="md" />
-            <ChipRectangle moveType="REQUEST" size="md" />
+            {data.labels.map((label) => (
+              <ChipRectangle key={label} moveType={label} size="md" />
+            ))}
           </div>
         </div>
-        <span className="text-sm text-gray-300">견적대기</span>
+        <EstimateStatus status={status} />
       </div>
 
       {/* 소개 메시지 */}
@@ -47,7 +49,7 @@ export default function PendingCard({ data }: Props) {
           <div className="flex items-center justify-between font-medium">
             {/* 기사 이름 */}
             <div className="flex items-center gap-1">
-              <Image src={iconAssets.profileMark} alt="기사 마크" width={16} height={16} />
+              <Image src="/assets/icons/ic_profileMark.svg" alt="기사 마크" width={16} height={16} />
               <span>{driver.name} 기사님</span>
             </div>
 
@@ -61,7 +63,7 @@ export default function PendingCard({ data }: Props) {
           {/* 평점/경력/확정 */}
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-300">
             <div className="flex items-center gap-1">
-              <Image src={iconAssets.star} alt="별점" width={16} height={16} />
+              <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={16} height={16} />
               <span className="flex gap-0.5">
                 <span className="font-medium text-black">{driver.rating.toFixed(1)}</span>({driver.reviewCount})
               </span>

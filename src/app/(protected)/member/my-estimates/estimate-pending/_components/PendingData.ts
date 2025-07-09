@@ -1,9 +1,7 @@
-import { EstimateStatus, LabelText } from "../../../../../components/title/LabelIcons";
-
 export interface PendingData {
   id: number;
-  status: EstimateStatus;
-  labels: LabelText[];
+  status: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
+  labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
   driver: {
     name: string;
     imageUrl: string;
@@ -23,8 +21,8 @@ export interface PendingData {
 export const pendingData: PendingData[] = [
   {
     id: 1,
-    status: EstimateStatus.PENDING,
-    labels: ["소형이사", "지정 견적 요청"],
+    status: "PROPOSED",
+    labels: ["SMALL", "REQUEST"],
     driver: {
       name: "김코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg", // 실제 프로필 이미지
@@ -42,8 +40,8 @@ export const pendingData: PendingData[] = [
   },
   {
     id: 2,
-    status: EstimateStatus.PENDING,
-    labels: ["소형이사", "지정 견적 요청"],
+    status: "PROPOSED",
+    labels: ["OFFICE", "REQUEST"],
     driver: {
       name: "김코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg", // 실제 프로필 이미지
@@ -61,8 +59,8 @@ export const pendingData: PendingData[] = [
   },
   {
     id: 3,
-    status: EstimateStatus.PENDING,
-    labels: ["소형이사", "지정 견적 요청"],
+    status: "PROPOSED",
+    labels: ["HOME"],
     driver: {
       name: "김코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg", // 실제 프로필 이미지
@@ -80,8 +78,8 @@ export const pendingData: PendingData[] = [
   },
   {
     id: 4,
-    status: EstimateStatus.PENDING,
-    labels: ["소형이사", "지정 견적 요청"],
+    status: "PROPOSED",
+    labels: ["OFFICE"],
     driver: {
       name: "김코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg", // 실제 프로필 이미지

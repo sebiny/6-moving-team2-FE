@@ -1,9 +1,7 @@
-import { EstimateStatus, LabelText } from "@/components/title/LabelIcons";
-
 export interface ReceivedEstimateData {
   id: number;
-  status: EstimateStatus;
-  labels: LabelText[];
+  status: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
+  labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
   driver: {
     name: string;
     imageUrl: string;
@@ -20,8 +18,8 @@ export interface ReceivedEstimateData {
 export const receivedEstimateData: ReceivedEstimateData[] = [
   {
     id: 1,
-    status: EstimateStatus.CONFIRMED,
-    labels: ["소형이사", "지정 견적 요청"],
+    status: "ACCEPTED",
+    labels: ["SMALL", "REQUEST"],
     driver: {
       name: "김코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg",
@@ -36,8 +34,8 @@ export const receivedEstimateData: ReceivedEstimateData[] = [
   },
   {
     id: 2,
-    status: EstimateStatus.PENDING,
-    labels: ["소형이사", "지정 견적 요청"],
+    status: "AUTO_REJECTED",
+    labels: ["OFFICE", "REQUEST"],
     driver: {
       name: "이노코드",
       imageUrl: "/assets/icons/ic_profile_bear.svg",
