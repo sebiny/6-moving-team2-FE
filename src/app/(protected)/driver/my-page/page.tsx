@@ -1,13 +1,16 @@
 import Button from "@/components/Button";
 import DriverSimpleInfo from "@/components/driver/DriverSimpleInfo";
-import Reviews from "@/components/driver/Reviews";
+import DriverReviews from "@/components/driver/DriverReviews";
 import LikeIcon from "@/components/icon/LikeIcon";
 import OrangeBackground from "@/components/OrangeBackground";
 import Service from "@/components/Service";
+import { reviews } from "@/constant/reviewType";
 import Image from "next/image";
 import React from "react";
+import { ReviewAverage } from "@/utills/ReviewAverage";
 
 function DriverMyPage() {
+  const result = ReviewAverage(reviews);
   return (
     <div className="flex flex-col items-center">
       <div>
@@ -50,7 +53,7 @@ function DriverMyPage() {
             <DriverSimpleInfo type="my-page" career={7} averageRating={5.0} work={334} />
           </div>
           <Service services={["SMALL"]} regions={["SEOUL"]} />
-          <Reviews />
+          <DriverReviews reviews={reviews} result={result} />
         </div>
       </div>
     </div>

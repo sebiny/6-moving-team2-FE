@@ -3,10 +3,15 @@ import LikeIcon from "@/components/icon/LikeIcon";
 import { DriverType } from "@/constant/driverType";
 import Image from "next/image";
 import React from "react";
-import { driver } from "@/constant/driverType";
 import DriverSimpleInfo from "@/components/driver/DriverSimpleInfo";
+import { ResultType } from "@/constant/reviewType";
 
-function DriverInfo() {
+interface DriverInfoType {
+  driver: DriverType;
+  result: ResultType;
+}
+
+function DriverInfo({ driver, result }: DriverInfoType) {
   return (
     <div className="relative mt-[35px] md:mt-[46px] lg:mt-[62px]">
       <Image
@@ -33,7 +38,13 @@ function DriverInfo() {
         </div>
       </div>
       <div className="mt-5 mb-[31px] text-gray-500">{driver.detailIntro}</div>
-      <DriverSimpleInfo type="detail" career={7} averageRating={5.0} reviewCount={178} work={334} />
+      <DriverSimpleInfo
+        type="detail"
+        career={driver.career}
+        averageRating={result.average}
+        reviewCount={result.total}
+        work={driver.work}
+      />
     </div>
   );
 }
