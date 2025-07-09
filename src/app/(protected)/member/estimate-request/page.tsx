@@ -10,7 +10,7 @@ export default function MoveRequestPage() {
 
   // TODO: API 연결 후 삭제 예정
   const isPending = false;
-  const isAvailable = false;
+  const isAvailable = true;
 
   if (isPending) return null;
 

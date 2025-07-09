@@ -4,6 +4,7 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import clsx from "clsx";
+import { generateCalendarDates } from "@/utills/dateUtils";
 
 interface DateProps {
   selectedDate: Date | null;
@@ -17,44 +18,7 @@ function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
 
   const days = ["일", "월", "화", "수", "목", "금", "토"];
 
-  const getCalendarDates = () => {
-    const startOfMonth = current.startOf("month");
-    const endOfMonth = current.endOf("month");
-    const startDay = startOfMonth.day();
-    const daysInMonth = endOfMonth.date();
-
-    // TODO: 날짜 계산 유틸함수로 빼기
-    // 저번 달 날짜 계산
-    const prevMonth = current.subtract(1, "month");
-    const prevMonthDays = prevMonth.daysInMonth();
-
-    const prevDates = Array.from({ length: startDay }, (_, i) => ({
-      date: prevMonth.date(prevMonthDays - startDay + i + 1).toDate(),
-      isOtherMonth: true
-    }));
-
-    // 이번 달 날짜 계산
-    const thisDates = Array.from({ length: daysInMonth }, (_, i) => ({
-      date: current.date(i + 1).toDate(),
-      isOtherMonth: false
-    }));
-
-    const total = prevDates.length + thisDates.length;
-    const nextNeeded = total <= 35 ? 35 - total : 42 - total;
-
-    // 다음 달 날짜 계산
-    const nextDates = Array.from({ length: nextNeeded }, (_, i) => ({
-      date: current
-        .add(1, "month")
-        .date(i + 1)
-        .toDate(),
-      isOtherMonth: true
-    }));
-
-    return [...prevDates, ...thisDates, ...nextDates];
-  };
-
-  const gridDates = getCalendarDates();
+  const gridDates = generateCalendarDates(current);
 
   const isSelected = (date: Date) => selectedDate && dayjs(date).isSame(dayjs(selectedDate), "date");
 
