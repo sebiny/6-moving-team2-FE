@@ -22,8 +22,8 @@ export default function ReviewModal() {
           <div className="flex flex-col gap-8 self-stretch">
             <div>
               <div className="flex gap-3">
-                <ChipRectangle moveType="small" size="md" />
-                <ChipRectangle moveType="request" size="md" />
+                <ChipRectangle moveType="SMALL" size="md" />
+                <ChipRectangle moveType="REQUEST" size="md" />
               </div>
               <div className="border-line-100 border-b py-4">
                 <Image src={DriverIcon} width={18} height={20} alt="driver_icon" />
