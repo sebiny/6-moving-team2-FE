@@ -1,10 +1,13 @@
-import Image from "next/image";
 import React from "react";
 import Review from "./Review";
 import StarIcon from "../icon/StarIcon";
+import Pagination from "../Pagination";
 
 function Reviews() {
-  const reviews = [{ rating: 3 }, { rating: 2 }];
+  const reviews = [
+    { id: 1, rating: 3 },
+    { id: 2, rating: 2 }
+  ];
   // const reviews = [];
   const result = {
     average: 0,
@@ -36,7 +39,7 @@ function Reviews() {
   const levels = [5, 4, 3, 2, 1];
 
   return (
-    <div>
+    <div className="mb-50">
       <div className="text-black-400 text-xl font-semibold">리뷰</div>
       {reviews.length ? (
         <div>
@@ -64,7 +67,12 @@ function Reviews() {
             </div>
           </div>
           <div>
-            <Review />
+            {reviews.map((review) => (
+              <Review key={review.id} />
+            ))}
+          </div>
+          <div className="mt-10 flex justify-center">
+            <Pagination />
           </div>
         </div>
       ) : (

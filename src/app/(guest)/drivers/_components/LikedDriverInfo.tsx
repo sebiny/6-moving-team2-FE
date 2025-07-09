@@ -17,7 +17,7 @@ function LikedDriverInfo() {
   };
   return (
     <div className="border-line-100 rounded-2xl border px-7 py-6 shadow-sm">
-      <ChipRectangle moveType="small" size="sm" />
+      <ChipRectangle moveType="SMALL" size="sm" />
       <p className="text-black-300 mt-3 text-xl font-semibold">{driver.line}</p>
       <div className="flex gap-5">
         <Image src="/assets/images/img_profile.svg" alt="프로필 이미지" width={50} height={50} />

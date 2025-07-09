@@ -18,13 +18,13 @@ export default function ReceivedEstimate({ data }: Props) {
       <div className="flex gap-2">
         {/* sm 이하 (기본) */}
         <div className="flex gap-2 md:hidden">
-          <ChipRectangle moveType="office" size="sm" />
-          <ChipRectangle moveType="request" size="sm" />
+          <ChipRectangle moveType="OFFICE" size="sm" />
+          <ChipRectangle moveType="REQUEST" size="sm" />
         </div>
         {/* md 이상 */}
         <div className="hidden gap-2 md:flex">
-          <ChipRectangle moveType="office" size="md" />
-          <ChipRectangle moveType="request" size="md" />
+          <ChipRectangle moveType="OFFICE" size="md" />
+          <ChipRectangle moveType="REQUEST" size="md" />
         </div>
       </div>
 
