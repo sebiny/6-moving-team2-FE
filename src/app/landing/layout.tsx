@@ -6,7 +6,7 @@ import React, { ReactNode } from "react";
 export default function LandingPageLayout({ children }: { children: ReactNode }) {
   return (
     <div>
-      <Gnb />
+      <Gnb userRole="guest" />
       <Container padding="0" maxWidth="w-full" className="mt-14 lg:mt-22">
         {children}
       </Container>

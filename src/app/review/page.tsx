@@ -9,7 +9,7 @@ function Page() {
   const [selectedIdx, setSelectedIdx] = useState("1");
   return (
     <div>
-      <Gnb />
+      <Gnb userRole="guest" />
       <Header type="review" selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} />
       <Main selectedIdx={selectedIdx} />
       <ReviewModal />
