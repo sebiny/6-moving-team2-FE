@@ -91,12 +91,12 @@ export default function PendingCard({ data }: Props) {
       <div className="mt-10 flex w-full flex-col gap-3 md:flex-row md:gap-3">
         {/* 견적 확정하기 버튼 */}
         <div className="order-1 w-full md:order-2 md:w-1/2">
-          <Button type="orange" text="견적 확정하기" round={12} />
+          <Button type="orange" text="견적 확정하기" />
         </div>
 
         {/* 상세보기 버튼 */}
         <div className="order-2 w-full md:order-1 md:w-1/2">
-          <Button type="white-orange" text="상세보기" round={12} />
+          <Button type="white-orange" text="상세보기" />
         </div>
       </div>
     </div>
