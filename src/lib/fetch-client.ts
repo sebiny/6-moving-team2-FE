@@ -61,7 +61,7 @@ export const authUtils = {
 
       authUtils.setAccessToken(refreshData.accessToken);
       return refreshData.accessToken;
-    } catch (error) {
+    } catch (error: any) {
       authUtils.clearAccessToken();
       throw new Error(`토큰 갱신 중 오류가 발생하였습니다: ${error.message}`);
     }

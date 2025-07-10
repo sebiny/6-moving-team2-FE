@@ -13,7 +13,7 @@ export const authService = {
   }): Promise<void> => {
     await defaultFetch("/auth/signup", {
       method: "POST",
-      body: data
+      body: JSON.stringify(data)
     });
   },
 
@@ -21,7 +21,7 @@ export const authService = {
     try {
       const response = await defaultFetch("/auth/login", {
         method: "POST",
-        body: { email, password },
+        body: JSON.stringify({ email, password }),
         credentials: "include",
         cache: "no-store"
       });
@@ -51,7 +51,7 @@ export const authService = {
     }
   },
 
-  getMe: async (): Promise<User> => {
+  getMe: async (): Promise<User | null> => {
     return await cookieFetch("/auth/me");
   }
 };

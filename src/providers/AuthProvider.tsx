@@ -47,7 +47,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const getUser = useCallback(async () => {
     setIsLoading(true);
     try {
-      const currentUser: User = await authService.getMe();
+      const currentUser: User | null = await authService.getMe();
       setUser(currentUser);
     } catch (error) {
       setUser(null);

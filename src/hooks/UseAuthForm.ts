@@ -4,8 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { parseBackendError } from "@/lib/utils/error-parser";
-
-type UserType = "CUSTOMER" | "DRIVER";
+import { UserType } from "@/types/UserType";
 
 export function useLoginForm() {
   const router = useRouter();

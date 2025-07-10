@@ -1,6 +1,7 @@
 "use client";
 
 import { useSignupForm } from "@/hooks/UseAuthForm";
+import { UserType } from "@/types/UserType";
 
 export default function SignupCustomer() {
   const {
@@ -15,7 +16,7 @@ export default function SignupCustomer() {
     passwordConfirmation,
     setPasswordConfirmation,
     onSubmit
-  } = useSignupForm("CUSTOMER");
+  } = useSignupForm(UserType.CUSTOMER);
 
   return (
     <div className="flex min-h-screen items-center">

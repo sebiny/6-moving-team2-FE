@@ -1,4 +1,4 @@
-export const parseBackendError = (status, responseText) => {
+export const parseBackendError = (status: number, responseText: string): string => {
   if (responseText) {
     try {
       const errorData = JSON.parse(responseText);
