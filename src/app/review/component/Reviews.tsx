@@ -3,7 +3,12 @@ import DriverImg from "/public/assets/images/img_profile.svg";
 import Image from "next/image";
 import clsx from "clsx";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-export default function Reviews() {
+
+interface ReviewsProps {
+  setIsModal: (value: boolean) => void;
+}
+
+export default function Reviews({ setIsModal }: ReviewsProps) {
   const boxes = [{ idx: "1" }, { idx: "2" }, { idx: "3" }]; //array
   const details = [
     { label: "출발지", content: "서울시 중구" },
@@ -55,7 +60,10 @@ export default function Reviews() {
                   </div>
                 ))}
               </div>
-              <div className="flex h-[54px] w-40 items-center justify-center rounded-[12px] bg-orange-400 p-4">
+              <div
+                onClick={() => setIsModal(true)}
+                className="flex h-[54px] w-40 cursor-pointer items-center justify-center rounded-[12px] bg-orange-400 p-4"
+              >
                 <p className="text-4 text-center font-[Pretendard] leading-[26px] font-semibold text-gray-50">
                   리뷰 작성하기
                 </p>
