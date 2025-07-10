@@ -51,7 +51,7 @@ export default function Gnb({ userRole }: GnbProps) {
   return (
     <header
       ref={gnbRef}
-      className="border-line-100 fixed z-10 flex h-14 w-full items-center justify-center border-b-1 bg-white px-6 lg:h-22"
+      className="border-line-100 fixed z-999 flex h-14 w-full items-center justify-center border-b-1 bg-white px-6 lg:h-22"
     >
       <div className="flex w-full max-w-[var(--container-gnb)] items-center justify-between">
         <Logo />
