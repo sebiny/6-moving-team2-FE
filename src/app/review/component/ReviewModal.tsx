@@ -26,7 +26,7 @@ export default function ReviewModal({ setIsModal }: Props) {
             />
           </div>
           <ModalContent setIsValid={setIsValid} />
-          <Button type="gray" text="리뷰 등록" className="h-[64px]" />
+          <Button type={isValid ? "orange" : "gray"} text="리뷰 등록" className="h-[64px]" />
         </div>
       </div>
     </div>
