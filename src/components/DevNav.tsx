@@ -28,8 +28,13 @@ export default function DevNav() {
     { path: "/common", name: "컴포넌트", group: "common" },
 
     // 고객 관련 라우트 (@customer)
+<<<<<<< HEAD
     { path: "/customer/estimate-past", name: "페이지명", group: "customer" },
     { path: "/customer/estimate-pending", name: "페이지명", group: "customer" },
+=======
+    { path: "/member/estimate-past", name: "받았던 견적", group: "customer" },
+    { path: "/member/estimate-pending", name: "대기 중인 견적", group: "customer" },
+>>>>>>> develop
 
     // 기사 관련 라우트 (@driver)
     { path: "/driver/my-page", name: "페이지명", group: "driver" },

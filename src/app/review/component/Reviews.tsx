@@ -3,7 +3,12 @@ import DriverImg from "/public/assets/images/img_profile.svg";
 import Image from "next/image";
 import clsx from "clsx";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-export default function Reviews() {
+
+interface ReviewsProps {
+  setIsModal: (value: boolean) => void;
+}
+
+export default function Reviews({ setIsModal }: ReviewsProps) {
   const boxes = [{ idx: "1" }, { idx: "2" }, { idx: "3" }]; //array
   const details = [
     { label: "출발지", content: "서울시 중구" },
@@ -34,7 +39,7 @@ export default function Reviews() {
                   <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[14px] leading-[24px] font-normal text-ellipsis text-gray-500">
                     이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.
                   </p>
-                  <ChipRectangle moveType="small" size="md" className="mt-2" />
+                  <ChipRectangle moveType="SMALL" size="md" className="mt-2" />
                 </div>
               </div>
               <div className="flex flex-col items-end pt-[41px]">
@@ -55,7 +60,10 @@ export default function Reviews() {
                   </div>
                 ))}
               </div>
-              <div className="flex h-[54px] w-40 items-center justify-center rounded-[12px] bg-orange-400 p-4">
+              <div
+                onClick={() => setIsModal(true)}
+                className="flex h-[54px] w-40 cursor-pointer items-center justify-center rounded-[12px] bg-orange-400 p-4"
+              >
                 <p className="text-4 text-center font-[Pretendard] leading-[26px] font-semibold text-gray-50">
                   리뷰 작성하기
                 </p>

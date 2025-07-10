@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 import WritingIcon from "./icon/WritingIcon";
 
@@ -8,9 +7,10 @@ interface ButtonType {
   image?: boolean;
   className?: string;
   isDisabled?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-function Button({ text, type, image = false, className = "w-full", isDisabled = false }: ButtonType) {
+function Button({ text, type, image = false, className = "w-full", isDisabled = false, onClick }: ButtonType) {
   let color = "";
   if (type === "gray" || isDisabled) {
     color = "bg-gray-100 text-white";
@@ -25,6 +25,7 @@ function Button({ text, type, image = false, className = "w-full", isDisabled = 
   return (
     <button
       disabled={isDisabled}
+      onClick={onClick}
       className={`flex cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold md:py-[17px] md:text-lg ${color} ${className}`}
     >
       <p>{text}</p>
