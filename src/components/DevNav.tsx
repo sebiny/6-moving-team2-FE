@@ -12,7 +12,7 @@ interface Route {
 
 export default function DevNav() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const routes: Route[] = [
     // 공통 라우트

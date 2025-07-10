@@ -4,15 +4,14 @@ import iconNotification from "/public/assets/icons/ic_alarm.svg";
 import ImgXBtn from "/public/assets/icons/ic_X.svg";
 
 interface Notification {
+  ref: React.Ref<HTMLDivElement> | undefined;
   isOpen: boolean;
-  onToggle: () => void;
+  onClick: () => void;
 }
-export default function Notification({ onToggle, isOpen }: Notification) {
-  const closeNoti = () => {};
-
+export default function Notification({ ref, onClick, isOpen }: Notification) {
   return (
-    <div className="relative z-50 flex">
-      <button onClick={onToggle} className="relative cursor-pointer">
+    <div className="relative z-50 flex" ref={ref}>
+      <button onClick={onClick} className="relative cursor-pointer">
         <div className="flax-col relative flex">
           <Image src={iconNotification} alt="알림" height={24} width={24} className="opacity-50" />
           <span className="absolute top-0.5 right-0.5 flex size-2">
@@ -27,7 +26,7 @@ export default function Notification({ onToggle, isOpen }: Notification) {
         <div className="border-line-200 absolute top-8 z-99 flex h-78 w-78 -translate-x-48 flex-col rounded-3xl border bg-gray-50 p-4 shadow-gray-300 lg:top-10 xl:-translate-x-1/10">
           <div className="flex items-center justify-between px-3 py-[10px]">
             <span className="text-black-300 text-base font-bold">알림</span>
-            <button className="cursor-pointer" onClick={onToggle}>
+            <button className="cursor-pointer" onClick={onClick}>
               <Image src={ImgXBtn} alt="닫는버튼" width={24} height={24} />
             </button>
           </div>

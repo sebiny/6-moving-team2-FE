@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}>
         <Providers>
-          <Gnb userRole="member" />
+          <Gnb userRole="customer" />
           {children}
           <DevNav />
         </Providers>

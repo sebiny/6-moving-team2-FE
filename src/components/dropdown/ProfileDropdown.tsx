@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 interface ProfileProps {
   lg?: string;
   isOpen: boolean;
-  onToggle: () => void;
+  onClick: () => void;
+  ref?: React.Ref<HTMLDivElement> | undefined;
 }
 
 export const MYPAGE_CUSTOMER = [
@@ -16,17 +17,17 @@ export const MYPAGE_CUSTOMER = [
   { label: "이사 리뷰", path: "./" }
 ];
 
-export default function Profile({ isOpen, onToggle, lg }: ProfileProps) {
+export default function Profile({ ref, isOpen, onClick, lg }: ProfileProps) {
   const router = useRouter();
   return (
-    <div className="flex items-center">
+    <div className="flex items-center" ref={ref}>
       {lg ? (
-        <button className="flex cursor-pointer items-center justify-between gap-3" onClick={onToggle}>
+        <button className="flex cursor-pointer items-center justify-between gap-3" onClick={onClick}>
           <Image src={icProfile} alt="프로필 이미지" width={26} height={26} />
           <span className="text-black-500 text-lg font-medium">사용자이름</span>
         </button>
       ) : (
-        <button className="cursor-pointer" onClick={onToggle}>
+        <button className="cursor-pointer" onClick={onClick}>
           <Image src={icProfile} alt="프로필 이미지" width={26} height={26} />
         </button>
       )}
