@@ -4,8 +4,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import PendingEstimates from "./estimate-pending/page";
 import PastEstimates from "./estimate-past/page";
-import FavoriteDriversHeader from "./favorite-drivers/_components/FavoriteDriversHeader";
-import FavoriteDrivers from "./favorite-drivers/FavoriteDrivers";
+import FavoriteDrivers from "../../member/my-estimates/favorite-drivers/FavoriteDrivers";
 
 export default function MyEstimatePage() {
   const [selectedIdx, setSelectedIdx] = useState("1");

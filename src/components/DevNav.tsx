@@ -23,15 +23,8 @@ export default function DevNav() {
     { path: "/signup/customer", name: "고객회원가입", group: "common" },
     { path: "/common", name: "컴포넌트", group: "common" },
 
-<<<<<<< HEAD
     // 고객 관련 라우트 (@customer)
     { path: "/member/my-estimates/favorite-drivers", name: "찜한 기사님", group: "customer" },
-=======
-    // 고객 관련 라우트 (@customer)!
-
-    { path: "/customer/my-estimates/estimate-past", name: "페이지명", group: "customer" },
-    { path: "/customer/my-estimates/estimate-pending", name: "페이지명", group: "customer" },
->>>>>>> 9a19192712f7d7c4360feb007b3e703cd0b811db
 
     // 기사 관련 라우트 (@driver)
     { path: "/driver/received-requests", name: "받은 요청", group: "driver" },
