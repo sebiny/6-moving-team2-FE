@@ -6,7 +6,7 @@
 //  const { user, isLoading } = useAuth(); 하고 if (user) 면 로그인 상태 if (!user)면 로그아웃 상태
 import { parseBackendError } from "./utils/error-parser";
 
-const API_BASE_URL = "http://localhost:4000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const authUtils = {
   setAccessToken: (accessToken: string): void => {
