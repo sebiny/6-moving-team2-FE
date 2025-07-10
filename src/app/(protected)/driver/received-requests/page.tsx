@@ -1,11 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import RequestCardList from "./_components/RequestCardList";
 import { Request } from "@/types/request";
-import SearchBarPlaceholder from "./_components/SearchBarPlaceholder";
+import SearchBar from "@/components/input/SearchBar";
 import ChipCircle from "@/components/chip/ChipCircle";
 import SortDropdown from "@/components/dropdown/SortDropdown";
+import PageHeader from "@/components/common/PageHeader";
+import CustomCheckbox from "@/components/button/CustomCheckbox";
+import imgEmptyReview from "/public/assets/images/img_empty_review.svg";
+import Image from "next/image";
 
 const dummyRequests: Request[] = [
   {
@@ -31,10 +35,14 @@ const dummyRequests: Request[] = [
 ];
 
 export default function ReceivedRequestsPage() {
+  const [checked, setChecked] = useState(false);
+  const requests = [...dummyRequests, ...dummyRequests].map((item, idx) => ({ ...item, id: `${item.id}-${idx}` }));
+
   return (
-    <div className="flex min-h-screen justify-center bg-gray-50 px-4 py-10">
+    <div className="flex min-h-screen justify-center bg-gray-50 px-4 py-10 pt-25">
       <div className="flex flex-col gap-6">
-        <SearchBarPlaceholder />
+        <PageHeader title="받은 요청" />
+        <SearchBar width="w-full" placeholder="어떤 고객님을 찾고 계세요?" />
         <div className="inline-flex items-start justify-start gap-3">
           <ChipCircle type="region" text="소형이사" color="gray" />
           <ChipCircle type="region" text="가정이사" color="gray" />
@@ -46,32 +54,42 @@ export default function ReceivedRequestsPage() {
               전체
             </div>
             <div className="justify-start text-center font-['Pretendard'] text-lg leading-relaxed font-semibold text-neutral-800">
-              8건
+              {requests.length}건
             </div>
           </div>
-          <div className="inline-flex items-center justify-between self-stretch">
-            <div className="flex items-center justify-start gap-3">
-              <div className="flex items-center justify-start">
-                <div className="relative h-9 w-9 overflow-hidden">
-                  <div className="absolute top-[8px] left-[8px] h-5 w-5 rounded border border-neutral-200 bg-white" />
-                </div>
-                <div className="justify-center font-['Pretendard'] text-base leading-relaxed font-normal text-neutral-900">
-                  지정 견적 요청
-                </div>
-              </div>
-              <div className="flex items-center justify-start">
-                <div className="relative h-9 w-9 overflow-hidden">
-                  <div className="absolute top-[8px] left-[8px] h-5 w-5 rounded border border-neutral-200 bg-white" />
-                </div>
-                <div className="justify-center font-['Pretendard'] text-base leading-relaxed font-normal text-neutral-900">
-                  서비스 가능 지역
-                </div>
-              </div>
+          <div className="flex w-full items-center justify-between">
+            {/* 체크박스 2개 */}
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2">
+                <CustomCheckbox checked={checked} onChange={setChecked} />
+                <span className="text-base font-normal text-neutral-900">지정 견적 요청</span>
+              </label>
+              <label className="flex items-center gap-2">
+                <CustomCheckbox checked={checked} onChange={setChecked} />
+                <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
+              </label>
             </div>
             <SortDropdown sortings={["평점 높은순", "이사 빠른순", "요청일 빠른순"]} value="평점 높은순" />
           </div>
         </div>
-        <RequestCardList requests={[...dummyRequests, ...dummyRequests]} />
+        {requests.length === 0 ? (
+          <div className="inline-flex flex-col items-start justify-start gap-2.5">
+            <div className="flex w-[955px] flex-col items-center justify-center gap-2.5 p-44">
+              <div className="flex flex-col items-center justify-start gap-8">
+                <div className="relative h-48 w-60 overflow-hidden">
+                  <div className="absolute top-[-16.29px] left-[-11.04px] h-64 w-64 opacity-50">
+                    <Image src={imgEmptyReview} alt="empty" fill style={{ objectFit: "cover" }} />
+                  </div>
+                </div>
+                <div className="justify-center text-center font-['Pretendard'] text-xl leading-loose font-normal text-neutral-400">
+                  아직 받은 요청이 없어요!
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <RequestCardList requests={requests} />
+        )}
       </div>
     </div>
   );

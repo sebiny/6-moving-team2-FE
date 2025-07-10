@@ -9,11 +9,11 @@ import Button from "@/components/Button";
 
 // 한글 → MoveType enum 매핑
 const korToMoveTypeMap: Record<string, MoveType> = {
-  소형이사: "small",
-  가정이사: "home",
-  사무실이사: "office",
-  지정견적요청: "request",
-  "지정 견적 요청": "request"
+  소형이사: "SMALL",
+  가정이사: "HOME",
+  사무실이사: "OFFICE",
+  지정견적요청: "REQUEST",
+  "지정 견적 요청": "REQUEST"
 };
 
 type RequestCardVariant = "received" | "final";
@@ -24,7 +24,7 @@ interface RequestCardBaseProps {
 }
 
 export default function RequestCardBase({ request, variant = "received" }: RequestCardBaseProps) {
-  const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "small";
+  const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
 
   const renderRightTop = () => {
     if (variant === "final") {
@@ -72,7 +72,7 @@ export default function RequestCardBase({ request, variant = "received" }: Reque
         <div className="flex h-8 items-center justify-between">
           <div className="flex gap-2">
             <ChipRectangle moveType={moveTypeKey} size="sm" />
-            {request.isDesignated && <ChipRectangle moveType="request" size="sm" />}
+            {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
           {renderRightTop()}
         </div>
