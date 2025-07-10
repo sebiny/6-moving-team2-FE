@@ -18,7 +18,7 @@ export function useLoginForm() {
     try {
       await login(email, password);
       router.push("/");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
       const message = parseBackendError(error.status, error.message);
       alert(message);
@@ -55,7 +55,7 @@ export function useSignupForm(userType: UserType) {
         userType
       });
       router.push("/login/" + userType.toLowerCase());
-    } catch (error) {
+    } catch (error: any) {
       console.error("Signup failed:", error);
       const message = parseBackendError(error.status, error.message);
       alert(message);
