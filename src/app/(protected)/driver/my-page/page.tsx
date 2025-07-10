@@ -1,21 +1,25 @@
 import Button from "@/components/Button";
-import Reviews from "@/components/driver/Reviews";
+import DriverSimpleInfo from "@/components/driver/DriverSimpleInfo";
+import DriverReviews from "@/components/driver/DriverReviews";
 import LikeIcon from "@/components/icon/LikeIcon";
 import OrangeBackground from "@/components/OrangeBackground";
 import Service from "@/components/Service";
+import { reviews } from "@/constant/reviewType";
 import Image from "next/image";
 import React from "react";
+import { ReviewAverage } from "@/utills/ReviewAverage";
 
 function DriverMyPage() {
+  const result = ReviewAverage(reviews);
   return (
     <div className="flex flex-col items-center">
       <div>
         <div className="text-lg font-semibold">마이페이지</div>
       </div>
-      <OrangeBackground />
-      <div className="flex w-300 flex-col">
-        <div className="mt-[43px] flex flex-col justify-between lg:flex-row">
-          <div>
+      <OrangeBackground subTitle={true} />
+      <div className="flex w-full max-w-300 flex-col items-center px-5 md:px-18 lg:items-stretch lg:px-0">
+        <div className="mt-[43px] flex w-full flex-col justify-between md:max-w-205 lg:max-w-300 lg:flex-row">
+          <div className="max-w-205">
             <div className="flex">
               <Image src="/assets/images/img_profile.svg" alt="프로필" width={80} height={85} />
               <div className="ml-3">
@@ -36,32 +40,20 @@ function DriverMyPage() {
               </p>
             </div>
           </div>
-          <div className="mt-7 flex w-80 flex-col gap-4 md:w-205 md:flex-row lg:w-70 lg:flex-col">
+          <div className="mt-7 flex w-full flex-col gap-4 md:flex-row lg:w-70 lg:flex-col">
             <Button text="내 프로필 수정" type="orange" image={true} />
             <Button text="기본 정보 수정" type="white-gray" image={true} />
           </div>
         </div>
-        <div className="w-205">
+        <div className="w-full max-w-205">
           <div className="border-line-100 my-8 border-b"></div>
+
           <div className="flex flex-col gap-4">
             <p className="text-black-400 text-xl font-semibold">활동 현황</p>
-            <div className="bg-background-100 border-line-100 flex h-30 w-full items-center justify-evenly rounded-2xl border">
-              <div className="flex flex-col items-center">
-                <p>진행</p>
-                <p className="text-xl font-bold text-orange-400">334건</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <p>리뷰</p>
-                <p className="text-xl font-bold text-orange-400">5.0</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <p>총 경력</p>
-                <p className="text-xl font-bold text-orange-400">7년</p>
-              </div>
-            </div>
+            <DriverSimpleInfo type="my-page" career={7} averageRating={5.0} work={334} />
           </div>
           <Service services={["SMALL"]} regions={["SEOUL"]} />
-          <Reviews />
+          <DriverReviews reviews={reviews} result={result} />
         </div>
       </div>
     </div>
