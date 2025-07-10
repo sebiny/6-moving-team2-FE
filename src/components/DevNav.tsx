@@ -3,9 +3,6 @@
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import Link from "next/link";
-import ImgArrow from "/public/assets/icons/ic_chevron_down.svg";
-import Image from "next/image";
-import { useAuth } from "@/providers/AuthProvider"; // ✅ auth 상태 불러오기
 
 interface Route {
   path: string;
@@ -16,7 +13,6 @@ interface Route {
 export default function DevNav() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(true);
-  const { user, logout, isLoading } = useAuth(); // ✅ 로그인 상태 및 logout 함수
 
   const routes: Route[] = [
     // 공통 라우트
@@ -33,7 +29,8 @@ export default function DevNav() {
     { path: "/customer/my-estimates/estimate-pending", name: "페이지명", group: "customer" },
 
     // 기사 관련 라우트 (@driver)
-    { path: "/driver/my-page", name: "페이지명", group: "driver" },
+    { path: "/driver/received-requests", name: "받은 요청", group: "driver" },
+    { path: "/driver/my-page", name: "마이페이지", group: "driver" },
 
     // 게스트 관련 라우트 (@guest)
     { path: "/drivers", name: "페이지명", group: "guest" }
@@ -77,12 +74,6 @@ export default function DevNav() {
             ))}
           </div>
         ))}
-        {/* ✅ 로그인 상태일 때만 로그아웃 버튼 노출 */}
-        {!isLoading && user && (
-          <button onClick={logout} className="mt-2 rounded bg-red-500 px-3 py-1 text-sm font-bold text-white">
-            로그아웃
-          </button>
-        )}
       </nav>
       <button
         onClick={() => setIsOpen(!isOpen)}
