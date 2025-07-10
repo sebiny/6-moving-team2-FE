@@ -3,7 +3,7 @@
 import { useLoginForm } from "@/hooks/UseAuthForm";
 
 export default function LoginCustomer() {
-  const { email, setEmail, password, setPassword, onSubmit } = useLoginForm("CUSTOMER");
+  const { email, setEmail, password, setPassword, onSubmit } = useLoginForm();
 
   return (
     <div className="flex min-h-screen items-center">
