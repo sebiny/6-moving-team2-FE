@@ -6,24 +6,30 @@ import React, { useEffect, useRef, useState } from "react";
 import Notification from "../dropdown/NotificationDropdown";
 import Profile from "../dropdown/ProfileDropdown";
 import GnbMenuList from "../list/GnbMenuList";
+import { useAuth } from "@/providers/AuthProvider";
+import Button from "../Button";
+import { useRouter } from "next/navigation";
+import { OpenLayer, useGnbHooks } from "@/hooks/useGnbHook";
 
 // Gnb에서 정의해야 하는 요소들
 // 화면 너비에 따라 UI가 바뀜
 // 유저 상태에 따라 메뉴가 바뀜
 
-type OpenLayer = "notification" | "profile" | "gnbMobileMenu" | null;
 interface GnbProps {
   userRole?: "guest" | "customer" | "driver" | undefined;
 }
 
 export default function Gnb({ userRole }: GnbProps) {
-  const [isLg, setIsLg] = useState<boolean>(false);
+  const { user, isLoading, logout } = useAuth();
+  const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
 
-  const [openLayer, setOpenLayer] = useState<OpenLayer>(null);
+  // user가 null이면 비로그인 상태
+  const isLoggedIn = !!user;
 
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const gnbMobileMenuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // 레이어가 열려있는 상태일 때, 레이어 DOM이 존재하며, 클릭한 위치가 레이어 밖이라면 닫힘
   const handleClickOutside = (event: MouseEvent) => {
@@ -53,18 +59,12 @@ export default function Gnb({ userRole }: GnbProps) {
   }, [openLayer]);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsLg(window.innerWidth > 1280);
-
-      // 모바일 메뉴 열려있으면 창 크기 변경 시 닫기
-      if (window.innerWidth > 1280 && openLayer === "gnbMobileMenu") {
-        setOpenLayer(null);
-      }
-    };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [openLayer]);
+
+  // if (isLoading) return <div>로딩 중...</div>;
 
   const toggleLayer = (layer: OpenLayer) => {
     setOpenLayer((prev) => (prev === layer ? null : layer));
@@ -74,41 +74,64 @@ export default function Gnb({ userRole }: GnbProps) {
     <header className="border-line-100 fixed z-10 flex h-14 w-full items-center justify-center border-b-1 bg-white px-6 lg:h-22">
       <div className="flex w-full max-w-[var(--container-gnb)] items-center justify-between">
         <Logo />
-
         {isLg ? (
           <div className="flex flex-1 items-center justify-between">
             <GnbListLayout lg="lg" className="flex-1">
-              <GnbMenuList browserWidth="lg" userRole={userRole} />
+              <GnbMenuList browserWidth="lg" isLg={true} userRole={isLoggedIn ? userRole : "guest"} />
             </GnbListLayout>
             <div className="flex items-center justify-between gap-5">
-              <Notification
-                ref={notificationRef}
-                isOpen={openLayer === "notification"}
-                onClick={() => toggleLayer("notification")}
-              />
-              <Profile
-                ref={profileRef}
-                lg="lg"
-                isOpen={openLayer === "profile"}
-                onClick={() => toggleLayer("profile")}
-              />
+              {isLoggedIn ? (
+                <div>
+                  <Notification
+                    ref={notificationRef}
+                    isOpen={openLayer === "notification"}
+                    onClick={() => toggleLayer("notification")}
+                  />
+                  <Profile
+                    ref={profileRef}
+                    lg="lg"
+                    isOpen={openLayer === "profile"}
+                    onClick={() => toggleLayer("profile")}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    type="orange"
+                    text="로그인"
+                    className="h-12 w-30 rounded-lg"
+                    onClick={() => router.push("/login/customer")}
+                  />
+                </div>
+              )}
             </div>
           </div>
         ) : (
           <div className="flex items-center justify-between gap-5">
             <Notification
               ref={notificationRef}
+              className={isLoggedIn ? "block" : "hidden"}
               isOpen={openLayer === "notification"}
               onClick={() => toggleLayer("notification")}
             />
             <div className="flex items-center justify-between gap-5">
-              <Profile ref={profileRef} isOpen={openLayer === "profile"} onClick={() => toggleLayer("profile")} />
+              <Profile
+                ref={profileRef}
+                className={isLoggedIn ? "block" : "hidden"}
+                isOpen={openLayer === "profile"}
+                onClick={() => toggleLayer("profile")}
+              />
               <GnbListLayout
                 ref={gnbMobileMenuRef}
                 isOpen={openLayer === "gnbMobileMenu"}
                 onClick={() => toggleLayer("gnbMobileMenu")}
               >
-                <GnbMenuList browserWidth="default" userRole={userRole} onClick={() => toggleLayer("gnbMobileMenu")} />
+                <GnbMenuList
+                  browserWidth="default"
+                  isLg={false}
+                  userRole={isLoggedIn ? userRole : "guest"}
+                  onClick={() => toggleLayer("gnbMobileMenu")}
+                />
               </GnbListLayout>
             </div>
           </div>

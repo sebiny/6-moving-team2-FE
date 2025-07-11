@@ -9,6 +9,7 @@ interface GnbListProps {
   browserWidth: "lg" | "default";
   userRole?: "guest" | "customer" | "driver" | undefined;
   onClick?: () => void;
+  isLg: boolean;
 }
 
 const browserWidthType = {
@@ -24,8 +25,9 @@ const browserWidthType = {
   }
 };
 
-export default function GnbMenuList({ browserWidth, userRole, onClick }: GnbListProps) {
+export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: GnbListProps) {
   const router = useRouter();
+
   return (
     <div className={`${browserWidthType[browserWidth].layoutDiv}`}>
       {browserWidth === "default" && (
@@ -42,7 +44,17 @@ export default function GnbMenuList({ browserWidth, userRole, onClick }: GnbList
           }}
           className={`${browserWidthType[browserWidth].buttonStyle} cursor-pointer`}
         >
-          <span className={`${browserWidthType[browserWidth].textStyle} text-black-500`}>{label}</span>
+          <span
+            className={
+              label === "로그인"
+                ? isLg
+                  ? "hidden"
+                  : "block"
+                : `${browserWidthType[browserWidth].textStyle} text-black-500`
+            }
+          >
+            {label}
+          </span>
         </button>
       ))}
     </div>

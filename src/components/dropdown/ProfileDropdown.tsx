@@ -8,6 +8,7 @@ interface ProfileProps {
   lg?: string;
   isOpen: boolean;
   onClick: () => void;
+  className?: string;
   ref?: React.Ref<HTMLDivElement> | undefined;
 }
 
@@ -17,10 +18,10 @@ export const MYPAGE_CUSTOMER = [
   { label: "이사 리뷰", path: "./" }
 ];
 
-export default function Profile({ ref, isOpen, onClick, lg }: ProfileProps) {
+export default function Profile({ ref, isOpen, onClick, className, lg }: ProfileProps) {
   const router = useRouter();
   return (
-    <div className="flex items-center" ref={ref}>
+    <div className={`${className} flex items-center`} ref={ref}>
       {lg ? (
         <button className="flex cursor-pointer items-center justify-between gap-3" onClick={onClick}>
           <Image src={icProfile} alt="프로필 이미지" width={26} height={26} />

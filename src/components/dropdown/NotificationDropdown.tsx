@@ -6,11 +6,12 @@ import ImgXBtn from "/public/assets/icons/ic_X.svg";
 interface Notification {
   ref: React.Ref<HTMLDivElement> | undefined;
   isOpen: boolean;
+  className?: string;
   onClick: () => void;
 }
-export default function Notification({ ref, onClick, isOpen }: Notification) {
+export default function Notification({ ref, onClick, className, isOpen }: Notification) {
   return (
-    <div className="relative z-50 flex" ref={ref}>
+    <div className={`${className} relative z-50 flex`} ref={ref}>
       <button onClick={onClick} className="relative cursor-pointer">
         <div className="flax-col relative flex">
           <Image src={iconNotification} alt="알림" height={24} width={24} className="opacity-50" />
