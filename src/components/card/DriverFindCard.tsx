@@ -18,7 +18,7 @@ function DriverFindCard({ driver }: DriverFindCardType) {
   };
 
   return (
-    <div className="border-line-100 rounded-2xl border p-5 shadow-sm" onClick={handleClick}>
+    <div className="border-line-100 rounded-2xl border bg-white p-5 shadow-sm" onClick={handleClick}>
       <ChipRectangle moveType="SMALL" />
       <div className="mt-3 flex gap-5">
         <Image

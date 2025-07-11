@@ -6,6 +6,7 @@ import MoveTypeCard from "./_components/MoveTypeCard";
 import AddressCardModal from "./_components/AddressCardModal";
 import Button from "@/components/Button";
 import { AddressSummary } from "@/utills/AddressSummary";
+import { Address } from "@/types/Address";
 
 const moveTypes = [
   { label: "소형이사", description: "원룸, 투룸, 20평대 미만" },
@@ -17,12 +18,14 @@ export default function DesktopEstimateForm() {
   const [selectedMoveType, setSelectedMoveType] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showModal, setShowModal] = useState<"from" | "to" | null>(null);
-  const [addressFrom, setAddressFrom] = useState<string>("");
-  const [addressTo, setAddressTo] = useState<string>("");
+  const [addressFrom, setAddressFrom] = useState<Address | null>(null);
+  const [addressTo, setAddressTo] = useState<Address | null>(null);
 
   const handleMoveTypeSelect = (label: string) => {
     setSelectedMoveType((prev) => (prev === label ? null : label));
   };
+
+  const isFormValid = selectedMoveType !== null && selectedDate !== null && addressFrom !== null && addressTo !== null;
 
   return (
     <div className="bg-background-100 min-h-screen">
@@ -62,7 +65,7 @@ export default function DesktopEstimateForm() {
               <div className="flex flex-col gap-3 lg:w-full">
                 <p className="font-medium">출발지</p>
                 <Button
-                  text={addressFrom ? AddressSummary(addressFrom) : "출발지 선택하기"}
+                  text={addressFrom ? AddressSummary(addressFrom.roadAddress) : "출발지 선택하기"}
                   type="white-orange"
                   onClick={() => setShowModal("from")}
                   className="h-[54px] w-100 justify-start truncate overflow-hidden rounded-xl px-6 py-4 whitespace-nowrap lg:w-[252px]"
@@ -71,7 +74,7 @@ export default function DesktopEstimateForm() {
               <div className="flex flex-col gap-3 lg:w-full">
                 <p className="font-medium">도착지</p>
                 <Button
-                  text={addressTo ? AddressSummary(addressTo) : "도착지 선택하기"}
+                  text={addressTo ? AddressSummary(addressTo.roadAddress) : "도착지 선택하기"}
                   type="white-orange"
                   onClick={() => setShowModal("to")}
                   className="h-[54px] w-100 justify-start truncate overflow-hidden rounded-xl px-6 py-4 whitespace-nowrap lg:w-[252px]"
@@ -86,7 +89,7 @@ export default function DesktopEstimateForm() {
           <Button
             text="견적 요청하기"
             type="orange"
-            isDisabled={true}
+            isDisabled={!isFormValid}
             className="px-[51px]"
             onClick={() => alert("견적 요청 성공!")}
           />
@@ -100,7 +103,7 @@ export default function DesktopEstimateForm() {
           <Button
             text="견적 요청하기"
             type="orange"
-            isDisabled={true}
+            isDisabled={!isFormValid}
             className="px-[51px]"
             onClick={() => alert("견적 요청 성공!")}
           />
@@ -112,13 +115,13 @@ export default function DesktopEstimateForm() {
           title={showModal === "from" ? "출발지 선택" : "도착지 선택"}
           confirmLabel="선택 완료"
           onClose={() => setShowModal(null)}
-          onConfirm={(value) => {
+          onConfirm={(value: Address) => {
             if (showModal === "from") setAddressFrom(value);
             if (showModal === "to") setAddressTo(value);
             setShowModal(null);
           }}
-          onChange={(value) => (showModal === "from" ? setAddressFrom(value) : setAddressTo(value))}
-          selectedValue={showModal === "from" ? addressFrom : addressTo}
+          onChange={() => {}}
+          selectedValue={showModal === "from" ? addressFrom?.roadAddress || "" : addressTo?.roadAddress || ""}
         />
       )}
     </div>

@@ -4,18 +4,13 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import Button from "@/components/Button";
 import AddressResultCard from "./AddressResultCard";
-
-interface Address {
-  id: number;
-  postalCode: string;
-  roadAddress: string;
-  jibunAddress: string;
-}
+import DaumPostcodeModal from "./DaumPostcodeModal";
+import { Address } from "@/types/Address";
 
 interface AddressCardModalProps {
   title: string;
   onClose: () => void;
-  onConfirm: (value: string) => void;
+  onConfirm: (address: Address) => void;
   confirmLabel: string;
   onChange: (value: string) => void;
   selectedValue: string;
@@ -30,22 +25,8 @@ export default function AddressCardModal({
 }: AddressCardModalProps) {
   const [inputValue, setInputValue] = useState("");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  // mock 데이터
-  const addressList: Address[] = [
-    {
-      id: 1,
-      postalCode: "04538",
-      roadAddress: "서울 중구 삼일대로 343 (대신파이낸스센터)",
-      jibunAddress: "서울 중구 저동1가 114"
-    },
-    {
-      id: 2,
-      postalCode: "06236",
-      roadAddress: "서울 강남구 테헤란로 152",
-      jibunAddress: "서울 강남구 역삼동 737"
-    }
-  ];
+  const [showPostcode, setShowPostcode] = useState(false);
+  const [addressList, setAddressList] = useState<Address[]>([]);
 
   // 선택된 주소를 외부로 전달
   useEffect(() => {
@@ -75,6 +56,11 @@ export default function AddressCardModal({
                 placeholder="텍스트를 입력해주세요."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && inputValue.trim() !== "") {
+                    setShowPostcode(true);
+                  }
+                }}
                 className="h-[24px] w-[132px] flex-1 bg-transparent text-sm text-black outline-none placeholder:text-[var(--color-black-400)]"
                 style={{ border: "none", caretColor: "black" }}
               />
@@ -89,7 +75,7 @@ export default function AddressCardModal({
                     className="md:h-9 md:w-9"
                   />
                 </button>
-                <button type="button" onClick={() => console.log("검색", inputValue)}>
+                <button type="button" onClick={() => setShowPostcode(true)}>
                   <Image
                     src="/assets/icons/ic_search.svg"
                     width={24}
@@ -103,7 +89,10 @@ export default function AddressCardModal({
           </div>
 
           {/* 검색 결과 */}
-          <div className="mb-6 flex w-full flex-col gap-4 text-sm md:mb-10 md:text-base">
+          <div
+            className="mb-6 flex w-full flex-col gap-4 overflow-y-auto text-sm md:mb-10 md:text-base"
+            style={{ maxHeight: "168px" }}
+          >
             {addressList.map((addr, idx) => (
               <AddressResultCard
                 key={addr.id}
@@ -111,7 +100,9 @@ export default function AddressCardModal({
                 roadAddress={addr.roadAddress}
                 jibunAddress={addr.jibunAddress}
                 selected={selectedIndex === idx}
-                onClick={() => setSelectedIndex(idx)}
+                onClick={() => {
+                  setSelectedIndex((prev) => (prev === idx ? null : idx));
+                }}
               />
             ))}
           </div>
@@ -123,12 +114,31 @@ export default function AddressCardModal({
           type="orange"
           onClick={() => {
             if (selectedIndex !== null) {
-              onConfirm(addressList[selectedIndex].roadAddress);
+              onConfirm(addressList[selectedIndex]);
             }
           }}
           isDisabled={selectedIndex === null}
         />
       </div>
+
+      {showPostcode && (
+        <DaumPostcodeModal
+          query={inputValue}
+          onClose={() => setShowPostcode(false)}
+          onComplete={(addr) => {
+            console.log("주소 확인", addr);
+            const newAddress: Address = {
+              id: Date.now(), // 실제로는 백엔드 응답 id 사용
+              postalCode: addr.zonecode,
+              roadAddress: addr.roadAddress,
+              jibunAddress: addr.jibunAddress
+            };
+
+            setAddressList((prev) => [...prev, newAddress]);
+            setSelectedIndex(addressList.length); // 자동 선택
+          }}
+        />
+      )}
     </div>
   );
 }

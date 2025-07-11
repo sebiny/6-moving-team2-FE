@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { ReceivedEstimateData } from "./ReceivedEstimateData";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import EstimateStatus from "@/components/chip/EstimateStatus";
+import { ReceivedEstimateItem } from "./ReceivedEstimateData";
 
 interface Props {
-  data: ReceivedEstimateData;
+  data: ReceivedEstimateItem;
 }
 
 export default function ReceivedEstimate({ data }: Props) {
@@ -17,14 +17,14 @@ export default function ReceivedEstimate({ data }: Props) {
       {/* 라벨 목록 */}
       {/* sm 이하 */}
       <div className="flex gap-2 md:hidden">
-        {data.labels.map((label) => (
+        {labels.map((label) => (
           <ChipRectangle key={label} moveType={label} size="sm" />
         ))}
       </div>
 
       {/* md 이상 */}
       <div className="hidden gap-2 md:flex">
-        {data.labels.map((label) => (
+        {labels.map((label) => (
           <ChipRectangle key={label} moveType={label} size="md" />
         ))}
       </div>

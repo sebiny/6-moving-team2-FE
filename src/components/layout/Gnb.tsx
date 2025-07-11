@@ -1,88 +1,138 @@
 "use client";
 
 import Logo from "./_components/Logo";
-import GnbList from "@/components/list/GnbList";
+import GnbListLayout from "@/components/layout/GnbListLayout";
 import React, { useEffect, useRef, useState } from "react";
 import Notification from "../dropdown/NotificationDropdown";
 import Profile from "../dropdown/ProfileDropdown";
+import GnbMenuList from "../list/GnbMenuList";
+import { useAuth } from "@/providers/AuthProvider";
+import Button from "../Button";
+import { useRouter } from "next/navigation";
+import { OpenLayer, useGnbHooks } from "@/hooks/useGnbHook";
 
-type DropDownType = "notification" | "profile" | null;
+// Gnb에서 정의해야 하는 요소들
+// 화면 너비에 따라 UI가 바뀜
+// 유저 상태에 따라 메뉴가 바뀜
+
 interface GnbProps {
-  userRole: "guest" | "member" | "driver" | undefined;
+  userRole?: "guest" | "customer" | "driver" | undefined;
 }
 
 export default function Gnb({ userRole }: GnbProps) {
-  const [isLg, setIsLg] = useState<boolean>(false);
-  const [openDropdown, setOpenDropdown] = useState<DropDownType>(null);
+  const { user, isLoading, logout } = useAuth();
+  const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
 
-  const gnbRef = useRef<HTMLDivElement>(null);
+  // user가 null이면 비로그인 상태
+  const isLoggedIn = !!user;
 
-  // 바깥 클릭 시 드롭다운 모두 닫기
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (gnbRef.current && !gnbRef.current.contains(event.target as Node)) {
-        setOpenDropdown(null);
-      }
+  const notificationRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const gnbMobileMenuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  // 레이어가 열려있는 상태일 때, 레이어 DOM이 존재하며, 클릭한 위치가 레이어 밖이라면 닫힘
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      (openLayer === "notification" &&
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)) ||
+      (openLayer === "profile" && profileRef.current && !profileRef.current.contains(event.target as Node)) ||
+      (openLayer === "gnbMobileMenu" &&
+        gnbMobileMenuRef.current &&
+        !gnbMobileMenuRef.current.contains(event.target as Node))
+    ) {
+      setOpenLayer(null);
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  };
 
-  // ESC 키로 드롭다운 닫기
+  // 컴포넌트 마운트 시 바깥 클릭 이벤트 리스너 등록, 언마운트 시 해제
   useEffect(() => {
-    function handleKeydown(event: any) {
-      if (event.key === "Escape") {
-        setOpenDropdown(null);
-      }
+    if (openLayer !== null) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
     }
-    document.addEventListener("keydown", handleKeydown);
-    return () => document.removeEventListener("keydown", handleKeydown);
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsLg(window.innerWidth > 1280);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
+  }, [openLayer]);
+
+  useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [openLayer]);
+
+  if (isLoading) return <div>로딩 중...</div>;
+
+  const toggleLayer = (layer: OpenLayer) => {
+    setOpenLayer((prev: any) => (prev === layer ? null : layer));
+  };
 
   return (
-    <header
-      ref={gnbRef}
-      className="border-line-100 fixed z-10 flex h-14 w-full items-center justify-center border-b-1 bg-white px-6 lg:h-22"
-    >
+    <header className="border-line-100 fixed z-10 flex h-14 w-full items-center justify-center border-b-1 bg-white px-6 lg:h-22">
       <div className="flex w-full max-w-[var(--container-gnb)] items-center justify-between">
         <Logo />
-
         {isLg ? (
           <div className="flex flex-1 items-center justify-between">
-            <GnbList lg="lg" className="flex-1" userRole={userRole} />
-            <div className="flex items-center justify-between gap-5">
-              <Notification
-                isOpen={openDropdown === "notification"}
-                onToggle={() => setOpenDropdown(openDropdown === "notification" ? null : "notification")}
-              />
-              <Profile
-                lg="lg"
-                isOpen={openDropdown === "profile"}
-                onToggle={() => setOpenDropdown(openDropdown === "profile" ? null : "profile")}
-              />
+            <GnbListLayout lg="lg" className="flex-1">
+              <GnbMenuList browserWidth="lg" isLg={true} userRole={isLoggedIn ? userRole : "guest"} />
+            </GnbListLayout>
+            <div className="flex items-center justify-between">
+              {isLoggedIn ? (
+                <div className="flex flex-row justify-between gap-5">
+                  <Notification
+                    ref={notificationRef}
+                    isOpen={openLayer === "notification"}
+                    onClick={() => toggleLayer("notification")}
+                  />
+                  <Profile
+                    ref={profileRef}
+                    lg="lg"
+                    isOpen={openLayer === "profile"}
+                    onClick={() => toggleLayer("profile")}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    type="orange"
+                    text="로그인"
+                    className="h-12 w-30 rounded-lg"
+                    onClick={() => router.push("/login/customer")}
+                  />
+                </div>
+              )}
             </div>
           </div>
         ) : (
           <div className="flex items-center justify-between gap-5">
             <Notification
-              isOpen={openDropdown === "notification"}
-              onToggle={() => setOpenDropdown(openDropdown === "notification" ? null : "notification")}
+              ref={notificationRef}
+              className={isLoggedIn ? "block" : "hidden"}
+              isOpen={openLayer === "notification"}
+              onClick={() => toggleLayer("notification")}
             />
             <div className="flex items-center justify-between gap-5">
               <Profile
-                isOpen={openDropdown === "profile"}
-                onToggle={() => setOpenDropdown(openDropdown === "profile" ? null : "profile")}
+                ref={profileRef}
+                className={isLoggedIn ? "block" : "hidden"}
+                isOpen={openLayer === "profile"}
+                onClick={() => toggleLayer("profile")}
               />
-              <GnbList />
+              <GnbListLayout
+                ref={gnbMobileMenuRef}
+                isOpen={openLayer === "gnbMobileMenu"}
+                onClick={() => toggleLayer("gnbMobileMenu")}
+              >
+                <GnbMenuList
+                  browserWidth="default"
+                  isLg={false}
+                  userRole={isLoggedIn ? userRole : "guest"}
+                  onClick={() => toggleLayer("gnbMobileMenu")}
+                />
+              </GnbListLayout>
             </div>
           </div>
         )}
