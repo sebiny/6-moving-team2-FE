@@ -126,6 +126,11 @@ export const cookieFetch = async <T = any>(endpoint: string, options: RequestIni
   let accessToken = authUtils.getAccessToken();
   const url = `${API_BASE_URL}${endpoint}`;
 
+  // 1. 액세스 토큰이 없으면 '로그인 안 함'으로 간주하고 바로 에러 발생
+  if (!accessToken) {
+    throw new Error("로그인이 필요합니다.");
+  }
+
   const performFetchWithToken = async (token: string): Promise<Response> => {
     const requestHeaders: Record<string, string> = {
       "Content-Type": "application/json",

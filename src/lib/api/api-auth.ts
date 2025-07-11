@@ -56,7 +56,7 @@ export const authService = {
     // return await cookieFetch("/auth/me");
 
     const response = await cookieFetch("/auth/me");
-    // response가 { user: { ... } } 형태를 반환함
+    // response가 { user : ... } 형태를 반환함
     return response?.user ?? null;
   }
 };
