@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import Gnb from "@/components/layout/Gnb";
 import Header from "../../components/Header";
 import Main from "./component/Main";
 
