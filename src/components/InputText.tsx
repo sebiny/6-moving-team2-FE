@@ -1,15 +1,19 @@
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
-  setIsValid: (value: boolean) => void;
+  setInputValid: (value: boolean) => void;
 }
 
-function InputText({ setIsValid }: Props) {
+function InputText({ setInputValid }: Props) {
   const [value, setValue] = useState("");
   const [touched, setTouched] = useState(false);
   const isInvalid = touched && value.length < 10;
-
+  useEffect(() => {
+    if (touched) {
+      setInputValid(!isInvalid);
+    }
+  }, [touched, isInvalid]);
   const CLASSES = {
     placeholder: ["placeholder:text-[16px] placeholder:leading-[26px] placeholder:text-gray-300"],
     focus: ["focus:border-[2px] focus:border-gray-300 focus:outline-none"],

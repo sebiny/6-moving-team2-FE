@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StarIcon from "@/components/icon/StarIcon";
 import InputText from "@/components/InputText";
 
@@ -7,7 +7,13 @@ interface Props {
 }
 
 export default function ReviewWrite({ setIsValid }: Props) {
+  const [InputValid, setInputValid] = useState(false);
   const [rating, setRating] = useState(0);
+  useEffect(() => {
+    if (rating > 0 && InputValid) {
+      setIsValid(true);
+    }
+  }, [rating, InputValid]);
   const textClass = "text-black-300 mb-3 text-[18px] leading-[26px] font-semibold";
   return (
     <div className="flex flex-col gap-8">
@@ -24,7 +30,7 @@ export default function ReviewWrite({ setIsValid }: Props) {
       </div>
       <div>
         <p className={textClass}>상세 후기를 작성해 주세요</p>
-        <InputText setIsValid={setIsValid} />
+        <InputText setInputValid={setInputValid} />
       </div>
     </div>
   );
