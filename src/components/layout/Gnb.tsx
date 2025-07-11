@@ -64,10 +64,10 @@ export default function Gnb({ userRole }: GnbProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, [openLayer]);
 
-  // if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <div>로딩 중...</div>;
 
   const toggleLayer = (layer: OpenLayer) => {
-    setOpenLayer((prev) => (prev === layer ? null : layer));
+    setOpenLayer((prev: any) => (prev === layer ? null : layer));
   };
 
   return (
@@ -79,9 +79,9 @@ export default function Gnb({ userRole }: GnbProps) {
             <GnbListLayout lg="lg" className="flex-1">
               <GnbMenuList browserWidth="lg" isLg={true} userRole={isLoggedIn ? userRole : "guest"} />
             </GnbListLayout>
-            <div className="flex items-center justify-between gap-5">
+            <div className="flex items-center justify-between">
               {isLoggedIn ? (
-                <div>
+                <div className="flex flex-row justify-between gap-5">
                   <Notification
                     ref={notificationRef}
                     isOpen={openLayer === "notification"}

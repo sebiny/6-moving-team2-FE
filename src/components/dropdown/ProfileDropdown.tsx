@@ -3,6 +3,7 @@ import React from "react";
 import icProfile from "/public/assets/icons/ic_profile.svg";
 
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface ProfileProps {
   lg?: string;
@@ -20,12 +21,13 @@ export const MYPAGE_CUSTOMER = [
 
 export default function Profile({ ref, isOpen, onClick, className, lg }: ProfileProps) {
   const router = useRouter();
+  const { user } = useAuth();
   return (
     <div className={`${className} flex items-center`} ref={ref}>
       {lg ? (
         <button className="flex cursor-pointer items-center justify-between gap-3" onClick={onClick}>
           <Image src={icProfile} alt="프로필 이미지" width={26} height={26} />
-          <span className="text-black-500 text-lg font-medium">사용자이름</span>
+          <span className="text-black-500 text-lg font-medium">{user?.name ? user?.name : "이름없음"}</span>
         </button>
       ) : (
         <button className="cursor-pointer" onClick={onClick}>
@@ -35,9 +37,9 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
 
       {/* 프로필 레이어 */}
       {isOpen && (
-        <div className="text-black-400 border-line-200 absolute top-12 z-99 flex w-38 -translate-x-1/2 flex-col rounded-2xl border bg-gray-50 pt-4 pb-1 shadow-gray-300 lg:top-18 lg:w-62 lg:-translate-x-1/2 xl:translate-x-0">
+        <div className="text-black-400 border-line-200 absolute top-12 z-99 flex w-38 -translate-x-1/2 flex-col rounded-2xl border bg-gray-50 pt-4 pb-1 shadow-gray-300 lg:top-18 lg:w-62 lg:-translate-x-36 xl:translate-x-0">
           <button className="h-10 items-center pl-4 text-left text-base font-bold lg:h-13 lg:pl-6 lg:text-lg">
-            사용자이름 고객님
+            {user?.name ? user?.name : "이름없음"} 고객님
           </button>
           {MYPAGE_CUSTOMER.map(({ label, path }, idx) => (
             <button
