@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DriverImg from "/public/assets/images/img_profile.svg";
 import Image from "next/image";
 import clsx from "clsx";
@@ -87,11 +87,21 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
             </div>
             <ReviewsInner setIsModal={setIsModal} />
             {isMd && !isLg && (
-              <Button type="orange" text="리뷰 작성하기" className="mt-10 md:h-[54px] md:text-[16px] md:font-medium" />
+              <Button
+                onClick={() => setIsModal(true)}
+                type="orange"
+                text="리뷰 작성하기"
+                className="mt-10 md:h-[54px] md:text-[16px] md:font-medium"
+              />
             )}
             {isSm && !isMd && !isLg && <ReviewCost className="border-line-200 mt-23 mb-5 border-t pt-3" />}
             {isSm && !isMd && !isLg && (
-              <Button type="orange" text="리뷰 작성하기" className="w-[287px] sm:font-medium" />
+              <Button
+                onClick={() => setIsModal(true)}
+                type="orange"
+                text="리뷰 작성하기"
+                className="w-[287px] sm:font-medium"
+              />
             )}
           </div>
         ))}
