@@ -3,11 +3,12 @@ import { GNB_ROUTE_USER_ROLE } from "@/constant/constant";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ImgXBtn from "/public/assets/icons/ic_X.svg";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface GnbListProps {
   isOpen?: boolean;
   browserWidth: "lg" | "default";
-  userRole?: "guest" | "customer" | "driver" | undefined;
+  userRole?: "guest" | "CUSTOMER" | "DRIVER" | undefined;
   onClick?: () => void;
   isLg: boolean;
 }
@@ -27,6 +28,8 @@ const browserWidthType = {
 
 export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: GnbListProps) {
   const router = useRouter();
+  const { user } = useAuth();
+  const isLoggedIn = !!user;
 
   return (
     <div className={`${browserWidthType[browserWidth].layoutDiv}`}>
@@ -47,7 +50,7 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
           <span
             className={
               label === "로그인"
-                ? isLg
+                ? isLg || isLoggedIn
                   ? "hidden"
                   : "block"
                 : `${browserWidthType[browserWidth].textStyle} text-black-500`

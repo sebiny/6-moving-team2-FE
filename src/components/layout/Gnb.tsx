@@ -16,13 +16,13 @@ import { OpenLayer, useGnbHooks } from "@/hooks/useGnbHook";
 // 유저 상태에 따라 메뉴가 바뀜
 
 interface GnbProps {
-  userRole?: "guest" | "customer" | "driver" | undefined;
+  userRole?: "guest" | "CUSTOMER" | "DRIVER" | undefined;
 }
 
-export default function Gnb({ userRole }: GnbProps) {
+export default function Gnb() {
   const { user, isLoading, logout } = useAuth();
   const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
-
+  const userRole = user?.userType ?? "guest";
   // user가 null이면 비로그인 상태
   const isLoggedIn = !!user;
 
