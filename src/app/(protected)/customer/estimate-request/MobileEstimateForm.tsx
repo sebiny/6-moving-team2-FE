@@ -6,6 +6,7 @@ import MobileDatePicker from "./_components/MobileDatePicker";
 import AddressCardModal from "./_components/AddressCardModal";
 import Button from "@/components/Button";
 import { AddressSummary } from "@/utills/AddressSummary";
+import { Address } from "@/types/Address";
 
 const moveTypes = [
   { label: "소형이사", description: "원룸, 투룸, 20평대 미만" },
@@ -17,8 +18,8 @@ export default function MobileEstimateForm() {
   const [step, setStep] = useState(1);
   const [moveType, setMoveType] = useState<string | null>(null);
   const [moveDate, setMoveDate] = useState<Date | null>(null);
-  const [addressFrom, setAddressFrom] = useState("");
-  const [addressTo, setAddressTo] = useState("");
+  const [addressFrom, setAddressFrom] = useState<Address | null>(null);
+  const [addressTo, setAddressTo] = useState<Address | null>(null);
   const [showModal, setShowModal] = useState<"from" | "to" | null>(null);
 
   const isValidStep1 = !!moveType;
@@ -117,7 +118,7 @@ export default function MobileEstimateForm() {
             <div className="flex flex-col gap-3">
               <p className="font-medium">출발지</p>
               <Button
-                text={addressFrom ? AddressSummary(addressFrom) : "출발지 선택하기"}
+                text={addressFrom ? AddressSummary(addressFrom.roadAddress) : "출발지 선택하기"}
                 type="white-orange"
                 className="h-[54px] justify-start rounded-xl px-8 leading-[22px]"
                 onClick={() => setShowModal("from")}
@@ -126,7 +127,7 @@ export default function MobileEstimateForm() {
             <div className="flex flex-col gap-3 lg:w-full">
               <p className="font-medium">도착지</p>
               <Button
-                text={addressTo ? AddressSummary(addressTo) : "도착지 선택하기"}
+                text={addressTo ? AddressSummary(addressTo.roadAddress) : "도착지 선택하기"}
                 type="white-orange"
                 className="h-[54px] justify-start rounded-xl px-8 leading-[22px]"
                 onClick={() => setShowModal("to")}
@@ -156,13 +157,13 @@ export default function MobileEstimateForm() {
           title={showModal === "from" ? "출발지 선택" : "도착지 선택"}
           confirmLabel="선택 완료"
           onClose={() => setShowModal(null)}
-          onConfirm={(value) => {
+          onConfirm={(value: Address) => {
             if (showModal === "from") setAddressFrom(value);
             if (showModal === "to") setAddressTo(value);
             setShowModal(null);
           }}
-          onChange={(value) => (showModal === "from" ? setAddressFrom(value) : setAddressTo(value))}
-          selectedValue={showModal === "from" ? addressFrom : addressTo}
+          onChange={() => {}}
+          selectedValue={showModal === "from" ? addressFrom?.roadAddress || "" : addressTo?.roadAddress || ""}
         />
       )}
     </main>
