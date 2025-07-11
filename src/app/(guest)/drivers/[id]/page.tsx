@@ -13,7 +13,7 @@ import { ReviewAverage } from "@/utills/ReviewAverage";
 function DriverDetailPage() {
   const result = ReviewAverage(reviews);
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center pt-[56px] lg:pt-[88px]">
       <OrangeBackground />
       <div className="flex w-full justify-center gap-[116px]">
         <div className="mx-5 w-full max-w-[742px] md:mx-18">

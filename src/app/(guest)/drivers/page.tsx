@@ -8,7 +8,7 @@ import { drivers } from "@/constant/driverType";
 
 function DriversPage() {
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center pt-[56px] lg:pt-[88px]">
       <div className="mx-6 w-full max-w-205">
         <p className="my-8 hidden text-3xl font-semibold lg:block">기사님 찾기</p>
         <div className="bg-background-200 relative flex h-16 items-center rounded-2xl">

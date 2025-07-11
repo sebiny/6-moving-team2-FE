@@ -6,7 +6,7 @@ interface ToastType {
 
 function Toast({ text }: ToastType) {
   return (
-    <div className="absolute top-5 left-1/2 w-[360px] -translate-x-1/2 rounded-xl bg-orange-100 px-4 py-3 text-orange-400 md:w-[600px] lg:w-[1200px] lg:text-lg">
+    <div className="absolute top-17 left-1/2 z-100 w-[360px] -translate-x-1/2 rounded-xl bg-orange-100 px-4 py-3 text-orange-400 md:w-[600px] lg:top-25 lg:w-[1200px] lg:text-lg">
       {text}
     </div>
   );
