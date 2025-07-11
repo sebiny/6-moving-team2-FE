@@ -5,11 +5,11 @@ import LandingPageLayout from "./layout";
 import Container from "@/components/container/PageContainer";
 import IconApp from "/public/assets/icons/ic_app.svg";
 import ImgEstimateCard from "/public/assets/images/img_landing_cardlist.svg";
-import ImgEstimateVisual from "/public/assets/images/img_landing.svg";
 import clsx from "clsx";
 
 import Image from "next/image";
 import MovingCard from "./_component/MovingCard";
+import ChangeImages from "./_component/ChangeImages";
 
 const CARD_TYPE = ["small", "family", "office"] as const;
 
@@ -58,7 +58,7 @@ export default function LandingPage() {
       </Container>
       <Container
         padding="px-0 md:px-8"
-        className="mt-13 mb-35 flex flex-col md:mt-15 lg:mt-29 lg:max-w-[1400px] lg:flex-row lg:items-center lg:justify-between"
+        className="mt-13 mb-20 flex flex-col md:mt-15 lg:mt-29 lg:mb-32 lg:max-w-[1400px] lg:flex-row lg:items-center lg:justify-between"
       >
         <div className="text-black-400 ml-8 text-xl font-bold sm:text-[32px] md:ml-0">
           번거로운 선정과정,
@@ -73,14 +73,11 @@ export default function LandingPage() {
           ))}
         </div>
       </Container>
-      <Container>{/* <Image src={} alt="" width={} height={} /> */}</Container>
-      {/* 견적카드 비쥬얼 부분 
-      
-      <Container padding="0" className="h-[784px] overflow-hidden md:max-w-[1400px]">
-        <Image src={ImgEstimateVisual} alt="견적카드" width={1400} height={786} />
-      </Container> */}
+      <Container padding="p-0" className="flex max-w-[1400px] justify-center sm:mb-20 sm:p-4">
+        <ChangeImages />
+      </Container>
       <Container padding="px-0 sm:px-8" className="flex justify-center md:max-w-[1400px]">
-        <div className="text-black-400 ml-8 w-full bg-bottom-right bg-no-repeat pt-44 pb-46 text-xl font-bold sm:ml-0 sm:bg-[url(/assets/images/img_landing_building.svg)] sm:text-[32px] lg:bg-bottom-left">
+        <div className="text-black-400 ml-8 w-full bg-bottom-right bg-no-repeat pt-10 pb-46 text-xl font-bold sm:ml-0 sm:bg-[url(/assets/images/img_landing_building.svg)] sm:pt-44 sm:text-[32px] lg:bg-bottom-left">
           여러 업체의 견적을
           <br />
           한눈에 비교하고 선택해요
