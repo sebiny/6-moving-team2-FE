@@ -22,9 +22,8 @@ interface GnbProps {
 export default function Gnb() {
   const { user, isLoading, logout } = useAuth();
   const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
-  const userRole = user?.userType ?? "guest";
+
   // user가 null이면 비로그인 상태
-  const isLoggedIn = !!user;
 
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -65,6 +64,8 @@ export default function Gnb() {
   }, [openLayer]);
 
   if (isLoading) return <div>로딩 중...</div>;
+  const isLoggedIn = !!user;
+  const userRole = user?.userType ?? "guest";
 
   const toggleLayer = (layer: OpenLayer) => {
     setOpenLayer((prev: any) => (prev === layer ? null : layer));
@@ -77,7 +78,7 @@ export default function Gnb() {
         {isLg ? (
           <div className="flex flex-1 items-center justify-between">
             <GnbListLayout lg="lg" className="flex-1">
-              <GnbMenuList browserWidth="lg" isLg={true} userRole={isLoggedIn ? userRole : "guest"} />
+              <GnbMenuList browserWidth="lg" isLg={true} userRole={userRole} />
             </GnbListLayout>
             <div className="flex items-center justify-between">
               {isLoggedIn ? (
@@ -129,7 +130,7 @@ export default function Gnb() {
                 <GnbMenuList
                   browserWidth="default"
                   isLg={false}
-                  userRole={isLoggedIn ? userRole : "guest"}
+                  userRole={userRole}
                   onClick={() => toggleLayer("gnbMobileMenu")}
                 />
               </GnbListLayout>
