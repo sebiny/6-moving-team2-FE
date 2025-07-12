@@ -35,7 +35,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}>
         <Providers>
           <Gnb />
-          {children}
+          <div className="mt-14 lg:mt-22">{children}</div>
           <DevNav />
         </Providers>
       </body>

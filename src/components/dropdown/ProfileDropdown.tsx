@@ -4,7 +4,6 @@ import icProfile from "/public/assets/icons/ic_profile.svg";
 
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
-import { authService } from "@/lib/api/api-auth";
 
 interface ProfileProps {
   lg?: string;
@@ -19,8 +18,6 @@ export const MYPAGE_CUSTOMER = [
   { label: "찜한 기사님", path: "/" },
   { label: "이사 리뷰", path: "/review" }
 ];
-
-const API_PATH = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function Profile({ ref, isOpen, onClick, className, lg }: ProfileProps) {
   const router = useRouter();

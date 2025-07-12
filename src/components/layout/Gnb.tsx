@@ -22,9 +22,8 @@ interface GnbProps {
 export default function Gnb() {
   const { user, isLoading, logout } = useAuth();
   const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
-  const userRole = user?.userType ?? "guest";
+
   // user가 null이면 비로그인 상태
-  const isLoggedIn = !!user;
 
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -64,7 +63,17 @@ export default function Gnb() {
     return () => window.removeEventListener("resize", handleResize);
   }, [openLayer]);
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading)
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <svg className="h-12 w-12 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+        </svg>
+      </div>
+    );
+  const isLoggedIn = !!user;
+  const userRole = user?.userType ?? "guest";
 
   const toggleLayer = (layer: OpenLayer) => {
     setOpenLayer((prev: any) => (prev === layer ? null : layer));
@@ -77,7 +86,7 @@ export default function Gnb() {
         {isLg ? (
           <div className="flex flex-1 items-center justify-between">
             <GnbListLayout lg="lg" className="flex-1">
-              <GnbMenuList browserWidth="lg" isLg={true} userRole={isLoggedIn ? userRole : "guest"} />
+              <GnbMenuList browserWidth="lg" isLg={true} userRole={userRole} />
             </GnbListLayout>
             <div className="flex items-center justify-between">
               {isLoggedIn ? (
@@ -129,7 +138,7 @@ export default function Gnb() {
                 <GnbMenuList
                   browserWidth="default"
                   isLg={false}
-                  userRole={isLoggedIn ? userRole : "guest"}
+                  userRole={userRole}
                   onClick={() => toggleLayer("gnbMobileMenu")}
                 />
               </GnbListLayout>
