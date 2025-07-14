@@ -31,7 +31,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
               "border-line-100 mx-auto flex flex-col self-stretch rounded-[20px] border-[0.5px] bg-gray-50"
             )}
           >
-            {isSm && !isMd && !isLg && (
+            {isSm && !isMd && (
               <div className="mb-3 flex gap-2">
                 <ChipRectangle moveType="SMALL" size="sm" />
                 <ChipRectangle moveType="REQUEST" size="sm" />
@@ -39,48 +39,27 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
             )}
             <div className="flex justify-between">
               <div className="flex gap-6">
-                {isMd && (
-                  <Image
-                    className={isLg ? "h-[100px] w-[100px]" : isMd ? "h-[80px] w-[80px]" : "h-[64px] w-[64px]"}
-                    src={DriverImg}
-                    alt="driverImg"
-                  />
-                )}
-                {isMd && (
-                  <div className="lg:pt-[10px]">
-                    <div className="flex gap-[6px]">
-                      <Image src={DriverIcon} width={16} height={18} alt="driver_icon" />
-                      <p className="text-black-300 font-[Pretendard] text-[18px] leading-[26px] font-bold">
-                        김코드 기사님
-                      </p>
-                    </div>
-                    <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[14px] leading-[24px] font-normal text-ellipsis text-gray-500">
-                      이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.
+                <Image
+                  className={clsx(
+                    isLg ? "h-[100px] w-[100px]" : isMd ? "h-[80px] w-[80px]" : "h-[64px] w-[64px]",
+                    "order-2 rounded-[12px] md:order-1"
+                  )}
+                  src={DriverImg}
+                  alt="driverImg"
+                />
+
+                <div className="order-1 md:order-2 lg:pt-[10px]">
+                  <div className={clsx(isSm && !isMd && "flex-col", "flex gap-[6px]")}>
+                    <Image src={DriverIcon} width={16} height={18} alt="driver_icon" />
+                    <p className="text-black-300 font-[Pretendard] text-[16px] leading-[26px] font-bold md:text-[18px]">
+                      김코드 기사님
                     </p>
-                    {isMd && <ChipRectangle moveType="SMALL" size={isLg ? "md" : "sm"} className="mt-2" />}
                   </div>
-                )}
-                {isSm && !isMd && (
-                  <div className="lg:pt-[10px]">
-                    <div className="flex gap-[6px]">
-                      <Image src={DriverIcon} width={16} height={18} alt="driver_icon" />
-                      <p className="text-black-300 font-[Pretendard] text-[18px] leading-[26px] font-bold">
-                        김코드 기사님
-                      </p>
-                    </div>
-                    <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[14px] leading-[24px] font-normal text-ellipsis text-gray-500">
-                      이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.
-                    </p>
-                    {isMd && <ChipRectangle moveType="SMALL" size={isLg ? "md" : "sm"} className="mt-2" />}
-                  </div>
-                )}
-                {isSm && !isMd && (
-                  <Image
-                    className={isLg ? "h-[100px] w-[100px]" : isMd ? "h-[80px] w-[80px]" : "h-[64px] w-[64px]"}
-                    src={DriverImg}
-                    alt="driverImg"
-                  />
-                )}
+                  <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[12px] leading-[24px] font-normal text-ellipsis text-gray-500 md:text-[14px]">
+                    이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.
+                  </p>
+                  {isMd && <ChipRectangle moveType="SMALL" size={isLg ? "md" : "sm"} className="mt-2" />}
+                </div>
               </div>
 
               {isLg && <ReviewCost />}
@@ -91,16 +70,16 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                 onClick={() => setIsModal(true)}
                 type="orange"
                 text="리뷰 작성하기"
-                className="mt-10 md:h-[54px] md:text-[16px] md:font-medium"
+                className="mt-10 md:h-[54px] md:rounded-[12px] md:text-[16px] md:font-medium"
               />
             )}
-            {isSm && !isMd && !isLg && <ReviewCost className="border-line-200 mt-23 mb-5 border-t pt-3" />}
+            {isSm && !isMd && !isLg && <ReviewCost className="border-line-200 mt-18 mb-5 border-t pt-3" />}
             {isSm && !isMd && !isLg && (
               <Button
                 onClick={() => setIsModal(true)}
                 type="orange"
                 text="리뷰 작성하기"
-                className="w-[287px] sm:font-medium"
+                className="w-[287px] py-[16px] sm:rounded-[12px] sm:font-medium"
               />
             )}
           </div>

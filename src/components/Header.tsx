@@ -60,7 +60,7 @@ export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProp
             <p
               className={clsx(
                 active ? "text-black-500" : "text-gray-400",
-                "leading-[32px] font-semibold sm:font-[Pretendard] sm:text-[14px] md:text-[14px] lg:text-[20px]"
+                "text-[14px] leading-[24px] font-semibold lg:text-[20px] lg:leading-[32px]"
               )}
             >
               {label}
