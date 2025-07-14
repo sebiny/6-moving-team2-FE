@@ -17,7 +17,7 @@ function InputText({ setInputValid }: Props) {
   const CLASSES = {
     placeholder: ["placeholder:text-[16px] placeholder:leading-[26px] placeholder:text-gray-300"],
     focus: ["focus:border-[2px] focus:border-gray-300 focus:outline-none"],
-    md: ["md:w-[536px] md:placeholder:text-[18px] md:placeholder:leading-[32px]"]
+    lg: ["lg:w-[536px] lg:placeholder:text-[18px] lg:placeholder:leading-[32px] lg:px-6"]
   }; //object
 
   return (
@@ -28,10 +28,10 @@ function InputText({ setInputValid }: Props) {
         onBlur={() => setTouched(true)}
         placeholder="최소 10자 이상 입력해주세요"
         className={clsx(
-          "border-line-200 h-40 w-[327px] resize-none rounded-[16px] border bg-gray-50 px-6 py-[14px]",
+          "border-line-200 h-40 w-full resize-none rounded-[16px] border bg-gray-50 px-4 py-[14px]",
           CLASSES.placeholder,
           CLASSES.focus,
-          CLASSES.md,
+          CLASSES.lg,
           isInvalid && "border-[2px] border-red-300"
         )}
       ></textarea>
