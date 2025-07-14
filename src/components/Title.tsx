@@ -40,7 +40,7 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       <div className="text-lg font-semibold text-gray-900 md:hidden">{message}</div>
 
       {/* md 이상 */}
-      <div className="mb-2 flex-wrap gap-2 sm:hidden md:flex">
+      <div className="mb-4 flex-wrap gap-2 sm:hidden md:flex">
         {labels.map((label) => (
           <ChipRectangle key={label} moveType={label} size="md" />
         ))}
@@ -48,16 +48,16 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
 
       {/* md 이상 */}
       <div className="flex justify-between sm:hidden md:flex">
-        <p className="text-xl font-semibold text-gray-900">{message}</p>
+        <p className="text-2xl font-semibold text-gray-900">{message}</p>
         {status && <EstimateStatus status={status} />}
       </div>
 
       {/* 구분선 */}
-      <div className="my-5 border-t border-gray-100" />
+      <div className="my-6 border-t border-gray-100" />
 
       {/* 기사 정보 - 상단 */}
       <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-base text-gray-700">
+        <div className="flex items-center gap-2 text-base text-gray-700 lg:text-lg">
           <Image src="/assets/icons/ic_profileMark.svg" alt="기사마크" width={18} height={18} />
           <span className="font-semibold">{driver.name} 기사님</span>
         </div>
@@ -87,9 +87,9 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       {/* 하단 견적가 (선택적으로 표시) */}
       {estimatePrice !== undefined && estimatePrice !== null && (
         <>
-          <div className="my-5 border-t border-gray-100" />
+          <div className="my-6 border-t border-gray-100" />
           <div className="flex items-center justify-between md:justify-start md:gap-14">
-            <p className="text-lg font-medium text-gray-700">견적가</p>
+            <p className="text-xl font-semibold text-gray-700">견적가</p>
             <p className="text-2xl font-bold text-gray-900 sm:ml-2">{estimatePrice.toLocaleString()}원</p>
           </div>
         </>

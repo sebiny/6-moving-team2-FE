@@ -12,7 +12,7 @@ interface EstimateDetailProps {
 
 export default function EstimateDetail({ moveType, startAddress, endAddress, date, createdDate }: EstimateDetailProps) {
   return (
-    <div className="w-full rounded-xl bg-white md:pb-7">
+    <div className="w-full rounded-xl bg-white whitespace-nowrap md:pb-7">
       {/* 상단: 제목 + 생성일 */}
       <div className="mb-6 flex flex-col items-center justify-between md:mb-8 md:flex-row">
         <h2 className="text-lg font-bold text-gray-900 md:text-xl">견적 정보</h2>

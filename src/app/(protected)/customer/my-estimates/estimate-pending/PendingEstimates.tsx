@@ -14,13 +14,13 @@ const mockEstimateInfo = {
 
 export default function PendingEstimates() {
   return (
-    <>
+    <div className="mt-16 lg:mt-21">
       <EstimateSubHeader data={mockEstimateInfo} />
-      <div className="bg-background-200 grid grid-cols-1 gap-8 px-5 py-10 md:grid-cols-1 md:px-15 lg:grid-cols-2 lg:px-100 lg:py-30">
+      <div className="bg-background-200 grid grid-cols-1 gap-8 px-5 py-10 md:grid-cols-1 md:px-15 lg:grid-cols-2 lg:px-100 lg:py-20">
         {pendingData.map((item) => (
           <PendingCard key={item.id} data={item} />
         ))}
       </div>
-    </>
+    </div>
   );
 }
