@@ -1,24 +1,45 @@
-import React from "react";
+"use client";
+
+import Image from "next/image";
 
 interface CustomCheckboxProps {
   checked: boolean;
-  onChange: (checked: boolean) => void;
+  onChange?: (checked: boolean) => void;
+  shape?: "circle" | "square";
   className?: string;
 }
 
-export default function CustomCheckbox({ checked, onChange, className = "" }: CustomCheckboxProps) {
+export default function CustomCheckbox({ checked, onChange, shape = "circle", className = "" }: CustomCheckboxProps) {
+  const wrapperSize = shape === "square" ? "h-[36px] w-[36px]" : "h-[24px] w-[24px]";
+  const boxSize = shape === "square" ? "h-[20px] w-[20px]" : "h-[18px] w-[18px]";
+  const shapeStyle = shape === "circle" ? "rounded-full" : "rounded-[4px]";
+  const iconSize = shape === "square" ? { width: 10, height: 6 } : { width: 8, height: 5 };
+
+  const bgStyle = (() => {
+    if (checked) return "bg-orange-400";
+    if (shape === "circle") return "border border-line-200";
+    return "bg-gray-50 border border-line-200";
+  })();
+
+  const isSquare = shape === "square";
+
+  const handleClick = () => {
+    if (isSquare && onChange) {
+      onChange(!checked);
+    }
+  };
+
   return (
-    <button
-      type="button"
-      aria-checked={checked}
-      className={`w-9 h-9 relative overflow-hidden ${className}`}
-      onClick={() => onChange(!checked)}
-      tabIndex={0}
-    >
-      <div className={`w-5 h-5 left-[8px] top-[8px] absolute rounded ${checked ? "bg-red-500" : "bg-white"} transition border border-neutral-200`} />
-      {checked && (
-        <div className="w-2.5 h-1.5 left-[13px] top-[15px] absolute outline outline-2 outline-offset-[-1px] outline-white" />
-      )}
-    </button>
+    <div className={`${wrapperSize} flex shrink-0 items-center justify-center ${className}`} onClick={handleClick}>
+      <div
+        className={`flex items-center justify-center ${boxSize} ${shapeStyle} ${bgStyle} ${
+          isSquare ? "cursor-pointer" : "pointer-events-none"
+        }`}
+      >
+        {checked && (
+          <Image src="/assets/icons/ic_check.svg" alt="선택됨" width={iconSize.width} height={iconSize.height} />
+        )}
+      </div>
+    </div>
   );
 }
