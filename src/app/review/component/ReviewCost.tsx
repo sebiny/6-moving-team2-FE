@@ -5,9 +5,9 @@ interface CostType {
 }
 export default function ReviewCost({ className }: CostType) {
   const SIZE_CLASSES = {
-    base: ["font-[Pretendard] text-gray-500 font-medium"],
+    base: ["font-[Pretendard] text-gray-300 font-medium"],
     sm: ["text-[14px] leading-[24px]"],
-    lg: ["md:text-[16px] leading-[26px]"]
+    lg: ["md:text-[16px] leading-[26px] md:text-gray-500"]
   };
   const COST_CLASSES = {
     base: ["text-black-400 font-[Pretendard] font-bold"],
