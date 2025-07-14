@@ -1,5 +1,6 @@
 "use client";
 
+import CheckBox from "@/components/button/CustomCheckbox";
 import Image from "next/image";
 
 interface MoveTypeCardProps {
@@ -26,24 +27,18 @@ export default function MoveTypeCard({ label, description, selected, onClick }: 
         selected
           ? "border-[var(--color-orange-400)] bg-[var(--color-orange-100)]"
           : "border-transparent bg-[var(--color-background-200)]"
-      } h-[160px] w-[327px] md:h-[222px] md:w-[198.67px] lg:h-[222px] lg:w-[256px]`}
+      } h-[160px] w-[327px] md:h-[222px] md:w-50 lg:h-[222px] lg:w-[256px]`}
     >
       <div className="flex h-full w-full flex-row justify-between md:flex-col">
         <div className="flex flex-col gap-2 md:flex-grow md:flex-row md:items-start">
           {/* 체크박스 */}
-          <div className="h-6 w-6 shrink-0">
-            <div
-              className={`flex h-[18px] w-[18px] items-center justify-center rounded-full ${
-                selected ? "bg-[var(--color-orange-400)]" : "border border-gray-100 bg-[var(--color-background-200)]"
-              }`}
-            >
-              {selected && <Image src="/assets/icons/ic_check.svg" alt="선택됨" width={8} height={5} />}
-            </div>
-          </div>
+          <CheckBox checked={selected} />
 
           {/* 텍스트 */}
           <div className="flex flex-col">
-            <p className={`font-semibold ${selected ? "text-[var(--color-orange-400)]" : "text-black"}`}>{label}</p>
+            <p className={`leading-6 font-semibold ${selected ? "text-[var(--color-orange-400)]" : "text-black"}`}>
+              {label}
+            </p>
             <p className={`text-sm ${selected ? "text-[var(--color-orange-400)]" : "text-gray-500"}`}>{description}</p>
           </div>
         </div>

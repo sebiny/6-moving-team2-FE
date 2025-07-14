@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import CalenderDropdown from "./_components/CalenderDropdown";
-import MoveTypeCard from "./_components/MoveTypeCard";
-import AddressCardModal from "./_components/AddressCardModal";
+import CalenderDropdown from "./_components/dropdown/CalenderDropdown";
+import MoveTypeCard from "./_components/card/MoveTypeCard";
+import AddressCardModal from "./_components/modal/AddressCardModal";
 import Button from "@/components/Button";
 import { AddressSummary } from "@/utills/AddressSummary";
 import { Address } from "@/types/Address";
