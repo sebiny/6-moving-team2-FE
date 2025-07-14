@@ -1,4 +1,4 @@
-import ChipCircle from "../../../../../components/chip/ChipCircle";
+import ChipCircle from "@/components/chip/ChipCircle";
 
 interface AddressResultCardProps {
   postalCode: string;

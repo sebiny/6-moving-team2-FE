@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Button from "@/components/Button";
-import AddressResultCard from "./AddressResultCard";
+import AddressResultCard from "../card/AddressResultCard";
 import DaumPostcodeModal from "./DaumPostcodeModal";
 import { Address } from "@/types/Address";
 
@@ -128,14 +128,14 @@ export default function AddressCardModal({
           onComplete={(addr) => {
             console.log("주소 확인", addr);
             const newAddress: Address = {
-              id: Date.now(), // 실제로는 백엔드 응답 id 사용
+              id: Date.now(), //TODO: 실제로는 백엔드 응답 id 사용하도록 수정
               postalCode: addr.zonecode,
               roadAddress: addr.roadAddress,
               jibunAddress: addr.jibunAddress
             };
 
             setAddressList((prev) => [...prev, newAddress]);
-            setSelectedIndex(addressList.length); // 자동 선택
+            setSelectedIndex(addressList.length);
           }}
         />
       )}
