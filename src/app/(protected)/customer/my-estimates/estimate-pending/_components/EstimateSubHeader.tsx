@@ -17,7 +17,7 @@ export default function EstimateSubHeader({ data }: EstimateSubHeaderProps) {
   const { label, requestDate, from, to, date } = data;
 
   return (
-    <div className="sticky top-[20px] z-20 bg-white p-6 shadow-sm md:px-17 md:py-5 lg:px-90 lg:py-8">
+    <div className="bg-white p-6 shadow-sm md:px-17 md:py-5 lg:px-90 lg:py-8">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         {/* 왼쪽: 제목 + 신청일 */}
         <div className="flex flex-col gap-1">

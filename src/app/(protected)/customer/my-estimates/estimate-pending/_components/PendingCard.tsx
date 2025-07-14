@@ -5,13 +5,20 @@ import { PendingData } from "./PendingData";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import Button from "@/components/Button";
 import EstimateStatus from "@/components/chip/EstimateStatus";
+import { useRouter } from "next/navigation";
 
 interface Props {
   data: PendingData;
 }
 
 export default function PendingCard({ data }: Props) {
-  const { driver, message, price, labels, status } = data;
+  const { driver, message, price, labels, status, id } = data;
+
+  const router = useRouter();
+
+  const ClickDetail = () => {
+    router.push(`/customer/my-estimates/estimate-pending/${id}`);
+  };
 
   return (
     <div className="w-full space-y-6 rounded-2xl bg-white shadow-lg sm:p-5 md:px-8 md:py-6 lg:px-10 lg:py-6">
@@ -98,7 +105,7 @@ export default function PendingCard({ data }: Props) {
 
         {/* 상세보기 버튼 */}
         <div className="order-2 w-full md:order-1 md:w-1/2">
-          <Button type="white-orange" text="상세보기" />
+          <Button type="white-orange" text="상세보기" onClick={ClickDetail} />
         </div>
       </div>
     </div>

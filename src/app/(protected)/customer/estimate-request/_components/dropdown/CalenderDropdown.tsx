@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import DatePicker from "./DatePicker";
+import DatePicker from "../datepicker/DatePicker";
 
 interface CalenderDropdownProps {
   date: Date | null;

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import MoveTypeCard from "./_components/MoveTypeCard";
-import MobileDatePicker from "./_components/MobileDatePicker";
-import AddressCardModal from "./_components/AddressCardModal";
+import MoveTypeCard from "./_components/card/MoveTypeCard";
+import MobileDatePicker from "./_components/datepicker/MobileDatePicker";
+import AddressCardModal from "./_components/modal/AddressCardModal";
 import Button from "@/components/Button";
 import { AddressSummary } from "@/utills/AddressSummary";
 import { Address } from "@/types/Address";
@@ -27,6 +27,10 @@ export default function MobileEstimateForm() {
   const isValidStep3 = !!addressFrom && !!addressTo;
 
   const stepList = [1, 2, 3];
+
+  const handleMoveTypeSelect = (label: string) => {
+    setMoveType((prev) => (prev === label ? null : label));
+  };
 
   return (
     <main className="mt-[90px] min-h-screen justify-center bg-white px-6">
@@ -61,7 +65,7 @@ export default function MobileEstimateForm() {
                   label={label}
                   description={description}
                   selected={moveType === label}
-                  onClick={() => setMoveType(label)}
+                  onClick={() => handleMoveTypeSelect(label)}
                 />
               ))}
             </div>
