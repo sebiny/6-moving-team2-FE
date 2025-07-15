@@ -5,7 +5,7 @@ import CalenderDropdown from "./_components/dropdown/CalenderDropdown";
 import MoveTypeCard from "./_components/card/MoveTypeCard";
 import AddressCardModal from "./_components/modal/AddressCardModal";
 import Button from "@/components/Button";
-import { AddressSummary } from "@/utills/AddressSummary";
+import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
 
 const moveTypes = [
@@ -121,7 +121,7 @@ export default function DesktopEstimateForm() {
             setShowModal(null);
           }}
           onChange={() => {}}
-          selectedValue={showModal === "from" ? addressFrom?.roadAddress || "" : addressTo?.roadAddress || ""}
+          selectedAddress={showModal === "from" ? addressFrom : addressTo}
         />
       )}
     </div>
