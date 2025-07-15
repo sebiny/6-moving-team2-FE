@@ -1,10 +1,10 @@
-//  fetch-client 간단 사용법 await fetch(); 형태 말고 import { defaultFetch, cookieFetch } from "./fetch-client"; 한다음
+//  FetchClient 간단 사용법 await fetch(); 형태 말고 import { defaultFetch, cookieFetch } from "./fetch-client"; 한다음
 //  인증이 필요없으면 await defaultFetch(); 인증이 필요하면 await cookieFetch();
 
 //  AuthProvider 실시간 인증 상태 관리 사용법
 //  import { useAuth } from "@/providers/AuthProvider"; 이후에
 //  const { user, isLoading } = useAuth(); 하고 if (user) 면 로그인 상태 if (!user)면 로그아웃 상태
-import { parseBackendError } from "./utils/error-parser";
+import { parseBackendError } from "../utills/ErrorParser";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -18,6 +18,7 @@ export const authUtils = {
       } catch (e) {}
     }
   },
+
   getAccessToken: (): string | null => {
     if (typeof window !== "undefined") {
       try {
@@ -30,6 +31,7 @@ export const authUtils = {
     }
     return null;
   },
+
   clearAccessToken: (): void => {
     if (typeof window !== "undefined") {
       try {
@@ -37,6 +39,7 @@ export const authUtils = {
       } catch (e) {}
     }
   },
+
   refreshAccessToken: async (): Promise<string> => {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/refresh-token`, {
@@ -74,6 +77,7 @@ export const defaultFetch = async <T = any>(endpoint: string, options: RequestIn
     "Content-Type": "application/json",
     ...(options.headers as Record<string, string>)
   };
+
   let processedBody = options.body;
 
   if (
@@ -96,24 +100,18 @@ export const defaultFetch = async <T = any>(endpoint: string, options: RequestIn
     headers: requestHeaders,
     body: processedBody as BodyInit
   };
+
   const response = await fetch(url, config);
 
-  if (response.status === 204) {
-    return null;
-  }
+  if (response.status === 204) return null;
 
   const responseText = await response.text();
 
   if (!response.ok) {
-    const error = new Error(`API 오류 ${response.status}${responseText ? `: ${responseText.substring(0, 100)}` : ""}`);
-
-    (error as any).status = response.status;
-    throw error;
+    throw new Error(parseBackendError(response.status, responseText));
   }
 
-  if (!responseText) {
-    return null;
-  }
+  if (!responseText) return null;
 
   try {
     return JSON.parse(responseText) as T;
@@ -126,11 +124,6 @@ export const cookieFetch = async <T = any>(endpoint: string, options: RequestIni
   let accessToken = authUtils.getAccessToken();
   const url = `${API_BASE_URL}${endpoint}`;
 
-  // 1. 액세스 토큰이 없으면 '로그인 안 함'으로 간주하고 바로 에러 발생
-  if (!accessToken) {
-    throw new Error("로그인이 필요합니다.");
-  }
-
   const performFetchWithToken = async (token: string): Promise<Response> => {
     const requestHeaders: Record<string, string> = {
       "Content-Type": "application/json",
@@ -139,17 +132,11 @@ export const cookieFetch = async <T = any>(endpoint: string, options: RequestIni
     };
     let processedBody = options.body;
 
-    if (processedBody instanceof FormData) {
-      delete (requestHeaders as Record<string, string>)["Content-Type"];
-    } else {
-      requestHeaders["Content-Type"] = "application/json";
-    }
-
     if (
       processedBody &&
       typeof processedBody === "object" &&
       !(processedBody instanceof FormData) &&
-      ((requestHeaders as Record<string, string>)["Content-Type"] || "").toLowerCase().includes("application/json")
+      (requestHeaders["Content-Type"] || "").toLowerCase().includes("application/json")
     ) {
       try {
         processedBody = JSON.stringify(processedBody);
@@ -157,8 +144,9 @@ export const cookieFetch = async <T = any>(endpoint: string, options: RequestIni
         throw new Error("요청 데이터 JSON 변환 실패");
       }
     } else if (processedBody instanceof FormData) {
-      delete (requestHeaders as Record<string, string>)["Content-Type"];
+      delete requestHeaders["Content-Type"];
     }
+
     const config: RequestInit = {
       ...options,
       headers: requestHeaders,
@@ -186,21 +174,15 @@ export const cookieFetch = async <T = any>(endpoint: string, options: RequestIni
     }
   }
 
-  if (response.status === 204) {
-    return null;
-  }
+  if (response.status === 204) return null;
 
   const responseText = await response.text();
 
   if (!response.ok) {
-    const error = new Error(`API 오류 ${response.status}${responseText ? `: ${responseText.substring(0, 100)}` : ""}`);
-    (error as any).status = response.status;
-    throw error;
+    throw new Error(parseBackendError(response.status, responseText));
   }
 
-  if (!responseText) {
-    return null;
-  }
+  if (!responseText) return null;
 
   try {
     return JSON.parse(responseText) as T;

@@ -1,4 +1,4 @@
-import { defaultFetch, cookieFetch, authUtils } from "../fetch-client";
+import { defaultFetch, cookieFetch, authUtils } from "../FetchClient";
 import { User } from "@/providers/AuthProvider";
 import { UserType } from "@/types/UserType";
 
