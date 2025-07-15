@@ -4,13 +4,20 @@ import Image from "next/image";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import EstimateStatus from "@/components/chip/EstimateStatus";
 import { ReceivedEstimateItem } from "./ReceivedEstimateData";
+import { useRouter } from "next/navigation";
 
 interface Props {
   data: ReceivedEstimateItem;
 }
 
 export default function ReceivedEstimate({ data }: Props) {
-  const { labels, driver, message, price, status } = data;
+  const { labels, driver, message, price, status, id } = data;
+
+  const router = useRouter();
+
+  const ClickDetail = () => {
+    router.push(`/customer/my-estimates/estimate-past/${id}`);
+  };
 
   return (
     <div className="w-full space-y-3 bg-white md:space-y-4">
@@ -31,7 +38,12 @@ export default function ReceivedEstimate({ data }: Props) {
 
       {/* 소개 메시지 */}
       <div className="flex items-center justify-between">
-        <p className="text-base font-semibold text-gray-800 md:text-xl">{message}</p>
+        <p
+          onClick={ClickDetail}
+          className="cursor-pointer text-base font-semibold text-gray-800 hover:text-orange-400 hover:underline md:text-xl"
+        >
+          {message}
+        </p>
         <div className="hidden md:block">
           <EstimateStatus status={status} />
         </div>

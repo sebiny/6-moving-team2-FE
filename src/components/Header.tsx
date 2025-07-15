@@ -32,8 +32,8 @@ export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProp
     active: item.idx === selectedIdx
   }));
   const SIZE_CLASSES = {
-    base: ["lg:px-90 lg:gap-8 lg:pt-26"],
-    sm: ["sm:gap-6 sm:px-6 sm:pt-[54px]"],
+    base: ["lg:px-90 lg:gap-8 lg:pt-4"],
+    sm: ["sm:gap-6 sm:px-6"],
     md: ["md:gap-6 md:px-18"]
   }; //object
 
@@ -51,7 +51,7 @@ export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProp
           <div
             key={idx}
             className={clsx(
-              "flex items-center justify-center gap-6 self-stretch py-[15px] lg:py-4",
+              "flex items-center justify-center gap-6 self-stretch sm:py-[10px] md:py-[15px] lg:py-4",
               active && "border-black-500 border-b-[2px]",
               "cursor-pointer"
             )}
@@ -60,7 +60,7 @@ export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProp
             <p
               className={clsx(
                 active ? "text-black-500" : "text-gray-400",
-                "leading-[32px] font-semibold sm:font-[Pretendard] sm:text-[14px] md:text-[14px] lg:text-[20px]"
+                "text-[14px] leading-[24px] font-semibold lg:text-[20px] lg:leading-[32px]"
               )}
             >
               {label}
