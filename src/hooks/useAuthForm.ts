@@ -1,14 +1,13 @@
 "use client";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
-import { parseBackendError } from "@/lib/utils/error-parser";
+import { parseBackendError } from "@/utills/ErrorParser";
 import { UserType } from "@/types/UserType";
 
 export function useLoginForm() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,13 +15,26 @@ export function useLoginForm() {
     e.preventDefault();
     try {
       await login(email, password);
-      router.push("/");
+      // 로그인 성공하면 useEffect에서 user 상태 확인 후 라우팅 처리
     } catch (error: any) {
       console.error("Login failed:", error);
       const message = parseBackendError(error.status, error.message);
       alert(message);
     }
   };
+
+  // 로그인 후 user가 설정되었을 때 유저 타입에 따라 이동
+  useEffect(() => {
+    if (!user) return;
+
+    if (user.userType === UserType.CUSTOMER) {
+      router.push("/customer/profile");
+    } else if (user.userType === UserType.DRIVER) {
+      router.push("/driver/profile");
+    } else {
+      router.push("/");
+    }
+  }, [user, router]);
 
   return {
     email,

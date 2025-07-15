@@ -1,6 +1,6 @@
 "use client";
 
-import { useLoginForm } from "@/hooks/UseAuthForm";
+import { useLoginForm } from "@/hooks/useAuthForm";
 
 export default function LoginCustomer() {
   const { email, setEmail, password, setPassword, onSubmit } = useLoginForm();

@@ -25,10 +25,12 @@ export default function DevNav() {
 
     // 고객 관련 라우트 (@customer)
     { path: "/member/my-estimates/favorite-drivers", name: "찜한 기사님", group: "customer" },
+    { path: "/customer/profile", name: "고객프로필생성", group: "customer" },
 
     // 기사 관련 라우트 (@driver)
     { path: "/driver/received-requests", name: "받은 요청", group: "driver" },
     { path: "/driver/my-page", name: "마이페이지", group: "driver" },
+    { path: "/driver/profile", name: "기사프로필생성", group: "driver" },
 
     // 게스트 관련 라우트 (@guest)
     { path: "/drivers", name: "페이지명", group: "guest" }

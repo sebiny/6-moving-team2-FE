@@ -1,6 +1,6 @@
 "use client";
 
-import { useSignupForm } from "@/hooks/UseAuthForm";
+import { useSignupForm } from "@/hooks/useAuthForm";
 import { UserType } from "@/types/UserType";
 
 export default function SignupCustomer() {
