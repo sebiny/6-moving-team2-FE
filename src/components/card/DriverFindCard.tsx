@@ -3,23 +3,48 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import LikeIcon from "@/components/icon/LikeIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { DriverType } from "@/constant/driverType";
+import CustomCheckbox from "../button/CustomCheckbox";
 
 interface DriverFindCardType {
   driver: DriverType;
+  isFavoritePage?: boolean; // 찜한 기사님 페이지 여부
+  checked?: boolean; // 전체 선택 체크 상태
+  onCheckChange?: (val: boolean) => void; // 전체 선택용 변경 핸들러
 }
 
-function DriverFindCard({ driver }: DriverFindCardType) {
+function DriverFindCard({ driver, isFavoritePage = false, checked = false, onCheckChange }: DriverFindCardType) {
   const router = useRouter();
 
   const handleClick = () => {
+    if (isFavoritePage) return; // 찜한 기사님 페이지일 시, 클릭 막기
     router.push(`/drivers/${driver.id}`);
   };
 
   return (
-    <div className="border-line-100 rounded-2xl border bg-white p-5 shadow-sm" onClick={handleClick}>
-      <ChipRectangle moveType="SMALL" />
+    <div className="border-line-100 relative rounded-2xl border bg-white p-5 shadow-sm" onClick={handleClick}>
+      {/* 체크박스 (우측 상단) */}
+      {isFavoritePage && (
+        <div className="absolute top-4 right-4">
+          <CustomCheckbox checked={checked} onChange={onCheckChange} shape="square" />
+        </div>
+      )}
+
+      {/* sm */}
+      <div className="flex gap-2 md:hidden">
+        {driver.services.map((service) => (
+          <ChipRectangle key={service} moveType={service} size="sm" />
+        ))}
+      </div>
+
+      {/* md 이상 */}
+      <div className="hidden gap-2 md:flex">
+        {driver.services.map((service) => (
+          <ChipRectangle key={service} moveType={service} size="md" />
+        ))}
+      </div>
+
       <div className="mt-3 flex gap-5">
         <Image
           src="/assets/images/img_profile.svg"

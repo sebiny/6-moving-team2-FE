@@ -20,7 +20,7 @@ export default function EstimateDetailInfo({ requestDate, serviceType, moveDate,
   ];
 
   return (
-    <section className="flex flex-col gap-7 px-6 py-6 md:px-0 md:py-0">
+    <section className="flex flex-col gap-7">
       <h2 className="text-xl font-semibold text-black">견적 정보</h2>
 
       <div className="flex flex-col gap-3 md:gap-5">
