@@ -10,6 +10,7 @@ import PageHeader from "@/components/common/PageHeader";
 import CustomCheckbox from "@/components/button/CustomCheckbox";
 import imgEmptyReview from "/public/assets/images/img_empty_review.svg";
 import Image from "next/image";
+import SendEstimateModal from "./_components/SendEstimateModal";
 
 const dummyRequests: Request[] = [
   {
@@ -38,12 +39,44 @@ export default function ReceivedRequestsPage() {
   const [showEmpty, setShowEmpty] = useState(false); // dev only
   const [isDesignatedChecked, setIsDesignatedChecked] = useState(false);
   const [isAvailableRegionChecked, setIsAvailableRegionChecked] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
+  // 상단 useState 정의
+  const [sort, setSort] = useState("rating");
+
   const requests = showEmpty
     ? []
     : [...dummyRequests, ...dummyRequests].map((item, idx) => ({ ...item, id: `${item.id}-${idx}` }));
 
+  const handleSendEstimate = (request: Request) => {
+    setSelectedRequest(request);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedRequest(null);
+  };
+
+  const handleSubmitEstimate = (price: number, comment: string) => {
+    // 실제 전송 로직은 추후 구현
+    alert(`견적가: ${price}, 코멘트: ${comment}`);
+    handleCloseModal();
+  };
+
   return (
-    <div className="flex min-h-screen justify-center bg-gray-50 px-4 py-10 pt-25">
+    <div className="flex min-h-screen justify-center bg-gray-50 px-4">
+      <SendEstimateModal
+        open={modalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitEstimate}
+        moveType={selectedRequest?.moveType ?? ""}
+        isDesignated={selectedRequest?.isDesignated ?? false}
+        customerName={selectedRequest?.customerName ?? ""}
+        fromAddress={selectedRequest?.fromAddress ?? ""}
+        toAddress={selectedRequest?.toAddress ?? ""}
+        moveDate={selectedRequest?.moveDate ?? ""}
+      />
       <div className="flex flex-col gap-6">
         <PageHeader title="받은 요청" />
         {/* DEV ONLY: 빈 페이지 토글 버튼 */}
@@ -84,7 +117,11 @@ export default function ReceivedRequestsPage() {
                 <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
               </label>
             </div>
-            <SortDropdown sortings={["평점 높은순", "이사 빠른순", "요청일 빠른순"]} sort="평점 높은순" />
+            <SortDropdown
+              sortings={["rating", "date", "request"]}
+              sort={sort}
+              setSort={setSort}
+            />
           </div>
         </div>
         {requests.length === 0 ? (
@@ -103,7 +140,7 @@ export default function ReceivedRequestsPage() {
             </div>
           </div>
         ) : (
-          <RequestCardList requests={requests} />
+          <RequestCardList requests={requests} onSendEstimate={handleSendEstimate} />
         )}
       </div>
     </div>
