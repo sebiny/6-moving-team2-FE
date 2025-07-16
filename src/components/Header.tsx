@@ -25,8 +25,8 @@ export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProp
         ]
       : type === "driver-estimate"
         ? [
-            { idx: "1", label: "보낸 견적 조회" },
-            { idx: "2", label: "반려 요청" }
+            { idx: "sent", label: "보낸 견적 조회" },
+            { idx: "rejected", label: "반려 요청" }
           ]
         : [
             { idx: "1", label: "작성 가능한 리뷰" },
