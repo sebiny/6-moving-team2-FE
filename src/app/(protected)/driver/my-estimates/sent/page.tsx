@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import CustomerEstimateCard from "@/app/(protected)/driver/my-estimates/sent/_components/CustomerEstimateCard";
 import CompletedEstimateCard from "@/app/(protected)/driver/my-estimates/sent/_components/CompletedEstimateCard";
@@ -65,16 +65,16 @@ const dummySentEstimates: SentEstimate[] = [
 ];
 
 export default function SentEstimatesPage() {
-  const [selectedIdx, setSelectedIdx] = useState("1");
   const router = useRouter();
+  const pathname = usePathname();
+
+  // 현재 URL에 따라 selectedIdx 초기값 설정
+  const currentTab = pathname.split("/").pop(); // 'sent' or 'rejected'
+  const [selectedIdx, setSelectedIdx] = useState(currentTab ?? "sent");
 
   const handleTabChange = (idx: string) => {
     setSelectedIdx(idx);
-    if (idx === "1") {
-      router.push("/driver/my-estimates/sent");
-    } else if (idx === "2") {
-      router.push("/driver/my-estimates/rejected");
-    }
+    router.push(`/driver/my-estimates/${idx}`);
   };
 
   const estimates = [...dummySentEstimates, ...dummySentEstimates].map((item, idx) => ({

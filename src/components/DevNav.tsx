@@ -34,6 +34,7 @@ export default function DevNav() {
     { path: "/driver/received-requests", name: "받은 요청", group: "driver" },
     { path: "/driver/my-estimates/sent", name: "보낸견적조회", group: "driver" },
     { path: "/driver/my-estimates/sent/1", name: "견적상세", group: "driver" },
+    { path: "/driver/my-estimates/rejected", name: "반려 요청", group: "driver" },
     { path: "/driver/my-page", name: "마이페이지", group: "driver" },
     { path: "/driver/profile", name: "기사프로필생성", group: "driver" },
 
