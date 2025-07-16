@@ -3,13 +3,17 @@
 import FilterDropdown from "@/components/dropdown/FilterDropdown";
 import React, { useState } from "react";
 
-function Filters() {
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedService, setSelectedService] = useState("");
+interface FiltersType {
+  region: string;
+  setRegion: (value: string) => void;
+  service: string;
+  setService: (value: string) => void;
+}
 
+function Filters({ region, setRegion, service, setService }: FiltersType) {
   const handleClick = () => {
-    setSelectedRegion("");
-    setSelectedService("");
+    setRegion("");
+    setService("");
   };
 
   return (
@@ -36,15 +40,15 @@ function Filters() {
             "부산",
             "제주"
           ]}
-          selected={selectedRegion}
-          onSelect={setSelectedRegion}
+          selected={region}
+          onSelect={setRegion}
           isMultiColumn
         />
         <FilterDropdown
           label="서비스"
           options={["소형이사", "가정이사", "사무실이사"]}
-          selected={selectedService}
-          onSelect={setSelectedService}
+          selected={service}
+          onSelect={setService}
         />
       </div>
       <p className="hidden cursor-pointer text-gray-300 lg:block" onClick={handleClick}>

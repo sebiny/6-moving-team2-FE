@@ -3,8 +3,8 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import LikeIcon from "@/components/icon/LikeIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { DriverType } from "@/types/driverType";
 import React, { useState } from "react";
-import { DriverType } from "@/constant/driverType";
 import CustomCheckbox from "../button/CustomCheckbox";
 
 interface DriverFindCardType {
@@ -32,18 +32,18 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
       )}
 
       {/* sm */}
-      <div className="flex gap-2 md:hidden">
+      {/* <div className="flex gap-2 md:hidden">
         {driver.services.map((service) => (
           <ChipRectangle key={service} moveType={service} size="sm" />
         ))}
-      </div>
+      </div> */}
 
       {/* md 이상 */}
-      <div className="hidden gap-2 md:flex">
+      {/* <div className="hidden gap-2 md:flex">
         {driver.services.map((service) => (
           <ChipRectangle key={service} moveType={service} size="md" />
         ))}
-      </div>
+      </div> */}
 
       <div className="mt-3 flex gap-5">
         <Image
@@ -81,7 +81,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                   <div className="flex gap-1">
                     <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={20} height={20} />
                     <p>5.0</p>
-                    <p className="text-gray-300">(178)</p>
+                    <p className="text-gray-300">({driver.reviewsReceived?.length ?? 0})</p>
                   </div>
                   <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
                   <div className="flex gap-1">
