@@ -9,6 +9,7 @@ import ChipRectangle from "../../components/chip/ChipRectangle";
 import { MoveType } from "../../constant/moveTypes";
 import OrangeBackground from "@/components/OrangeBackground";
 import DriverFindCard from "@/components/card/DriverFindCard";
+import FilterSection from "@/components/filter/FilterSection";
 import { driver } from "@/constant/constant";
 
 // Title 더미데이터
@@ -72,6 +73,11 @@ function CommonPage() {
           />
         </div>
       ))}
+
+      {/* 기사님 -> 받은 요청 필터 버튼 */}
+      <div className="flex">
+        <FilterSection />
+      </div>
 
       {/* ChipCircle 보여주기 */}
       <div className="flex gap-2">
