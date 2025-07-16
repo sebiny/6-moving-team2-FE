@@ -3,7 +3,7 @@ import WritingIcon from "./icon/WritingIcon";
 
 interface ButtonType {
   text: string;
-  type: "orange" | "gray" | "white-orange" | "white-gray";
+  type: "orange" | "gray" | "white-orange" | "white-gray" | "outline";
   image?: boolean;
   className?: string;
   isDisabled?: boolean;
@@ -18,6 +18,8 @@ function Button({ text, type, image = false, className = "w-full", isDisabled = 
     color = "bg-orange-400 text-white";
   } else if (type === "white-orange") {
     color = "border border-orange-400 text-orange-400";
+  } else if (type === "outline") {
+    color = "bg-rose-50 border border-red-500 text-red-500 shadow-[4px_4px_10px_0px_rgba(195,217,242,0.20)]";
   } else {
     color = "border border-gray-300 text-gray-300";
   }

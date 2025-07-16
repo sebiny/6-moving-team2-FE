@@ -2,17 +2,17 @@
 
 import React from "react";
 import { Request } from "@/types/request";
-import RequestCard from "../../../../../components/driver/RequestCardBase";
+import ReceivedRequestCard from "./ReceivedRequestCard";
 
-interface RequestCardListProps {
+interface ReceivedRequestCardListProps {
   requests: Request[];
 }
 
-export default function RequestCardList({ requests }: RequestCardListProps) {
+export default function ReceivedRequestCardList({ requests }: ReceivedRequestCardListProps) {
   return (
-    <div className="self-stretch grid grid-cols-2 gap-6">
+    <div className="grid grid-cols-2 gap-6 self-stretch">
       {requests.map((request) => (
-        <RequestCard key={request.id} request={request} variant="received" />
+        <ReceivedRequestCard key={request.id} request={request} />
       ))}
     </div>
   );
