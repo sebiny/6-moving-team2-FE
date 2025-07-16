@@ -10,7 +10,6 @@ import { MoveType } from "../../constant/moveTypes";
 import OrangeBackground from "@/components/OrangeBackground";
 import DriverFindCard from "@/components/card/DriverFindCard";
 import { driver } from "@/constant/driverType";
-import { useState } from "react";
 import FilterSection from "@/components/filter/FilterSection";
 
 // Title 더미데이터
