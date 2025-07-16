@@ -35,13 +35,24 @@ const dummyRequests: Request[] = [
 ];
 
 export default function ReceivedRequestsPage() {
-  const [checked, setChecked] = useState(false);
-  const requests = [...dummyRequests, ...dummyRequests].map((item, idx) => ({ ...item, id: `${item.id}-${idx}` }));
+  const [showEmpty, setShowEmpty] = useState(false); // dev only
+  const [isDesignatedChecked, setIsDesignatedChecked] = useState(false);
+  const [isAvailableRegionChecked, setIsAvailableRegionChecked] = useState(false);
+  const requests = showEmpty
+    ? []
+    : [...dummyRequests, ...dummyRequests].map((item, idx) => ({ ...item, id: `${item.id}-${idx}` }));
 
   return (
     <div className="flex min-h-screen justify-center bg-gray-50 px-4 py-10 pt-25">
       <div className="flex flex-col gap-6">
         <PageHeader title="받은 요청" />
+        {/* DEV ONLY: 빈 페이지 토글 버튼 */}
+        <button
+          className="mb-2 self-end rounded bg-gray-200 px-3 py-1 text-xs text-gray-700 hover:bg-gray-300"
+          onClick={() => setShowEmpty((v) => !v)}
+        >
+          {showEmpty ? "요청 목록 보기" : "빈 페이지 보기 (DEV)"}
+        </button>
         <SearchBar width="w-full" placeholder="어떤 고객님을 찾고 계세요?" />
         <div className="inline-flex items-start justify-start gap-3">
           <ChipCircle type="region" text="소형이사" color="gray" />
@@ -61,11 +72,11 @@ export default function ReceivedRequestsPage() {
             {/* 체크박스 2개 */}
             <div className="flex gap-4">
               <label className="flex items-center gap-2">
-                <CustomCheckbox checked={checked} onChange={setChecked} />
+                <CustomCheckbox checked={isDesignatedChecked} onChange={setIsDesignatedChecked} />
                 <span className="text-base font-normal text-neutral-900">지정 견적 요청</span>
               </label>
               <label className="flex items-center gap-2">
-                <CustomCheckbox checked={checked} onChange={setChecked} />
+                <CustomCheckbox checked={isAvailableRegionChecked} onChange={setIsAvailableRegionChecked} />
                 <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
               </label>
             </div>
