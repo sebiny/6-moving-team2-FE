@@ -10,6 +10,8 @@ import { MoveType } from "../../constant/moveTypes";
 import OrangeBackground from "@/components/OrangeBackground";
 import DriverFindCard from "@/components/card/DriverFindCard";
 import { driver } from "@/constant/driverType";
+import { useState } from "react";
+import FilterSection from "@/components/filter/FilterSection";
 
 // Title 더미데이터
 const mockData = [
@@ -72,6 +74,11 @@ function CommonPage() {
           />
         </div>
       ))}
+
+      {/* 기사님 -> 받은 요청 필터 버튼 */}
+      <div className="flex">
+        <FilterSection />
+      </div>
 
       {/* ChipCircle 보여주기 */}
       <div className="flex gap-2">
