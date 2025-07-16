@@ -34,7 +34,7 @@ export default function FavoriteDrivers() {
       </div>
 
       {/* 실제 내용 */}
-      <div className="mt-13 flex flex-1 flex-col gap-6 px-7 py-10 md:px-15 lg:mt-15 lg:px-70 lg:py-15">
+      <div className="mt-13 flex flex-1 flex-col gap-6 px-7 py-10 md:px-15 lg:mt-15 lg:px-100 lg:py-15">
         <div className="flex justify-between">
           <div className="flex">
             <CustomCheckbox checked={isAllChecked} onChange={(val) => toggleAll(val)} shape="square" />

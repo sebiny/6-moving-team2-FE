@@ -4,7 +4,7 @@ import { useState } from "react";
 import PendingEstimates from "./estimate-pending/page";
 import PastEstimates from "./estimate-past/page";
 import FavoriteDrivers from "./favorite-drivers/FavoriteDrivers";
-import Header from "./_components/Header"; // pt 조절 수정되면 다시 공통으로 파일 주소 바꾸기
+import Header from "@/components/Header";
 
 export default function MyEstimatePage() {
   const [selectedIdx, setSelectedIdx] = useState("1");
