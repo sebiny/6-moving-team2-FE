@@ -4,7 +4,7 @@ import LikeIcon from "@/components/icon/LikeIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { DriverType } from "@/constant/driverType";
+import { DriverType } from "@/types/driverType";
 
 interface DriverFindCardType {
   driver: DriverType;

@@ -9,7 +9,7 @@ import ChipRectangle from "../../components/chip/ChipRectangle";
 import { MoveType } from "../../constant/moveTypes";
 import OrangeBackground from "@/components/OrangeBackground";
 import DriverFindCard from "@/components/card/DriverFindCard";
-import { driver } from "@/constant/driverType";
+import { driver } from "@/constant/constant";
 
 // Title 더미데이터
 const mockData = [
