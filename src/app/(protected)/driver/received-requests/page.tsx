@@ -72,11 +72,15 @@ export default function ReceivedRequestsPage() {
             {/* 체크박스 2개 */}
             <div className="flex gap-4">
               <label className="flex items-center gap-2">
-                <CustomCheckbox checked={isDesignatedChecked} onChange={setIsDesignatedChecked} />
+                <CustomCheckbox checked={isDesignatedChecked} onChange={setIsDesignatedChecked} shape="square" />
                 <span className="text-base font-normal text-neutral-900">지정 견적 요청</span>
               </label>
               <label className="flex items-center gap-2">
-                <CustomCheckbox checked={isAvailableRegionChecked} onChange={setIsAvailableRegionChecked} />
+                <CustomCheckbox
+                  checked={isAvailableRegionChecked}
+                  onChange={setIsAvailableRegionChecked}
+                  shape="square"
+                />
                 <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
               </label>
             </div>
