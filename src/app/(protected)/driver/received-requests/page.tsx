@@ -69,7 +69,7 @@ export default function ReceivedRequestsPage() {
                 <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
               </label>
             </div>
-            <SortDropdown sortings={["평점 높은순", "이사 빠른순", "요청일 빠른순"]} value="평점 높은순" />
+            <SortDropdown sortings={["평점 높은순", "이사 빠른순", "요청일 빠른순"]} sort="평점 높은순" />
           </div>
         </div>
         {requests.length === 0 ? (

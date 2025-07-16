@@ -4,16 +4,17 @@ import React, { useState } from "react";
 
 interface SortDropdownType {
   sortings: string[];
-  value: string;
+  sort: string;
+  setSort?: (value: string) => void;
 }
 
-function SortDropdown({ sortings, value }: SortDropdownType) {
-  const [sort, setSort] = useState(value);
+function SortDropdown({ sortings, sort, setSort }: SortDropdownType) {
+  // const [sort, setSort] = useState(value);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClick = (sorting: string) => {
     setIsModalOpen(false);
-    setSort(sorting);
+    if (setSort) setSort(sorting);
   };
 
   return (

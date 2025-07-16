@@ -2,7 +2,12 @@ import { DriverType } from "@/types/driverType";
 import { cookieFetch, defaultFetch } from "../FetchClient";
 
 export const driverService = {
-  getAllDriversDefault: async (): Promise<DriverType[] | null> => {
+  getAllDriversDefault: async (options: {
+    keyword: string;
+    orderBy: string;
+    region: string;
+    service: string;
+  }): Promise<DriverType[] | null> => {
     return await defaultFetch("/drivers", {
       method: "GET"
     });

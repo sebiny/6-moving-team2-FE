@@ -13,7 +13,7 @@ interface AddressCardModalProps {
   onConfirm: (address: Address) => void;
   confirmLabel: string;
   onChange: (value: string) => void;
-  selectedValue: string;
+  selectedAddress?: Address | null;
 }
 
 export default function AddressCardModal({
@@ -21,7 +21,7 @@ export default function AddressCardModal({
   onClose,
   confirmLabel,
   onConfirm,
-  selectedValue
+  selectedAddress
 }: AddressCardModalProps) {
   const [inputValue, setInputValue] = useState("");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -30,11 +30,14 @@ export default function AddressCardModal({
 
   // 선택된 주소를 외부로 전달
   useEffect(() => {
-    const index = addressList.findIndex((addr) => addr.roadAddress === selectedValue);
-    if (index !== -1) {
-      setSelectedIndex(index);
+    if (selectedAddress) {
+      setAddressList([selectedAddress]);
+      setSelectedIndex(0);
+    } else {
+      setAddressList([]);
+      setSelectedIndex(null);
     }
-  }, [selectedValue]);
+  }, [selectedAddress]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#141414]/40">
@@ -134,8 +137,8 @@ export default function AddressCardModal({
               jibunAddress: addr.jibunAddress
             };
 
-            setAddressList((prev) => [...prev, newAddress]);
-            setSelectedIndex(addressList.length);
+            setAddressList((prev) => [newAddress, ...prev]);
+            setSelectedIndex(0);
           }}
         />
       )}

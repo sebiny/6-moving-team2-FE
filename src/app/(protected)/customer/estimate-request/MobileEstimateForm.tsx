@@ -5,7 +5,7 @@ import MoveTypeCard from "./_components/card/MoveTypeCard";
 import MobileDatePicker from "./_components/datepicker/MobileDatePicker";
 import AddressCardModal from "./_components/modal/AddressCardModal";
 import Button from "@/components/Button";
-import { AddressSummary } from "@/utills/AddressSummary";
+import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
 
 const moveTypes = [
@@ -167,7 +167,7 @@ export default function MobileEstimateForm() {
             setShowModal(null);
           }}
           onChange={() => {}}
-          selectedValue={showModal === "from" ? addressFrom?.roadAddress || "" : addressTo?.roadAddress || ""}
+          selectedAddress={showModal === "from" ? addressFrom : addressTo}
         />
       )}
     </main>
