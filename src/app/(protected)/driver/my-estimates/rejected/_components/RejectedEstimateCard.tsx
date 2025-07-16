@@ -3,8 +3,7 @@ import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import { MoveType } from "@/constant/moveTypes";
 import Image from "next/image";
-import ChipConfirmed from "@/components/chip/ChipConfirmed";
-import CompletedEstimateCard from "./CompletedEstimateCard";
+import CompletedRejectedCard from "./CompletedRejectedCard";
 
 const korToMoveTypeMap: Record<string, MoveType> = {
   소형이사: "SMALL",
@@ -15,7 +14,7 @@ const korToMoveTypeMap: Record<string, MoveType> = {
 };
 
 interface CustomerEstimateCardProps {
-  request: Request & { estimateAmount?: string; isCompleted?: boolean };
+  request: Request & { estimateAmount?: string };
 }
 
 export default function CustomerEstimateCard({ request }: CustomerEstimateCardProps) {
@@ -30,8 +29,6 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
             <ChipRectangle moveType={moveTypeKey} size="sm" />
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
-          <ChipConfirmed />
-          {/* 확정카드는 날짜 대신 확정 라벨만 */}
         </div>
         {/* 고객명 */}
         <div className="flex w-full flex-col gap-3">
@@ -62,19 +59,8 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
           </div>
         </div>
       </div>
-      {/* 하단 */}
-      <div className="flex w-full items-end justify-between border-t border-neutral-200 pt-4">
-        <div className="text-base font-medium text-neutral-800">견적 금액</div>
-        <div className="text-2xl font-bold text-neutral-800">
-          {request.estimateAmount ? request.estimateAmount : "미정"}
-        </div>
-      </div>
       {/* 오버레이 */}
-      {request.isCompleted && (
-        <div className="absolute inset-0 z-10">
-          <CompletedEstimateCard request={request} />
-        </div>
-      )}
+      <CompletedRejectedCard />
     </div>
   );
 }
