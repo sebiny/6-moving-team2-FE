@@ -10,7 +10,7 @@ export default function PastEstimates() {
   const [selectedService, setSelectedService] = useState("");
 
   return (
-    <main className="md:bg-background-200 mt-15 bg-white md:mt-25 lg:mt-35">
+    <main className="md:bg-background-200 mt-11 bg-white md:mt-22 lg:mt-35">
       {receivedEstimateData.map((group, index) => (
         <div key={group.id}>
           {/* 그룹 간 회색 구분선 (첫 그룹 제외) */}
