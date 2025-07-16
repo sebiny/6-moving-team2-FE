@@ -1,4 +1,5 @@
 "use client";
+import { TranslateSorting } from "@/utills/TranslateFunction";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -20,7 +21,7 @@ function SortDropdown({ sortings, sort, setSort }: SortDropdownType) {
   return (
     <div className="relative">
       <div onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-[10px] px-2 py-[7px]">
-        <div className={`${isModalOpen ? "text-gray-400" : "text-black-400"}`}>{sort}</div>
+        <div className={`${isModalOpen ? "text-gray-400" : "text-black-400"}`}>{TranslateSorting(sort)}</div>
         {isModalOpen ? (
           <Image src="/assets/icons/ic_chevron_up.svg" alt="정렬" width={20} height={20} />
         ) : (
@@ -28,14 +29,14 @@ function SortDropdown({ sortings, sort, setSort }: SortDropdownType) {
         )}
       </div>
       {isModalOpen && (
-        <div className="border-line-100 absolute top-10 left-0 w-full rounded-lg border bg-white">
+        <div className="border-line-100 absolute top-10 left-0 z-20 w-full rounded-lg border bg-white">
           {sortings.map((sorting) => (
             <div
               key={sorting}
               onClick={() => handleClick(sorting)}
               className="text-black-400 px-[10px] py-[7px] font-medium"
             >
-              {sorting}
+              {TranslateSorting(sorting)}
             </div>
           ))}
         </div>

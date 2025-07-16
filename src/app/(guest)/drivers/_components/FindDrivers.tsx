@@ -16,7 +16,7 @@ function FindDrivers() {
   const [page, setPage] = useState<number>(1);
   const [region, setRegion] = useState<string>("");
   const [service, setService] = useState<string>("");
-  const [orderBy, setOrderBy] = useState<string>("리뷰 많은순");
+  const [orderBy, setOrderBy] = useState<string>("work");
   const [keyword, setKeyword] = useState<string>("");
   //   const searchParams = useSearchParams();
   //   const keyword = searchParams.get("keyword") || "";
@@ -29,19 +29,14 @@ function FindDrivers() {
     queryFn: () => driverService.getAllDriversDefault({ keyword, orderBy, region, service })
   });
 
-  console.log(drivers);
   return (
     <div className="flex justify-center">
       <div className="mx-6 w-full max-w-205">
         <p className="my-8 hidden text-3xl font-semibold lg:block">기사님 찾기</p>
-        <SearchBar width="w-full" />
+        <SearchBar width="w-full" value={keyword} onChange={setKeyword} />
         <div className="my-[38px] flex justify-between">
           <Filters region={region} setRegion={setRegion} service={service} setService={setService} />
-          <SortDropdown
-            sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]}
-            sort={orderBy}
-            setSort={setOrderBy}
-          />
+          <SortDropdown sortings={["reviewCount", "career", "work", "rating"]} sort={orderBy} setSort={setOrderBy} />
         </div>
         <div className="flex flex-col gap-5">
           {drivers?.map((driver) => (

@@ -1,4 +1,5 @@
 import { MoveType } from "@/constant/moveTypes";
+import { ReviewType } from "./reviewType";
 
 export interface DriverType {
   id: string;
@@ -10,4 +11,5 @@ export interface DriverType {
   serviceAreas: string[];
   work: number;
   favorite: number;
+  reviewsReceived: ReviewType[];
 }
