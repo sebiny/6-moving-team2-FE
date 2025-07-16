@@ -33,3 +33,16 @@ const RegionMap: Record<string, string> = {
 export const TranslateRegion = (region: string) => {
   return RegionMap[region] ?? "기타";
 };
+
+const SortingMap: Record<string, string> = {
+  reviewCount: "리뷰 많은순",
+  rating: "평점 높은순",
+  career: "경력 높은순",
+  work: "확정 많은순",
+  date: "이사 빠른순",
+  request: "요청일 빠른순"
+};
+
+export const TranslateSorting = (sort: string) => {
+  return SortingMap[sort] ?? "기타 순";
+};

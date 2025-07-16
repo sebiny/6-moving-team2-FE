@@ -10,12 +10,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.83.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "next": "15.3.4",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.13",
+    "query-string": "^9.2.2",
     "react": "^19.0.0",
     "react-daum-postcode": "^3.2.0",
     "react-dom": "^19.0.0",

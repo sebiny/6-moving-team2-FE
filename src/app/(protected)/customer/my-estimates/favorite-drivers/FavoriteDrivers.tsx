@@ -1,6 +1,6 @@
 "use client";
 
-import { drivers } from "@/constant/driverType";
+import { drivers } from "@/constant/constant";
 import DriverFindCard from "@/components/card/DriverFindCard";
 import SubHeader from "../_components/SubHeader";
 import { useState } from "react";

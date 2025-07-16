@@ -97,7 +97,7 @@ function CommonPage() {
         <ShareDriver text="견적서 공유하기" />
       </div>
       <div className="ml-20 w-30">
-        <SortDropdown sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]} value="리뷰 많은순" />
+        <SortDropdown sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]} sort="리뷰 많은순" />
       </div>
 
       {/* ChipRectangle 4종 보여주기 */}
