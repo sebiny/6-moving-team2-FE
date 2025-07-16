@@ -7,15 +7,15 @@ import { reviews } from "@/constant/reviewType";
 import Image from "next/image";
 import React from "react";
 import { ReviewAverage } from "@/utills/ReviewAverage";
-import { driver } from "@/constant/driverType";
+import { driver } from "@/constant/constant";
 import EditButtons from "./_components/EditButtons";
 
 function DriverMyPage() {
   const result = ReviewAverage(reviews);
   return (
-    <div className="flex flex-col items-center pt-[56px] lg:pt-[88px]">
-      <div>
-        <div className="text-lg font-semibold">마이페이지</div>
+    <div className="flex flex-col items-center">
+      <div className="flex h-[54px] w-full max-w-300 items-center px-7 md:px-24 lg:h-24 lg:px-2">
+        <div className="text-lg font-semibold lg:text-2xl">마이페이지</div>
       </div>
       <OrangeBackground subTitle={true} />
       <div className="flex w-full max-w-300 flex-col items-center px-5 md:px-18 lg:items-stretch lg:px-0">
