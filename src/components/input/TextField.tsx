@@ -68,11 +68,13 @@ export default function TextField({
       size === "md" ? "px-6 py-[0.875rem]" : "px-4 py-[0.875rem]", // 14px = 0.875rem
       hasError
         ? "border-[#FF4F64]"
-        : isFocused
-          ? size === "md"
-            ? "border-line-200"
-            : "border-gray-100"
-          : "border-line-200",
+        : isTyping
+          ? "border-[var(--color-orange-400)]"
+          : isFocused
+            ? size === "md"
+              ? "border-line-200"
+              : "border-gray-100"
+            : "border-line-200",
       size === "md" ? (mdHeight === "64" ? "h-16" : "h-[3.375rem]") : "h-[3.375rem]"
     ),
     inputBox: clsx(

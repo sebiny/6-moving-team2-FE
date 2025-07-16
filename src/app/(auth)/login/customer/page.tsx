@@ -9,102 +9,149 @@ export default function LoginCustomer() {
   const { email, setEmail, password, setPassword, onSubmit } = useLoginForm();
 
   return (
-    <div className="flex min-h-screen justify-center bg-white px-[24px] pt-[110px]">
+    <div className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0">
       {/* 1. 가운데 가장 중심 박스 */}
-      <div className="flex w-full max-w-[327px] flex-col gap-[40px]">
+      <div className="flex w-full max-w-[327px] flex-col gap-[40px] md:w-[640px] md:max-w-none md:gap-[48px] md:rounded-[40px] md:bg-gray-50 md:px-[40px] md:py-[68px] lg:h-[876px] lg:w-[740px] lg:px-[50px] lg:py-[48px]">
         {/* 1-1. 로고 및 기사님 페이지 링크 섹션 */}
-        <div className="flex flex-col">
+        <div className="flex flex-col md:gap-[8px]">
           {/* 1-1-1. 로고 컨테이너 */}
-          <div className="flex h-[84px] w-full items-center justify-center">
+          <div className="flex h-[84px] w-full items-center justify-center md:h-[100px]">
             {/* 1-1-1-1. 로고 */}
-            <h1 className="text-[44.11px] font-bold text-orange-400">무빙</h1>
+            <Image
+              src="/assets/icons/ic_logo_text.svg"
+              alt="무빙 로고"
+              width={85.36}
+              height={44.11}
+              priority
+              className="scale-[1.2] md:h-[55.14px] md:w-[106.7px] md:scale-100"
+            />
           </div>
 
           {/* 1-1-2. 기사님 전용 페이지 링크 컨테이너 */}
-          <div className="flex items-center justify-center gap-[2px]">
+          <div className="flex w-full items-center justify-center gap-[2px] md:h-[32px] md:w-fit md:self-center">
             {/* 1-1-2-1. "기사님이신가요?" 텍스트 */}
-            <span className="text-xs leading-[18px] font-normal text-gray-900">기사님이신가요?</span>
+            <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-900 md:text-xl md:leading-8 md:font-normal">
+              기사님이신가요?
+            </span>
             {/* 1-1-2-2. "기사님 전용 페이지" 링크 */}
-            <Link href="/login/driver" className="text-xs leading-[20px] font-semibold text-orange-400 underline">
+            <Link
+              href="/login/driver"
+              className="text-xs leading-[20px] font-semibold text-orange-400 underline md:text-xl md:leading-[20px]"
+            >
               기사님 전용 페이지
             </Link>
           </div>
         </div>
 
         {/* 1-2. 로그인 폼 및 하단 링크 섹션 */}
-        <div className="flex flex-col gap-[48px]">
-          {/* 1-2-1. 로그인 폼 그룹 */}
-          <div className="flex flex-col gap-[16px]">
-            <form onSubmit={onSubmit} className="flex flex-col gap-8">
-              {/* 1-2-1-1-1. 입력 필드 그룹 */}
-              <div className="flex flex-col gap-4">
-                {/* 1-2-1-1-1-1. 이메일 입력 */}
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="email" className="text-sm leading-6 font-normal text-gray-600">
-                    이메일
-                  </label>
-                  <TextField
-                    id="email"
-                    type="text"
-                    placeholder="이메일을 입력해 주세요"
-                    value={email}
-                    onChange={setEmail}
-                    className="w-full"
-                    mdHeight="54"
-                  />
-                </div>
-                {/* 1-2-1-1-1-2. 비밀번호 입력 */}
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="password" className="text-sm leading-6 font-normal text-gray-600">
-                    비밀번호
-                  </label>
-                  <TextField
-                    id="password"
-                    type="password"
-                    placeholder="비밀번호를 입력해 주세요"
-                    value={password}
-                    onChange={setPassword}
-                    className="w-full"
-                    error={password.length > 0 && password.length < 6 ? "비밀번호는 6자 이상 입력해 주세요." : ""}
-                    mdHeight="54"
-                  />
-                </div>
+        <div className="flex flex-col gap-[16px] md:gap-[24px]">
+          {/* 1-2-1. 로그인 폼 */}
+          <form onSubmit={onSubmit} className="flex w-full flex-col gap-8 md:gap-[56px]">
+            {/* 1-2-1-1. 입력 필드 그룹 */}
+            <div className="flex flex-col gap-4 md:gap-[32px]">
+              {/* 1-2-1-1-1. 이메일 입력 */}
+              <div className="flex flex-col gap-2 md:gap-[16px]">
+                <label
+                  htmlFor="email"
+                  className="md:text-black-400 text-sm leading-6 font-normal text-gray-600 md:text-xl md:leading-8"
+                >
+                  이메일
+                </label>
+                <TextField
+                  type="text"
+                  placeholder="이메일을 입력해 주세요"
+                  value={email}
+                  onChange={setEmail}
+                  className="w-full"
+                  mdHeight="54"
+                />
               </div>
-              {/* 1-2-1-1-2. 로그인 버튼 */}
-              <button
-                type="submit"
-                disabled
-                className="h-[54px] w-full rounded-xl bg-gray-100 text-base leading-[26px] font-semibold text-gray-500"
-              >
-                로그인
-              </button>
-            </form>
-            {/* 1-2-1-2. 회원가입 링크 */}
-            <div className="flex items-center justify-center">
-              <span className="text-xs leading-[18px] font-normal text-gray-500">아직 무빙 회원이 아니신가요?</span>
-              <Link href="/signup" className="ml-1 text-xs leading-[20px] font-semibold text-orange-400 underline">
-                이메일로 회원가입하기
-              </Link>
+              {/* 1-2-1-1-2. 비밀번호 입력 */}
+              <div className="flex flex-col gap-2 md:gap-[16px]">
+                <label
+                  htmlFor="password"
+                  className="md:text-black-400 text-sm leading-6 font-normal text-gray-600 md:text-xl md:leading-8"
+                >
+                  비밀번호
+                </label>
+                <TextField
+                  type="password"
+                  placeholder="비밀번호를 입력해 주세요"
+                  value={password}
+                  onChange={setPassword}
+                  className="w-full"
+                  error={
+                    password.length > 0 && !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password)
+                      ? "비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다."
+                      : ""
+                  }
+                  mdHeight="54"
+                />
+              </div>
             </div>
+            {/* 1-2-1-2. 로그인 버튼 */}
+            <button
+              type="submit"
+              disabled={!email || !password || !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password)}
+              className={`h-[54px] w-full rounded-xl px-5 py-4 text-base leading-[26px] font-semibold transition-colors md:h-[60px] md:rounded-[16px] md:text-[18px] ${
+                email && password && /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password)
+                  ? "bg-orange-400 text-white"
+                  : "bg-gray-100 text-gray-50"
+              } `}
+            >
+              로그인
+            </button>
+          </form>
+          {/* 1-2-2. 회원가입 링크 */}
+          <div className="flex w-full items-center justify-center md:w-fit md:gap-2 md:self-center">
+            <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-500 md:text-xl md:leading-8">
+              아직 무빙 회원이 아니신가요?
+            </span>
+            <Link
+              href="/signup/customer"
+              className="ml-1 text-xs leading-[20px] font-semibold text-orange-400 underline md:ml-0 md:text-xl md:leading-[20px]"
+            >
+              이메일로 회원가입하기
+            </Link>
           </div>
+        </div>
 
-          {/* 1-2-2. SNS 로그인 박스 (Placeholder) */}
-          <div className="flex h-[96px] w-[210px] flex-col items-center gap-[24px] self-center">
-            {/* 1-2-2-1. SNS 안내 문구 */}
-            <span className="text-xs leading-[18px] font-normal text-gray-500">SNS 계정으로 간편 가입하기</span>
-            {/* 1-2-2-2. SNS 아이콘 그룹 */}
-            <div className="flex h-[54px] w-full items-center justify-between">
-              {/* 1-2-2-2-1. 구글, 카카오, 네이버 아이콘 */}
-              <button className="h-[54px] w-[54px]">
-                <Image src="/assets/icons/ic_google.svg" alt="Google 로그인" width={54} height={54} />
-              </button>
-              <button className="h-[54px] w-[54px]">
-                <Image src="/assets/icons/ic_kakao.svg" alt="Kakao 로그인" width={54} height={54} />
-              </button>
-              <button className="h-[54px] w-[54px]">
-                <Image src="/assets/icons/ic_naver.svg" alt="Naver 로그인" width={54} height={54} />
-              </button>
-            </div>
+        {/* 1-3. SNS 로그인 박스 */}
+        <div className="flex h-[96px] w-[210px] flex-col items-center justify-center gap-[24px] self-center md:h-fit md:w-[280px] md:gap-[32px]">
+          {/* 1-3-1. SNS 안내 문구 */}
+          <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-500 md:text-xl md:leading-8">
+            SNS 계정으로 간편 가입하기
+          </span>
+          {/* 1-3-2. SNS 아이콘 그룹 */}
+          <div className="flex h-[54px] w-full items-center justify-between md:h-[72px] md:w-fit md:justify-center md:gap-[32px]">
+            {/* 1-3-2-1. 구글, 카카오, 네이버 아이콘 */}
+            <button className="h-[54px] w-[54px] md:h-[72px] md:w-[72px]">
+              <Image
+                src="/assets/icons/ic_google.svg"
+                alt="Google 로그인"
+                width={54}
+                height={54}
+                className="md:h-[72px] md:w-[72px]"
+              />
+            </button>
+            <button className="h-[54px] w-[54px] md:h-[72px] md:w-[72px]">
+              <Image
+                src="/assets/icons/ic_kakao.svg"
+                alt="Kakao 로그인"
+                width={54}
+                height={54}
+                className="md:h-[72px] md:w-[72px]"
+              />
+            </button>
+            <button className="h-[54px] w-[54px] md:h-[72px] md:w-[72px]">
+              <Image
+                src="/assets/icons/ic_naver.svg"
+                alt="Naver 로그인"
+                width={54}
+                height={54}
+                className="md:h-[72px] md:w-[72px]"
+              />
+            </button>
           </div>
         </div>
       </div>
