@@ -11,6 +11,7 @@ import CustomCheckbox from "@/components/button/CustomCheckbox";
 import imgEmptyReview from "/public/assets/images/img_empty_review.svg";
 import Image from "next/image";
 import SendEstimateModal from "./_components/SendEstimateModal";
+import RejectEstimateModal from "./_components/RejectEstimateModal";
 
 const dummyRequests: Request[] = [
   {
@@ -41,6 +42,7 @@ export default function ReceivedRequestsPage() {
   const [isAvailableRegionChecked, setIsAvailableRegionChecked] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
+  const [rejectModalOpen, setRejectModalOpen] = useState(false);
   // 상단 useState 정의
   const [sort, setSort] = useState("rating");
 
@@ -64,12 +66,37 @@ export default function ReceivedRequestsPage() {
     handleCloseModal();
   };
 
+  const handleRejectEstimate = (request: Request) => {
+    setSelectedRequest(request);
+    setRejectModalOpen(true);
+    setModalOpen(false);
+  };
+  const handleCloseRejectModal = () => {
+    setRejectModalOpen(false);
+    setSelectedRequest(null);
+  };
+  const handleSubmitReject = (price: number, comment: string) => {
+    alert(`반려 사유: ${comment}`);
+    handleCloseRejectModal();
+  };
+
   return (
     <div className="flex min-h-screen justify-center bg-gray-50 px-4">
       <SendEstimateModal
         open={modalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmitEstimate}
+        moveType={selectedRequest?.moveType ?? ""}
+        isDesignated={selectedRequest?.isDesignated ?? false}
+        customerName={selectedRequest?.customerName ?? ""}
+        fromAddress={selectedRequest?.fromAddress ?? ""}
+        toAddress={selectedRequest?.toAddress ?? ""}
+        moveDate={selectedRequest?.moveDate ?? ""}
+      />
+      <RejectEstimateModal
+        open={rejectModalOpen}
+        onClose={handleCloseRejectModal}
+        onSubmit={handleSubmitReject}
         moveType={selectedRequest?.moveType ?? ""}
         isDesignated={selectedRequest?.isDesignated ?? false}
         customerName={selectedRequest?.customerName ?? ""}
@@ -117,11 +144,7 @@ export default function ReceivedRequestsPage() {
                 <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
               </label>
             </div>
-            <SortDropdown
-              sortings={["rating", "date", "request"]}
-              sort={sort}
-              setSort={setSort}
-            />
+            <SortDropdown sortings={["rating", "date", "request"]} sort={sort} setSort={setSort} />
           </div>
         </div>
         {requests.length === 0 ? (
@@ -140,7 +163,11 @@ export default function ReceivedRequestsPage() {
             </div>
           </div>
         ) : (
-          <RequestCardList requests={requests} onSendEstimate={handleSendEstimate} />
+          <RequestCardList
+            requests={requests}
+            onSendEstimate={handleSendEstimate}
+            onRejectEstimate={handleRejectEstimate}
+          />
         )}
       </div>
     </div>
