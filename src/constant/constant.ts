@@ -21,7 +21,7 @@ type MenuType = "CUSTOMER" | "DRIVER";
 
 export const MYPAGE_MENU: Record<MenuType, { label: string; path: string }[]> = {
   CUSTOMER: [
-    { label: "프로필 수정", path: "/" },
+    { label: "마이 프로필", path: "/customer/profile" },
     { label: "찜한 기사님", path: "/customer/my-estimates/favorite-drivers" },
     { label: "이사 리뷰", path: "/review" }
   ],
