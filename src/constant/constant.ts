@@ -21,11 +21,11 @@ type MenuType = "CUSTOMER" | "DRIVER";
 
 export const PROFILE_DROPDOWN_MENU: Record<MenuType, { label: string; path: string }[]> = {
   CUSTOMER: [
-    { label: "마이 프로필", path: "/customer/profile" },
+    { label: "나의 프로필", path: "/customer/profile" },
     { label: "찜한 기사님", path: "/customer/my-estimates/favorite-drivers" },
     { label: "이사 리뷰", path: "/review" }
   ],
-  DRIVER: [{ label: "마이 페이지", path: "/driver/my-page" }]
+  DRIVER: [{ label: "마이페이지", path: "/driver/my-page" }]
 };
 
 export const driver: DriverType = {
