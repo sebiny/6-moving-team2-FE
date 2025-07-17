@@ -25,10 +25,7 @@ export const PROFILE_DROPDOWN_MENU: Record<MenuType, { label: string; path: stri
     { label: "찜한 기사님", path: "/customer/my-estimates/favorite-drivers" },
     { label: "이사 리뷰", path: "/review" }
   ],
-  DRIVER: [
-    { label: "마이 페이지", path: "/driver/my-page" },
-    { label: "마이 프로필", path: "/driver/profile" }
-  ]
+  DRIVER: [{ label: "마이 페이지", path: "/driver/my-page" }]
 };
 
 export const driver: DriverType = {
