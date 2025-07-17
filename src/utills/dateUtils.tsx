@@ -1,4 +1,12 @@
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/ko"; // 한국어 로케일 파일 불러옴
+
+// RelativeTime 플러그인 활성화
+dayjs.extend(relativeTime);
+
+// 기본 로케일을 한국어로 설정
+dayjs.locale("ko");
 
 export interface CalendarDate {
   date: Date;
@@ -40,3 +48,19 @@ export const generateCalendarDates = (target: dayjs.Dayjs): CalendarDate[] => {
 
   return [...prevDates, ...thisDates, ...nextDates];
 };
+
+/**
+ * 날짜/시간 값을 'n시간 전', 'm분 전' 등의 상대 시간으로 변환합니다.
+ * @param dateInput - ISO 8601 형식의 문자열 또는 Date 객체
+ * @returns 포맷팅된 상대 시간 문자열 (예: "2시간 전")
+ */
+
+// notification에서 사용
+export function formatTimeFromNow(dateInput: string | Date): string {
+  // dayjs 객체를 생성하고 .fromNow() 메서드를 호출합니다.
+  return dayjs(dateInput).fromNow();
+}
+
+// 참고: .fromNow(true)를 사용하면 'n시간' 처럼 '전'이라는 접미사가 제거됩니다.
+// 예: dayjs('2023-01-01').fromNow() -> "2년 전"
+//
