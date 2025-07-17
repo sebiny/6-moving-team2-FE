@@ -24,14 +24,10 @@ export default function SignupCustomer() {
   } = useSignupForm(UserType.CUSTOMER);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0">
-      {/* 1. 가운데 가장 중심 박스 */}
-      <div className="flex w-full max-w-[327px] flex-col gap-[40px] md:w-[640px] md:max-w-none md:gap-[48px] md:rounded-[40px] md:bg-gray-50 md:px-[40px] md:py-[68px] lg:w-[740px] lg:px-[50px] lg:py-[48px]">
-        {/* 1-1. 로고 및 기사님 페이지 링크 섹션 */}
+    <div className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0 md:pb-15 lg:pb-15">
+      <div className="relative flex w-full max-w-[327px] flex-col gap-[40px] md:w-[640px] md:max-w-none md:gap-[48px] md:rounded-[40px] md:bg-gray-50 md:px-[40px] md:py-[68px] lg:w-[740px] lg:px-[50px] lg:py-[48px]">
         <div className="flex flex-col md:gap-[8px]">
-          {/* 1-1-1. 로고 컨테이너 */}
           <div className="flex h-[84px] w-full items-center justify-center md:h-[100px]">
-            {/* 1-1-1-1. 로고 */}
             <Image
               src="/assets/icons/ic_logo_text.svg"
               alt="무빙 로고"
@@ -42,7 +38,6 @@ export default function SignupCustomer() {
             />
           </div>
 
-          {/* 1-1-2. 기사님 전용 페이지 링크 컨테이너 */}
           <div className="flex w-full items-center justify-center gap-[2px] md:h-[32px] md:w-fit md:self-center">
             <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-900 md:text-xl md:leading-8 md:font-normal">
               기사님이신가요?
@@ -56,13 +51,9 @@ export default function SignupCustomer() {
           </div>
         </div>
 
-        {/* 1-2. 회원가입 폼 및 하단 링크 섹션 */}
         <div className="flex flex-col gap-[16px] md:gap-[24px]">
-          {/* 1-2-1. 회원가입 폼 */}
           <form onSubmit={onSubmit} className="flex w-full flex-col gap-8 md:gap-[56px]">
-            {/* 1-2-1-1. 입력 필드 그룹 */}
             <div className="flex flex-col items-start gap-4 self-stretch md:gap-[32px]">
-              {/* 이름 입력 */}
               <div className="flex w-full flex-col items-start gap-2 md:gap-[16px]">
                 <label
                   htmlFor="name"
@@ -80,7 +71,7 @@ export default function SignupCustomer() {
                   mdHeight="54"
                 />
               </div>
-              {/* 이메일 입력 */}
+
               <div className="flex w-full flex-col items-start gap-2 md:gap-[16px]">
                 <label
                   htmlFor="email"
@@ -98,7 +89,7 @@ export default function SignupCustomer() {
                   mdHeight="54"
                 />
               </div>
-              {/* 전화번호 입력 */}
+
               <div className="flex w-full flex-col items-start gap-2 md:gap-[16px]">
                 <label
                   htmlFor="phone"
@@ -116,7 +107,7 @@ export default function SignupCustomer() {
                   mdHeight="54"
                 />
               </div>
-              {/* 비밀번호 입력 */}
+
               <div className="flex w-full flex-col items-start gap-2 md:gap-[16px]">
                 <label
                   htmlFor="password"
@@ -139,7 +130,7 @@ export default function SignupCustomer() {
                   mdHeight="54"
                 />
               </div>
-              {/* 비밀번호 확인 입력 */}
+
               <div className="flex w-full flex-col items-start gap-2 md:gap-[16px]">
                 <label
                   htmlFor="passwordConfirmation"
@@ -163,7 +154,7 @@ export default function SignupCustomer() {
                 />
               </div>
             </div>
-            {/* 시작하기 버튼 */}
+
             <button
               type="submit"
               disabled={
@@ -187,7 +178,6 @@ export default function SignupCustomer() {
             </button>
           </form>
 
-          {/* 1-2-2. 로그인 링크 */}
           <div className="flex w-full items-center justify-center md:w-fit md:gap-2 md:self-center">
             <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-500 md:text-xl md:leading-8">
               이미 무빙 회원이신가요?
@@ -201,7 +191,6 @@ export default function SignupCustomer() {
           </div>
         </div>
 
-        {/* 1-3. SNS 로그인 박스 */}
         <div className="flex h-[96px] w-[210px] flex-col items-center justify-center gap-[24px] self-center md:h-fit md:w-[280px] md:gap-[32px]">
           <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-500 md:text-xl md:leading-8">
             SNS 계정으로 간편 가입하기
@@ -236,6 +225,22 @@ export default function SignupCustomer() {
             </button>
           </div>
         </div>
+
+        <Image
+          src="/assets/images/img_login_customer_avatar.png"
+          alt="로그인 아바타"
+          width={240}
+          height={246}
+          className="absolute -right-[90px] -bottom-[60px] z-0 hidden md:block lg:hidden"
+        />
+
+        <Image
+          src="/assets/images/img_login_customer_avatar.png"
+          alt="로그인 아바타"
+          width={382.03}
+          height={392}
+          className="absolute -right-80 -bottom-[50px] z-0 hidden lg:block"
+        />
       </div>
     </div>
   );
