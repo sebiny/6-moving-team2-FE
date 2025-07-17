@@ -6,7 +6,7 @@ export const GNB_ROUTE_USER_ROLE = {
     { label: "로그인", path: "/customer/login" }
   ],
   CUSTOMER: [
-    { label: "견적 요청", path: "/estimate-request" },
+    { label: "견적 요청", path: "/customer/estimate-request" },
     { label: "기사님 찾기", path: "/drivers" },
     { label: "내 견적 관리", path: "/customer/my-estimates" }
   ],
@@ -19,7 +19,7 @@ export const GNB_ROUTE_USER_ROLE = {
 export type UserType = "CUSTOMER" | "DRIVER";
 type MenuType = "CUSTOMER" | "DRIVER";
 
-export const MYPAGE_MENU: Record<MenuType, { label: string; path: string }[]> = {
+export const PROFILE_DROPDOWN_MENU: Record<MenuType, { label: string; path: string }[]> = {
   CUSTOMER: [
     { label: "마이 프로필", path: "/customer/profile" },
     { label: "찜한 기사님", path: "/customer/my-estimates/favorite-drivers" },
