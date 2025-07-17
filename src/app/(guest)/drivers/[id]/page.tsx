@@ -9,9 +9,19 @@ import OrangeBackground from "@/components/OrangeBackground";
 import { driver } from "@/constant/constant";
 import { reviews } from "@/constant/reviewType";
 import { ReviewAverage } from "@/utills/ReviewAverage";
+import { useQuery } from "@tanstack/react-query";
+import { DriverType } from "@/types/driverType";
+import { driverService } from "@/lib/api/api-driver";
+import { useParams } from "next/navigation";
 
 function DriverDetailPage() {
   const result = ReviewAverage(reviews);
+  const { id } = useParams();
+  const driverId = id as string;
+  // const { data: driver, isPending } = useQuery<DriverType | null>({
+  //   queryKey: ["drivers", driverId],
+  //   queryFn: () => driverService.getDriverDetailDefault(driverId)
+  // });
   return (
     <div className="flex flex-col items-center">
       <OrangeBackground />
