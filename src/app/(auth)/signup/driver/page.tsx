@@ -17,9 +17,9 @@ export default function SignupCustomer() {
     setPassword,
     passwordConfirmation,
     setPasswordConfirmation,
-    passwordError,
-    passwordConfirmationError,
-    isFormValid,
+    // passwordError,
+    // passwordConfirmationError,
+    // isFormValid,
     onSubmit
   } = useSignupForm(UserType.DRIVER);
 

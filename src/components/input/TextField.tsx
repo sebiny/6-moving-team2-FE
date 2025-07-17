@@ -5,6 +5,7 @@ import Image from "next/image";
 import clsx from "clsx";
 
 interface TextFieldProps {
+  id?: string;
   type?: "text" | "password";
   placeholder?: string;
   value?: string;
