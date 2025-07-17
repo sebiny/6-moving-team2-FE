@@ -63,7 +63,7 @@ export default function Notification({ ref, onClick, className, isOpen, userId }
         Authorization: `Bearer ${token}`
       },
       withCredentials: true, // 필요 시 쿠키 전송 옵션 유지
-      heartbeatTimeout: 300000 // 1분마다 연결 유지 신호
+      heartbeatTimeout: 300000 // 3분마다 연결 유지 신호
     });
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
