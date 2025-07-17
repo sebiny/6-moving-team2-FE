@@ -35,3 +35,11 @@ export async function createEstimateRequest(data: {
     body: JSON.stringify(data)
   });
 }
+
+// 지정 기사 견적 요청
+// export async function createDesignatedEstimateRequest(data: { driverId: string }) {
+//   return cookieFetch("/customer/estimate-request/designated", {
+//     method: "POST",
+//     body: JSON.stringify(data)
+//   });
+// }
