@@ -4,7 +4,6 @@ import "./globals.css";
 import DevNav from "@/components/DevNav";
 import Providers from "../providers/Providers";
 import Gnb from "@/components/layout/Gnb";
-import { useAuth } from "@/providers/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

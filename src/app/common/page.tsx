@@ -9,7 +9,8 @@ import ChipRectangle from "../../components/chip/ChipRectangle";
 import { MoveType } from "../../constant/moveTypes";
 import OrangeBackground from "@/components/OrangeBackground";
 import DriverFindCard from "@/components/card/DriverFindCard";
-import { driver } from "@/constant/driverType";
+import FilterSection from "@/components/filter/FilterSection";
+import { driver } from "@/constant/constant";
 
 // Title 더미데이터
 const mockData = [
@@ -73,6 +74,11 @@ function CommonPage() {
         </div>
       ))}
 
+      {/* 기사님 -> 받은 요청 필터 버튼 */}
+      <div className="flex">
+        <FilterSection />
+      </div>
+
       {/* ChipCircle 보여주기 */}
       <div className="flex gap-2">
         <ChipCircle type="address" color="gray" text="도로명" />
@@ -91,7 +97,7 @@ function CommonPage() {
         <ShareDriver text="견적서 공유하기" />
       </div>
       <div className="ml-20 w-30">
-        <SortDropdown sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]} value="리뷰 많은순" />
+        <SortDropdown sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]} sort="리뷰 많은순" />
       </div>
 
       {/* ChipRectangle 4종 보여주기 */}

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { clsx } from "clsx";
 
-type HeaderType = "review" | "estimate";
+type HeaderType = "review" | "estimate" | "driver-estimate";
 
 interface HeaderProps {
   type: HeaderType;
@@ -23,10 +23,15 @@ export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProp
           { idx: "1", label: "대기 중인 견적" },
           { idx: "2", label: "받았던 견적" }
         ]
-      : [
-          { idx: "1", label: "작성 가능한 리뷰" },
-          { idx: "2", label: "내가 작성한 리뷰" }
-        ];
+      : type === "driver-estimate"
+        ? [
+            { idx: "sent", label: "보낸 견적 조회" },
+            { idx: "rejected", label: "반려 요청" }
+          ]
+        : [
+            { idx: "1", label: "작성 가능한 리뷰" },
+            { idx: "2", label: "내가 작성한 리뷰" }
+          ];
   const tabList = rawList.map((item) => ({
     ...item,
     active: item.idx === selectedIdx

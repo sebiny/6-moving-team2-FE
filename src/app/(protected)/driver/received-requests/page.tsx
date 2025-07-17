@@ -10,6 +10,8 @@ import PageHeader from "@/components/common/PageHeader";
 import CustomCheckbox from "@/components/button/CustomCheckbox";
 import imgEmptyReview from "/public/assets/images/img_empty_review.svg";
 import Image from "next/image";
+import SendEstimateModal from "./_components/SendEstimateModal";
+import RejectEstimateModal from "./_components/RejectEstimateModal";
 
 const dummyRequests: Request[] = [
   {
@@ -35,13 +37,82 @@ const dummyRequests: Request[] = [
 ];
 
 export default function ReceivedRequestsPage() {
-  const [checked, setChecked] = useState(false);
-  const requests = [...dummyRequests, ...dummyRequests].map((item, idx) => ({ ...item, id: `${item.id}-${idx}` }));
+  const [showEmpty, setShowEmpty] = useState(false); // dev only
+  const [isDesignatedChecked, setIsDesignatedChecked] = useState(false);
+  const [isAvailableRegionChecked, setIsAvailableRegionChecked] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
+  const [rejectModalOpen, setRejectModalOpen] = useState(false);
+  // 상단 useState 정의
+  const [sort, setSort] = useState("rating");
+
+  const requests = showEmpty
+    ? []
+    : [...dummyRequests, ...dummyRequests].map((item, idx) => ({ ...item, id: `${item.id}-${idx}` }));
+
+  const handleSendEstimate = (request: Request) => {
+    setSelectedRequest(request);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedRequest(null);
+  };
+
+  const handleSubmitEstimate = (price: number, comment: string) => {
+    // 실제 전송 로직은 추후 구현
+    alert(`견적가: ${price}, 코멘트: ${comment}`);
+    handleCloseModal();
+  };
+
+  const handleRejectEstimate = (request: Request) => {
+    setSelectedRequest(request);
+    setRejectModalOpen(true);
+    setModalOpen(false);
+  };
+  const handleCloseRejectModal = () => {
+    setRejectModalOpen(false);
+    setSelectedRequest(null);
+  };
+  const handleSubmitReject = (price: number, comment: string) => {
+    alert(`반려 사유: ${comment}`);
+    handleCloseRejectModal();
+  };
 
   return (
-    <div className="flex min-h-screen justify-center bg-gray-50 px-4 py-10 pt-25">
+    <div className="flex min-h-screen justify-center bg-gray-50 px-4">
+      <SendEstimateModal
+        open={modalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitEstimate}
+        moveType={selectedRequest?.moveType ?? ""}
+        isDesignated={selectedRequest?.isDesignated ?? false}
+        customerName={selectedRequest?.customerName ?? ""}
+        fromAddress={selectedRequest?.fromAddress ?? ""}
+        toAddress={selectedRequest?.toAddress ?? ""}
+        moveDate={selectedRequest?.moveDate ?? ""}
+      />
+      <RejectEstimateModal
+        open={rejectModalOpen}
+        onClose={handleCloseRejectModal}
+        onSubmit={handleSubmitReject}
+        moveType={selectedRequest?.moveType ?? ""}
+        isDesignated={selectedRequest?.isDesignated ?? false}
+        customerName={selectedRequest?.customerName ?? ""}
+        fromAddress={selectedRequest?.fromAddress ?? ""}
+        toAddress={selectedRequest?.toAddress ?? ""}
+        moveDate={selectedRequest?.moveDate ?? ""}
+      />
       <div className="flex flex-col gap-6">
         <PageHeader title="받은 요청" />
+        {/* DEV ONLY: 빈 페이지 토글 버튼 */}
+        <button
+          className="mb-2 self-end rounded bg-gray-200 px-3 py-1 text-xs text-gray-700 hover:bg-gray-300"
+          onClick={() => setShowEmpty((v) => !v)}
+        >
+          {showEmpty ? "요청 목록 보기" : "빈 페이지 보기 (DEV)"}
+        </button>
         <SearchBar width="w-full" placeholder="어떤 고객님을 찾고 계세요?" />
         <div className="inline-flex items-start justify-start gap-3">
           <ChipCircle type="region" text="소형이사" color="gray" />
@@ -61,15 +132,19 @@ export default function ReceivedRequestsPage() {
             {/* 체크박스 2개 */}
             <div className="flex gap-4">
               <label className="flex items-center gap-2">
-                <CustomCheckbox checked={checked} onChange={setChecked} />
+                <CustomCheckbox checked={isDesignatedChecked} onChange={setIsDesignatedChecked} shape="square" />
                 <span className="text-base font-normal text-neutral-900">지정 견적 요청</span>
               </label>
               <label className="flex items-center gap-2">
-                <CustomCheckbox checked={checked} onChange={setChecked} />
+                <CustomCheckbox
+                  checked={isAvailableRegionChecked}
+                  onChange={setIsAvailableRegionChecked}
+                  shape="square"
+                />
                 <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
               </label>
             </div>
-            <SortDropdown sortings={["평점 높은순", "이사 빠른순", "요청일 빠른순"]} value="평점 높은순" />
+            <SortDropdown sortings={["rating", "date", "request"]} sort={sort} setSort={setSort} />
           </div>
         </div>
         {requests.length === 0 ? (
@@ -88,7 +163,11 @@ export default function ReceivedRequestsPage() {
             </div>
           </div>
         ) : (
-          <RequestCardList requests={requests} />
+          <RequestCardList
+            requests={requests}
+            onSendEstimate={handleSendEstimate}
+            onRejectEstimate={handleRejectEstimate}
+          />
         )}
       </div>
     </div>

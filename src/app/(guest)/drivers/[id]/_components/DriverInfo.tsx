@@ -1,6 +1,6 @@
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import LikeIcon from "@/components/icon/LikeIcon";
-import { DriverType } from "@/constant/driverType";
+import { DriverType } from "@/types/driverType";
 import Image from "next/image";
 import React from "react";
 import DriverSimpleInfo from "@/components/driver/DriverSimpleInfo";

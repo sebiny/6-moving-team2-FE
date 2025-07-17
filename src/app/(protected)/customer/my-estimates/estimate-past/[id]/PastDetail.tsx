@@ -44,20 +44,20 @@ export default function PastDetailPage() {
       {/* 상단 배경 + 프로필 */}
       <div className="relative">
         <OrangeBackground />
-        <div className="absolute top-[60px] left-1/4 -translate-x-1/2 md:top-[95px] lg:top-[135px]">
+        <div className="absolute top-[65px] left-5 md:top-[80px] md:left-17 lg:top-[135px] lg:left-[420px]">
           <Image
             src="/assets/images/img_profile.svg"
             alt="기사님 프로필"
             width={100}
             height={100}
-            className="md:h-[150px] md:w-[150px] lg:h-35 lg:w-35"
+            className="h-18 w-18 md:h-27 md:w-27 lg:h-37 lg:w-37"
           />
         </div>
       </div>
 
       {/* 본문 */}
-      <div className="bg-white px-90">
-        <div className="grid grid-cols-[1fr_300px] gap-[150px] px-[70px] pt-[88px] pb-[120px]">
+      <div className="bg-white">
+        <div className="flex flex-col px-5 py-[60px] pt-10 md:px-17 md:pt-15 lg:grid lg:grid-cols-[1fr_300px] lg:gap-40 lg:px-100 lg:pt-[88px] lg:pb-[120px]">
           {/* 왼쪽 콘텐츠 */}
           <div className="flex flex-col gap-10">
             <Title
@@ -78,6 +78,8 @@ export default function PastDetailPage() {
               to="서울 강남구 선릉로 428"
             />
           </div>
+
+          <div className="my-10 border-t border-gray-100 lg:hidden" />
 
           {/* 오른쪽 사이드 */}
           <ShareDriver text="견적서 공유하기" />

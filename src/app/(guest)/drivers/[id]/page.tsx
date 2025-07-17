@@ -6,14 +6,14 @@ import RequestEstimate from "./_components/RequestEstimate";
 import Service from "../../../../components/Service";
 import BottomNav from "./_components/BottomButton";
 import OrangeBackground from "@/components/OrangeBackground";
-import { driver } from "@/constant/driverType";
+import { driver } from "@/constant/constant";
 import { reviews } from "@/constant/reviewType";
 import { ReviewAverage } from "@/utills/ReviewAverage";
 
 function DriverDetailPage() {
   const result = ReviewAverage(reviews);
   return (
-    <div className="flex flex-col items-center pt-[56px] lg:pt-[88px]">
+    <div className="flex flex-col items-center">
       <OrangeBackground />
       <div className="flex w-full justify-center gap-[116px]">
         <div className="mx-5 w-full max-w-[742px] md:mx-18">
