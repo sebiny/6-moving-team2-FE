@@ -37,7 +37,6 @@ export default function Notification({ ref, onClick, className, isOpen, userId }
       setNotifications([]); // 로그아웃 시 알림 목록 초기화
       return;
     }
-    console.log(`userId : ${userId}`);
 
     // 기존 알림 불러오기 (최신순)
     fetchNotifications()
@@ -67,7 +66,7 @@ export default function Notification({ ref, onClick, className, isOpen, userId }
     });
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(`data ${data}`);
+
       if (data.type === "MESSAGE") {
         // 회원가입 축하 알림
         setNotifications((prev) => [

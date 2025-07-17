@@ -12,9 +12,24 @@ export const GNB_ROUTE_USER_ROLE = {
   ],
   DRIVER: [
     { label: "받은 요청", path: "/driver/received-requests" },
-    { label: "내 견적 관리", path: "/driver/my-page" }
+    { label: "내 견적 관리", path: "/driver/my-estimates/sent" }
   ]
 } as const;
+
+export type UserType = "CUSTOMER" | "DRIVER";
+type MenuType = "CUSTOMER" | "DRIVER";
+
+export const MYPAGE_MENU: Record<MenuType, { label: string; path: string }[]> = {
+  CUSTOMER: [
+    { label: "프로필 수정", path: "/" },
+    { label: "찜한 기사님", path: "/customer/my-estimates/favorite-drivers" },
+    { label: "이사 리뷰", path: "/review" }
+  ],
+  DRIVER: [
+    { label: "마이 프로필", path: "/driver/profile" },
+    { label: "마이 페이지", path: "/driver-my-page" }
+  ]
+};
 
 export const driver: DriverType = {
   id: "firstDriver",
