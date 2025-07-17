@@ -26,8 +26,8 @@ export const MYPAGE_MENU: Record<MenuType, { label: string; path: string }[]> = 
     { label: "이사 리뷰", path: "/review" }
   ],
   DRIVER: [
-    { label: "마이 프로필", path: "/driver/profile" },
-    { label: "마이 페이지", path: "/driver-my-page" }
+    { label: "마이 페이지", path: "/driver/my-page" },
+    { label: "마이 프로필", path: "/driver/profile" }
   ]
 };
 
