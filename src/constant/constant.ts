@@ -6,7 +6,7 @@ export const GNB_ROUTE_USER_ROLE = {
     { label: "로그인", path: "/customer/login" }
   ],
   CUSTOMER: [
-    { label: "견적 요청", path: "/" },
+    { label: "견적 요청", path: "/estimate-request" },
     { label: "기사님 찾기", path: "/drivers" },
     { label: "내 견적 관리", path: "/customer/my-estimates" }
   ],
