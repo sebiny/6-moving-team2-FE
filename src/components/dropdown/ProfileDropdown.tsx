@@ -22,6 +22,7 @@ export const MYPAGE_CUSTOMER = [
 export default function Profile({ ref, isOpen, onClick, className, lg }: ProfileProps) {
   const router = useRouter();
   const { user, logout } = useAuth();
+  console.log(user);
 
   const handleLogout = async () => {
     await logout();
