@@ -124,6 +124,13 @@ export const cookieFetch = async <T = any>(endpoint: string, options: RequestIni
   let accessToken = authUtils.getAccessToken();
   const url = `${API_BASE_URL}${endpoint}`;
 
+  const hasRefreshToken = (): boolean => {
+    if (typeof document !== "undefined") {
+      return document.cookie.split("; ").some((cookie) => cookie.startsWith("refreshToken="));
+    }
+    return false;
+  };
+
   const performFetchWithToken = async (token: string): Promise<Response> => {
     const requestHeaders: Record<string, string> = {
       "Content-Type": "application/json",
@@ -156,10 +163,14 @@ export const cookieFetch = async <T = any>(endpoint: string, options: RequestIni
   };
 
   if (!accessToken) {
-    try {
-      accessToken = await authUtils.refreshAccessToken();
-    } catch (refreshError: any) {
-      throw new Error(`초기 토큰 갱신 실패: ${refreshError.message}`);
+    if (hasRefreshToken()) {
+      try {
+        accessToken = await authUtils.refreshAccessToken();
+      } catch (refreshError: any) {
+        throw new Error(`초기 토큰 갱신 실패: ${refreshError.message}`);
+      }
+    } else {
+      throw new Error("인증 정보가 없습니다. (AccessToken 및 RefreshToken 모두 없음)");
     }
   }
 
