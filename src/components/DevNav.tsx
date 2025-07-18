@@ -26,9 +26,11 @@ export default function DevNav() {
     // 고객 관련 라우트 (@customer)
 
     { path: "/customer/profile", name: "고객프로필생성", group: "customer" },
+    { path: "/customer/estimate-request", name: "견적 요청", group: "customer" },
     { path: "/customer/my-estimates/favorite-drivers", name: "찜한 기사님", group: "customer" },
     { path: "/customer/my-estimates/estimate-pending", name: "대기 중인 견적", group: "customer" },
     { path: "/customer/my-estimates/estimate-past", name: "받은 견적", group: "customer" },
+    { path: "/customer/review/", name: "고객 리뷰", group: "customer" },
 
     // 기사 관련 라우트 (@driver)
     { path: "/driver/received-requests", name: "받은 요청", group: "driver" },

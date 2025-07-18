@@ -2,7 +2,7 @@ import { RegionType } from "@/types/Address";
 
 // 카카오 → 백엔드 스키마 변환 함수
 export function formatAddress(data: {
-  zonecode: string;
+  postalcode: string;
   roadAddress: string;
   jibunAddress?: string;
   buildingName?: string;
@@ -32,7 +32,7 @@ export function formatAddress(data: {
   const district = roadParts[1];
 
   return {
-    postalCode: data.zonecode,
+    postalCode: data.postalcode,
     street: data.buildingName ? `${data.roadAddress} (${data.buildingName})` : data.roadAddress,
     detail: "",
     region: regionMap[regionKo] || "SEOUL",

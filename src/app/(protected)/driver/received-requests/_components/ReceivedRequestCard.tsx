@@ -15,9 +15,11 @@ const korToMoveTypeMap: Record<string, MoveType> = {
 
 interface ReceivedRequestCardProps {
   request: Request;
+  onSendEstimate: (request: Request) => void;
+  onRejectEstimate: (request: Request) => void;
 }
 
-export default function ReceivedRequestCard({ request }: ReceivedRequestCardProps) {
+export default function ReceivedRequestCard({ request, onSendEstimate, onRejectEstimate }: ReceivedRequestCardProps) {
   const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
 
   return (
@@ -63,10 +65,10 @@ export default function ReceivedRequestCard({ request }: ReceivedRequestCardProp
       {/* 하단 */}
       <div className="flex w-full gap-2.5">
         <div className="w-1/2">
-          <Button text="반려하기" type="white-orange" />
+          <Button text="반려하기" type="white-orange" onClick={() => onRejectEstimate(request)} />
         </div>
         <div className="w-1/2">
-          <Button text="견적 보내기" type="orange" image={true} />
+          <Button text="견적 보내기" type="orange" image={true} onClick={() => onSendEstimate(request)} />
         </div>
       </div>
     </div>

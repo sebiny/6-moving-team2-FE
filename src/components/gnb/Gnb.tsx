@@ -1,11 +1,11 @@
 "use client";
 
 import Logo from "./_components/Logo";
-import GnbListLayout from "@/components/layout/GnbListLayout";
+import GnbListLayout from "@/components/gnb/GnbListLayout";
 import React, { useEffect, useRef, useState } from "react";
 import Notification from "../dropdown/NotificationDropdown";
 import Profile from "../dropdown/ProfileDropdown";
-import GnbMenuList from "../list/GnbMenuList";
+import GnbMenuList from "./GnbMenuList";
 import { useAuth } from "@/providers/AuthProvider";
 import Button from "../Button";
 import { useRouter } from "next/navigation";
@@ -93,6 +93,7 @@ export default function Gnb() {
                 <div className="flex flex-row justify-between gap-5">
                   <Notification
                     ref={notificationRef}
+                    userId={user?.id}
                     isOpen={openLayer === "notification"}
                     onClick={() => toggleLayer("notification")}
                   />
@@ -119,6 +120,7 @@ export default function Gnb() {
           <div className="flex items-center justify-between gap-5">
             <Notification
               ref={notificationRef}
+              userId={user?.id}
               className={isLoggedIn ? "block" : "hidden"}
               isOpen={openLayer === "notification"}
               onClick={() => toggleLayer("notification")}

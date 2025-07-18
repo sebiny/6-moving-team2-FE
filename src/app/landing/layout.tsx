@@ -1,5 +1,5 @@
 import Container from "@/components/container/PageContainer";
-import Gnb from "@/components/layout/Gnb";
+import Gnb from "@/components/gnb/Gnb";
 
 import React, { ReactNode } from "react";
 
