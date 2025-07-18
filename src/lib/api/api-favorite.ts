@@ -2,9 +2,11 @@ import { cookieFetch } from "../FetchClient";
 
 export const favoriteService = {
   createFavorite: async (driverId: string) => {
-    return await cookieFetch(`/favorite/${driverId}`, { method: "POST" });
+    console.log("create 실행");
+    return await cookieFetch(`/favorite/drivers/${driverId}`, { method: "POST" });
   },
   deleteFavorite: async (driverId: string) => {
-    return await cookieFetch(`/favorite/${driverId}`, { method: "DELETE" });
+    console.log("delete 실행");
+    return await cookieFetch(`/favorite/drivers/${driverId}`, { method: "DELETE" });
   }
 };

@@ -22,7 +22,7 @@ function DriverDetailPage() {
   const { user } = useAuth();
   const driverId = id as string;
   const { data: driver, isPending } = useQuery<DriverType | null>({
-    queryKey: ["drivers", driverId],
+    queryKey: ["driver", driverId],
     queryFn: () =>
       user ? driverService.getDriverDetailCookie(driverId) : driverService.getDriverDetailDefault(driverId)
   });
@@ -44,7 +44,7 @@ function DriverDetailPage() {
           <DriverReviews reviews={reviews} result={result} />
         </div>
         <div className="mt-[109px] hidden w-80 lg:block">
-          <RequestEstimate />
+          <RequestEstimate userFavorite={driver.isFavorite} />
           <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
         </div>
       </div>

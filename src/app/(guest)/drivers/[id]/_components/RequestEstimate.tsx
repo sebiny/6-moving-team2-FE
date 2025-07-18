@@ -7,18 +7,23 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { favoriteService } from "@/lib/api/api-favorite";
+import LikeIcon from "@/components/icon/LikeIcon";
 
-function RequestEstimate() {
+interface RequestEstimateType {
+  userFavorite: boolean;
+}
+
+function RequestEstimate({ userFavorite = false }: RequestEstimateType) {
   const { id } = useParams();
   const driverId = id as string;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
-  const [favorite, setFavorite] = useState(false);
+  const [favorite, setFavorite] = useState(userFavorite);
   const queryClient = useQueryClient();
 
   const favoriteMutation = useMutation({
-    mutationFn: () => (favorite ? favoriteService.deleteFavorite(driverId) : favoriteService.createFavorite(driverId)),
+    mutationFn: () => (favorite ? favoriteService.createFavorite(driverId) : favoriteService.deleteFavorite(driverId)),
     onMutate: async () => {
       const prevFavorite = favorite;
       setFavorite(!prevFavorite);
@@ -47,6 +52,7 @@ function RequestEstimate() {
       favoriteMutation.mutate();
     }
   };
+  console.log(favorite);
   return (
     <div className="hidden flex-col gap-4 lg:flex">
       <p className="text-xl font-semibold">
@@ -57,8 +63,8 @@ function RequestEstimate() {
         className="border-line-200 flex h-16 w-80 items-center justify-center gap-[10px] rounded-2xl border"
         onClick={handleClickFavorite}
       >
-        <Image src="/assets/icons/ic_like_black.svg" alt="찜하기" width={24} height={24} />
-        <p className="text-lg font-semibold">기사님 찜하기</p>
+        <LikeIcon color="black" isFilled={true} />
+        <p className="text-lg font-semibold">기사님 {favorite ? "찜 해제하기" : "찜하기"}</p>
       </button>
       {isModalOpen && <EstimateRequestModal setIsModalOpen={setIsModalOpen} />}
     </div>
