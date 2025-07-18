@@ -22,9 +22,9 @@ function DriverInfo({ driver, result }: DriverInfoType) {
         className="absolute top-[-77px] w-16 md:top-[-120px] md:w-25 lg:top-[-150px] lg:w-[134px]"
       />
       <div className="flex gap-3">
-        {driver.services.map((service) => (
+        {/* {driver.services.map((service) => (
           <ChipRectangle moveType={service} key={service} />
-        ))}
+        ))} */}
       </div>
       <p className="mt-3 text-2xl font-semibold">{driver.shortIntro}</p>
       <div className="mt-5 flex justify-between">

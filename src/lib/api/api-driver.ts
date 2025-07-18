@@ -15,7 +15,14 @@ export const driverService = {
       method: "GET"
     });
   },
-  getAllDriversCookie: async (): Promise<DriverType[] | null> => {
+  getAllDriversCookie: async (options: {
+    keyword?: string;
+    orderBy?: string;
+    region?: string;
+    service?: string;
+    page: number;
+  }): Promise<{ data: DriverType[]; hasNext: boolean } | null> => {
+    const query = qs.stringify(options, { skipEmptyString: true, skipNull: true });
     return await cookieFetch("/drivers", {
       method: "GET"
     });

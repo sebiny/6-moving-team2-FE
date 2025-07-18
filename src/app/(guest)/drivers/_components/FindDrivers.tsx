@@ -11,12 +11,14 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { driverService } from "@/lib/api/api-driver";
 import { DriverType } from "@/types/driverType";
 import { useInView } from "react-intersection-observer";
+import { useAuth } from "@/providers/AuthProvider";
 
 function FindDrivers() {
   const [region, setRegion] = useState<string>("");
   const [service, setService] = useState<string>("");
   const [orderBy, setOrderBy] = useState<string>("work");
   const [keyword, setKeyword] = useState<string>("");
+  const { user } = useAuth();
   //   const searchParams = useSearchParams();
   //   const keyword = searchParams.get("keyword") || "";
   //   const region = searchParams.get("region") || "";
@@ -31,7 +33,9 @@ function FindDrivers() {
   } | null>({
     queryKey: ["drivers", keyword, orderBy, region, service],
     queryFn: ({ pageParam = 1 }) =>
-      driverService.getAllDriversDefault({ keyword, orderBy, region, service, page: pageParam as number }),
+      user
+        ? driverService.getAllDriversCookie({ keyword, orderBy, region, service, page: pageParam as number })
+        : driverService.getAllDriversDefault({ keyword, orderBy, region, service, page: pageParam as number }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage?.hasNext) return allPages.length + 1;
