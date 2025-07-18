@@ -23,10 +23,10 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
   const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
 
   return (
-    <div className="inline-flex w-[588px] flex-col gap-8 rounded-[20px] bg-white px-10 py-8 shadow-[-2px_-2px_10px_rgba(220,220,220,0.20),2px_2px_10px_rgba(220,220,220,0.20)] outline-[0.5px] outline-offset-[-0.5px] outline-zinc-100">
+    <div className="inline-flex w-[90%] flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_rgba(220,220,220,0.20),2px_2px_10px_rgba(220,220,220,0.20)] outline-[0.5px] outline-offset-[-0.5px] outline-zinc-100 md:w-full md:gap-8 md:px-8 md:py-8 lg:w-[588px]">
       {/* 상단 */}
       <div className="flex w-full flex-col gap-6">
-        <div className="flex h-8 items-center justify-between">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
           <div className="flex gap-2">
             <ChipRectangle moveType={moveTypeKey} size="sm" />
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
@@ -42,8 +42,8 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
           <div className="h-px w-full bg-zinc-100" />
         </div>
         {/* 출발/도착지 + 이사일 */}
-        <div className="flex w-full items-start justify-between">
-          <div className="flex items-center gap-3">
+        <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <div className="flex flex-col">
               <div className="text-sm text-zinc-500">출발지</div>
               <div className="text-base font-semibold text-neutral-900">{request.fromAddress}</div>
@@ -63,11 +63,11 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
         </div>
       </div>
       {/* 하단 */}
-      <div className="flex w-full gap-2.5">
-        <div className="w-1/2">
+      <div className="flex w-full flex-col gap-2.5 sm:flex-row sm:gap-2.5">
+        <div className="w-full sm:w-1/2">
           <Button text="반려하기" type="white-orange" onClick={() => onRejectEstimate(request)} />
         </div>
-        <div className="w-1/2">
+        <div className="w-full sm:w-1/2">
           <Button text="견적 보내기" type="orange" image={true} onClick={() => onSendEstimate(request)} />
         </div>
       </div>
