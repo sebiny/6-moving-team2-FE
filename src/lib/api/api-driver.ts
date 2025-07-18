@@ -8,18 +8,29 @@ export const driverService = {
     orderBy?: string;
     region?: string;
     service?: string;
-  }): Promise<DriverType[] | null> => {
+    page: number;
+  }): Promise<{ data: DriverType[]; hasNext: boolean } | null> => {
     const query = qs.stringify(options, { skipEmptyString: true, skipNull: true });
     return await defaultFetch(`/drivers?${query}`, {
       method: "GET"
     });
   },
-  getAllDriversCookie: async (): Promise<DriverType[] | null> => {
+  getAllDriversCookie: async (options: {
+    keyword?: string;
+    orderBy?: string;
+    region?: string;
+    service?: string;
+    page: number;
+  }): Promise<{ data: DriverType[]; hasNext: boolean } | null> => {
+    const query = qs.stringify(options, { skipEmptyString: true, skipNull: true });
     return await cookieFetch("/drivers", {
       method: "GET"
     });
   },
-  getDriverDetail: async (): Promise<DriverType | null> => {
-    return await defaultFetch("/drivers");
+  getDriverDetailDefault: async (id: string): Promise<DriverType | null> => {
+    return await defaultFetch(`/drivers/${id}`);
+  },
+  getDriverDetailCookie: async (id: string): Promise<DriverType | null> => {
+    return await cookieFetch(`/drivers/${id}`);
   }
 };

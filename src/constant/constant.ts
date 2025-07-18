@@ -6,7 +6,7 @@ export const GNB_ROUTE_USER_ROLE = {
     { label: "로그인", path: "/customer/login" }
   ],
   CUSTOMER: [
-    { label: "견적 요청", path: "/estimate-request" },
+    { label: "견적 요청", path: "/customer/estimate-request" },
     { label: "기사님 찾기", path: "/drivers" },
     { label: "내 견적 관리", path: "/customer/my-estimates" }
   ],
@@ -19,16 +19,13 @@ export const GNB_ROUTE_USER_ROLE = {
 export type UserType = "CUSTOMER" | "DRIVER";
 type MenuType = "CUSTOMER" | "DRIVER";
 
-export const MYPAGE_MENU: Record<MenuType, { label: string; path: string }[]> = {
+export const PROFILE_DROPDOWN_MENU: Record<MenuType, { label: string; path: string }[]> = {
   CUSTOMER: [
-    { label: "마이 프로필", path: "/customer/profile" },
+    { label: "나의 프로필", path: "/customer/profile" },
     { label: "찜한 기사님", path: "/customer/my-estimates/favorite-drivers" },
     { label: "이사 리뷰", path: "/review" }
   ],
-  DRIVER: [
-    { label: "마이 페이지", path: "/driver/my-page" },
-    { label: "마이 프로필", path: "/driver/profile" }
-  ]
+  DRIVER: [{ label: "마이페이지", path: "/driver/my-page" }]
 };
 
 export const driver: DriverType = {
@@ -41,7 +38,8 @@ export const driver: DriverType = {
   serviceAreas: ["SEOUL", "GYEONGGI"],
   work: 334,
   favorite: 136,
-  reviewsReceived: []
+  reviewsReceived: [],
+  isFavorite: false
 };
 
 export const drivers: DriverType[] = [
@@ -55,7 +53,8 @@ export const drivers: DriverType[] = [
     serviceAreas: ["SEOUL", "GYEONGGI"],
     work: 334,
     favorite: 136,
-    reviewsReceived: []
+    reviewsReceived: [],
+    isFavorite: false
   },
   {
     id: "secondDriver",
@@ -67,6 +66,7 @@ export const drivers: DriverType[] = [
     serviceAreas: ["SEOUL", "DAEGU"],
     work: 250,
     favorite: 226,
-    reviewsReceived: []
+    reviewsReceived: [],
+    isFavorite: false
   }
 ];

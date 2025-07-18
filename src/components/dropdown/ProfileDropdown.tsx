@@ -4,7 +4,7 @@ import icProfile from "/public/assets/icons/ic_profile.svg";
 
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
-import { MYPAGE_MENU, UserType } from "@/constant/constant";
+import { PROFILE_DROPDOWN_MENU, UserType } from "@/constant/constant";
 
 interface ProfileProps {
   lg?: string;
@@ -18,7 +18,6 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
   const router = useRouter();
   const { user, logout } = useAuth();
   const userType = user?.userType;
-  console.log(userType);
 
   const handleLogout = async () => {
     await logout();
@@ -42,7 +41,7 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
           <button className="h-10 items-center pl-4 text-left text-base font-bold lg:h-13 lg:pl-6 lg:text-lg">
             {user?.name ?? "이름없음"} {userType === "CUSTOMER" ? "고객님" : "기사님"}
           </button>
-          {MYPAGE_MENU[userType as UserType]?.map(({ label, path }, idx) => (
+          {PROFILE_DROPDOWN_MENU[userType as UserType]?.map(({ label, path }, idx) => (
             <button
               key={idx}
               onClick={() => router.push(path)}
