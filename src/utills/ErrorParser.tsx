@@ -9,5 +9,5 @@ export const parseBackendError = (status: number, responseText: string): string 
     } catch (e) {}
   }
 
-  return `${status}${responseText ? `: ${responseText.substring(0, 100)}` : ""}`;
+  return `${responseText ? `${responseText.substring(0, 100)}` : ""}`;
 };
