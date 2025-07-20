@@ -38,7 +38,8 @@ export const driver: DriverType = {
   serviceAreas: ["SEOUL", "GYEONGGI"],
   work: 334,
   favorite: 136,
-  reviewsReceived: []
+  reviewsReceived: [],
+  isFavorite: false
 };
 
 export const drivers: DriverType[] = [
@@ -52,7 +53,8 @@ export const drivers: DriverType[] = [
     serviceAreas: ["SEOUL", "GYEONGGI"],
     work: 334,
     favorite: 136,
-    reviewsReceived: []
+    reviewsReceived: [],
+    isFavorite: false
   },
   {
     id: "secondDriver",
@@ -64,6 +66,7 @@ export const drivers: DriverType[] = [
     serviceAreas: ["SEOUL", "DAEGU"],
     work: 250,
     favorite: 226,
-    reviewsReceived: []
+    reviewsReceived: [],
+    isFavorite: false
   }
 ];

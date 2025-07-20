@@ -12,4 +12,5 @@ export interface DriverType {
   work: number;
   favorite: number;
   reviewsReceived: ReviewType[];
+  isFavorite: boolean;
 }
