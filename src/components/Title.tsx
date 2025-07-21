@@ -33,7 +33,7 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
             <ChipRectangle key={label} moveType={label} size="sm" />
           ))}
         </div>
-        {status && <EstimateStatus status={status} />}
+        {status !== undefined && status !== "AUTO_REJECTED" && <EstimateStatus status={status} />}
       </div>
 
       {/* sm 전용 */}
@@ -49,7 +49,7 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       {/* md 이상 */}
       <div className="flex justify-between sm:hidden md:flex">
         <p className="text-2xl font-semibold text-gray-900">{message}</p>
-        {status && <EstimateStatus status={status} />}
+        {status !== undefined && status !== "AUTO_REJECTED" && <EstimateStatus status={status} />}
       </div>
 
       {/* 구분선 */}
