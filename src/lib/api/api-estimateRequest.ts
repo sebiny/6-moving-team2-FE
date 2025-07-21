@@ -24,7 +24,6 @@ export async function linkCustomerAddress(data: { customerId: string; addressId:
 
 // 견적 요청 생성
 export async function createEstimateRequest(data: {
-  customerId: string;
   moveType: string;
   moveDate: string;
   fromAddressId: string;
@@ -37,9 +36,16 @@ export async function createEstimateRequest(data: {
 }
 
 // 지정 기사 견적 요청
-// export async function createDesignatedEstimateRequest(data: { driverId: string }) {
-//   return cookieFetch("/customer/estimate-request/designated", {
-//     method: "POST",
-//     body: JSON.stringify(data)
-//   });
-// }
+export async function createDesignatedEstimateRequest(data: { driverId: string }) {
+  return cookieFetch("/customer/estimate-request/designated", {
+    method: "POST",
+    body: JSON.stringify(data)
+  });
+}
+
+// 활성 견적 조회
+export async function getActiveEstimateRequest() {
+  return cookieFetch("/customer/estimate-request/active", {
+    method: "GET"
+  });
+}
