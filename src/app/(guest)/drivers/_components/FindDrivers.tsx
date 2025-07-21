@@ -72,9 +72,11 @@ function FindDrivers() {
           )}
         </div>
       </div>
-      <div className="mt-[260px] ml-[54px] hidden lg:block">
-        <LikedDrivers />
-      </div>
+      {user && (
+        <div className="mt-[260px] ml-[54px] hidden lg:block">
+          <LikedDrivers />
+        </div>
+      )}
     </div>
   );
 }

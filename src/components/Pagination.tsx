@@ -1,20 +1,49 @@
 "use client";
 import React, { useState } from "react";
-import right from "../../public/assets/icons/ic_chevron_right.svg";
-import rightBlack from "../../public/assets/icons/ic_chevron_right_black.svg";
-import leftBlack from "../../public/assets/icons/ic_chevron_left_black.svg";
-import left from "../../public/assets/icons/ic_chevron_left.svg";
+import right from "/assets/icons/ic_chevron_right.svg";
 import Image from "next/image";
 import clsx from "clsx";
-export default function Pagination() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 9;
-  const pageNumbers = [1, 2, 3, 4, 5, "...", 9];
+import useMediaHook from "@/hooks/useMediaHook";
+
+interface PaginationType {
+  totalReviews?: number;
+  pageSize?: number;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function Pagination({
+  totalReviews = 28,
+  pageSize = 4,
+  currentPage = 1,
+  setCurrentPage
+}: PaginationType) {
+  const { isLg } = useMediaHook();
+  const totalPages = Math.ceil(totalReviews / pageSize);
+  const visiblePage = isLg ? 7 : 5;
+
   const handleClick = (num: string | number) => {
     if (typeof num === "number") {
       setCurrentPage(num);
     }
   };
+
+  const getVisiblePages = (visiblePage: number, currentPage: number, totalPage: number) => {
+    const pages = [];
+    let start = Math.max(1, currentPage - Math.floor(visiblePage / 2));
+    let end = start + visiblePage - 1;
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, end - visiblePage + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  };
+  const pageNumbers = getVisiblePages(visiblePage, currentPage, totalPages);
   return (
     <div>
       <div className="flex items-center gap-[10px]">
@@ -24,7 +53,12 @@ export default function Pagination() {
           disabled={currentPage === 1}
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
         >
-          <Image src={currentPage === 1 ? left : leftBlack} width={24} height={24} alt="left_Icon" />
+          <Image
+            src={currentPage === 1 ? "/assets/icons/ic_chevron_left.svg" : "/assets/icons/ic_chevron_left_black.svg"}
+            width={24}
+            height={24}
+            alt="left_Icon"
+          />
         </button>
 
         {/* 페이지 버튼 */}
@@ -41,9 +75,8 @@ export default function Pagination() {
                 }
               )}
               onClick={() => handleClick(num)}
-              disabled={num === "..."}
             >
-              <span className={clsx(num === "..." ? "pb-3" : "")}>{num}</span>
+              <span>{num}</span>
             </button>
           ))}
         </div>
@@ -53,7 +86,7 @@ export default function Pagination() {
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
         >
-          <Image src={rightBlack} width={24} height={24} alt="right_black_Icon" />
+          <Image src="/assets/icons/ic_chevron_right_black.svg" width={24} height={24} alt="right_black_Icon" />
         </button>
       </div>
     </div>

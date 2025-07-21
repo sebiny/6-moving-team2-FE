@@ -13,4 +13,7 @@ export interface DriverType {
   favorite: number;
   reviewsReceived: ReviewType[];
   isFavorite: boolean;
+  averageRating: number;
+  reviewCount: number;
+  moveType: MoveType[];
 }

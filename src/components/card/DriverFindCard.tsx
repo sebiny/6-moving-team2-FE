@@ -32,18 +32,18 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
       )}
 
       {/* sm */}
-      {/* <div className="flex gap-2 md:hidden">
-        {driver.services.map((service) => (
+      <div className="flex gap-2 md:hidden">
+        {driver.moveType.map((service) => (
           <ChipRectangle key={service} moveType={service} size="sm" />
         ))}
-      </div> */}
+      </div>
 
       {/* md 이상 */}
-      {/* <div className="hidden gap-2 md:flex">
-        {driver.services.map((service) => (
+      <div className="hidden gap-2 md:flex">
+        {driver.moveType.map((service) => (
           <ChipRectangle key={service} moveType={service} size="md" />
         ))}
-      </div> */}
+      </div>
 
       <div className="mt-3 flex gap-5">
         <Image

@@ -11,6 +11,7 @@ import OrangeBackground from "@/components/OrangeBackground";
 import DriverFindCard from "@/components/card/DriverFindCard";
 import FilterSection from "@/components/filter/FilterSection";
 import { driver } from "@/constant/constant";
+import { useState } from "react";
 
 // Title 더미데이터
 const mockData = [
@@ -55,7 +56,7 @@ const mockData = [
 
 function CommonPage() {
   const moveTypes: MoveType[] = ["SMALL", "HOME", "OFFICE", "REQUEST"];
-
+  const [page, setPage] = useState(1);
   return (
     /**
      * Title 컴포넌트

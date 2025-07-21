@@ -52,7 +52,6 @@ function RequestEstimate({ userFavorite = false }: RequestEstimateType) {
       favoriteMutation.mutate();
     }
   };
-  console.log(favorite);
   return (
     <div className="hidden flex-col gap-4 lg:flex">
       <p className="text-xl font-semibold">

@@ -1,6 +1,7 @@
 import { DriverType } from "@/types/driverType";
 import { cookieFetch, defaultFetch } from "../FetchClient";
 import qs from "query-string";
+import { ReviewType } from "@/types/reviewType";
 
 export const driverService = {
   getAllDriversDefault: async (options: {
@@ -32,5 +33,8 @@ export const driverService = {
   },
   getDriverDetailCookie: async (id: string): Promise<DriverType | null> => {
     return await cookieFetch(`/drivers/${id}`);
+  },
+  getDriverReviews: async (id: string, page: number): Promise<ReviewType[] | null> => {
+    return await defaultFetch(`drivers/${id}/reviews?page=${page}`);
   }
 };
