@@ -6,6 +6,8 @@ import Button from "@/components/Button";
 import AddressResultCard from "../card/AddressResultCard";
 import DaumPostcodeModal from "./DaumPostcodeModal";
 import { Address } from "@/types/Address";
+import { createAddress } from "@/lib/api/api-estimateRequest";
+import { formatAddress } from "@/utills/AddressMapper";
 
 interface AddressCardModalProps {
   title: string;
@@ -128,13 +130,22 @@ export default function AddressCardModal({
         <DaumPostcodeModal
           query={inputValue}
           onClose={() => setShowPostcode(false)}
-          onComplete={(addr) => {
-            console.log("주소 확인", addr);
+          onComplete={async (addr) => {
+            // 백엔드에서 받아온 주소
+            const savedAddress = await createAddress(
+              formatAddress({
+                postalcode: addr.zonecode,
+                roadAddress: addr.roadAddress,
+                jibunAddress: addr.jibunAddress,
+                buildingName: addr.buildingName
+              })
+            );
+            // 프론트 변환 주소
             const newAddress: Address = {
-              id: Date.now(), //TODO: 실제로는 백엔드 응답 id 사용하도록 수정
-              postalCode: addr.zonecode,
-              roadAddress: addr.roadAddress,
-              jibunAddress: addr.jibunAddress
+              id: savedAddress.id,
+              postalCode: savedAddress.postalCode,
+              roadAddress: savedAddress.street,
+              jibunAddress: savedAddress.detail || addr.jibunAddress
             };
 
             setAddressList((prev) => [newAddress, ...prev]);
