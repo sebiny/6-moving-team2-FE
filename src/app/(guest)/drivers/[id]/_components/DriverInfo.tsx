@@ -4,14 +4,12 @@ import { DriverType } from "@/types/driverType";
 import Image from "next/image";
 import React from "react";
 import DriverSimpleInfo from "@/components/driver/DriverSimpleInfo";
-import { ResultType } from "@/constant/reviewType";
 
 interface DriverInfoType {
   driver: DriverType;
-  result: ResultType;
 }
 
-function DriverInfo({ driver, result }: DriverInfoType) {
+function DriverInfo({ driver }: DriverInfoType) {
   return (
     <div className="relative mt-[35px] md:mt-[46px] lg:mt-[62px]">
       <Image
@@ -22,9 +20,9 @@ function DriverInfo({ driver, result }: DriverInfoType) {
         className="absolute top-[-77px] w-16 md:top-[-120px] md:w-25 lg:top-[-150px] lg:w-[134px]"
       />
       <div className="flex gap-3">
-        {/* {driver.services.map((service) => (
+        {driver.moveType.map((service) => (
           <ChipRectangle moveType={service} key={service} />
-        ))} */}
+        ))}
       </div>
       <p className="mt-3 text-2xl font-semibold">{driver.shortIntro}</p>
       <div className="mt-5 flex justify-between">
@@ -33,7 +31,7 @@ function DriverInfo({ driver, result }: DriverInfoType) {
           <p className="text-lg font-semibold">{driver.nickname} 기사님</p>
         </div>
         <div className="flex items-center">
-          <p>{driver.favorite}</p>
+          <p>{driver.favoriteCount}</p>
           <LikeIcon color="black" />
         </div>
       </div>
@@ -41,8 +39,8 @@ function DriverInfo({ driver, result }: DriverInfoType) {
       <DriverSimpleInfo
         type="detail"
         career={driver.career}
-        averageRating={result.average}
-        reviewCount={result.total}
+        averageRating={driver.averageRating}
+        reviewCount={driver.reviewCount}
         work={driver.work}
       />
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import FilterDropdown from "@/components/dropdown/FilterDropdown";
-import React, { useState } from "react";
+import React from "react";
 
 interface FiltersType {
   region: string;

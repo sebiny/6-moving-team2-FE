@@ -1,21 +1,34 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import DriverReview from "./DriverReview";
 import StarIcon from "../icon/StarIcon";
 import Pagination from "../Pagination";
-import { ResultType, ReviewType } from "@/constant/reviewType";
+import { DriverType } from "@/types/driverType";
+import { ReviewRatio } from "@/utills/ReviewRatio";
+import { useQuery } from "@tanstack/react-query";
+import { driverService } from "@/lib/api/api-driver";
+import { ReviewType } from "@/types/reviewType";
 
 interface ReviewsType {
-  reviews: ReviewType[];
-  result: ResultType;
+  driver: DriverType;
 }
 
-function DriverReviews({ reviews, result }: ReviewsType) {
+function DriverReviews({ driver }: ReviewsType) {
+  const [page, setPage] = useState(1);
+
+  const { data: reviews, isPending } = useQuery<ReviewType[] | null>({
+    queryKey: ["reviews", driver.id, page],
+    queryFn: () => driverService.getDriverReviews(driver.id, page)
+  });
+  console.log(reviews);
+  if (!reviews) return <p>리뷰 데이터를 불러오지 못했습니다.</p>;
+
   function StarBar(count: number) {
-    return (count / result.total) * 100;
+    return (count / reviews!.length) * 100;
   }
 
   const levels = [5, 4, 3, 2, 1];
-
+  const result = ReviewRatio(reviews!);
   return (
     <div className="mb-50">
       <div className="text-black-400 text-xl font-semibold">리뷰</div>
@@ -23,9 +36,9 @@ function DriverReviews({ reviews, result }: ReviewsType) {
         <div>
           <div className="mt-4 flex justify-between">
             <div className="flex gap-[18px]">
-              <div className="text-black-400 text-[40px] font-normal">{result.average}</div>
+              <div className="text-black-400 text-[40px] font-normal">{driver.averageRating}</div>
               <div>
-                <StarIcon width={100} rating={result.average} />
+                <StarIcon width={100} rating={driver.averageRating} />
                 <div>{reviews.length}개의 리뷰</div>
               </div>
             </div>
@@ -34,12 +47,9 @@ function DriverReviews({ reviews, result }: ReviewsType) {
                 <div key={level} className="flex items-center gap-4">
                   <p className="w-6">{level}점</p>
                   <div className="bg-background-300 h-2 w-[180px] rounded">
-                    <div
-                      className="h-full rounded bg-[#FFC149]"
-                      style={{ width: `${StarBar(result.num[level - 1])}%` }}
-                    />
+                    <div className="h-full rounded bg-[#FFC149]" style={{ width: `${StarBar(result[level - 1])}%` }} />
                   </div>
-                  <p className="text-sm text-gray-300">{result.num[level - 1]}</p>
+                  <p className="text-sm text-gray-300">{result[level - 1]}</p>
                 </div>
               ))}
             </div>
@@ -50,7 +60,7 @@ function DriverReviews({ reviews, result }: ReviewsType) {
             ))}
           </div>
           <div className="mt-10 flex justify-center">
-            <Pagination />
+            <Pagination currentPage={page} setCurrentPage={setPage} />
           </div>
         </div>
       ) : (

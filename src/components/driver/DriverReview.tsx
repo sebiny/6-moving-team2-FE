@@ -1,8 +1,7 @@
-"use client";
 import React from "react";
 import StarIcon from "../icon/StarIcon";
-import { ReviewType } from "@/constant/reviewType";
 import { format } from "date-fns";
+import { ReviewType } from "@/types/reviewType";
 
 interface DriverReviewType {
   review: ReviewType;

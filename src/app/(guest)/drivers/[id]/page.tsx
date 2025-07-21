@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DriverReviews from "../../../../components/driver/DriverReviews";
 import DriverInfo from "./_components/DriverInfo";
 import ShareDriver from "../../../../components/ShareDriver";
@@ -8,8 +8,6 @@ import RequestEstimate from "./_components/RequestEstimate";
 import Service from "../../../../components/Service";
 import BottomNav from "./_components/BottomButton";
 import OrangeBackground from "@/components/OrangeBackground";
-import { reviews } from "@/constant/reviewType";
-import { ReviewAverage } from "@/utills/ReviewAverage";
 import { useQuery } from "@tanstack/react-query";
 import { DriverType } from "@/types/driverType";
 import { driverService } from "@/lib/api/api-driver";
@@ -17,38 +15,46 @@ import { useParams } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 
 function DriverDetailPage() {
-  const result = ReviewAverage(reviews);
   const { id } = useParams();
   const { user } = useAuth();
   const driverId = id as string;
+  const [favorite, setFavorite] = useState<boolean>(false);
+
   const { data: driver, isPending } = useQuery<DriverType | null>({
     queryKey: ["driver", driverId],
     queryFn: () =>
       user ? driverService.getDriverDetailCookie(driverId) : driverService.getDriverDetailDefault(driverId)
   });
-  if (!driver) {
-    return <div>로딩중...</div>;
-  }
+
+  useEffect(() => {
+    if (driver?.isFavorite !== undefined) {
+      setFavorite(driver.isFavorite);
+    }
+  }, [driver]);
+
+  if (isPending) return <div>로딩중...</div>;
+  if (!driver) return <div>기사님 정보를 불러올 수 없습니다</div>;
+
   return (
     <div className="flex flex-col items-center">
       <OrangeBackground />
       <div className="flex w-full justify-center gap-[116px]">
         <div className="mx-5 w-full max-w-[742px] md:mx-18">
-          <DriverInfo driver={driver} result={result} />
-          {/* <Service services={driver.services} regions={driver.serviceAreas} /> */}
+          <DriverInfo driver={driver} />
+          <Service services={driver.moveType} serviceAreas={driver.serviceAreas} />
           <div className="mb-8 lg:hidden">
             <div className="border-line-100 border-b"></div>
             <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
             <div className="border-line-100 mt-8 border-b"></div>
           </div>
-          <DriverReviews reviews={reviews} result={result} />
+          <DriverReviews driver={driver} />
         </div>
         <div className="mt-[109px] hidden w-80 lg:block">
-          <RequestEstimate userFavorite={driver.isFavorite} />
+          <RequestEstimate userFavorite={driver.isFavorite} favorite={favorite} setFavorite={setFavorite} />
           <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
         </div>
       </div>
-      <BottomNav />
+      <BottomNav favorite={favorite} setFavorite={setFavorite} />
     </div>
   );
 }

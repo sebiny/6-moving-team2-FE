@@ -32,18 +32,18 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
       )}
 
       {/* sm */}
-      {/* <div className="flex gap-2 md:hidden">
-        {driver.services.map((service) => (
+      <div className="flex gap-2 md:hidden">
+        {driver.moveType.map((service) => (
           <ChipRectangle key={service} moveType={service} size="sm" />
         ))}
-      </div> */}
+      </div>
 
       {/* md 이상 */}
-      {/* <div className="hidden gap-2 md:flex">
-        {driver.services.map((service) => (
+      <div className="hidden gap-2 md:flex">
+        {driver.moveType.map((service) => (
           <ChipRectangle key={service} moveType={service} size="md" />
         ))}
-      </div> */}
+      </div>
 
       <div className="mt-3 flex gap-5">
         <Image
@@ -74,7 +74,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                   </div>
                   <div className="flex items-center justify-center md:hidden">
                     <LikeIcon color="red" />
-                    <p className="pt-1 text-gray-500">{driver.favorite}</p>
+                    <p className="pt-1 text-gray-500">{driver.favoriteCount}</p>
                   </div>
                 </div>
                 <div className="mt-[2px] flex items-center gap-2 text-[13px] md:mt-2">
@@ -96,9 +96,9 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                 </div>
               </div>
             </div>
-            <div className="absolute right-0 bottom-0 hidden justify-center gap-[6px] md:flex">
+            <div className="absolute right-0 bottom-0 hidden items-center justify-center gap-[6px] md:flex">
               <LikeIcon color="red" />
-              <p className="pt-1 text-gray-500">{driver.favorite}</p>
+              <p className="pt-1 text-gray-500">{driver.favoriteCount}</p>
             </div>
           </div>
         </div>
