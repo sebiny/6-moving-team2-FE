@@ -28,7 +28,7 @@ export default function EstimateRequestDisabled() {
             </p>
           </div>
           <Button
-            onClick={() => router.push("/member/estimate-pending")}
+            onClick={() => router.push("/customer/my-estimates/estimate-pending")}
             text="받은 견적 보러가기"
             type="orange"
             className="h-[54px] !px-6 !py-4 !text-base lg:!text-lg"
