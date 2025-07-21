@@ -1,38 +1,25 @@
 "use client";
 
-import Title, { DriverInfo } from "@/components/Title";
+import Title from "@/components/Title";
 import SubHeader from "../../_components/SubHeader";
 import EstimateDetailInfo from "../../_components/EstimateDetailInfo";
 import ShareDriver from "@/components/ShareDriver";
 import OrangeBackground from "@/components/OrangeBackground";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import { receivedEstimateData } from "../_components/ReceivedEstimateData";
+import AutoRejectedAlert from "./_components/AutoRejectedAlert";
 
 export default function PastDetailPage() {
-  // Title용 임시 데이터
-  const mockData = [
-    {
-      id: 1,
-      status: "ACCEPTED", // 확정된 견적
-      labels: ["SMALL", "REQUEST"],
-      driver: {
-        name: "김코드",
-        rating: 5.0,
-        reviewCount: 178,
-        experienceYear: 7,
-        confirmedCount: 334,
-        likes: 136
-      } as DriverInfo,
-      message: "고객님의 물품을 안전하게 운송해 드립니다.",
-      estimatePrice: 180000
-    }
-  ] satisfies {
-    id: number;
-    status: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
-    labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
-    driver: DriverInfo;
-    message: string;
-    estimatePrice?: number;
-  }[];
+  const { id } = useParams();
+  const estimateId = Number(id);
+
+  // 임시 데이터에서 estimateId로 해당 견적 찾아오기
+  const matchedEstimate = receivedEstimateData
+    .flatMap((group) => group.estimates)
+    .find((estimate) => estimate.id === estimateId);
+
+  if (!matchedEstimate) return <div className="mt-20 flex justify-center">견적을 찾을 수 없습니다.</div>;
 
   return (
     <>
@@ -61,15 +48,16 @@ export default function PastDetailPage() {
           {/* 왼쪽 콘텐츠 */}
           <div className="flex flex-col gap-10">
             <Title
-              status={mockData[0].status}
-              labels={mockData[0].labels}
-              driver={mockData[0].driver}
-              message={mockData[0].message}
-              estimatePrice={mockData[0].estimatePrice}
+              status={matchedEstimate.status}
+              labels={matchedEstimate.labels}
+              driver={matchedEstimate.driver}
+              message={matchedEstimate.message}
+              estimatePrice={matchedEstimate.price}
             />
 
             <div className="border-t border-gray-100" />
 
+            {/* 임시 고정 */}
             <EstimateDetailInfo
               requestDate="24.08.26"
               serviceType="사무실이사"
@@ -77,11 +65,13 @@ export default function PastDetailPage() {
               from="서울 중구 삼일대로 343"
               to="서울 강남구 선릉로 428"
             />
+
+            {/* AUTO_REJECTED인 경우만 표시 */}
+            {matchedEstimate.status === "AUTO_REJECTED" && <AutoRejectedAlert />}
           </div>
 
-          <div className="my-10 border-t border-gray-100 lg:hidden" />
+          <div className="my-6 border-t border-gray-100 lg:hidden" />
 
-          {/* 오른쪽 사이드 */}
           <ShareDriver text="견적서 공유하기" />
         </div>
       </div>

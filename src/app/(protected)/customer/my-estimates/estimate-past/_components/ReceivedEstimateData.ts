@@ -12,7 +12,7 @@ export interface DriverInfo {
 
 export interface ReceivedEstimateItem {
   id: number;
-  status: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
+  status: "AUTO_REJECTED" | "ACCEPTED";
   labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
   driver: DriverInfo;
   message: string;
@@ -56,7 +56,7 @@ export const receivedEstimateData: EstimateGroup[] = [
       },
       {
         id: 102,
-        status: "PROPOSED",
+        status: "AUTO_REJECTED",
         labels: ["SMALL", "REQUEST"],
         driver: {
           name: "이노코드",
