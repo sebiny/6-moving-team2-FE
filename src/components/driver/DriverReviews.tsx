@@ -20,7 +20,7 @@ function DriverReviews({ driver }: ReviewsType) {
     queryKey: ["reviews", driver.id, page],
     queryFn: () => driverService.getDriverReviews(driver.id, page)
   });
-
+  console.log(reviews);
   if (!reviews) return <p>리뷰 데이터를 불러오지 못했습니다.</p>;
 
   function StarBar(count: number) {

@@ -1,5 +1,6 @@
 import { MoveType } from "@/constant/moveTypes";
 import { ReviewType } from "./reviewType";
+import { ServiceAreaType } from "./ServiceAreaType";
 
 export interface DriverType {
   id: string;
@@ -8,9 +9,9 @@ export interface DriverType {
   shortIntro: string;
   detailIntro: string;
   services: MoveType[];
-  serviceAreas: string[];
+  serviceAreas: ServiceAreaType[];
   work: number;
-  favorite: number;
+  favoriteCount: number;
   reviewsReceived: ReviewType[];
   isFavorite: boolean;
   averageRating: number;

@@ -9,10 +9,22 @@ import React from "react";
 import { driver } from "@/constant/constant";
 import EditButtons from "./_components/EditButtons";
 import { useAuth } from "@/providers/AuthProvider";
+import { useQuery } from "@tanstack/react-query";
+import { DriverType } from "@/types/driverType";
+import { driverService } from "@/lib/api/api-driver";
 
 function DriverMyPage() {
   const { user } = useAuth(); //driverId로 수정해야함
   const driverId = user?.id as string;
+
+  const { data: driver, isPending } = useQuery<DriverType | null>({
+    queryKey: ["driver", driverId],
+    queryFn: () =>
+      user ? driverService.getDriverDetailCookie(driverId) : driverService.getDriverDetailDefault(driverId)
+  });
+
+  if (isPending) return <div>로딩중...</div>;
+  if (!driver) return <div>기사님 정보를 불러올 수 없습니다</div>;
   return (
     <div className="flex flex-col items-center">
       <div className="flex h-[54px] w-full max-w-300 items-center px-7 md:px-24 lg:h-24 lg:px-2">
@@ -31,7 +43,7 @@ function DriverMyPage() {
                 </div>
                 <div className="mt-2 flex">
                   <LikeIcon color="black" />
-                  <p className="text-gray-500">{driver.favorite}</p>
+                  <p className="text-gray-500">{driver.favoriteCount}</p>
                 </div>
               </div>
             </div>
@@ -54,7 +66,7 @@ function DriverMyPage() {
               work={driver.work}
             />
           </div>
-          <Service services={driver.services} regions={driver.serviceAreas} />
+          <Service services={driver.services} serviceAreas={driver.serviceAreas} />
           <DriverReviews driver={driver} />
         </div>
       </div>

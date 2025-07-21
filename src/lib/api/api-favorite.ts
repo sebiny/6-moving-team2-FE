@@ -8,6 +8,6 @@ export const favoriteService = {
     return await cookieFetch(`/favorite/drivers/${driverId}`, { method: "DELETE" });
   },
   favoriteDrivers: async () => {
-    return await cookieFetch(`/favorite`);
+    return await cookieFetch(`/favorite?page=1&pageSize=3`);
   }
 };

@@ -31,7 +31,7 @@ function DriverInfo({ driver }: DriverInfoType) {
           <p className="text-lg font-semibold">{driver.nickname} 기사님</p>
         </div>
         <div className="flex items-center">
-          <p>{driver.favorite}</p>
+          <p>{driver.favoriteCount}</p>
           <LikeIcon color="black" />
         </div>
       </div>

@@ -33,9 +33,10 @@ function FindDrivers() {
   } | null>({
     queryKey: ["drivers", keyword, orderBy, region, service],
     queryFn: ({ pageParam = 1 }) =>
-      user
-        ? driverService.getAllDriversCookie({ keyword, orderBy, region, service, page: pageParam as number })
-        : driverService.getAllDriversDefault({ keyword, orderBy, region, service, page: pageParam as number }),
+      driverService.getAllDriversCookie({ keyword, orderBy, region, service, page: pageParam as number }),
+    // user
+    //   ? driverService.getAllDriversCookie({ keyword, orderBy, region, service, page: pageParam as number })
+    //   : driverService.getAllDriversDefault({ keyword, orderBy, region, service, page: pageParam as number }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage?.hasNext) return allPages.length + 1;
