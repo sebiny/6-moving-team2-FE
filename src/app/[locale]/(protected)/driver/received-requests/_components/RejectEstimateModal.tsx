@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Button from "@/components/Button";
-import XIcon from "../../../../../../public/assets/icons/ic_X_gray.svg";
+import XIcon from "../../../../../../../public/assets/icons/ic_X_gray.svg";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import { MoveType } from "@/constant/moveTypes";
 import clsx from "clsx";
-import arrow from "../../../../../../public/assets/icons/ic_arrow.svg";
+import arrow from "../../../../../../../public/assets/icons/ic_arrow.svg";
 import InputText from "@/components/InputText";
 import useMediaHook from "@/hooks/useMediaHook";
 
@@ -115,7 +115,7 @@ export default function RejectEstimateModal({
           <Button
             type={commentValid ? "orange" : "gray"}
             text="반려하기"
-            className="h-[54px] lg:h-[64px] mt-auto"
+            className="mt-auto h-[54px] lg:h-[64px]"
             isDisabled={!commentValid}
             onClick={() => onSubmit(0, "")}
           />

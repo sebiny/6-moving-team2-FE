@@ -1,6 +1,7 @@
 "use client";
 
 import FilterDropdown from "@/components/dropdown/FilterDropdown";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface FiltersType {
@@ -11,9 +12,12 @@ interface FiltersType {
 }
 
 function Filters({ region, setRegion, service, setService }: FiltersType) {
+  const router = useRouter();
   const handleClick = () => {
-    setRegion("");
-    setService("");
+    const params = new URLSearchParams(window.location.search);
+    params.delete("region");
+    params.delete("service");
+    router.replace(`?${params.toString()}`);
   };
 
   return (
@@ -22,34 +26,30 @@ function Filters({ region, setRegion, service, setService }: FiltersType) {
         <FilterDropdown
           label="지역"
           options={[
-            "서울",
-            "경기",
-            "인천",
-            "강원",
-            "충남",
-            "충북",
-            "전북",
-            "전남",
-            "대전",
-            "세종",
-            "광주",
-            "경북",
-            "경남",
-            "대구",
-            "울산",
-            "부산",
-            "제주"
+            "SEOUL",
+            "BUSAN",
+            "DAEGU",
+            "INCHEON",
+            "GWANGJU",
+            "DAEJEON",
+            "ULSAN",
+            "SEJONG",
+            "GYEONGGI",
+            "GANGWON",
+            "CHUNGBUK",
+            "CHUNGNAM",
+            "JEONBUK",
+            "JEONNAM",
+            "GYEONGBUK",
+            "GYEONGNAM",
+            "JEJU"
           ]}
           selected={region}
           onSelect={setRegion}
           isMultiColumn
+          type="region"
         />
-        <FilterDropdown
-          label="서비스"
-          options={["소형이사", "가정이사", "사무실이사"]}
-          selected={service}
-          onSelect={setService}
-        />
+        <FilterDropdown label="서비스" options={["SMALL", "HOME", "OFFICE"]} selected={service} onSelect={setService} />
       </div>
       <p className="hidden cursor-pointer text-gray-300 lg:block" onClick={handleClick}>
         초기화

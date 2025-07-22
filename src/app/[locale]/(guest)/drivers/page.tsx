@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import FindDrivers from "./_components/FindDrivers";
 
 function DriversPage() {
   return (
-    <div>
+    <Suspense fallback={<div>로딩중...</div>}>
       <FindDrivers />
-    </div>
+    </Suspense>
   );
 }
 

@@ -3,7 +3,9 @@ import { MoveType } from "@/constant/moveTypes";
 const ServiceMap: Record<string, string> = {
   SMALL: "소형이사",
   HOME: "가정이사",
-  OFFICE: "사무실이사"
+  OFFICE: "사무실이사",
+  WHOLE: "전체",
+  ESTIMATE: "확정견적"
 };
 
 export const TranslateService = (service: string) => {
@@ -36,7 +38,7 @@ export const TranslateRegion = (region: string) => {
 
 const SortingMap: Record<string, string> = {
   reviewCount: "리뷰 많은순",
-  rating: "평점 높은순",
+  averageRating: "평점 높은순",
   career: "경력 높은순",
   work: "확정 많은순",
   date: "이사 빠른순",
