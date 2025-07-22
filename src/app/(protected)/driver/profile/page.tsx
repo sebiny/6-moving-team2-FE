@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { cookieFetch } from "@/lib/FetchClient";
+import { cookieFetch, authUtils } from "@/lib/FetchClient";
 
 const moveTypes = [
   { value: "SMALL", label: "소형이사" },
@@ -57,9 +57,13 @@ export default function DriverProfileForm() {
   const [career, setCareer] = useState(1);
   const [shortIntro, setShortIntro] = useState("");
   const [detailIntro, setDetailIntro] = useState("");
-  const [moveType, setMoveType] = useState("HOME");
+  const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
   const [serviceAreas, setServiceAreas] = useState<string[]>([]);
   const [profileImage, setProfileImage] = useState("");
+
+  const toggleMoveType = (type: string) => {
+    setSelectedMoveTypes((prev) => (prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]));
+  };
 
   const toggleRegion = (region: string) => {
     setServiceAreas((prev) => (prev.includes(region) ? prev.filter((r) => r !== region) : [...prev, region]));
@@ -76,26 +80,36 @@ export default function DriverProfileForm() {
       alert("경력은 0 이상의 숫자여야 합니다.");
       return;
     }
+
+    if (selectedMoveTypes.length === 0) {
+      alert("제공 서비스를 하나 이상 선택해주세요.");
+      return;
+    }
+
     if (serviceAreas.length === 0) {
       alert("서비스 가능 지역을 하나 이상 선택해주세요.");
       return;
     }
 
     try {
-      await cookieFetch("/profile/driver", {
+      const response = await cookieFetch<{ accessToken?: string }>("/profile/driver", {
         method: "POST",
         body: JSON.stringify({
           nickname,
           career,
           shortIntro,
           detailIntro,
-          moveType,
+          moveType: selectedMoveTypes,
           profileImage: profileImage || undefined,
           serviceAreas: serviceAreas.map((label) => ({
-            region: regionMap[label] // 한글 → enum
+            region: regionMap[label]
           }))
         })
       });
+
+      if (response && response.accessToken) {
+        authUtils.setAccessToken(response.accessToken);
+      }
 
       alert("기사 프로필 생성 완료!");
       router.push("/");
@@ -144,14 +158,21 @@ export default function DriverProfileForm() {
         className="w-full rounded border p-2"
       />
 
-      <label>제공 서비스</label>
-      <select value={moveType} onChange={(e) => setMoveType(e.target.value)} className="rounded border p-2">
+      <label>제공 서비스 (중복 선택 가능)</label>
+      <div className="flex flex-wrap gap-2">
         {moveTypes.map((type) => (
-          <option key={type.value} value={type.value}>
+          <button
+            key={type.value}
+            type="button"
+            onClick={() => toggleMoveType(type.value)}
+            className={`rounded border px-3 py-1 ${
+              selectedMoveTypes.includes(type.value) ? "bg-blue-500 text-white" : "bg-gray-100"
+            }`}
+          >
             {type.label}
-          </option>
+          </button>
         ))}
-      </select>
+      </div>
 
       <label>서비스 가능 지역</label>
       <div className="flex flex-wrap gap-2">

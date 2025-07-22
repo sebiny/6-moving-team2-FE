@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { cookieFetch } from "@/lib/FetchClient";
+import { authUtils, cookieFetch } from "@/lib/FetchClient";
 
 const moveTypes = [
   { value: "SMALL", label: "소형이사" },
@@ -53,12 +53,17 @@ const regionMap: Record<string, string> = {
 
 export default function CustomerProfileForm() {
   const router = useRouter();
-  const [moveType, setMoveType] = useState("HOME");
+  const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
   const [currentArea, setCurrentArea] = useState("");
   const [profileImage, setProfileImage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (selectedMoveTypes.length === 0) {
+      alert("이용 서비스를 하나 이상 선택해주세요.");
+      return;
+    }
 
     if (!currentArea) {
       alert("지역을 선택해주세요.");
@@ -66,14 +71,18 @@ export default function CustomerProfileForm() {
     }
 
     try {
-      await cookieFetch("/profile/customer", {
+      const response = await cookieFetch<{ accessToken?: string }>("/profile/customer", {
         method: "POST",
         body: JSON.stringify({
-          moveType,
+          moveType: selectedMoveTypes,
           currentArea: regionMap[currentArea],
           profileImage: profileImage || undefined
         })
       });
+
+      if (response && response.accessToken) {
+        authUtils.setAccessToken(response.accessToken);
+      }
 
       alert("프로필 생성 완료!");
       router.push("/");
@@ -86,18 +95,33 @@ export default function CustomerProfileForm() {
     }
   };
 
+  const toggleMoveType = (type: string) => {
+    setSelectedMoveTypes((prev) => (prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]));
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-6">
       <h2 className="text-xl font-bold">고객 프로필 생성</h2>
 
-      <label>이용 서비스</label>
-      <select value={moveType} onChange={(e) => setMoveType(e.target.value)} className="rounded border p-2">
-        {moveTypes.map((type) => (
-          <option key={type.value} value={type.value}>
-            {type.label}
-          </option>
-        ))}
-      </select>
+      <div>
+        <label className="block">이용 서비스 (중복 선택 가능)</label>
+        <div className="flex flex-wrap gap-2 pt-2">
+          {moveTypes.map((type) => (
+            <button
+              key={type.value}
+              type="button"
+              onClick={() => toggleMoveType(type.value)}
+              className={`rounded border px-3 py-1 transition-colors ${
+                selectedMoveTypes.includes(type.value)
+                  ? "border-blue-500 bg-blue-500 text-white"
+                  : "border-gray-300 bg-gray-100 hover:bg-gray-200"
+              }`}
+            >
+              {type.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <label>내가 사는 지역</label>
       <select value={currentArea} onChange={(e) => setCurrentArea(e.target.value)} className="rounded border p-2">
