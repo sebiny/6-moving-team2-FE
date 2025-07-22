@@ -7,7 +7,7 @@ export const favoriteService = {
   deleteFavorite: async (driverId: string) => {
     return await cookieFetch(`/favorite/drivers/${driverId}`, { method: "DELETE" });
   },
-  favoriteDrivers: async () => {
-    return await cookieFetch(`/favorite?page=1&pageSize=3`);
+  favoriteDrivers: async (page?: number, pageSize?: number) => {
+    return await cookieFetch(`/favorite?page=${page}&pageSize=${pageSize}`);
   }
 };

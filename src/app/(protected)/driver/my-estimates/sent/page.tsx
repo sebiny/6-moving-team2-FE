@@ -3,9 +3,7 @@
 import React, { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Header from "@/components/Header";
-import CustomerEstimateCard from "@/app/(protected)/driver/my-estimates/sent/_components/CustomerEstimateCard";
-import CompletedEstimateCard from "@/app/(protected)/driver/my-estimates/sent/_components/CompletedEstimateCard";
-import { Request } from "@/types/request";
+import EstimateCardList from "@/app/(protected)/driver/my-estimates/sent/_components/EstimateCardList";
 
 // 보낸견적 타입 정의
 interface SentEstimate {
@@ -82,32 +80,11 @@ export default function SentEstimatesPage() {
     id: `${item.id}-${idx}`
   }));
 
-  const handleViewDetails = (estimateId: string) => {
-    router.push(`/driver/my-estimates/sent/${estimateId}`);
-  };
-
   return (
     <>
       <Header type="driver-estimate" selectedIdx={selectedIdx} setSelectedIdx={handleTabChange} />
-      <div className="flex min-h-screen justify-center bg-neutral-50 px-4 py-10 pt-25">
-        <div className="flex flex-col gap-6">
-          <div className="grid grid-cols-2 gap-6 self-stretch">
-            {estimates.map((estimate) =>
-              estimate.isCompleted ? (
-                <CompletedEstimateCard
-                  key={estimate.id}
-                  request={estimate as unknown as Request & { estimateAmount?: string }}
-                  onViewDetails={() => handleViewDetails(estimate.id)}
-                />
-              ) : (
-                <CustomerEstimateCard
-                  key={estimate.id}
-                  request={estimate as unknown as Request & { estimateAmount?: string }}
-                />
-              )
-            )}
-          </div>
-        </div>
+      <div className="flex justify-center bg-neutral-50 px-4 pt-6 md:pt-8 lg:pt-11 pb-10">
+        <EstimateCardList requests={estimates} />
       </div>
     </>
   );

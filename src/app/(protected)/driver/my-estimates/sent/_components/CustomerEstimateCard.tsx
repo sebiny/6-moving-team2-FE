@@ -22,9 +22,9 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
   const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
 
   return (
-    <div className="relative inline-flex w-[588px] flex-col gap-8 rounded-[20px] bg-white px-10 py-8 shadow-[-2px_-2px_10px_rgba(220,220,220,0.20),2px_2px_10px_rgba(220,220,220,0.20)] outline-[0.5px] outline-offset-[-0.5px] outline-zinc-100">
+    <div className="flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.20)] outline outline-offset-[-0.5px] outline-zinc-100 md:w-[588px] md:gap-8 md:px-10 md:py-8">
       {/* 상단 */}
-      <div className="flex w-full flex-col gap-6">
+      <div className="flex w-full flex-col gap-4">
         <div className="flex h-8 items-center justify-between">
           <div className="flex gap-2">
             <ChipRectangle moveType={moveTypeKey} size="sm" />
@@ -42,22 +42,26 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
           <div className="h-px w-full bg-zinc-100" />
         </div>
         {/* 출발/도착지 + 이사일 */}
-        <div className="flex w-full items-start justify-between">
-          <div className="flex items-center gap-3">
+        <div className="flex w-full flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-1 items-end gap-3 md:flex-row md:items-center">
             <div className="flex flex-col">
-              <div className="text-sm text-zinc-500">출발지</div>
-              <div className="text-base font-semibold text-neutral-900">{request.fromAddress}</div>
+              <div className="text-sm font-normal text-zinc-500">출발지</div>
+              <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
+                {request.fromAddress}
+              </div>
             </div>
-            <div className="relative h-5 w-4">
+            <div className="relative h-5 w-4 flex-shrink-0">
               <Image src="/assets/icons/ic_arrow.svg" alt="화살표" fill className="object-center" />
             </div>
             <div className="flex flex-col">
-              <div className="text-sm text-zinc-500">도착지</div>
-              <div className="text-base font-semibold text-neutral-900">{request.toAddress}</div>
+              <div className="text-sm font-normal text-zinc-500">도착지</div>
+              <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
+                {request.toAddress}
+              </div>
             </div>
           </div>
           <div className="flex flex-col">
-            <div className="text-sm text-zinc-500">이사일</div>
+            <div className="text-sm font-normal text-zinc-500">이사일</div>
             <div className="text-base font-semibold text-neutral-900">{request.moveDate}</div>
           </div>
         </div>

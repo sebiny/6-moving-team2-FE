@@ -21,7 +21,7 @@ export default function FilterToggleButton({ isOpen, onClick }: FilterToggleButt
       >
         <div className="relative h-6 w-6">
           <Image
-            src={isOpen ? "assets/icons/ic_filter_red.svg" : "assets/icons/ic_filter_gray.svg"}
+            src={isOpen ? "/assets/icons/ic_filter_red.svg" : "/assets/icons/ic_filter_gray.svg"}
             alt="필터"
             fill
             className="object-contain"

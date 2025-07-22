@@ -10,7 +10,6 @@ interface SortDropdownType {
 }
 
 function SortDropdown({ sortings, sort, setSort }: SortDropdownType) {
-  // const [sort, setSort] = useState(value);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClick = (sorting: string) => {
