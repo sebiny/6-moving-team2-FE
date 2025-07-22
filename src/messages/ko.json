@@ -1,0 +1,16 @@
+{
+  "Header": {
+    "estimate": {
+      "waiting": "견적 대기",
+      "received": "받은 견적"
+    },
+    "driverEstimate": {
+      "sent": "보낸 견적",
+      "rejected": "거절된 요청"
+    },
+    "review": {
+      "writable": "작성 가능한 리뷰",
+      "written": "내 리뷰"
+    }
+  }
+}

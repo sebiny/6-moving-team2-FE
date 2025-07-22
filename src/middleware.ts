@@ -1,5 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { UserType } from "@/types/UserType";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
+
+const intlMiddleware = createMiddleware(routing);
 
 function parseJwtPayload(token: string): { exp: number; userType: UserType; [key: string]: any } | null {
   try {
@@ -14,7 +18,13 @@ function parseJwtPayload(token: string): { exp: number; userType: UserType; [key
   }
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
+  // 먼저 next-intl 내부 처리
+  const intlResponse = intlMiddleware(request);
+  if (intlResponse instanceof NextResponse) {
+    return intlResponse; // 변경된 request 반영 (i18n 경로 처리용)
+  }
+
   const { pathname } = request.nextUrl;
   console.log(`[Middleware] Path: ${pathname}`);
 
@@ -68,3 +78,6 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"]
 };
+// export const config = {
+//   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"]
+// };

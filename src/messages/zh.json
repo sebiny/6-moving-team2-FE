@@ -1,0 +1,16 @@
+{
+  "Header": {
+    "estimate": {
+      "waiting": "待处理报价",
+      "received": "收到的报价"
+    },
+    "driverEstimate": {
+      "sent": "已发送报价",
+      "rejected": "被拒请求"
+    },
+    "review": {
+      "writable": "可写评价",
+      "written": "我的评价"
+    }
+  }
+}

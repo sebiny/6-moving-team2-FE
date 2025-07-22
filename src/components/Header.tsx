@@ -2,6 +2,7 @@
 
 import React from "react";
 import { clsx } from "clsx";
+import { useTranslations } from "next-intl"; //다국어 훅 추가
 
 type HeaderType = "review" | "estimate" | "driver-estimate";
 
@@ -16,31 +17,35 @@ interface TabItem {
 }
 
 export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProps) {
+  const t = useTranslations("Header"); //'Header' 네임스페이스로 번역
+
   // 탭 항목 정의
   const rawList: TabItem[] =
     type === "estimate"
       ? [
-          { idx: "1", label: "대기 중인 견적" },
-          { idx: "2", label: "받았던 견적" }
+          { idx: "1", label: t("estimate.waiting") },
+          { idx: "2", label: t("estimate.received") }
         ]
       : type === "driver-estimate"
         ? [
-            { idx: "sent", label: "보낸 견적 조회" },
-            { idx: "rejected", label: "반려 요청" }
+            { idx: "sent", label: t("driverEstimate.sent") },
+            { idx: "rejected", label: t("driverEstimate.rejected") }
           ]
         : [
-            { idx: "1", label: "작성 가능한 리뷰" },
-            { idx: "2", label: "내가 작성한 리뷰" }
+            { idx: "1", label: t("review.writable") },
+            { idx: "2", label: t("review.written") }
           ];
+
   const tabList = rawList.map((item) => ({
     ...item,
     active: item.idx === selectedIdx
   }));
+
   const SIZE_CLASSES = {
     base: ["lg:px-90 lg:gap-8 lg:pt-4"],
     sm: ["sm:gap-6 sm:px-6"],
     md: ["md:gap-6 md:px-18"]
-  }; //object
+  };
 
   return (
     <div>
