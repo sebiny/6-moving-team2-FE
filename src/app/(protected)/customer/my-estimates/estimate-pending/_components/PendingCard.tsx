@@ -1,18 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { PendingData } from "./PendingData";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import Button from "@/components/Button";
 import EstimateStatus from "@/components/chip/EstimateStatus";
 import { useRouter } from "next/navigation";
+import { MoveType } from "@/constant/moveTypes";
+import { Estimate } from "@/types/estimateType";
 
 interface Props {
-  data: PendingData;
+  data: Estimate;
+  moveType: MoveType;
 }
 
-export default function PendingCard({ data }: Props) {
-  const { driver, message, price, labels, status, id } = data;
+export default function PendingCard({ data, moveType }: Props) {
+  const { driver, description, price, status, id } = data;
 
   const router = useRouter();
 
@@ -27,28 +29,24 @@ export default function PendingCard({ data }: Props) {
         <div className="flex flex-wrap items-center">
           {/* sm 이하 */}
           <div className="flex gap-2 md:hidden">
-            {data.labels.map((label) => (
-              <ChipRectangle key={label} moveType={label} size="sm" />
-            ))}
+            <ChipRectangle moveType={moveType} size="sm" />
           </div>
 
           {/* md 이상 */}
           <div className="hidden gap-2 md:flex">
-            {data.labels.map((label) => (
-              <ChipRectangle key={label} moveType={label} size="md" />
-            ))}
+            <ChipRectangle moveType={moveType} size="md" />
           </div>
         </div>
         <EstimateStatus status={status} />
       </div>
 
       {/* 소개 메시지 */}
-      <p className="mt-3 font-semibold text-gray-800 sm:text-[16px] lg:text-[18px]">{message}</p>
+      <p className="mt-3 font-semibold text-gray-800 sm:text-[16px] lg:text-[18px]">{description}</p>
 
       {/* 기사 프로필 */}
       <div className="flex items-start gap-3">
         {/* 프로필 이미지 */}
-        <Image src={driver.imageUrl} alt="기사 프로필" width={50} height={50} />
+        <Image src={driver.authUser.imageUrl} alt="기사 프로필" width={50} height={50} />
 
         {/* 기사 정보 영역 */}
         <div className="flex-1 space-y-2">
@@ -57,13 +55,13 @@ export default function PendingCard({ data }: Props) {
             {/* 기사 이름 */}
             <div className="flex items-center gap-1">
               <Image src="/assets/icons/ic_profileMark.svg" alt="기사 마크" width={16} height={16} />
-              <span>{driver.name} 기사님</span>
+              <span>{driver.authUser.name} 기사님</span>
             </div>
 
             {/* 좋아요 */}
             <div className="flex items-center text-base font-normal text-gray-500">
               <Image src="/assets/icons/ic_like_red.svg" alt="찜" width={23} height={23} />
-              <span className="ml-1">{driver.likes}</span>
+              <span className="ml-1">{driver.favoriteCount}</span>
             </div>
           </div>
 
@@ -72,16 +70,17 @@ export default function PendingCard({ data }: Props) {
             <div className="flex items-center gap-1">
               <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={16} height={16} />
               <span className="flex gap-0.5">
-                <span className="font-medium text-black">{driver.rating.toFixed(1)}</span>({driver.reviewCount})
+                <span className="font-medium text-black">{driver.avgRating ? driver.avgRating.toFixed(1) : "0.0"}</span>
+                ({driver.reviewCount})
               </span>
             </div>
             <span className="text-gray-100">|</span>
             <span>
-              경력 <span className="font-medium text-black">{driver.experienceYear}년</span>
+              경력 <span className="font-medium text-black">{driver.career}년</span>
             </span>
             <span className="text-gray-100">|</span>
             <span>
-              <span className="font-medium text-black">{driver.confirmedCount}건</span> 확정
+              <span className="font-medium text-black">{driver.work}건</span> 확정
             </span>
           </div>
         </div>
