@@ -5,6 +5,11 @@ import TextField from "@/components/input/TextField";
 import { useSignupForm } from "@/hooks/useAuthForm";
 import { UserType } from "@/types/UserType";
 
+const NAME_REGEX = /^[가-힣]{2,5}$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const PHONE_REGEX = /^010\d{8}$/;
+const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
+
 export default function SignupCustomer() {
   const {
     name,
@@ -17,11 +22,26 @@ export default function SignupCustomer() {
     setPassword,
     passwordConfirmation,
     setPasswordConfirmation,
-    // passwordError,
-    // passwordConfirmationError,
-    // isFormValid,
     onSubmit
   } = useSignupForm(UserType.CUSTOMER);
+
+  const isNameValid = NAME_REGEX.test(name);
+  const isEmailValid = EMAIL_REGEX.test(email);
+  const isPhoneValid = PHONE_REGEX.test(phone);
+  const isPasswordValid = PASSWORD_REGEX.test(password);
+  const isPasswordConfirmationValid = password === passwordConfirmation;
+
+  const isFormValid =
+    name &&
+    email &&
+    phone &&
+    password &&
+    passwordConfirmation && // 모든 필드가 비어있지 않고
+    isNameValid &&
+    isEmailValid &&
+    isPhoneValid &&
+    isPasswordValid &&
+    isPasswordConfirmationValid; // 모든 필드가 유효할 때
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0 md:pb-15 lg:pb-15">
@@ -69,6 +89,7 @@ export default function SignupCustomer() {
                   onChange={setName}
                   className="w-full"
                   mdHeight="54"
+                  error={name.length > 0 && !isNameValid ? "이름은 2~5자의 한글만 사용 가능합니다." : ""}
                 />
               </div>
 
@@ -87,6 +108,7 @@ export default function SignupCustomer() {
                   onChange={setEmail}
                   className="w-full"
                   mdHeight="54"
+                  error={email.length > 0 && !isEmailValid ? "유효하지 않은 이메일 형식입니다." : ""}
                 />
               </div>
 
@@ -105,6 +127,9 @@ export default function SignupCustomer() {
                   onChange={setPhone}
                   className="w-full"
                   mdHeight="54"
+                  error={
+                    phone.length > 0 && !isPhoneValid ? "유효하지 않은 전화번호 형식입니다. (예: 01012345678)" : ""
+                  }
                 />
               </div>
 
@@ -123,8 +148,8 @@ export default function SignupCustomer() {
                   onChange={setPassword}
                   className="w-full"
                   error={
-                    password.length > 0 && !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password)
-                      ? "비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다."
+                    password.length > 0 && !isPasswordValid
+                      ? "비밀번호는 최소 8자 이상이며 영문, 숫자, 특수문자를 포함해야 합니다."
                       : ""
                   }
                   mdHeight="54"
@@ -146,7 +171,7 @@ export default function SignupCustomer() {
                   onChange={setPasswordConfirmation}
                   className="w-full"
                   error={
-                    passwordConfirmation.length > 0 && password !== passwordConfirmation
+                    passwordConfirmation.length > 0 && !isPasswordConfirmationValid
                       ? "비밀번호가 일치하지 않습니다."
                       : ""
                   }
@@ -157,21 +182,9 @@ export default function SignupCustomer() {
 
             <button
               type="submit"
-              disabled={
-                !email ||
-                !password ||
-                !passwordConfirmation ||
-                !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password) ||
-                password !== passwordConfirmation
-              }
+              disabled={!isFormValid}
               className={`h-[54px] w-full rounded-xl px-5 py-4 text-base leading-[26px] font-semibold transition-colors md:h-[60px] md:rounded-[16px] md:text-[18px] ${
-                email &&
-                password &&
-                passwordConfirmation &&
-                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password) &&
-                password === passwordConfirmation
-                  ? "bg-orange-400 text-white"
-                  : "bg-gray-100 text-gray-50"
+                isFormValid ? "bg-orange-400 text-white" : "bg-gray-100 text-gray-50"
               }`}
             >
               시작하기

@@ -5,8 +5,14 @@ import Image from "next/image";
 import { useLoginForm } from "@/hooks/useAuthForm";
 import TextField from "@/components/input/TextField";
 
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
+
 export default function LoginCustomer() {
   const { email, setEmail, password, setPassword, onSubmit } = useLoginForm();
+  const isEmailValid = EMAIL_REGEX.test(email);
+  const isPasswordValid = PASSWORD_REGEX.test(password);
+  const isFormValid = email && password && isEmailValid && isPasswordValid;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0 md:pb-15 lg:pb-15">
@@ -54,6 +60,7 @@ export default function LoginCustomer() {
                   onChange={setEmail}
                   className="w-full"
                   mdHeight="54"
+                  error={email.length > 0 && !isEmailValid ? "유효하지 않은 이메일 형식입니다." : ""}
                 />
               </div>
 
@@ -71,23 +78,18 @@ export default function LoginCustomer() {
                   onChange={setPassword}
                   className="w-full"
                   error={
-                    password.length > 0 && !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password)
-                      ? "비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다."
+                    password.length > 0 && !isPasswordValid
+                      ? "비밀번호는 최소 8자 이상이며 영문, 숫자, 특수문자를 포함해야 합니다."
                       : ""
                   }
                   mdHeight="54"
                 />
               </div>
             </div>
-
             <button
               type="submit"
-              disabled={!email || !password || !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password)}
-              className={`h-[54px] w-full rounded-xl px-5 py-4 text-base leading-[26px] font-semibold transition-colors md:h-[60px] md:rounded-[16px] md:text-[18px] ${
-                email && password && /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password)
-                  ? "bg-orange-400 text-white"
-                  : "bg-gray-100 text-gray-50"
-              } `}
+              disabled={!isFormValid}
+              className={`h-[54px] w-full rounded-xl px-5 py-4 text-base leading-[26px] font-semibold transition-colors md:h-[60px] md:rounded-[16px] md:text-[18px] ${isFormValid ? "bg-orange-400 text-white" : "bg-gray-100 text-gray-50"} `}
             >
               로그인
             </button>
