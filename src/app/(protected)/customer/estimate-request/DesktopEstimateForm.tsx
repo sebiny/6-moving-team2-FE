@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createEstimateRequest } from "@/lib/api/api-estimateRequest";
+import { moveTypeValueMap } from "@/types/moveType";
 import CalenderDropdown from "./_components/dropdown/CalenderDropdown";
 import MoveTypeCard from "./_components/card/MoveTypeCard";
 import AddressCardModal from "./_components/modal/AddressCardModal";
@@ -15,6 +18,7 @@ const moveTypes = [
 ];
 
 export default function DesktopEstimateForm() {
+  const queryClient = useQueryClient();
   const [selectedMoveType, setSelectedMoveType] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showModal, setShowModal] = useState<"from" | "to" | null>(null);
@@ -27,10 +31,33 @@ export default function DesktopEstimateForm() {
 
   const isFormValid = selectedMoveType !== null && selectedDate !== null && addressFrom !== null && addressTo !== null;
 
+  const { mutateAsync: requestEstimate, isPending } = useMutation({
+    mutationFn: createEstimateRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["estimate", "active"] });
+    }
+  });
+
+  const handleRequest = async () => {
+    if (!selectedMoveType || !selectedDate || !addressFrom || !addressTo) return;
+
+    try {
+      await requestEstimate({
+        moveType: moveTypeValueMap[selectedMoveType],
+        moveDate: selectedDate.toISOString(),
+        fromAddressId: String(addressFrom.id),
+        toAddressId: String(addressTo.id)
+      });
+      alert("견적 요청 완료!");
+    } catch {
+      alert("견적 요청 실패");
+    }
+  };
+
   return (
-    <div className="bg-background-100 min-h-screen">
+    <div className="bg-background-100 min-h-screen pt-1">
       {/* 컨테이너 */}
-      <div className="lg: mx-auto mt-[91px] flex max-w-[700px] flex-col items-center rounded-[40px] bg-white px-10 pt-[79px] pb-12 lg:mt-32 lg:max-w-[894px] lg:px-[47px] lg:pt-[89px]">
+      <div className="mx-auto mt-[33px] flex max-w-[700px] flex-col items-center rounded-[40px] bg-white px-10 pt-[79px] pb-12 lg:mt-9 lg:max-w-[894px] lg:px-[47px] lg:pt-[89px]">
         {/* 타이틀 */}
         <div className="flex flex-col gap-2 text-center lg:gap-4">
           <h1 className="text-2xl font-bold">이사 유형, 예정일과 지역을 선택해주세요</h1>
@@ -84,28 +111,26 @@ export default function DesktopEstimateForm() {
           </div>
         </div>
         {/* 태블릿 버튼 */}
-        {/* TODO: 견적 요청 연결해야 함. */}
         <div className="mt-[57px] flex w-full justify-end lg:hidden">
           <Button
-            text="견적 요청하기"
+            text={isPending ? "요청 중..." : "견적 요청하기"}
             type="orange"
-            isDisabled={!isFormValid}
+            isDisabled={!isFormValid || isPending}
             className="px-[51px]"
-            onClick={() => alert("견적 요청 성공!")}
+            onClick={handleRequest}
           />
         </div>
       </div>
 
       {/* PC 버튼 */}
-      {/* TODO: 견적 요청 연결해야 함. */}
       <div className="hidden lg:block">
         <div className="mx-20 mt-10 mb-[50px] hidden justify-end lg:flex">
           <Button
-            text="견적 요청하기"
+            text={isPending ? "요청 중..." : "견적 요청하기"}
             type="orange"
-            isDisabled={!isFormValid}
+            isDisabled={!isFormValid || isPending}
             className="px-[51px]"
-            onClick={() => alert("견적 요청 성공!")}
+            onClick={handleRequest}
           />
         </div>
       </div>

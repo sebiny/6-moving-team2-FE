@@ -12,6 +12,7 @@ import imgEmptyReview from "/public/assets/images/img_empty_review.svg";
 import Image from "next/image";
 import SendEstimateModal from "./_components/SendEstimateModal";
 import RejectEstimateModal from "./_components/RejectEstimateModal";
+import FilterSection from "@/components/filter/FilterSection";
 
 const dummyRequests: Request[] = [
   {
@@ -114,21 +115,28 @@ export default function ReceivedRequestsPage() {
           {showEmpty ? "요청 목록 보기" : "빈 페이지 보기 (DEV)"}
         </button>
         <SearchBar width="w-full" placeholder="어떤 고객님을 찾고 계세요?" />
-        <div className="inline-flex items-start justify-start gap-3">
+        <div className="hidden items-start justify-start gap-3 lg:inline-flex">
           <ChipCircle type="region" text="소형이사" color="gray" />
           <ChipCircle type="region" text="가정이사" color="gray" />
           <ChipCircle type="region" text="사무실이사" color="gray" />
         </div>
-        <div className="inline-flex flex-col items-start justify-start gap-6 self-stretch">
-          <div className="inline-flex items-center justify-start gap-1">
-            <div className="justify-start text-center font-['Pretendard'] text-lg leading-relaxed font-semibold text-neutral-800">
-              전체
+
+        {/* 모바일/태블릿에서는 전체 옆에 드롭다운 */}
+        <div className="flex w-full flex-col gap-4">
+          {/* 전체 4건 + 드롭다운 */}
+          <div className="flex w-full items-center justify-between gap-2 lg:w-auto">
+            <div className="font-['Pretendard'] text-lg leading-relaxed font-semibold text-neutral-800">
+              전체 {requests.length}건
             </div>
-            <div className="justify-start text-center font-['Pretendard'] text-lg leading-relaxed font-semibold text-neutral-800">
-              {requests.length}건
+            {/* 모바일에선 오른쪽 붙고, lg 이상에선 이 div가 무시됨 */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <SortDropdown sortings={["rating", "date", "request"]} sort={sort} setSort={setSort} />
+              <FilterSection />
             </div>
           </div>
-          <div className="flex w-full items-center justify-between">
+
+          {/* PC에서만 나오는 체크박스 + 드롭다운 */}
+          <div className="hidden w-full items-center justify-between lg:flex">
             {/* 체크박스 2개 */}
             <div className="flex gap-4">
               <label className="flex items-center gap-2">
@@ -148,18 +156,18 @@ export default function ReceivedRequestsPage() {
           </div>
         </div>
         {requests.length === 0 ? (
-          <div className="inline-flex flex-col items-start justify-start gap-2.5">
-            <div className="flex w-[955px] flex-col items-center justify-center gap-2.5 p-44">
-              <div className="flex flex-col items-center justify-start gap-8">
-                <div className="relative h-48 w-60 overflow-hidden">
-                  <div className="absolute top-[-16.29px] left-[-11.04px] h-64 w-64 opacity-50">
-                    <Image src={imgEmptyReview} alt="empty" fill style={{ objectFit: "cover" }} />
-                  </div>
-                </div>
-                <div className="justify-center text-center font-['Pretendard'] text-xl leading-loose font-normal text-neutral-400">
-                  아직 받은 요청이 없어요!
-                </div>
+          <div className="flex w-full flex-col items-center justify-center px-6 py-20">
+            <div className="flex flex-col items-center gap-6">
+              {/* 이미지 */}
+              <div className="relative h-48 w-48">
+                <Image
+                  src={imgEmptyReview}
+                  alt="empty"
+                  className="absolute top-0 left-0 h-full w-full object-contain opacity-50"
+                />
               </div>
+              {/* 텍스트 */}
+              <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">아직 받은 요청이 없어요!</p>
             </div>
           </div>
         ) : (

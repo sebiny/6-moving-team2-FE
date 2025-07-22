@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createEstimateRequest } from "@/lib/api/api-estimateRequest";
+import { moveTypeValueMap } from "@/types/moveType";
 import MoveTypeCard from "./_components/card/MoveTypeCard";
 import MobileDatePicker from "./_components/datepicker/MobileDatePicker";
 import AddressCardModal from "./_components/modal/AddressCardModal";
@@ -15,6 +18,8 @@ const moveTypes = [
 ];
 
 export default function MobileEstimateForm() {
+  const queryClient = useQueryClient();
+
   const [step, setStep] = useState(1);
   const [moveType, setMoveType] = useState<string | null>(null);
   const [moveDate, setMoveDate] = useState<Date | null>(null);
@@ -28,8 +33,31 @@ export default function MobileEstimateForm() {
 
   const stepList = [1, 2, 3];
 
+  const { mutateAsync: requestEstimate, isPending } = useMutation({
+    mutationFn: createEstimateRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["estimate", "active"] });
+    }
+  });
+
   const handleMoveTypeSelect = (label: string) => {
     setMoveType((prev) => (prev === label ? null : label));
+  };
+
+  const handleRequest = async () => {
+    if (!moveType || !moveDate || !addressFrom || !addressTo) return;
+
+    try {
+      await requestEstimate({
+        moveType: moveTypeValueMap[moveType],
+        moveDate: moveDate.toISOString(),
+        fromAddressId: String(addressFrom.id),
+        toAddressId: String(addressTo.id)
+      });
+      alert("견적 요청 완료!");
+    } catch {
+      alert("견적 요청 실패");
+    }
   };
 
   return (
@@ -140,14 +168,13 @@ export default function MobileEstimateForm() {
           </div>
 
           {/* 이전, 요청 버튼 */}
-          {/* TODO: 요청 버튼 연결하기 */}
           <div className="mt-71 flex justify-center gap-2">
             <Button type="white-orange" onClick={() => setStep(2)} text="이전" className="h-[54px] w-[158px]" />
 
             <Button
-              isDisabled={!isValidStep3}
-              onClick={() => alert("요청 완료")}
-              text="견적 요청하기"
+              isDisabled={!isValidStep3 || isPending}
+              onClick={handleRequest}
+              text={isPending ? "요청 중..." : "견적 요청하기"}
               type="orange"
               className="h-[54px] w-[158px]"
             />

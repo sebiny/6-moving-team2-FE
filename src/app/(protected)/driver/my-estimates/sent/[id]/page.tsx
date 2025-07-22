@@ -6,6 +6,7 @@ import OrangeBackground from "@/components/OrangeBackground";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import ShareDriver from "@/components/ShareDriver";
+import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
 
 export default function EstimateDetailPage() {
   return (
@@ -13,67 +14,56 @@ export default function EstimateDetailPage() {
       <PageHeader title="견적 상세" />
       <OrangeBackground />
       {/* 상단 정보 + 공유 */}
-      <div className="mt-10 flex w-full flex-row items-start justify-between px-90">
+      <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
         {/* 왼쪽 - 상단 정보 + 견적 정보 */}
-        <div className="inline-flex flex-col items-start justify-start gap-7">
+        <div className="flex flex-col items-start gap-7">
           {/* 상단 정보 */}
-          <div className="flex flex-col items-start justify-start gap-5">
-            <div className="inline-flex items-center justify-start gap-3">
+          <div className="flex w-full flex-col gap-5">
+            {/* 칩들: 이사 유형 + 확정견적 (모바일) */}
+            <div className="flex items-center gap-3">
               <ChipRectangle moveType="SMALL" size="md" />
               <ChipRectangle moveType="REQUEST" size="md" />
-            </div>
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center justify-start gap-1.5">
-                <div className="justify-start text-2xl leading-loose font-semibold text-zinc-800">김민서</div>
-                <div className="justify-start text-2xl leading-loose font-semibold text-zinc-800">고객님</div>
+              {/* 모바일에서만 확정견적 칩 표시 */}
+              <div className="block md:hidden">
+                <ChipConfirmed />
               </div>
-              <ChipConfirmed className="ml-auto" />
+            </div>
+            {/* 고객명 + 확정견적 (PC 이상) */}
+            <div className="flex w-full items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <div className="text-lg leading-loose font-semibold text-zinc-800 md:text-2xl">김민서</div>
+                <div className="text-lg leading-loose font-semibold text-zinc-800 md:text-2xl">고객님</div>
+              </div>
+              {/* md 이상일 때만 보여지는 확정견적 칩 */}
+              <div className="ml-auto hidden md:block">
+                <ChipConfirmed />
+              </div>
             </div>
           </div>
 
-          <div className="h-0 w-[741px] outline outline-1 outline-offset-[-0.5px] outline-zinc-100" />
+          <div className="h-0 w-full outline outline-offset-[-0.5px] outline-zinc-100" />
 
           {/* 견적가 */}
-          <div className="inline-flex items-center justify-start gap-16">
-            <div className="justify-start text-xl leading-loose font-semibold text-neutral-800">견적가</div>
-            <div className="inline-flex w-52 flex-col items-start justify-start">
-              <div className="justify-start text-2xl leading-loose font-bold text-neutral-800">180,000원</div>
-            </div>
+          <div className="flex w-full md:w-1/2 items-center justify-between">
+            <div className="text-base leading-loose font-semibold text-neutral-800 md:text-xl">견적가</div>
+            <div className="text-xl leading-loose font-bold text-neutral-800 md:text-2xl">180,000원</div>
           </div>
 
-          <div className="h-0 w-[741px] outline outline-1 outline-offset-[-0.5px] outline-zinc-100" />
-
-          {/* 견적 정보 섹션도 여기에 포함시킴 */}
-          <div className="flex flex-col items-start justify-start gap-7 self-stretch">
-            <div className="text-xl leading-loose font-semibold text-neutral-800">견적 정보</div>
-            <div className="flex flex-col items-start justify-start gap-4 self-stretch">
-              <div className="inline-flex items-center gap-6">
-                <div className="w-24 text-base font-normal text-neutral-400">견적 요청일</div>
-                <div className="text-base font-semibold text-neutral-800">24.08.26</div>
-              </div>
-              <div className="inline-flex items-center gap-6">
-                <div className="w-24 text-base font-normal text-neutral-400">서비스</div>
-                <div className="text-base font-semibold text-neutral-800">사무실이사</div>
-              </div>
-              <div className="inline-flex items-center gap-6">
-                <div className="w-24 text-base font-normal text-neutral-400">이용일</div>
-                <div className="text-base font-semibold text-neutral-800">2024. 08. 26(월) 오전 10:00</div>
-              </div>
-              <div className="inline-flex items-center gap-6">
-                <div className="w-24 text-base font-normal text-neutral-400">출발지</div>
-                <div className="text-base font-semibold text-neutral-800">서울 중구 삼일대로 343</div>
-              </div>
-              <div className="inline-flex items-center gap-6">
-                <div className="w-24 text-base font-normal text-neutral-400">도착지</div>
-                <div className="text-base font-semibold text-neutral-800">서울 강남구 선릉로 428</div>
-              </div>
-            </div>
+          <div className="h-0 w-full outline-1 outline-offset-[-0.5px] outline-zinc-100" />
+          <div className="w-full max-w-[744px]">
+            <EstimateDetailInfo
+              requestDate="24.08.26"
+              serviceType="사무실이사"
+              moveDate="2024. 08. 26(월) 오전 10:00"
+              from="서울 중구 삼일대로 343"
+              to="서울 강남구 선릉로 428"
+            />
           </div>
         </div>
 
         {/* 오른쪽 - 공유 버튼 */}
-        <div className="mt-2 flex min-w-[180px] flex-col items-center gap-4">
-          <ShareDriver text="견적서 공유하기" />
+        <div className="items-left mb-10 flex flex-col md:flex-row">
+          <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
         </div>
       </div>
     </>

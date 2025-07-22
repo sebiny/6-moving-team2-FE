@@ -20,8 +20,8 @@ export default function InputPrice({
     <div
       className={
         isSm
-          ? "inline-flex w-full items-center justify-start overflow-hidden rounded-2xl bg-white p-3.5 outline outline-1 outline-offset-[-1px] outline-neutral-200"
-          : "inline-flex h-14 w-full items-center justify-start overflow-hidden rounded-2xl bg-white py-3.5 pr-6 pl-3.5 outline outline-1 outline-offset-[-1px] outline-neutral-200"
+          ? "inline-flex w-full items-center justify-start overflow-hidden rounded-2xl bg-white p-3.5 outline outline-offset-[-1px] outline-neutral-200"
+          : "inline-flex h-14 w-full items-center justify-start overflow-hidden rounded-2xl bg-white py-3.5 pr-6 pl-3.5 outline outline-offset-[-1px] outline-neutral-200"
       }
     >
       <div

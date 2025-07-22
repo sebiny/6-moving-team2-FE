@@ -28,7 +28,7 @@ function ShareDriver({ text }: ShareDriverType) {
     }
   }, [toast]);
   return (
-    <div className="mt-8 lg:mt-[70px]">
+    <div className="mt-4 lg:mt-[40px]">
       {toast && <Toast text={toast} />}
       <p className="text-black-400 text-xl font-semibold">{text}</p>
       <div className="mt-3 flex gap-4 lg:mt-[22px]">
