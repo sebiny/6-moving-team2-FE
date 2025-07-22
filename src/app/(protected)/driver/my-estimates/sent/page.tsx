@@ -83,7 +83,7 @@ export default function SentEstimatesPage() {
   return (
     <>
       <Header type="driver-estimate" selectedIdx={selectedIdx} setSelectedIdx={handleTabChange} />
-      <div className="flex min-h-screen justify-center bg-neutral-50 px-4 py-10 pt-25">
+      <div className="flex justify-center bg-neutral-50 px-4 pt-6 md:pt-8 lg:pt-11 pb-10">
         <EstimateCardList requests={estimates} />
       </div>
     </>

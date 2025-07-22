@@ -5,6 +5,7 @@ import { MoveType } from "@/constant/moveTypes";
 import Image from "next/image";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import Button from "@/components/Button";
+import { useRouter } from "next/navigation";
 
 const korToMoveTypeMap: Record<string, MoveType> = {
   소형이사: "SMALL",
@@ -16,10 +17,10 @@ const korToMoveTypeMap: Record<string, MoveType> = {
 
 interface CompletedEstimateCardProps {
   request: Request & { estimateAmount?: string };
-  onViewDetails?: () => void;
 }
 
-export default function CompletedEstimateCard({ request, onViewDetails }: CompletedEstimateCardProps) {
+export default function CompletedEstimateCard({ request }: CompletedEstimateCardProps) {
+  const router = useRouter();
   const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
 
   return (
@@ -77,7 +78,7 @@ export default function CompletedEstimateCard({ request, onViewDetails }: Comple
             text="견적 상세보기"
             type="outline"
             className="h-14 w-full rounded-xl px-6 py-4"
-            onClick={onViewDetails}
+            onClick={() => router.push(`/driver/my-estimates/sent/${request.id}`)}
           />
         </div>
       </div>
