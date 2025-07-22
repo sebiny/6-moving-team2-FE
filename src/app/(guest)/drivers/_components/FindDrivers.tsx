@@ -33,10 +33,9 @@ function FindDrivers() {
   } | null>({
     queryKey: ["drivers", keyword, orderBy, region, service],
     queryFn: ({ pageParam = 1 }) =>
-      driverService.getAllDriversCookie({ keyword, orderBy, region, service, page: pageParam as number }),
-    // user
-    //   ? driverService.getAllDriversCookie({ keyword, orderBy, region, service, page: pageParam as number })
-    //   : driverService.getAllDriversDefault({ keyword, orderBy, region, service, page: pageParam as number }),
+      user
+        ? driverService.getAllDriversCookie({ keyword, orderBy, region, service, page: pageParam as number })
+        : driverService.getAllDriversDefault({ keyword, orderBy, region, service, page: pageParam as number }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage?.hasNext) return allPages.length + 1;
@@ -59,7 +58,11 @@ function FindDrivers() {
         <SearchBar width="w-full" value={keyword} onChange={setKeyword} />
         <div className="my-[38px] flex justify-between">
           <Filters region={region} setRegion={setRegion} service={service} setService={setService} />
-          <SortDropdown sortings={["reviewCount", "career", "work", "rating"]} sort={orderBy} setSort={setOrderBy} />
+          <SortDropdown
+            sortings={["reviewCount", "career", "work", "averageRating"]}
+            sort={orderBy}
+            setSort={setOrderBy}
+          />
         </div>
         <div className="flex flex-col gap-5">
           {drivers?.map((driver) => (

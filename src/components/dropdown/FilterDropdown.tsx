@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import { TranslateRegion, TranslateService } from "@/utills/TranslateFunction";
 
 interface DropdownProps {
   label: string;
@@ -7,9 +8,17 @@ interface DropdownProps {
   selected: string;
   onSelect: (value: string) => void;
   isMultiColumn?: boolean;
+  type?: "region" | "service";
 }
 
-function FilterDropdown({ label, options, selected, onSelect, isMultiColumn = false }: DropdownProps) {
+function FilterDropdown({
+  label,
+  options,
+  selected,
+  onSelect,
+  isMultiColumn = false,
+  type = "service"
+}: DropdownProps) {
   const [open, setOpen] = useState(false);
   const isActive = selected !== "" || open;
 
@@ -33,7 +42,9 @@ function FilterDropdown({ label, options, selected, onSelect, isMultiColumn = fa
     <div className="relative">
       {/* 버튼 */}
       <button onClick={() => setOpen((prev) => !prev)} className={buttonClass}>
-        <span className="truncate text-sm font-medium md:text-base">{selected || label}</span>
+        <span className="truncate text-sm font-medium md:text-base">
+          {selected ? (type === "service" ? TranslateService(selected) : TranslateRegion(selected)) : label}
+        </span>
         <Image
           src={`/assets/icons/${open ? "ic_chevron_up" : "ic_chevron_down"}.svg`}
           alt="화살표"
@@ -58,7 +69,7 @@ function FilterDropdown({ label, options, selected, onSelect, isMultiColumn = fa
                   item === selected ? "bg-[var(--color-orange-100)] text-[var(--color-orange-400)]" : ""
                 }`}
               >
-                {item}
+                {type === "service" ? TranslateService(item) : TranslateRegion(item)}
               </div>
             ))
           ) : (
@@ -69,7 +80,7 @@ function FilterDropdown({ label, options, selected, onSelect, isMultiColumn = fa
                   onClick={() => handleSelect(item)}
                   className={`${itemClass} ${item === selected ? "bg-[var(--color-orange-100)] text-[var(--color-orange-400)]" : ""}`}
                 >
-                  {item}
+                  {type === "service" ? TranslateService(item) : TranslateRegion(item)}
                 </li>
               ))}
             </ul>

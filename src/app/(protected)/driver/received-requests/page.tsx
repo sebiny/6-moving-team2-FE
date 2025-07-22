@@ -44,7 +44,7 @@ export default function ReceivedRequestsPage() {
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   // 상단 useState 정의
-  const [sort, setSort] = useState("rating");
+  const [sort, setSort] = useState("averageRating");
 
   const requests = showEmpty
     ? []
@@ -144,7 +144,7 @@ export default function ReceivedRequestsPage() {
                 <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
               </label>
             </div>
-            <SortDropdown sortings={["rating", "date", "request"]} sort={sort} setSort={setSort} />
+            <SortDropdown sortings={["aveageRating", "date", "request"]} sort={sort} setSort={setSort} />
           </div>
         </div>
         {requests.length === 0 ? (

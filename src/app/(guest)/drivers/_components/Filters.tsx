@@ -22,34 +22,30 @@ function Filters({ region, setRegion, service, setService }: FiltersType) {
         <FilterDropdown
           label="지역"
           options={[
-            "서울",
-            "경기",
-            "인천",
-            "강원",
-            "충남",
-            "충북",
-            "전북",
-            "전남",
-            "대전",
-            "세종",
-            "광주",
-            "경북",
-            "경남",
-            "대구",
-            "울산",
-            "부산",
-            "제주"
+            "SEOUL",
+            "BUSAN",
+            "DAEGU",
+            "INCHEON",
+            "GWANGJU",
+            "DAEJEON",
+            "ULSAN",
+            "SEJONG",
+            "GYEONGGI",
+            "GANGWON",
+            "CHUNGBUK",
+            "CHUNGNAM",
+            "JEONBUK",
+            "JEONNAM",
+            "GYEONGBUK",
+            "GYEONGNAM",
+            "JEJU"
           ]}
           selected={region}
           onSelect={setRegion}
-          isMultiColumn
+          isMultiColumn={true}
+          type="region"
         />
-        <FilterDropdown
-          label="서비스"
-          options={["소형이사", "가정이사", "사무실이사"]}
-          selected={service}
-          onSelect={setService}
-        />
+        <FilterDropdown label="서비스" options={["SMALL", "HOME", "OFFICE"]} selected={service} onSelect={setService} />
       </div>
       <p className="hidden cursor-pointer text-gray-300 lg:block" onClick={handleClick}>
         초기화
