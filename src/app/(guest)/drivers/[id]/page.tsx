@@ -6,7 +6,7 @@ import DriverInfo from "./_components/DriverInfo";
 import ShareDriver from "../../../../components/ShareDriver";
 import RequestEstimate from "./_components/RequestEstimate";
 import Service from "../../../../components/Service";
-import BottomNav from "./_components/BottomButton";
+import BottomNav from "./_components/BottomNav";
 import OrangeBackground from "@/components/OrangeBackground";
 import { useQuery } from "@tanstack/react-query";
 import { DriverType } from "@/types/driverType";

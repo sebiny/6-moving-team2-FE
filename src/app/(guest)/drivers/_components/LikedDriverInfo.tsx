@@ -1,24 +1,18 @@
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import LikeIcon from "@/components/icon/LikeIcon";
+import { DriverType } from "@/types/driverType";
 import Image from "next/image";
 import React from "react";
 
-function LikedDriverInfo() {
-  const driver = {
-    nickname: "김코드",
-    line: "고객님의 물품을 안전하게 운송해 드립니다.",
-    description: "안녕하세요. 이사 업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.",
-    career: 7,
-    service: ["소형이사", "가정이사"],
-    region: ["서울", "경기"],
-    like: 136,
-    count: 334,
-    reviews: []
-  };
+interface LikedDriverInfo {
+  driver: DriverType;
+}
+
+function LikedDriverInfo({ driver }: LikedDriverInfo) {
   return (
     <div className="border-line-100 rounded-2xl border px-7 py-6 shadow-sm">
       <ChipRectangle moveType="SMALL" size="sm" />
-      <p className="text-black-300 mt-3 text-xl font-semibold">{driver.line}</p>
+      <p className="text-black-300 mt-3 text-xl font-semibold">{driver.shortIntro}</p>
       <div className="flex gap-5">
         <Image src="/assets/images/img_profile.svg" alt="프로필 이미지" width={50} height={50} />
         <div>
@@ -42,7 +36,7 @@ function LikedDriverInfo() {
                 </div>
                 <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
                 <div className="flex gap-1">
-                  <div>{driver.count}건</div>
+                  <div>{driver.work}건</div>
                   <p className="text-gray-300">확정</p>
                 </div>
               </div>
