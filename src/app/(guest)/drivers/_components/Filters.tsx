@@ -1,6 +1,7 @@
 "use client";
 
 import FilterDropdown from "@/components/dropdown/FilterDropdown";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface FiltersType {
@@ -11,9 +12,12 @@ interface FiltersType {
 }
 
 function Filters({ region, setRegion, service, setService }: FiltersType) {
+  const router = useRouter();
   const handleClick = () => {
-    setRegion("");
-    setService("");
+    const params = new URLSearchParams(window.location.search);
+    params.delete("region");
+    params.delete("service");
+    router.replace(`?${params.toString()}`);
   };
 
   return (
@@ -42,7 +46,7 @@ function Filters({ region, setRegion, service, setService }: FiltersType) {
           ]}
           selected={region}
           onSelect={setRegion}
-          isMultiColumn={true}
+          isMultiColumn
           type="region"
         />
         <FilterDropdown label="서비스" options={["SMALL", "HOME", "OFFICE"]} selected={service} onSelect={setService} />

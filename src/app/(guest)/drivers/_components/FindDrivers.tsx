@@ -6,7 +6,7 @@ import Filters from "./Filters";
 import SortDropdown from "@/components/dropdown/SortDropdown";
 import DriverFindCard from "@/components/card/DriverFindCard";
 import LikedDrivers from "./LikedDrivers";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { driverService } from "@/lib/api/api-driver";
 import { DriverType } from "@/types/driverType";
@@ -14,18 +14,24 @@ import { useInView } from "react-intersection-observer";
 import { useAuth } from "@/providers/AuthProvider";
 
 function FindDrivers() {
-  const [region, setRegion] = useState<string>("");
-  const [service, setService] = useState<string>("");
-  const [orderBy, setOrderBy] = useState<string>("work");
-  const [keyword, setKeyword] = useState<string>("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("keyword") || "";
+  const region = searchParams.get("region") || "";
+  const service = searchParams.get("service") || "";
+  const orderBy = searchParams.get("orderBy") || "work";
   const { user } = useAuth();
-  //   const searchParams = useSearchParams();
-  //   const keyword = searchParams.get("keyword") || "";
-  //   const region = searchParams.get("region") || "";
-  //   const service = searchParams.get("service") || "";
-  //   const orderBy = searchParams.get("orderBy") || "work";
-
   const { ref, inView } = useInView();
+
+  const updateQuery = (key: string, value: string) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    router.replace(`?${params.toString()}`);
+  };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useInfiniteQuery<{
     data: DriverType[];
@@ -49,19 +55,25 @@ function FindDrivers() {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  if (isPending) return <div>로딩중...</div>;
   const drivers = data?.pages.flatMap((page) => page?.data ?? []) ?? [];
 
   return (
     <div className="mb-20 flex justify-center">
       <div className="mx-6 w-full max-w-205">
         <p className="my-8 hidden text-3xl font-semibold lg:block">기사님 찾기</p>
-        <SearchBar width="w-full" value={keyword} onChange={setKeyword} />
+        <SearchBar width="w-full" value={keyword} onChange={(val) => updateQuery("keyword", val)} />
         <div className="my-[38px] flex justify-between">
-          <Filters region={region} setRegion={setRegion} service={service} setService={setService} />
+          <Filters
+            region={region}
+            setRegion={(val) => updateQuery("region", val)}
+            service={service}
+            setService={(val) => updateQuery("service", val)}
+          />
           <SortDropdown
             sortings={["reviewCount", "career", "work", "averageRating"]}
             sort={orderBy}
-            setSort={setOrderBy}
+            setSort={(val) => updateQuery("orderBy", val)}
           />
         </div>
         <div className="flex flex-col gap-5">
