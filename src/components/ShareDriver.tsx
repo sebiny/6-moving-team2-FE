@@ -1,5 +1,5 @@
 "use client";
-import Toast from "@/app/(guest)/drivers/[id]/_components/Toast";
+import Toast from "@/app/[locale]/(guest)/drivers/[id]/_components/Toast";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 

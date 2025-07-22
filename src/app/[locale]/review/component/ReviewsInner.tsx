@@ -17,6 +17,7 @@ export default function ReviewsInner({ setIsModal }: ReviewsProps) {
           <div className="flex-wrap gap-5 sm:mt-3 sm:flex md:mt-0">
             {moveDetails.map(({ label, content }, index) => (
               <div
+                key={index}
                 className={clsx(
                   index == 1 && "md:border-line-100 md:border-x md:px-4 lg:px-5",
                   index == 2 && isMd && !isLg && "border-line-100 border-r pr-4"

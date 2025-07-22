@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Request } from "@/types/request";
-import CustomerEstimateCard from "@/app/(protected)/driver/my-estimates/sent/_components/CustomerEstimateCard";
+import CustomerEstimateCard from "@/app/[locale]/(protected)/driver/my-estimates/sent/_components/CustomerEstimateCard";
 import CompletedEstimateCard from "./CompletedEstimateCard";
 
 interface EstimateCardListRequest extends Request {

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Button from "@/components/Button";
-import XIcon from "../../../../../../public/assets/icons/ic_X_gray.svg";
+import XIcon from "../../../../../../../public/assets/icons/ic_X_gray.svg";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import { MoveType } from "@/constant/moveTypes";
 import clsx from "clsx";
-import arrow from "../../../../../../public/assets/icons/ic_arrow.svg";
+import arrow from "../../../../../../../public/assets/icons/ic_arrow.svg";
 import InputText from "@/components/InputText";
 import InputPrice from "./InputPrice";
 import useMediaHook from "@/hooks/useMediaHook";
