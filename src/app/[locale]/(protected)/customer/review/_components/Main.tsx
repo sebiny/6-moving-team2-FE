@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Pagination from "@/components/Pagination";
-import Reviews from "./Reviews";
+import WritableReviews from "./WritableReviews";
 import MyReviews from "./MyReviews";
 import ReviewModal from "./ReviewModal";
 import NoReview from "./NoReview";
@@ -15,7 +15,7 @@ export default function Main({ selectedIdx }: MainProps) {
   return (
     <>
       <div className="bg-background-100 flex h-full w-full flex-col items-center gap-10 pt-10 pb-20 lg:gap-22 lg:pt-[54px]">
-        {selectedIdx === "1" ? <Reviews setIsModal={setIsModal} /> : <MyReviews />}
+        {selectedIdx === "1" ? <WritableReviews setIsModal={setIsModal} /> : <MyReviews />}
         <Pagination currentPage={page} setCurrentPage={setPage} />
         {isModal && <ReviewModal setIsModal={setIsModal} />}
       </div>

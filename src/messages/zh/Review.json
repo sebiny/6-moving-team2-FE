@@ -12,5 +12,8 @@
       "writable": "可写评价",
       "written": "我的评价"
     }
+  },
+  "Button": {
+    "createReview": "创建评价"
   }
 }

@@ -1,17 +1,20 @@
 import React from "react";
-import DriverImg from "../../../../../public/assets/images/img_profile.svg";
+import DriverImg from "/public/assets/images/img_profile.svg";
 import Image from "next/image";
 import clsx from "clsx";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-import DriverIcon from "../../../../../public/assets/icons/ic_driver.svg";
+import DriverIcon from "/public/assets/icons/ic_driver.svg";
 import useMediaHook from "@/hooks/useMediaHook";
 import ReviewsInner from "./ReviewsInner";
 import Button from "@/components/Button";
 import ReviewCost from "./ReviewCost";
+import { useTranslations } from "next-intl";
 interface ReviewsProps {
   setIsModal: (value: boolean) => void;
 }
 export default function Reviews({ setIsModal }: ReviewsProps) {
+  const t = useTranslations("Button"); // 'Button' 네임스페이스로 번역
+
   const SIZE_CLASSES = {
     base: ["lg:h-[242px] lg:w-280 lg:px-10 lg:py-8 lg:gap-6"],
     sm: ["h-[410px] w-[327px] py-6 px-5"],
@@ -69,7 +72,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
               <Button
                 onClick={() => setIsModal(true)}
                 type="orange"
-                text="리뷰 작성하기"
+                text={t("createReview")}
                 className="mt-10 md:h-[54px] md:rounded-[12px] md:text-[16px] md:font-medium"
               />
             )}
@@ -78,7 +81,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
               <Button
                 onClick={() => setIsModal(true)}
                 type="orange"
-                text="리뷰 작성하기"
+                text={t("createReview")}
                 className="w-[287px] py-[16px] sm:rounded-[12px] sm:font-medium"
               />
             )}

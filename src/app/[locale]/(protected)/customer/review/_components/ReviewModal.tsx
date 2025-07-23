@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Button from "@/components/Button";
-import XIcon from "../../../../../public/assets/icons/ic_X_gray.svg";
+import XIcon from "/public/assets/icons/ic_X_gray.svg";
 import ModalContent from "./ModalContent";
 import clsx from "clsx";
 

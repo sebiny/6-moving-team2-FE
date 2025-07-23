@@ -12,5 +12,8 @@
       "writable": "작성 가능한 리뷰",
       "written": "내 리뷰"
     }
+  },
+  "Button": {
+    "createReview": "리뷰 작성하기"
   }
 }
