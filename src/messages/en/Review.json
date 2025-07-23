@@ -12,5 +12,8 @@
       "writable": "Writable Reviews",
       "written": "My Reviews"
     }
+  },
+  "Button": {
+    "createReview": "Create Review"
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import right from "/assets/icons/ic_chevron_right.svg";
+import right from "../../public/assets/icons/ic_chevron_right.svg";
 import Image from "next/image";
 import clsx from "clsx";
 import useMediaHook from "@/hooks/useMediaHook";

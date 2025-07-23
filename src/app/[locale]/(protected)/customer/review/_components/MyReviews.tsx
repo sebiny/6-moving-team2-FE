@@ -1,8 +1,8 @@
 import React from "react";
-import DriverImg from "../../../../../public/assets/images/img_profile.svg";
+import DriverImg from "/public/assets/images/img_profile.svg";
 import Image from "next/image";
 import clsx from "clsx";
-import DriverIcon from "../../../../../public/assets/icons/ic_driver.svg";
+import DriverIcon from "/public/assets/icons/ic_driver.svg";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import StarIcon from "@/components/icon/StarIcon";
 import { moveDetails } from "@/constant/moveDetails";

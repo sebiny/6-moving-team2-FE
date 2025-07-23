@@ -7,8 +7,15 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const requested = await requestLocale;
   const locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
 
+  const messages = {
+    // ...(await import(`../messages/${locale}/common.json`)).default,
+    // ...(await import(`../messages/${locale}/Button.json`)).default,
+    // ...(await import(`../messages/${locale}/Driver.json`)).default,
+    ...(await import(`../messages/${locale}/Review.json`)).default
+    // 필요시 계속 추가 가능
+  };
   return {
     locale,
-    messages: (await import(`../messages/${locale}.json`)).default
+    messages
   };
 });

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Header from "@/components/Header";
-import Main from "./component/Main";
+import Main from "./_components/Main";
 
 function Page() {
   const [selectedIdx, setSelectedIdx] = useState("1");
