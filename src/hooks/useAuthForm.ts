@@ -1,15 +1,27 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { parseBackendError } from "@/utills/ErrorParser";
 import { UserType } from "@/types/UserType";
+
+const NAME_REGEX = /^[가-힣]{2,5}$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const PHONE_REGEX = /^010\d{8}$/;
+const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
 
 export function useLoginForm() {
   const router = useRouter();
   const { user, login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const isEmailValid = useMemo(() => EMAIL_REGEX.test(email), [email]);
+  const isPasswordValid = useMemo(() => PASSWORD_REGEX.test(password), [password]);
+  const isFormValid = useMemo(
+    () => !!email && !!password && isEmailValid && isPasswordValid,
+    [email, password, isEmailValid, isPasswordValid]
+  );
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +53,10 @@ export function useLoginForm() {
     setEmail,
     password,
     setPassword,
-    onSubmit
+    onSubmit,
+    isEmailValid,
+    isPasswordValid,
+    isFormValid
   };
 }
 
@@ -53,6 +68,41 @@ export function useSignupForm(userType: UserType) {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+
+  const isNameValid = useMemo(() => NAME_REGEX.test(name), [name]);
+  const isEmailValid = useMemo(() => EMAIL_REGEX.test(email), [email]);
+  const isPhoneValid = useMemo(() => PHONE_REGEX.test(phone), [phone]);
+  const isPasswordValid = useMemo(() => PASSWORD_REGEX.test(password), [password]);
+  const isPasswordConfirmationValid = useMemo(
+    () => password.length > 0 && password === passwordConfirmation,
+    [password, passwordConfirmation]
+  );
+
+  const isFormValid = useMemo(
+    () =>
+      !!name &&
+      !!email &&
+      !!phone &&
+      !!password &&
+      !!passwordConfirmation &&
+      isNameValid &&
+      isEmailValid &&
+      isPhoneValid &&
+      isPasswordValid &&
+      isPasswordConfirmationValid,
+    [
+      name,
+      email,
+      phone,
+      password,
+      passwordConfirmation,
+      isNameValid,
+      isEmailValid,
+      isPhoneValid,
+      isPasswordValid,
+      isPasswordConfirmationValid
+    ]
+  );
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,6 +134,12 @@ export function useSignupForm(userType: UserType) {
     setPassword,
     passwordConfirmation,
     setPasswordConfirmation,
-    onSubmit
+    onSubmit,
+    isNameValid,
+    isEmailValid,
+    isPhoneValid,
+    isPasswordValid,
+    isPasswordConfirmationValid,
+    isFormValid
   };
 }

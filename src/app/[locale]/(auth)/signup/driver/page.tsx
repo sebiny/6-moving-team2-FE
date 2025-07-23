@@ -5,7 +5,7 @@ import TextField from "@/components/input/TextField";
 import { useSignupForm } from "@/hooks/useAuthForm";
 import { UserType } from "@/types/UserType";
 
-export default function SignupCustomer() {
+export default function SignupDriver() {
   const {
     name,
     setName,
@@ -17,10 +17,13 @@ export default function SignupCustomer() {
     setPassword,
     passwordConfirmation,
     setPasswordConfirmation,
-    // passwordError,
-    // passwordConfirmationError,
-    // isFormValid,
-    onSubmit
+    onSubmit,
+    isNameValid,
+    isEmailValid,
+    isPhoneValid,
+    isPasswordValid,
+    isPasswordConfirmationValid,
+    isFormValid
   } = useSignupForm(UserType.DRIVER);
 
   return (
@@ -68,6 +71,7 @@ export default function SignupCustomer() {
                   value={name}
                   onChange={setName}
                   className="w-full"
+                  error={name.length > 0 && !isNameValid ? "이름은 2~5자의 한글만 사용 가능합니다." : ""}
                   mdHeight="54"
                 />
               </div>
@@ -86,6 +90,7 @@ export default function SignupCustomer() {
                   value={email}
                   onChange={setEmail}
                   className="w-full"
+                  error={email.length > 0 && !isEmailValid ? "유효하지 않은 이메일 형식입니다." : ""}
                   mdHeight="54"
                 />
               </div>
@@ -104,6 +109,9 @@ export default function SignupCustomer() {
                   value={phone}
                   onChange={setPhone}
                   className="w-full"
+                  error={
+                    phone.length > 0 && !isPhoneValid ? "유효하지 않은 전화번호 형식입니다. (예: 01012345678)" : ""
+                  }
                   mdHeight="54"
                 />
               </div>
@@ -123,8 +131,8 @@ export default function SignupCustomer() {
                   onChange={setPassword}
                   className="w-full"
                   error={
-                    password.length > 0 && !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password)
-                      ? "비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다."
+                    password.length > 0 && !isPasswordValid
+                      ? "비밀번호는 최소 8자 이상이며 영문, 숫자, 특수문자를 포함해야 합니다."
                       : ""
                   }
                   mdHeight="54"
@@ -146,7 +154,7 @@ export default function SignupCustomer() {
                   onChange={setPasswordConfirmation}
                   className="w-full"
                   error={
-                    passwordConfirmation.length > 0 && password !== passwordConfirmation
+                    passwordConfirmation.length > 0 && !isPasswordConfirmationValid
                       ? "비밀번호가 일치하지 않습니다."
                       : ""
                   }
@@ -157,21 +165,9 @@ export default function SignupCustomer() {
 
             <button
               type="submit"
-              disabled={
-                !email ||
-                !password ||
-                !passwordConfirmation ||
-                !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password) ||
-                password !== passwordConfirmation
-              }
+              disabled={!isFormValid}
               className={`h-[54px] w-full rounded-xl px-5 py-4 text-base leading-[26px] font-semibold transition-colors md:h-[60px] md:rounded-[16px] md:text-[18px] ${
-                email &&
-                password &&
-                passwordConfirmation &&
-                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/.test(password) &&
-                password === passwordConfirmation
-                  ? "bg-orange-400 text-white"
-                  : "bg-gray-100 text-gray-50"
+                isFormValid ? "bg-orange-400 text-white" : "bg-gray-100 text-gray-50"
               }`}
             >
               시작하기
