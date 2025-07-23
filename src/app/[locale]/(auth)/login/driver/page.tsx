@@ -110,7 +110,10 @@ export default function LoginDriver() {
           </span>
 
           <div className="flex h-[54px] w-full items-center justify-between md:h-[72px] md:w-fit md:justify-center md:gap-[32px]">
-            <button className="h-[54px] w-[54px] md:h-[72px] md:w-[72px]">
+            <a
+              href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/social/google?userType=DRIVER`}
+              className="h-[54px] w-[54px] md:h-[72px] md:w-[72px]"
+            >
               <Image
                 src="/assets/icons/ic_google.svg"
                 alt="Google 로그인"
@@ -118,8 +121,11 @@ export default function LoginDriver() {
                 height={54}
                 className="md:h-[72px] md:w-[72px]"
               />
-            </button>
-            <button className="h-[54px] w-[54px] md:h-[72px] md:w-[72px]">
+            </a>
+            <a
+              href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/social/kakao?userType=DRIVER`}
+              className="h-[54px] w-[54px] md:h-[72px] md:w-[72px]"
+            >
               <Image
                 src="/assets/icons/ic_kakao.svg"
                 alt="Kakao 로그인"
@@ -127,8 +133,11 @@ export default function LoginDriver() {
                 height={54}
                 className="md:h-[72px] md:w-[72px]"
               />
-            </button>
-            <button className="h-[54px] w-[54px] md:h-[72px] md:w-[72px]">
+            </a>
+            <a
+              href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/social/naver?userType=DRIVER`}
+              className="h-[54px] w-[54px] md:h-[72px] md:w-[72px]"
+            >
               <Image
                 src="/assets/icons/ic_naver.svg"
                 alt="Naver 로그인"
@@ -136,7 +145,7 @@ export default function LoginDriver() {
                 height={54}
                 className="md:h-[72px] md:w-[72px]"
               />
-            </button>
+            </a>
           </div>
         </div>
 
