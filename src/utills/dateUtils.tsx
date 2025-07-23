@@ -1,7 +1,12 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko"; // 한국어 로케일 파일 불러옴
+/*동적으로 불러와야함
+// import { useLocale } from "next-intl";
 
+// const locale = useLocale(); // 현재 언어코드 ('ko', 'en', etc.)
+// const time = await formatTimeFromNow(new Date(), locale);
+*/
 // RelativeTime 플러그인 활성화
 dayjs.extend(relativeTime);
 

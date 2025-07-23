@@ -4,12 +4,14 @@ import Button from "@/components/Button";
 import XIcon from "/public/assets/icons/ic_X_gray.svg";
 import ModalContent from "./ModalContent";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 
 interface Props {
   setIsModal: (value: boolean) => void;
 }
 
 export default function ReviewModal({ setIsModal }: Props) {
+  const t = useTranslations("Review");
   const [isValid, setIsValid] = useState(false);
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 md:items-center">
@@ -24,7 +26,7 @@ export default function ReviewModal({ setIsModal }: Props) {
         <div className="flex flex-col gap-[26px] lg:gap-10">
           <div className="flex justify-between">
             <p className="text-black-400 text-[18px] leading-[26px] font-semibold lg:text-[24px] lg:leading-[32px]">
-              리뷰 쓰기
+              {t("button.createReview")}
             </p>
             <Image
               onClick={() => setIsModal(false)}
@@ -34,7 +36,7 @@ export default function ReviewModal({ setIsModal }: Props) {
             />
           </div>
           <ModalContent setIsValid={setIsValid} />
-          <Button type={isValid ? "orange" : "gray"} text="리뷰 등록" className="h-[54px] lg:h-[64px]" />
+          <Button type={isValid ? "orange" : "gray"} text={t("button.createReview")} className="h-[54px] lg:h-[64px]" />
         </div>
       </div>
     </div>

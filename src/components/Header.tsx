@@ -17,7 +17,9 @@ interface TabItem {
 }
 
 export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProps) {
-  const t = useTranslations("Review"); //'Header' 네임스페이스로 번역
+  const t = useTranslations("Review");
+  //'Review' 네임스페이스로 번역
+  //Review.json 파일 참조
 
   // 탭 항목 정의
   const rawList: TabItem[] =

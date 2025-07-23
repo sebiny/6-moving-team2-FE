@@ -4,6 +4,7 @@ import { MoveType, moveTypeMap } from "@/constant/moveTypes";
 /**
  * MoveType에 대응하는 한글 라벨을 반환
  */
+
 export const getMoveTypeLabel = (moveType: MoveType): string => {
   return moveTypeMap[moveType]?.label ?? "기타";
 };

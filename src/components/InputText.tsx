@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
 }
 
 function InputText({ setInputValid }: Props) {
+  const t = useTranslations("Review");
   const [value, setValue] = useState("");
   const [touched, setTouched] = useState(false);
   const isInvalid = touched && value.length < 10;
@@ -26,7 +28,7 @@ function InputText({ setInputValid }: Props) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onBlur={() => setTouched(true)}
-        placeholder="최소 10자 이상 입력해주세요"
+        placeholder={t("modal.placeholder")}
         className={clsx(
           "border-line-200 h-40 w-full resize-none rounded-[16px] border bg-gray-50 px-4 py-[14px]",
           CLASSES.placeholder,

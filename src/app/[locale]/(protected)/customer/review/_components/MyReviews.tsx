@@ -7,13 +7,19 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import StarIcon from "@/components/icon/StarIcon";
 import { moveDetails } from "@/constant/moveDetails";
 import useMediaHook from "@/hooks/useMediaHook";
+import { useTranslations } from "next-intl";
 export default function MyReviews() {
+  const t = useTranslations("Review");
+  const driverName = "김코드";
+  const driverDescription = "이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.";
+
   const SIZE_CLASSES = {
     lg: ["lg:h-[338px] lg:w-[1120px] lg:p-10 lg:gap-5"],
     sm: ["w-[327px] h-[410px] py-6 px-5"],
     md: ["md:w-147 md:h-91 md:p-10"]
   };
   const { isSm, isMd, isLg } = useMediaHook();
+
   return (
     <div>
       <div className="flex flex-col gap-5">
@@ -49,12 +55,12 @@ export default function MyReviews() {
                     <div className={clsx(isMd && "flex gap-[6px]", isSm && !isMd && "flex flex-col gap-[4px]")}>
                       <Image src={DriverIcon} width={16} height={18} alt="driver_icon" />
                       <p className="text-black-300 font-[Pretendard] text-[16px] leading-[26px] font-bold md:text-[18px]">
-                        김코드 기사님
+                        {t("driver.title", { name: driverName })}
                       </p>
                     </div>
                     {isMd && (
                       <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[12px] leading-[24px] font-normal text-ellipsis text-gray-500 md:text-[14px]">
-                        이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.
+                        {t("driver.description", { description: driverDescription })}
                       </p>
                     )}
                   </div>
@@ -65,7 +71,9 @@ export default function MyReviews() {
             <div className={clsx("flex gap-5", isSm && !isMd && "border-line-100 border-b pb-4")}>
               {moveDetails.map(({ label, content }, index) => (
                 <div className={clsx(index == 1 && "md:border-line-100 md:border-x md:px-5")}>
-                  <p className="text-[12px] leading-[18px] text-gray-500 md:text-[14px] md:leading-[24px]">{label}</p>
+                  <p className="text-[12px] leading-[18px] text-gray-500 md:text-[14px] md:leading-[24px]">
+                    {t(`moveDetails.${label}`)}
+                  </p>
                   <p className="text-black-500 text-[13px] leading-[22px] md:text-[16px] md:leading-[26px]">
                     {index == 2 && isSm && !isMd ? content.slice(0, -3) : content}
                   </p>
@@ -81,7 +89,7 @@ export default function MyReviews() {
             </div>
             {isSm && !isMd && (
               <div className="flex justify-end">
-                <p className="text-[12px] leading-[18px] text-gray-300">작성일</p>
+                <p className="pr-2 text-[12px] leading-[18px] text-gray-300">{t("review.date")}</p>
                 <p className="text-[12px] leading-[18px] text-gray-300">2024. 07. 02</p>
               </div>
             )}

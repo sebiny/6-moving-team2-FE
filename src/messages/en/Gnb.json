@@ -1,0 +1,16 @@
+{
+  "findDeliver": "Find Driver",
+  "login": "Login",
+  "estimateRequest": "Estimate Request",
+  "myEstimate": "My Estimate",
+  "receivedRequest": "Received Request",
+  "myProfile": "My Profile",
+  "likedDrivers": "Liked Drivers",
+  "moveReviews": "Move Reviews",
+  "myPage": "My Page",
+  "logout": "Logout",
+  "customer": "Customer",
+  "driver": "Driver",
+  "noUser": "No User",
+  "notification": "Notification"
+}

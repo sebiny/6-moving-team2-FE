@@ -1,19 +1,35 @@
 {
-  "Header": {
-    "estimate": {
-      "waiting": "待处理报价",
-      "received": "收到的报价"
-    },
-    "driverEstimate": {
-      "sent": "已发送报价",
-      "rejected": "被拒请求"
-    },
-    "review": {
-      "writable": "可写评价",
-      "written": "我的评价"
-    }
+  "estimate": {
+    "waiting": "待处理报价",
+    "received": "收到的报价"
   },
-  "Button": {
+  "driverEstimate": {
+    "sent": "已发送报价",
+    "rejected": "被拒请求"
+  },
+  "review": {
+    "writable": "可写评价",
+    "written": "我的评价",
+    "date": "评价日期"
+  },
+  "driver": {
+    "title": "{name} 司机",
+    "description": "{description}"
+  },
+  "cost": {
+    "title": "报价金额"
+  },
+  "modal": {
+    "rate": "请选择评分",
+    "detail": "请写下详细评价",
+    "placeholder": "请至少输入10个字符"
+  },
+  "moveDetails": {
+    "from": "出发地",
+    "to": "目的地",
+    "date": "搬家日期"
+  },
+  "button": {
     "createReview": "创建评价"
   }
 }

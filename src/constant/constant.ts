@@ -1,33 +1,35 @@
 import { DriverType } from "@/types/driverType";
 import { ReviewType } from "@/types/reviewType";
 
-export const GNB_ROUTE_USER_ROLE = {
+export const getGnbUserRole = (t: (key: string) => string) => ({
   guest: [
-    { label: "기사님 찾기", path: "/drivers" },
-    { label: "로그인", path: "/login/customer" }
+    { label: t("findDeliver"), path: "/drivers" },
+    { label: t("login"), path: "/customer/login" }
   ],
   CUSTOMER: [
-    { label: "견적 요청", path: "/customer/estimate-request" },
-    { label: "기사님 찾기", path: "/drivers" },
-    { label: "내 견적 관리", path: "/customer/my-estimates" }
+    { label: t("estimateRequest"), path: "/customer/estimate-request" },
+    { label: t("findDeliver"), path: "/drivers" },
+    { label: t("myEstimate"), path: "/customer/my-estimates" }
   ],
   DRIVER: [
-    { label: "받은 요청", path: "/driver/received-requests" },
-    { label: "내 견적 관리", path: "/driver/my-estimates/sent" }
+    { label: t("receivedRequest"), path: "/driver/received-requests" },
+    { label: t("myEstimate"), path: "/driver/my-estimates/sent" }
   ]
-} as const;
+});
 
 export type UserType = "CUSTOMER" | "DRIVER";
 type MenuType = "CUSTOMER" | "DRIVER";
 
-export const PROFILE_DROPDOWN_MENU: Record<MenuType, { label: string; path: string }[]> = {
+export const getProfileDropdownMenu = (
+  t: (key: string) => string
+): Record<MenuType, { label: string; path: string }[]> => ({
   CUSTOMER: [
-    { label: "나의 프로필", path: "/customer/profile" },
-    { label: "찜한 기사님", path: "/customer/my-estimates/favorite-drivers" },
-    { label: "이사 리뷰", path: "/review" }
+    { label: t("myProfile"), path: "/customer/profile" },
+    { label: t("likedDrivers"), path: "/customer/my-estimates/favorite-drivers" },
+    { label: t("moveReviews"), path: "/review" }
   ],
-  DRIVER: [{ label: "마이페이지", path: "/driver/my-page" }]
-};
+  DRIVER: [{ label: t("myPage"), path: "/driver/my-page" }]
+});
 
 export const driver: DriverType = {
   id: "firstDriver",
