@@ -1,19 +1,35 @@
 {
-  "Header": {
-    "estimate": {
-      "waiting": "견적 대기",
-      "received": "받은 견적"
-    },
-    "driverEstimate": {
-      "sent": "보낸 견적",
-      "rejected": "거절된 요청"
-    },
-    "review": {
-      "writable": "작성 가능한 리뷰",
-      "written": "내 리뷰"
-    }
+  "estimate": {
+    "waiting": "견적 대기",
+    "received": "받은 견적"
   },
-  "Button": {
+  "driverEstimate": {
+    "sent": "보낸 견적",
+    "rejected": "거절된 요청"
+  },
+  "review": {
+    "writable": "작성 가능한 리뷰",
+    "written": "내 리뷰",
+    "date": "작성일"
+  },
+  "driver": {
+    "title": "{name} 기사님",
+    "description": "{description}"
+  },
+  "cost": {
+    "title": "견적 금액"
+  },
+  "moveDetails": {
+    "from": "출발지",
+    "to": "목적지",
+    "date": "이사 날짜"
+  },
+  "modal": {
+    "rate": "평점을 선택해 주세요",
+    "detail": "상세 후기를 작성해 주세요",
+    "placeholder": "최소 10자 이상 입력해주세요"
+  },
+  "button": {
     "createReview": "리뷰 작성하기"
   }
 }

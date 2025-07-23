@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import StarIcon from "@/components/icon/StarIcon";
 import InputText from "@/components/InputText";
 import useMediaHook from "@/hooks/useMediaHook";
+import { useTranslations } from "next-intl";
 
 interface Props {
   setIsValid: (value: boolean) => void;
 }
 
 export default function ReviewWrite({ setIsValid }: Props) {
+  const t = useTranslations("Review");
   const { isLg, isSm } = useMediaHook();
   const [InputValid, setInputValid] = useState(false);
   const [rating, setRating] = useState(0);
@@ -20,7 +22,7 @@ export default function ReviewWrite({ setIsValid }: Props) {
   return (
     <div className="flex flex-col gap-7 lg:gap-8">
       <div>
-        <p className={textClass}>평점을 선택해 주세요</p>
+        <p className={textClass}>{t("modal.rate")}</p>
         <div className="relative h-6 w-30 lg:h-9 lg:w-45">
           {isSm && !isLg && <StarIcon width={120} height={24} rating={rating} />}
           {isLg && <StarIcon width={180} height={36} rating={rating} />}
@@ -32,10 +34,9 @@ export default function ReviewWrite({ setIsValid }: Props) {
         </div>
       </div>
       <div>
-        <p className={textClass}>상세 후기를 작성해 주세요</p>
+        <p className={textClass}>{t("modal.detail")}</p>
         <InputText setInputValid={setInputValid} />
       </div>
     </div>
   );
 }
-// rating이 0이 아니고 Input 유효성 통과하면 리뷰 등록 활성화

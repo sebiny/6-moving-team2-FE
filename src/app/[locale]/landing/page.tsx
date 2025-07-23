@@ -10,6 +10,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import MovingCard from "./_component/MovingCard";
 import ChangeImages from "./_component/ChangeImages";
+import { useTranslations } from "next-intl";
 
 const CARD_TYPE = ["small", "family", "office"] as const;
 
@@ -29,6 +30,7 @@ const estimateCard = [
 ];
 
 export default function LandingPage() {
+  const t = useTranslations("Landing");
   const [show, setShow] = useState(false);
 
   const translateStyle = clsx(" transition-all", {
@@ -48,11 +50,11 @@ export default function LandingPage() {
       >
         <div className="z-2 flex flex-col pt-40 sm:pt-53">
           <div className={`${translateStyle} text-center text-xl font-bold text-gray-50 duration-800 sm:text-[32px]`}>
-            이사업체, 어떻게 고르세요?
+            {t("title")}
           </div>
           <div className={`${translateStyle} mt-3 text-center text-base text-gray-100 duration-1000 sm:text-lg/snug`}>
-            무빙은 여러 견적을 한눈에 비교해
-            <br /> 이사업체 선정 과정을 간편하게 바꿔드려요
+            {t("detail")}
+            <br /> {t("brDetail")}
           </div>
         </div>
       </Container>
@@ -61,9 +63,9 @@ export default function LandingPage() {
         className="mt-13 mb-20 flex flex-col md:mt-15 lg:mt-29 lg:mb-32 lg:max-w-[1400px] lg:flex-row lg:items-center lg:justify-between"
       >
         <div className="text-black-400 ml-8 text-xl font-bold sm:text-[32px] md:ml-0">
-          번거로운 선정과정,
+          {t("typeTitle")}
           <br />
-          이사 유형부터 선택해요
+          {t("brTypeTitle")}
         </div>
         <div className="mt-8 flex max-w-[388px] flex-row items-center justify-center gap-2 sm:mt-10 sm:max-w-none sm:gap-4 md:gap-6 lg:mt-0">
           {CARD_TYPE.map((type, idx) => (
@@ -78,9 +80,9 @@ export default function LandingPage() {
       </Container>
       <Container padding="px-0 sm:px-8" className="flex justify-center md:max-w-[1400px]">
         <div className="text-black-400 ml-8 w-full bg-bottom-right bg-no-repeat pt-10 pb-46 text-xl font-bold sm:ml-0 sm:bg-[url(/assets/images/img_landing_building.svg)] sm:pt-44 sm:text-[32px] lg:bg-bottom-left">
-          여러 업체의 견적을
+          {t("compareTitle")}
           <br />
-          한눈에 비교하고 선택해요
+          {t("brCompareTitle")}
         </div>
       </Container>
 
@@ -109,7 +111,7 @@ export default function LandingPage() {
           className="transition-all duration-400 hover:-translate-y-1 sm:h-[140px] sm:w-[144px] sm:hover:-translate-y-2"
         />
         <div className="max-w-[120px] text-center text-base font-bold text-gray-50 sm:max-w-none sm:text-[28px]">
-          복잡한 이사 준비, 무빙 하나면 끝!
+          {t("endTitle")}
         </div>
       </Container>
     </LandingPageLayout>

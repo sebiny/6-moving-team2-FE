@@ -1,0 +1,24 @@
+{
+  "title": "搬家公司，您怎么选？",
+  "detail": "在Moving可一目了然地比较多个报价",
+  "brDetail": "让搬家公司选择流程变得简单",
+  "typeTitle": "繁琐的选择流程，",
+  "brTypeTitle": "先选择搬家类型吧",
+  "compareTitle": "让我们比较并选择",
+  "brCompareTitle": "多个报价一目了然",
+  "endTitle": "有了Moving，复杂的搬家准备轻松搞定！",
+  "imageTitle": "请求您想要的搬家服务并",
+  "brImageTitle": "接收报价。",
+  "smallBox": {
+    "text": "小型搬家",
+    "subText": "单间公寓，1卧室，20坪以下"
+  },
+  "familyBox": {
+    "text": "家庭搬家",
+    "subText": "三卧室，20坪以下"
+  },
+  "officeBox": {
+    "text": "办公室搬家",
+    "subText": "办公室，商业空间"
+  }
+}

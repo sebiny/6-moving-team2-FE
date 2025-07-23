@@ -23,7 +23,7 @@ type ReviewItem = {
   estimates: any[]; // 필요하다면 estimates의 상세 타입도 정의
 };
 export default function ReviewsInner({ setIsModal }: ReviewsProps) {
-  const t = useTranslations("Button"); // 'Button' 네임스페이스로 번역
+  const t = useTranslations("Review"); // 'Review' 네임스페이스로 번역
 
   const { isMd, isLg } = useMediaHook();
   useEffect(() => {
@@ -54,7 +54,9 @@ export default function ReviewsInner({ setIsModal }: ReviewsProps) {
                   index == 2 && !isMd && !isLg && "border-line-100 border-r pr-4"
                 )}
               >
-                <p className="text-[12px] leading-[18px] text-gray-500 md:text-[14px] md:leading-[24px]">{label}</p>
+                <p className="text-[12px] leading-[18px] text-gray-500 md:text-[14px] md:leading-[24px]">
+                  {t(`moveDetails.${label}`)}
+                </p>
                 <p className="text-black-500 text-[13px] leading-[22px] md:text-[16px] md:leading-[26px]">{content}</p>
               </div>
             ))}
@@ -65,7 +67,7 @@ export default function ReviewsInner({ setIsModal }: ReviewsProps) {
           <Button
             onClick={() => setIsModal(true)}
             type="orange"
-            text={t("createReview")}
+            text={t("button.createReview")}
             className="h-[54px] w-40 sm:rounded-[12px] sm:font-medium"
           />
         )}

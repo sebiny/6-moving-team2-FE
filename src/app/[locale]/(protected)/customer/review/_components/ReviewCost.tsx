@@ -1,9 +1,11 @@
 import clsx from "clsx";
-import React from "react";
+import { useTranslations } from "next-intl";
+import React, { use } from "react";
 interface CostType {
   className?: string;
 }
 export default function ReviewCost({ className }: CostType) {
+  const t = useTranslations("Review");
   const SIZE_CLASSES = {
     base: ["font-[Pretendard] text-gray-500 font-medium"],
     sm: ["text-[14px] leading-[24px]"],
@@ -16,7 +18,7 @@ export default function ReviewCost({ className }: CostType) {
   };
   return (
     <div className={`flex items-end justify-between md:flex-col lg:pt-[41px] ${className}`}>
-      <p className={clsx(...SIZE_CLASSES.base, ...SIZE_CLASSES.lg, ...SIZE_CLASSES.sm)}>견적 금액</p>
+      <p className={clsx(...SIZE_CLASSES.base, ...SIZE_CLASSES.lg, ...SIZE_CLASSES.sm)}>{t("cost.title")}</p>
       <p className={clsx(COST_CLASSES.base, ...COST_CLASSES.sm, ...COST_CLASSES.lg)}>180,000원</p>
     </div>
   );

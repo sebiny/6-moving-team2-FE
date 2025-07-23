@@ -1,19 +1,35 @@
 {
-  "Header": {
-    "estimate": {
-      "waiting": "Pending Estimates",
-      "received": "Received Estimates"
-    },
-    "driverEstimate": {
-      "sent": "Sent Estimates",
-      "rejected": "Rejected Requests"
-    },
-    "review": {
-      "writable": "Writable Reviews",
-      "written": "My Reviews"
-    }
+  "estimate": {
+    "waiting": "Pending Estimates",
+    "received": "Received Estimates"
   },
-  "Button": {
+  "driverEstimate": {
+    "sent": "Sent Estimates",
+    "rejected": "Rejected Requests"
+  },
+  "review": {
+    "writable": "Writable Reviews",
+    "written": "My Reviews",
+    "date": "Review Date"
+  },
+  "driver": {
+    "title": "{name} Driver",
+    "description": "{description}"
+  },
+  "cost": {
+    "title": "Cost"
+  },
+  "modal": {
+    "rate": "Please select a rating",
+    "detail": "Please write a detailed review",
+    "placeholder": "Please enter at least 10 characters"
+  },
+  "button": {
     "createReview": "Create Review"
+  },
+  "moveDetails": {
+    "from": "Departure",
+    "to": "Destination",
+    "date": "Moving Date"
   }
 }

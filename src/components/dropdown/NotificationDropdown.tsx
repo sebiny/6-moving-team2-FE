@@ -9,6 +9,7 @@ import { fetchNotifications } from "@/lib/api/api-notification";
 import { useAuth } from "@/providers/AuthProvider";
 import { authUtils } from "@/lib/FetchClient";
 import { formatTimeFromNow, generateCalendarDates } from "@/utills/dateUtils";
+import { useTranslations } from "next-intl";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -31,6 +32,7 @@ export default function Notification({ ref, onClick, className, isOpen, userId }
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
   const { user, isLoading } = useAuth();
   const hasUnread = notifications.some((n) => !n.isRead);
+  const t = useTranslations("Gnb");
 
   useEffect(() => {
     if (isLoading || !user) {
@@ -118,7 +120,7 @@ export default function Notification({ ref, onClick, className, isOpen, userId }
       {isOpen && (
         <div className="border-line-200 absolute top-8 z-99 flex h-78 w-78 -translate-x-48 flex-col rounded-3xl border bg-gray-50 p-4 shadow-gray-300 lg:top-10 xl:-translate-x-1/10">
           <div className="flex items-center justify-between px-3 py-[10px]">
-            <span className="text-black-300 text-base font-bold">알림</span>
+            <span className="text-black-300 text-base font-bold">{t("notification")}</span>
             <button className="cursor-pointer" onClick={onClick}>
               <Image src={ImgXBtn} alt="닫는버튼" width={24} height={24} />
             </button>
