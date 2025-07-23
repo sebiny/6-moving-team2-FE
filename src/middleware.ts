@@ -1,5 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { UserType } from "@/types/UserType";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
+
+const intlMiddleware = createMiddleware(routing);
 
 // JWT 페이로드 타입 정의
 interface JwtPayload {
@@ -24,7 +28,13 @@ function parseJwtPayload(token: string): JwtPayload | null {
   }
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
+  // 먼저 next-intl 내부 처리
+  const intlResponse = intlMiddleware(request);
+  if (intlResponse instanceof NextResponse) {
+    return intlResponse; // 변경된 request 반영 (i18n 경로 처리용)
+  }
+
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get("accessToken")?.value;
 
@@ -115,3 +125,6 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"]
 };
+// export const config = {
+//   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"]
+// };

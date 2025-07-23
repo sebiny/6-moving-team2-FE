@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import DevNav from "@/components/DevNav";
-import Providers from "../providers/Providers";
+import Providers from "@/providers/Providers";
 import Gnb from "@/components/gnb/Gnb";
 import { useAuth } from "@/providers/AuthProvider";
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,19 +28,28 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
-  children
-}: Readonly<{
+export default async function RootLayout({
+  children,
+  params
+}: {
   children: React.ReactNode;
-}>) {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col`}>
-        <Providers>
-          <Gnb />
-          <div className="mt-14 lg:mt-22">{children}</div>
-          <DevNav />
-        </Providers>
+        <NextIntlClientProvider>
+          <Providers>
+            <Gnb />
+            <div className="mt-14 lg:mt-22">{children}</div>
+            <DevNav />
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
