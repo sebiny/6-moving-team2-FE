@@ -11,6 +11,7 @@ export type User = {
   userType: UserType;
   phone: string | null;
   name: string;
+  driverId?: string;
 };
 
 type AuthContextType = {

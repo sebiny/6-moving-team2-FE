@@ -6,17 +6,18 @@ import React, { useState } from "react";
 import EstimateRequestModal from "./EstimateRequestModal";
 import { createDesignatedEstimateRequest } from "@/lib/api/api-estimateRequest";
 import { useMutation } from "@tanstack/react-query";
+import { useModal } from "@/providers/ModalProvider";
 
 function DesignatedEstimateButton() {
   const router = useRouter();
   const { user } = useAuth();
-  const [errorMsg, setErrorMsg] = useState<string>("");
   const { id } = useParams();
   const driverId = id as string;
+  const { openModal, closeModal } = useModal();
   const mutation = useMutation({
     mutationFn: () => createDesignatedEstimateRequest({ driverId }),
     onError: (err) => {
-      setErrorMsg(err.message);
+      openModal("default", <EstimateRequestModal onClose={closeModal} errorMsg={err.message} />);
     }
   });
   const handleClickRequest = () => {
@@ -29,7 +30,6 @@ function DesignatedEstimateButton() {
   return (
     <div className="w-full">
       <Button text="지정 견적 요청하기" type="orange" onClick={handleClickRequest} className="h-16 w-full lg:w-80" />
-      {errorMsg && <EstimateRequestModal setErrorMsg={setErrorMsg} errorMsg={errorMsg} />}
     </div>
   );
 }

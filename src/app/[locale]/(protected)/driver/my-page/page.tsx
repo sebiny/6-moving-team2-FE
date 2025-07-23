@@ -14,8 +14,8 @@ import { DriverType } from "@/types/driverType";
 import { driverService } from "@/lib/api/api-driver";
 
 function DriverMyPage() {
-  const { user } = useAuth(); //driverId로 수정해야함
-  const driverId = user?.id as string;
+  const { user } = useAuth();
+  const driverId = user?.driverId as string;
 
   const { data: driver, isPending } = useQuery<DriverType | null>({
     queryKey: ["driver", driverId],
@@ -66,7 +66,7 @@ function DriverMyPage() {
               work={driver.work}
             />
           </div>
-          <Service services={driver.services} serviceAreas={driver.serviceAreas} />
+          <Service services={driver.moveType} serviceAreas={driver.serviceAreas} />
           <DriverReviews driver={driver} />
         </div>
       </div>
