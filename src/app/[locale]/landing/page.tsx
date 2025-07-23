@@ -6,10 +6,14 @@ import Container from "@/components/container/PageContainer";
 import IconApp from "/public/assets/icons/ic_app.svg";
 import ImgEstimateCard from "/public/assets/images/img_landing_cardlist.svg";
 import clsx from "clsx";
+import "../../globals.css";
 
 import Image from "next/image";
 import MovingCard from "./_component/MovingCard";
 import ChangeImages from "./_component/ChangeImages";
+
+import bgSm from "/public/assets/images/img_landing_bg_sm.svg";
+import bgLg from "/public/assets/images/img_landing_bg.svg";
 
 const CARD_TYPE = ["small", "family", "office"] as const;
 
@@ -38,15 +42,28 @@ export default function LandingPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => setShow(true), 100);
-    return () => clearTimeout(timer); // 메모리 해제, 굳이 할 필요는 없을듯.. setinterval 이미 한번 실행했는데 왜 굳이 클리어해주는지? useEffect가 최초 마운트에 한번 실행되는거고 이미 실행이 끝났는데 클리어하는 이유
+    return () => clearTimeout(timer);
   }, []);
   return (
     <LandingPageLayout>
-      <Container
-        maxWidth="w-full"
-        className="min-h-[313px] bg-[url(/assets/images/img_landing_bg_sm.svg)] bg-top bg-no-repeat sm:min-h-[405px] sm:bg-[url(/assets/images/img_landing_bg.svg)]"
-      >
-        <div className="z-2 flex flex-col pt-40 sm:pt-53">
+      <Container maxWidth="w-full" padding="0" className="relative min-h-[313px] bg-top bg-no-repeat sm:min-h-[405px]">
+        {/* 모바일 배경 이미지 */}
+        <div className="block sm:hidden">
+          <Image src={bgSm} width={374} height={405} alt="배경이미지" className="h-full w-full object-cover" priority />
+        </div>
+        {/* PC (sm 이상) 배경은 div의 css로 */}
+        <div
+          className="absolute inset-0 hidden h-full w-full sm:block"
+          style={{
+            backgroundImage: `url(${bgLg.src})`, // 크고 넓은 배경이미지
+            backgroundSize: "cover",
+            backgroundPosition: "top",
+            backgroundRepeat: "no-repeat",
+            zIndex: 1
+          }}
+        ></div>
+        {/* 텍스트 영역: 항상 z-10로 이미지 위에 */}
+        <div className="absolute inset-0 top-30 z-2 flex flex-col items-center justify-center">
           <div className={`${translateStyle} text-center text-xl font-bold text-gray-50 duration-800 sm:text-[32px]`}>
             이사업체, 어떻게 고르세요?
           </div>
