@@ -4,7 +4,7 @@ import { ReviewType } from "@/types/reviewType";
 export const GNB_ROUTE_USER_ROLE = {
   guest: [
     { label: "기사님 찾기", path: "/drivers" },
-    { label: "로그인", path: "/customer/login" }
+    { label: "로그인", path: "/login/customer" }
   ],
   CUSTOMER: [
     { label: "견적 요청", path: "/customer/estimate-request" },

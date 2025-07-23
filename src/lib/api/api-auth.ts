@@ -58,5 +58,9 @@ export const authService = {
     const response = await cookieFetch("/auth/me");
     // response가 { user : ... } 형태를 반환함
     return response?.user ?? null;
+  },
+
+  getUserById: async (): Promise<User | null> => {
+    return await cookieFetch("/auth/me/detail");
   }
 };
