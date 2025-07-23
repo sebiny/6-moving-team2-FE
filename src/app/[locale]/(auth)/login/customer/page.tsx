@@ -5,14 +5,9 @@ import Image from "next/image";
 import { useLoginForm } from "@/hooks/useAuthForm";
 import TextField from "@/components/input/TextField";
 
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
-
 export default function LoginCustomer() {
-  const { email, setEmail, password, setPassword, onSubmit } = useLoginForm();
-  const isEmailValid = EMAIL_REGEX.test(email);
-  const isPasswordValid = PASSWORD_REGEX.test(password);
-  const isFormValid = email && password && isEmailValid && isPasswordValid;
+  const { email, setEmail, password, setPassword, onSubmit, isEmailValid, isPasswordValid, isFormValid } =
+    useLoginForm();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0 md:pb-15 lg:pb-15">

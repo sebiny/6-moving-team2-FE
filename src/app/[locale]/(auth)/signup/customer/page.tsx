@@ -5,11 +5,6 @@ import TextField from "@/components/input/TextField";
 import { useSignupForm } from "@/hooks/useAuthForm";
 import { UserType } from "@/types/UserType";
 
-const NAME_REGEX = /^[가-힣]{2,5}$/;
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const PHONE_REGEX = /^010\d{8}$/;
-const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
-
 export default function SignupCustomer() {
   const {
     name,
@@ -22,26 +17,14 @@ export default function SignupCustomer() {
     setPassword,
     passwordConfirmation,
     setPasswordConfirmation,
-    onSubmit
+    onSubmit,
+    isNameValid,
+    isEmailValid,
+    isPhoneValid,
+    isPasswordValid,
+    isPasswordConfirmationValid,
+    isFormValid
   } = useSignupForm(UserType.CUSTOMER);
-
-  const isNameValid = NAME_REGEX.test(name);
-  const isEmailValid = EMAIL_REGEX.test(email);
-  const isPhoneValid = PHONE_REGEX.test(phone);
-  const isPasswordValid = PASSWORD_REGEX.test(password);
-  const isPasswordConfirmationValid = password === passwordConfirmation;
-
-  const isFormValid =
-    name &&
-    email &&
-    phone &&
-    password &&
-    passwordConfirmation && // 모든 필드가 비어있지 않고
-    isNameValid &&
-    isEmailValid &&
-    isPhoneValid &&
-    isPasswordValid &&
-    isPasswordConfirmationValid; // 모든 필드가 유효할 때
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0 md:pb-15 lg:pb-15">
