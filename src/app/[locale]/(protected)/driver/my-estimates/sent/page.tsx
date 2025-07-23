@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Header from "@/components/Header";
-import EstimateCardList from "@/app/(protected)/driver/my-estimates/sent/_components/EstimateCardList";
+import EstimateCardList from "@/app/[locale]/(protected)/driver/my-estimates/sent/_components/EstimateCardList";
 
 // 보낸견적 타입 정의
 interface SentEstimate {
@@ -83,7 +83,7 @@ export default function SentEstimatesPage() {
   return (
     <>
       <Header type="driver-estimate" selectedIdx={selectedIdx} setSelectedIdx={handleTabChange} />
-      <div className="flex justify-center bg-neutral-50 px-4 pt-6 md:pt-8 lg:pt-11 pb-10">
+      <div className="flex justify-center bg-neutral-50 px-4 pt-6 pb-10 md:pt-8 lg:pt-11">
         <EstimateCardList requests={estimates} />
       </div>
     </>
