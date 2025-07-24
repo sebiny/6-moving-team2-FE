@@ -17,7 +17,7 @@ function DesignatedEstimateButton() {
   const mutation = useMutation({
     mutationFn: () => createDesignatedEstimateRequest({ driverId }),
     onError: (err) => {
-      openModal("default", <EstimateRequestModal onClose={closeModal} errorMsg={err.message} />);
+      openModal(<EstimateRequestModal onClose={closeModal} errorMsg={err.message} />);
     }
   });
   const handleClickRequest = () => {

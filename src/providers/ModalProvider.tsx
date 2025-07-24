@@ -3,7 +3,7 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 interface ModalContextType {
-  openModal: (type: "default" | "dropdown", content: ReactNode) => void;
+  openModal: (content: ReactNode) => void;
   closeModal: () => void;
   isOpen: boolean;
 }
@@ -12,7 +12,7 @@ const ModalContext = createContext<ModalContextType | null>(null);
 
 export const useModal = () => {
   const context = useContext(ModalContext);
-  if (!context) throw new Error("");
+  if (!context) throw new Error("useModal must be used within a ModalProvider");
   return context;
 };
 
