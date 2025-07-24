@@ -1,9 +1,8 @@
-import Image from "next/image";
+import ChipConfirmed from "./ChipConfirmed";
 
 interface EstimateStatusLabelProps {
   status: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
-  width?: number;
-  height?: number;
+  className?: string;
 }
 
 const normalizedStatusMap: Record<EstimateStatusLabelProps["status"], "WAITING" | "CONFIRMED"> = {
@@ -12,26 +11,22 @@ const normalizedStatusMap: Record<EstimateStatusLabelProps["status"], "WAITING" 
   ACCEPTED: "CONFIRMED"
 };
 
-const statusImageMap = {
-  WAITING: {
-    src: "/assets/labels/lb_pending.svg",
-    alt: "견적대기",
-    width: 55,
-    height: 22
-  },
-  CONFIRMED: {
-    src: "/assets/labels/lb_confirmed.svg",
-    alt: "확정견적",
-    width: 95,
-    height: 0
-  }
-};
-
-export default function EstimateStatus({ status, width, height }: EstimateStatusLabelProps) {
+export default function EstimateStatus({ status, className = "" }: EstimateStatusLabelProps) {
   const normalized = normalizedStatusMap[status];
-  const image = statusImageMap[normalized];
 
-  if (!image) return null;
+  if (normalized === "WAITING") {
+    return (
+      <div
+        className={`inline-flex items-center justify-center bg-white text-base font-semibold whitespace-nowrap text-neutral-400 ${className}`}
+      >
+        견적대기
+      </div>
+    );
+  }
 
-  return <Image src={image.src} alt={image.alt} width={width ?? image.width} height={height ?? image.height} />;
+  if (normalized === "CONFIRMED") {
+    return <ChipConfirmed className={className} />;
+  }
+
+  return null;
 }

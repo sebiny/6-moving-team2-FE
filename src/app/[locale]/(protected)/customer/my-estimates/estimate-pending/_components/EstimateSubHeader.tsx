@@ -35,6 +35,7 @@ export default function EstimateSubHeader({ data }: EstimateSubHeaderProps) {
             </div>
             <div className="flex items-center gap-2 text-base font-semibold text-black lg:text-lg">
               <span>{from}</span>
+              {/* 다국어 기능 추가로 이미지가 연결이 안됨 */}
               <Image src="/assets/icons/ic_arrow.svg" alt="화살표" width={15} height={15} />
               <span>{to}</span>
             </div>
