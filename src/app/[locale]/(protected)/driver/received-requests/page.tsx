@@ -116,9 +116,15 @@ export default function ReceivedRequestsPage() {
       handleCloseModal();
       // React Query로 데이터 새로고침
       queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("견적 전송 실패:", err);
-      alert("견적 전송에 실패했습니다.");
+
+      // 409 Conflict 에러인 경우 (이미 견적을 보낸 경우)
+      if (err instanceof Error && err.message.includes("이미 견적을 보냈습니다")) {
+        alert("이미 이 요청에 대해 견적을 보내셨습니다.");
+      } else {
+        alert("견적 전송에 실패했습니다.");
+      }
     }
   };
 
@@ -131,20 +137,26 @@ export default function ReceivedRequestsPage() {
     setRejectModalOpen(false);
     setSelectedRequest(null);
   };
-  const handleSubmitReject = async (price: number, comment: string) => {
+  const handleSubmitReject = async (estimateRequestId: string, reason: string) => {
     if (!selectedRequest) return;
 
     try {
-      await driverService.rejectEstimateRequest(selectedRequest.id, {
-        reason: comment
+      await driverService.rejectEstimateRequest(estimateRequestId, {
+        reason
       });
       alert("견적 요청이 반려되었습니다.");
       handleCloseRejectModal();
       // React Query로 데이터 새로고침
       queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("견적 요청 반려 실패:", err);
-      alert("견적 요청 반려에 실패했습니다.");
+
+      // 견적이 존재하지 않는 경우
+      if (err instanceof Error && err.message.includes("이미 반려한 견적 요청입니다")) {
+        alert("이미 반려한 견적 요청입니다.");
+      } else {
+        alert("견적 요청 반려에 실패했습니다.");
+      }
     }
   };
 
@@ -165,6 +177,7 @@ export default function ReceivedRequestsPage() {
         open={rejectModalOpen}
         onClose={handleCloseRejectModal}
         onSubmit={handleSubmitReject}
+        estimateRequestId={selectedRequest?.id ?? ""}
         moveType={selectedRequest?.moveType ?? ""}
         isDesignated={selectedRequest?.isDesignated ?? false}
         customerName={selectedRequest?.customerName ?? ""}
