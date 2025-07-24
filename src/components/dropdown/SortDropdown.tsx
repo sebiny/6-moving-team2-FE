@@ -1,7 +1,7 @@
 "use client";
 import { TranslateSorting } from "@/utills/TranslateFunction";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface SortDropdownType {
   sortings: string[];
@@ -11,14 +11,30 @@ interface SortDropdownType {
 
 function SortDropdown({ sortings, sort, setSort }: SortDropdownType) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (sorting: string) => {
     setIsModalOpen(false);
     if (setSort) setSort(sorting);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsModalOpen(false);
+      }
+    };
+
+    if (isModalOpen) document.addEventListener("mousedown", handleClickOutside);
+    else document.removeEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isModalOpen]);
+
   return (
-    <div className="relative">
+    <div ref={dropdownRef} className="relative">
       <div onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-[10px] px-2 py-[7px]">
         <div className={`${isModalOpen ? "text-gray-400" : "text-black-400"}`}>{TranslateSorting(sort)}</div>
         {isModalOpen ? (

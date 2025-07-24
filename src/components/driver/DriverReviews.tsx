@@ -14,13 +14,13 @@ interface ReviewsType {
 }
 
 function DriverReviews({ driver }: ReviewsType) {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
 
   const { data: reviews, isPending } = useQuery<ReviewType[] | null>({
     queryKey: ["reviews", driver.id, page],
     queryFn: () => driverService.getDriverReviews(driver.id, page)
   });
-  console.log(reviews);
+  if (isPending) return <div>로딩중...</div>;
   if (!reviews) return <p>리뷰 데이터를 불러오지 못했습니다.</p>;
 
   function StarBar(count: number) {

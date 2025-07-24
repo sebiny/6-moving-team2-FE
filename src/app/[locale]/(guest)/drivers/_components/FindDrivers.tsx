@@ -1,7 +1,7 @@
 "use client";
 
 import SearchBar from "@/components/input/SearchBar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Filters from "./Filters";
 import SortDropdown from "@/components/dropdown/SortDropdown";
 import DriverFindCard from "@/components/card/DriverFindCard";
