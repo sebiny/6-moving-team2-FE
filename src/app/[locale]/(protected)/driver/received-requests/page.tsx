@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import RequestCardList from "./_components/RequestCardList";
 import { Request } from "@/types/request";
 import SearchBar from "@/components/input/SearchBar";
@@ -13,43 +14,84 @@ import Image from "next/image";
 import SendEstimateModal from "./_components/SendEstimateModal";
 import RejectEstimateModal from "./_components/RejectEstimateModal";
 import FilterSection from "@/components/filter/FilterSection";
-
-const dummyRequests: Request[] = [
-  {
-    id: "1",
-    moveType: "소형이사",
-    isDesignated: true,
-    createdAt: "1시간 전",
-    customerName: "김인서",
-    fromAddress: "서울시 중구",
-    toAddress: "경기도 수원시",
-    moveDate: "2024년 07월 01일 (월)"
-  },
-  {
-    id: "2",
-    moveType: "가정이사",
-    isDesignated: false,
-    createdAt: "2시간 전",
-    customerName: "이현지",
-    fromAddress: "서울시 강남구",
-    toAddress: "인천광역시 남동구",
-    moveDate: "2024년 07월 05일 (금)"
-  }
-];
+import { driverService } from "@/lib/api/api-driver";
+import { mapBackendRequestToFrontend } from "@/utills/RequestMapper";
 
 export default function ReceivedRequestsPage() {
-  const [showEmpty, setShowEmpty] = useState(false); // dev only
+  const queryClient = useQueryClient();
   const [isDesignatedChecked, setIsDesignatedChecked] = useState(false);
   const [isAvailableRegionChecked, setIsAvailableRegionChecked] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
-  // 상단 useState 정의
-  const [sort, setSort] = useState("averageRating");
+  const [sort, setSort] = useState("request");
+  const [filteredRequests, setFilteredRequests] = useState<Request[]>([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
 
-  const requests = showEmpty
-    ? []
-    : [...dummyRequests, ...dummyRequests].map((item, idx) => ({ ...item, id: `${item.id}-${idx}` }));
+  // React Query로 데이터 가져오기
+  const {
+    data: requests = [],
+    isPending,
+    error
+  } = useQuery({
+    queryKey: ["driver-requests", isDesignatedChecked, isAvailableRegionChecked],
+    queryFn: async () => {
+      let backendRequests;
+
+      // 체크박스 상태에 따라 다른 API 호출
+      if (isDesignatedChecked) {
+        backendRequests = await driverService.getDesignatedRequests();
+      } else if (isAvailableRegionChecked) {
+        backendRequests = await driverService.getAvailableRequests();
+      } else {
+        backendRequests = await driverService.getAllRequests();
+      }
+
+      return backendRequests ? backendRequests.map(mapBackendRequestToFrontend) : [];
+    },
+    staleTime: 5 * 60 * 1000 // 5분
+  });
+
+  // 검색, 이사 유형 필터링, 정렬
+  useEffect(() => {
+    let filtered = requests;
+
+    // 이사 유형 필터링
+    if (selectedMoveTypes.length > 0) {
+      filtered = filtered.filter((request) => selectedMoveTypes.includes(request.moveType));
+    }
+
+    // 검색어 필터링
+    if (searchKeyword.trim()) {
+      filtered = filtered.filter((request) => {
+        const matches = request.customerName.toLowerCase().includes(searchKeyword.toLowerCase());
+        return matches;
+      });
+    }
+
+    // 정렬
+    filtered.sort((a, b) => {
+      switch (sort) {
+        case "date":
+          // 이사일 빠른순 (7월 25일이 8월 10일보다 먼저 나와야 함)
+          if (a.originalMoveDate && b.originalMoveDate) {
+            return new Date(a.originalMoveDate).getTime() - new Date(b.originalMoveDate).getTime();
+          }
+          return 0;
+        case "request":
+          // 요청일 빠른순 (원본 createdAt 기준)
+          if (a.originalCreatedAt && b.originalCreatedAt) {
+            return new Date(a.originalCreatedAt).getTime() - new Date(b.originalCreatedAt).getTime();
+          }
+          return 0;
+        default:
+          return 0;
+      }
+    });
+
+    setFilteredRequests(filtered);
+  }, [searchKeyword, selectedMoveTypes, requests, sort]);
 
   const handleSendEstimate = (request: Request) => {
     setSelectedRequest(request);
@@ -61,10 +103,22 @@ export default function ReceivedRequestsPage() {
     setSelectedRequest(null);
   };
 
-  const handleSubmitEstimate = (price: number, comment: string) => {
-    // 실제 전송 로직은 추후 구현
-    alert(`견적가: ${price}, 코멘트: ${comment}`);
-    handleCloseModal();
+  const handleSubmitEstimate = async (price: number, comment: string) => {
+    if (!selectedRequest) return;
+
+    try {
+      await driverService.createEstimate(selectedRequest.id, {
+        price,
+        message: comment
+      });
+      alert("견적이 성공적으로 전송되었습니다.");
+      handleCloseModal();
+      // React Query로 데이터 새로고침
+      queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
+    } catch (err) {
+      console.error("견적 전송 실패:", err);
+      alert("견적 전송에 실패했습니다.");
+    }
   };
 
   const handleRejectEstimate = (request: Request) => {
@@ -76,9 +130,21 @@ export default function ReceivedRequestsPage() {
     setRejectModalOpen(false);
     setSelectedRequest(null);
   };
-  const handleSubmitReject = (price: number, comment: string) => {
-    alert(`반려 사유: ${comment}`);
-    handleCloseRejectModal();
+  const handleSubmitReject = async (price: number, comment: string) => {
+    if (!selectedRequest) return;
+
+    try {
+      await driverService.rejectEstimateRequest(selectedRequest.id, {
+        reason: comment
+      });
+      alert("견적 요청이 반려되었습니다.");
+      handleCloseRejectModal();
+      // React Query로 데이터 새로고침
+      queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
+    } catch (err) {
+      console.error("견적 요청 반려 실패:", err);
+      alert("견적 요청 반려에 실패했습니다.");
+    }
   };
 
   return (
@@ -107,18 +173,49 @@ export default function ReceivedRequestsPage() {
       />
       <div className="flex flex-col gap-6">
         <PageHeader title="받은 요청" />
-        {/* DEV ONLY: 빈 페이지 토글 버튼 */}
-        <button
-          className="mb-2 self-end rounded bg-gray-200 px-3 py-1 text-xs text-gray-700 hover:bg-gray-300"
-          onClick={() => setShowEmpty((v) => !v)}
-        >
-          {showEmpty ? "요청 목록 보기" : "빈 페이지 보기 (DEV)"}
-        </button>
-        <SearchBar width="w-full" placeholder="어떤 고객님을 찾고 계세요?" />
+        <SearchBar
+          width="w-full"
+          placeholder="어떤 고객님을 찾고 계세요?"
+          value={searchKeyword}
+          onChange={setSearchKeyword}
+        />
         <div className="hidden items-start justify-start gap-3 lg:inline-flex">
-          <ChipCircle type="region" text="소형이사" color="gray" />
-          <ChipCircle type="region" text="가정이사" color="gray" />
-          <ChipCircle type="region" text="사무실이사" color="gray" />
+          <ChipCircle
+            type="region"
+            text="소형이사"
+            color="gray"
+            click={true}
+            isSelected={selectedMoveTypes.includes("소형이사")}
+            onSelect={(text) => {
+              setSelectedMoveTypes((prev) =>
+                prev.includes(text) ? prev.filter((type) => type !== text) : [...prev, text]
+              );
+            }}
+          />
+          <ChipCircle
+            type="region"
+            text="가정이사"
+            color="gray"
+            click={true}
+            isSelected={selectedMoveTypes.includes("가정이사")}
+            onSelect={(text) => {
+              setSelectedMoveTypes((prev) =>
+                prev.includes(text) ? prev.filter((type) => type !== text) : [...prev, text]
+              );
+            }}
+          />
+          <ChipCircle
+            type="region"
+            text="사무실이사"
+            color="gray"
+            click={true}
+            isSelected={selectedMoveTypes.includes("사무실이사")}
+            onSelect={(text) => {
+              setSelectedMoveTypes((prev) =>
+                prev.includes(text) ? prev.filter((type) => type !== text) : [...prev, text]
+              );
+            }}
+          />
         </div>
 
         {/* 모바일/태블릿에서는 전체 옆에 드롭다운 */}
@@ -126,12 +223,19 @@ export default function ReceivedRequestsPage() {
           {/* 전체 4건 + 드롭다운 */}
           <div className="flex w-full items-center justify-between gap-2 lg:w-auto">
             <div className="font-['Pretendard'] text-lg leading-relaxed font-semibold text-neutral-800">
-              전체 {requests.length}건
+              전체 {filteredRequests.length}건
             </div>
             {/* 모바일에선 오른쪽 붙고, lg 이상에선 이 div가 무시됨 */}
             <div className="flex items-center gap-2 lg:hidden">
-              <SortDropdown sortings={["rating", "date", "request"]} sort={sort} setSort={setSort} />
-              <FilterSection />
+              <SortDropdown sortings={["date", "request"]} sort={sort} setSort={setSort} />
+              <FilterSection
+                selectedMoveTypes={selectedMoveTypes}
+                setSelectedMoveTypes={setSelectedMoveTypes}
+                isDesignatedChecked={isDesignatedChecked}
+                setIsDesignatedChecked={setIsDesignatedChecked}
+                isAvailableRegionChecked={isAvailableRegionChecked}
+                setIsAvailableRegionChecked={setIsAvailableRegionChecked}
+              />
             </div>
           </div>
 
@@ -140,22 +244,46 @@ export default function ReceivedRequestsPage() {
             {/* 체크박스 2개 */}
             <div className="flex gap-4">
               <label className="flex items-center gap-2">
-                <CustomCheckbox checked={isDesignatedChecked} onChange={setIsDesignatedChecked} shape="square" />
+                <CustomCheckbox
+                  checked={isDesignatedChecked}
+                  onChange={(checked) => {
+                    setIsDesignatedChecked(checked);
+                    if (checked) setIsAvailableRegionChecked(false);
+                  }}
+                  shape="square"
+                />
                 <span className="text-base font-normal text-neutral-900">지정 견적 요청</span>
               </label>
               <label className="flex items-center gap-2">
                 <CustomCheckbox
                   checked={isAvailableRegionChecked}
-                  onChange={setIsAvailableRegionChecked}
+                  onChange={(checked) => {
+                    setIsAvailableRegionChecked(checked);
+                    if (checked) setIsDesignatedChecked(false);
+                  }}
                   shape="square"
                 />
                 <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
               </label>
             </div>
-            <SortDropdown sortings={["aveageRating", "date", "request"]} sort={sort} setSort={setSort} />
+            <SortDropdown sortings={["date", "request"]} sort={sort} setSort={setSort} />
           </div>
         </div>
-        {requests.length === 0 ? (
+        {isPending ? (
+          <div className="flex w-full flex-col items-center justify-center px-6 py-20">
+            <div className="flex flex-col items-center gap-6">
+              <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">로딩 중...</p>
+            </div>
+          </div>
+        ) : error ? (
+          <div className="flex w-full flex-col items-center justify-center px-6 py-20">
+            <div className="flex flex-col items-center gap-6">
+              <p className="text-center text-base font-normal text-red-400 lg:text-xl">
+                받은 요청을 불러오는데 실패했습니다.
+              </p>
+            </div>
+          </div>
+        ) : filteredRequests.length === 0 ? (
           <div className="flex w-full flex-col items-center justify-center px-6 py-20">
             <div className="flex flex-col items-center gap-6">
               {/* 이미지 */}
@@ -172,7 +300,7 @@ export default function ReceivedRequestsPage() {
           </div>
         ) : (
           <RequestCardList
-            requests={requests}
+            requests={filteredRequests}
             onSendEstimate={handleSendEstimate}
             onRejectEstimate={handleRejectEstimate}
           />
