@@ -12,8 +12,10 @@ import { driverService } from "@/lib/api/api-driver";
 import { DriverType } from "@/types/driverType";
 import { useInView } from "react-intersection-observer";
 import { useAuth } from "@/providers/AuthProvider";
+import { useTranslations } from "next-intl";
 
 function FindDrivers() {
+  const t = useTranslations("FindDriver");
   const router = useRouter();
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
@@ -55,14 +57,19 @@ function FindDrivers() {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isPending) return <div>로딩중...</div>;
+  if (isPending) return <div>{t("loading")}</div>;
   const drivers = data?.pages.flatMap((page) => page?.data ?? []) ?? [];
 
   return (
     <div className="mb-20 flex justify-center">
       <div className="mx-6 w-full max-w-205">
-        <p className="my-8 hidden text-3xl font-semibold lg:block">기사님 찾기</p>
-        <SearchBar width="w-full" value={keyword} onChange={(val) => updateQuery("keyword", val)} />
+        <p className="my-8 hidden text-3xl font-semibold lg:block">{t("findDriver")}</p>
+        <SearchBar
+          width="w-full"
+          placeholder={t("textPlaceholder")}
+          value={keyword}
+          onChange={(val) => updateQuery("keyword", val)}
+        />
         <div className="my-[38px] flex justify-between">
           <Filters
             region={region}
@@ -71,6 +78,7 @@ function FindDrivers() {
             setService={(val) => updateQuery("service", val)}
           />
           <SortDropdown
+            translator={(key) => t(`sortOptions.${key}`)}
             sortings={["reviewCount", "career", "work", "averageRating"]}
             sort={orderBy}
             setSort={(val) => updateQuery("orderBy", val)}

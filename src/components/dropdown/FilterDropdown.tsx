@@ -9,6 +9,7 @@ interface DropdownProps {
   onSelect: (value: string) => void;
   isMultiColumn?: boolean;
   type?: "region" | "service";
+  translator: (key: string) => string;
 }
 
 function FilterDropdown({
@@ -17,7 +18,8 @@ function FilterDropdown({
   selected,
   onSelect,
   isMultiColumn = false,
-  type = "service"
+  type = "service",
+  translator
 }: DropdownProps) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -59,9 +61,7 @@ function FilterDropdown({
     <div className="relative" ref={dropdownRef}>
       {/* 버튼 */}
       <button onClick={() => setOpen((prev) => !prev)} className={buttonClass}>
-        <span className="truncate text-sm font-medium md:text-base">
-          {selected ? (type === "service" ? TranslateService(selected) : TranslateRegion(selected)) : label}
-        </span>
+        <span className="truncate text-sm font-medium md:text-base">{selected ? translator(selected) : label} </span>
         <Image
           src={`/assets/icons/${open ? "ic_chevron_up" : "ic_chevron_down"}.svg`}
           alt="화살표"
@@ -86,7 +86,8 @@ function FilterDropdown({
                   item === selected ? "bg-[var(--color-orange-100)] text-[var(--color-orange-400)]" : ""
                 }`}
               >
-                {type === "service" ? TranslateService(item) : TranslateRegion(item)}
+                {/* {type === "service" ? TranslateService(item) : TranslateRegion(item)} */}
+                {translator(item)}
               </div>
             ))
           ) : (
@@ -97,7 +98,8 @@ function FilterDropdown({
                   onClick={() => handleSelect(item)}
                   className={`${itemClass} ${item === selected ? "bg-[var(--color-orange-100)] text-[var(--color-orange-400)]" : ""}`}
                 >
-                  {type === "service" ? TranslateService(item) : TranslateRegion(item)}
+                  {/* {type === "service" ? TranslateService(item) : TranslateRegion(item)} */}
+                  {translator(item)}
                 </li>
               ))}
             </ul>
