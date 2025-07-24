@@ -4,6 +4,37 @@
   "textPlaceholder": "请输入文本",
   "loading": "加载中...",
   "noDrivers": "无法加载司机",
+  "driverFindCard": {
+    "driver": "司机",
+    "career": "经验",
+    "confirm": "确认",
+    "year": "年",
+    "count": "个"
+  },
+  "driverPage": {
+    "completed": "已完成",
+    "review": "评论",
+    "Experience": "经验",
+    "offerService": "提供服务",
+    "servicePossibleRegion": "服务可能区域",
+    "wannaRecommend?": "想推荐吗？",
+    "noReviews": "还没有评论！",
+    "noReviewsDesc": "成为第一个留下评论的人",
+    "reviewCount": "评论数",
+    "star": "星级",
+    "requestQuote": "指定报价请求"
+  },
+  "requestQuote": {
+    "title": "给司机",
+    "subtitle": "请求指定报价",
+    "like Driver": "喜欢",
+    "dislike Driver": "不喜欢",
+    "modal": {
+      "title": "指定报价请求",
+      "no": "没有进行中的指定报价请求。",
+      "generalBtn": "请求一般报价"
+    }
+  },
 
   "filters": {
     "region": "地区",
@@ -32,7 +63,9 @@
   "service": {
     "SMALL": "小型搬家",
     "HOME": "家庭搬家",
-    "OFFICE": "办公室搬家"
+    "OFFICE": "办公室搬家",
+    "WHOLE": "整体搬家",
+    "ESTIMATE": "确认报价"
   },
   "sortOptions": {
     "reviewCount": "最多评论",

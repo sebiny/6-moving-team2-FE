@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
 
@@ -10,16 +11,20 @@ interface DriverSimpleInfoType {
 }
 
 function DriverSimpleInfo({ career, averageRating, reviewCount, work, type }: DriverSimpleInfoType) {
+  const t = useTranslations("FindDriver");
   const textColor = type === "detail" ? "text-black-300" : "text-orange-400";
   const backgroundColor = type === "detail" ? "border-line-200 bg-gray-50" : "bg-background-100 border-line-100";
   return (
     <div className={`flex h-30 items-center justify-around rounded-2xl border ${backgroundColor}`}>
       <div className="flex flex-col items-center gap-1">
-        <p>진행</p>
-        <p className={`${textColor} text-xl font-bold`}>{work}건</p>
+        <p>{t("driverPage.completed")}</p>
+        <p className={`${textColor} text-xl font-bold`}>
+          {work}
+          {t("driverFindCard.count")}
+        </p>
       </div>
       <div className="flex flex-col items-center gap-1">
-        <p>리뷰</p>
+        <p>{t("driverPage.review")}</p>
         <div className="flex items-center gap-[6px]">
           {type === "detail" && (
             <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={20} height={20} className="block" />
@@ -29,8 +34,11 @@ function DriverSimpleInfo({ career, averageRating, reviewCount, work, type }: Dr
         </div>
       </div>
       <div className="flex flex-col items-center gap-1">
-        <p>총 경력</p>
-        <p className={`${textColor} text-xl font-bold`}>{career}년</p>
+        <p>{t("driverPage.Experience")}</p>
+        <p className={`${textColor} text-xl font-bold`}>
+          {career}
+          {t("driverFindCard.year")}
+        </p>
       </div>
     </div>
   );

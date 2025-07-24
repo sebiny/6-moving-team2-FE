@@ -13,8 +13,10 @@ import { DriverType } from "@/types/driverType";
 import { driverService } from "@/lib/api/api-driver";
 import { useParams } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
+import { useTranslations } from "next-intl";
 
 function DriverDetailPage() {
+  const t = useTranslations("FindDriver");
   const { id } = useParams();
   const { user } = useAuth();
   const driverId = id as string;
@@ -44,14 +46,14 @@ function DriverDetailPage() {
           <Service services={driver.moveType} serviceAreas={driver.serviceAreas} />
           <div className="mb-8 lg:hidden">
             <div className="border-line-100 border-b"></div>
-            <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
+            <ShareDriver text={t("driverPage.wannaRecommend?")} />
             <div className="border-line-100 mt-8 border-b"></div>
           </div>
           <DriverReviews driver={driver} />
         </div>
         <div className="mt-[109px] hidden w-80 lg:block">
           <RequestEstimate userFavorite={driver.isFavorite} favorite={favorite} setFavorite={setFavorite} />
-          <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
+          <ShareDriver text={t("driverPage.wannaRecommend?")} />
         </div>
       </div>
       <BottomNav favorite={favorite} setFavorite={setFavorite} />

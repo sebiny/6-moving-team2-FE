@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { DriverType } from "@/types/driverType";
 import React, { useState } from "react";
 import CustomCheckbox from "../button/CustomCheckbox";
+import { useTranslations } from "next-intl";
 
 interface DriverFindCardType {
   driver: DriverType;
@@ -15,6 +16,7 @@ interface DriverFindCardType {
 }
 
 function DriverFindCard({ driver, isFavoritePage = false, checked = false, onCheckChange }: DriverFindCardType) {
+  const t = useTranslations("FindDriver.driverFindCard");
   const router = useRouter();
 
   const handleClick = () => {
@@ -70,7 +72,10 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1">
                     <Image src="/assets/icons/ic_driver.svg" alt="기사님" width={20} height={23} />
-                    <p className="text-sm font-semibold md:text-base">{driver.nickname} 기사님</p>
+                    <p className="text-sm font-semibold md:text-base">
+                      {driver.nickname}
+                      {t("driver")}
+                    </p>
                   </div>
                   <div className="flex items-center justify-center md:hidden">
                     <LikeIcon color="red" />
@@ -85,13 +90,19 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                   </div>
                   <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
                   <div className="flex gap-1">
-                    <p className="text-gray-300">경력</p>
-                    <p>{driver.career}년</p>
+                    <p className="text-gray-300">{t("career")}</p>
+                    <p>
+                      {driver.career}
+                      {t("year")}
+                    </p>
                   </div>
                   <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
                   <div className="flex gap-1">
-                    <div>{driver.work}건</div>
-                    <p className="text-gray-300">확정</p>
+                    <div>
+                      {driver.work}
+                      {t("count")}
+                    </div>
+                    <p className="text-gray-300">{t("confirm")}</p>
                   </div>
                 </div>
               </div>
