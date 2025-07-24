@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import ChipRectangle from "@/components/chip/ChipRectangle";
 import Button from "@/components/Button";
 import EstimateStatus from "@/components/chip/EstimateStatus";
 import { useRouter } from "next/navigation";
 import { MoveType } from "@/constant/moveTypes";
 import { Estimate } from "@/types/estimateType";
+import { useAcceptEstimate } from "@/lib/api/api-myEstimate";
+import ChipRectangle from "@/components/chip/ChipRectangle";
 
 interface Props {
   data: Estimate;
@@ -14,39 +15,54 @@ interface Props {
 }
 
 export default function PendingCard({ data, moveType }: Props) {
-  const { driver, description, price, status, id } = data;
+  const { driver, comment, price, status, id, isDesignated } = data;
 
   const router = useRouter();
+
+  // 라벨 목록 구성
+  const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
+    isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
+
+  const { mutate: acceptEstimate } = useAcceptEstimate();
 
   const ClickDetail = () => {
     router.push(`/customer/my-estimates/estimate-pending/${id}`);
   };
 
   return (
-    <div className="w-full space-y-6 rounded-2xl bg-white shadow-lg sm:p-5 md:px-8 md:py-6 lg:px-10 lg:py-6">
+    <div className="w-full space-y-4 rounded-2xl bg-white shadow-lg sm:p-5 md:px-8 md:py-6 lg:px-10 lg:py-8">
       {/* 라벨 + 상태 */}
       <div className="mb-2 flex items-center justify-between">
         <div className="flex flex-wrap items-center">
           {/* sm 이하 */}
           <div className="flex gap-2 md:hidden">
-            <ChipRectangle moveType={moveType} size="sm" />
+            {labels.map((label) => (
+              <ChipRectangle key={label} moveType={label} size="sm" />
+            ))}
           </div>
 
           {/* md 이상 */}
           <div className="hidden gap-2 md:flex">
-            <ChipRectangle moveType={moveType} size="md" />
+            {labels.map((label) => (
+              <ChipRectangle key={label} moveType={label} size="md" />
+            ))}
           </div>
         </div>
         <EstimateStatus status={status} />
       </div>
 
       {/* 소개 메시지 */}
-      <p className="mt-3 font-semibold text-gray-800 sm:text-[16px] lg:text-[18px]">{description}</p>
+      <p className="mt-4 font-semibold text-gray-800 sm:text-[16px] lg:text-[19px]">{comment}</p>
 
       {/* 기사 프로필 */}
       <div className="flex items-start gap-3">
         {/* 프로필 이미지 */}
-        <Image src={driver.authUser.imageUrl} alt="기사 프로필" width={50} height={50} />
+        <Image
+          src={driver.profileImage ?? "/assets/icons/ic_profile_bear.svg"}
+          alt="기사 프로필"
+          width={50}
+          height={50}
+        />
 
         {/* 기사 정보 영역 */}
         <div className="flex-1 space-y-2">
@@ -99,7 +115,21 @@ export default function PendingCard({ data, moveType }: Props) {
       <div className="mt-10 flex w-full flex-col gap-3 md:flex-row md:gap-3">
         {/* 견적 확정하기 버튼 */}
         <div className="order-1 w-full md:order-2 md:w-1/2">
-          <Button type="orange" text="견적 확정하기" />
+          <Button
+            type="orange"
+            text="견적 확정하기"
+            onClick={() =>
+              acceptEstimate(id, {
+                onSuccess: (data) => {
+                  alert(data?.message); // 메시지 alert
+                  router.push("/customer/my-estimates/estimate-past"); // 페이지 이동
+                },
+                onError: (error: any) => {
+                  alert(error.message || "견적 확정 중 오류가 발생했습니다.");
+                }
+              })
+            }
+          />
         </div>
 
         {/* 상세보기 버튼 */}

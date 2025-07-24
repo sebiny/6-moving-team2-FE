@@ -7,21 +7,27 @@ import ShareDriver from "@/components/ShareDriver";
 import OrangeBackground from "@/components/OrangeBackground";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { receivedEstimateData } from "../_components/ReceivedEstimateData";
 import AutoRejectedAlert from "./_components/AutoRejectedAlert";
 import { useTranslations } from "use-intl";
+import { useEstimateDetail } from "@/lib/api/api-myEstimate";
+import dayjs from "dayjs";
+import { getMoveTypeLabel } from "@/utills/moveUtils";
+import { formatStreetAddress } from "@/utills/addressUtils";
 
 export default function PastDetailPage() {
   const t = useTranslations("MyEstimates");
   const { id } = useParams();
-  const estimateId = Number(id);
+  const { data } = useEstimateDetail(id as string);
 
-  // 임시 데이터에서 estimateId로 해당 견적 찾아오기
-  const matchedEstimate = receivedEstimateData
-    .flatMap((group) => group.estimates)
-    .find((estimate) => estimate.id === estimateId);
+  if (!data) {
+    return <div className="mt-20 text-center">견적 데이터를 불러오는 중입니다...</div>;
+  }
 
-  if (!matchedEstimate) return <div className="mt-20 flex justify-center">견적을 찾을 수 없습니다.</div>;
+  const { status, comment, price, requestDate, moveDate, moveType, fromAddress, toAddress, driver, isDesignated } =
+    data;
+
+  const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
+    isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
 
   return (
     <>
@@ -35,7 +41,7 @@ export default function PastDetailPage() {
         <OrangeBackground />
         <div className="absolute top-[65px] left-5 md:top-[80px] md:left-17 lg:top-[135px] lg:left-[420px]">
           <Image
-            src="/assets/images/img_profile.svg"
+            src={driver.profileImage ?? "/assets/images/img_profile.svg"}
             alt="기사님 프로필"
             width={100}
             height={100}
@@ -46,30 +52,36 @@ export default function PastDetailPage() {
 
       {/* 본문 */}
       <div className="bg-white">
-        <div className="flex flex-col px-5 py-[60px] pt-10 md:px-17 md:pt-15 lg:grid lg:grid-cols-[1fr_300px] lg:gap-40 lg:px-100 lg:pt-[88px] lg:pb-[120px]">
+        <div className="flex flex-col px-5 py-[60px] pt-10 md:px-17 md:pt-15 lg:grid lg:grid-cols-[1fr_300px] lg:gap-20 lg:px-100 lg:pt-[88px] lg:pb-[120px]">
           {/* 왼쪽 콘텐츠 */}
           <div className="flex flex-col gap-10">
             <Title
-              status={matchedEstimate.status}
-              labels={matchedEstimate.labels}
-              driver={matchedEstimate.driver}
-              message={matchedEstimate.message}
-              estimatePrice={matchedEstimate.price}
+              status={status}
+              labels={labels}
+              driver={{
+                name: driver.name,
+                rating: driver.avgRating ?? 0.0,
+                reviewCount: driver.reviewCount,
+                experienceYear: driver.career,
+                confirmedCount: driver.work,
+                likes: driver.favoriteCount
+              }}
+              message={comment}
+              estimatePrice={price}
             />
 
             <div className="border-t border-gray-100" />
 
-            {/* 임시 고정 */}
             <EstimateDetailInfo
-              requestDate="24.08.26"
-              serviceType="사무실이사"
-              moveDate="2024. 08. 26(월) 오전 10:00"
-              from="서울 중구 삼일대로 343"
-              to="서울 강남구 선릉로 428"
+              requestDate={dayjs(requestDate).format("YYYY년 MM월 DD일")}
+              serviceType={getMoveTypeLabel(moveType)}
+              moveDate={dayjs(moveDate).format("YYYY년 MM월 DD일")}
+              from={formatStreetAddress(fromAddress)}
+              to={formatStreetAddress(toAddress)}
             />
 
             {/* AUTO_REJECTED인 경우만 표시 */}
-            {matchedEstimate.status === "AUTO_REJECTED" && <AutoRejectedAlert />}
+            {status === "AUTO_REJECTED" && <AutoRejectedAlert />}
           </div>
 
           <div className="my-6 border-t border-gray-100 lg:hidden" />

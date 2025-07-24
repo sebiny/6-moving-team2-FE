@@ -6,9 +6,25 @@ import CustomCheckbox from "../button/CustomCheckbox";
 
 const MOVE_TYPES = ["소형이사", "가정이사", "사무실이사"];
 
-export default function FilterModal({ onClose }: { onClose: () => void }) {
-  const [isDesignatedChecked, setIsDesignatedChecked] = useState(false);
-  const [isServiceAreaChecked, setIsServiceAreaChecked] = useState(false);
+interface FilterModalProps {
+  onClose: () => void;
+  selectedMoveTypes: string[];
+  setSelectedMoveTypes: (types: string[]) => void;
+  isDesignatedChecked: boolean;
+  setIsDesignatedChecked: (checked: boolean) => void;
+  isAvailableRegionChecked: boolean;
+  setIsAvailableRegionChecked: (checked: boolean) => void;
+}
+
+export default function FilterModal({ 
+  onClose, 
+  selectedMoveTypes, 
+  setSelectedMoveTypes,
+  isDesignatedChecked,
+  setIsDesignatedChecked,
+  isAvailableRegionChecked,
+  setIsAvailableRegionChecked
+}: FilterModalProps) {
 
   return (
     <div
@@ -31,7 +47,21 @@ export default function FilterModal({ onClose }: { onClose: () => void }) {
           <p className="mb-2 font-semibold">이사 유형</p>
           <div className="flex flex-wrap gap-2">
             {MOVE_TYPES.map((type) => (
-              <ChipCircle key={type} type="region" text={type} click />
+              <ChipCircle 
+                key={type} 
+                type="region" 
+                text={type} 
+                color="gray"
+                click={true}
+                isSelected={selectedMoveTypes.includes(type)}
+                onSelect={(text) => {
+                  setSelectedMoveTypes(
+                    selectedMoveTypes.includes(text) 
+                      ? selectedMoveTypes.filter((t) => t !== text) 
+                      : [...selectedMoveTypes, text]
+                  );
+                }}
+              />
             ))}
           </div>
         </div>
@@ -40,11 +70,25 @@ export default function FilterModal({ onClose }: { onClose: () => void }) {
         <div className="mb-6">
           <p className="mb-2 font-semibold">지역 및 견적</p>
           <div className="mb-2 flex items-center gap-2">
-            <CustomCheckbox checked={isDesignatedChecked} onChange={setIsDesignatedChecked} shape="square" />
+            <CustomCheckbox 
+              checked={isDesignatedChecked} 
+              onChange={(checked) => {
+                setIsDesignatedChecked(checked);
+                if (checked) setIsAvailableRegionChecked(false);
+              }} 
+              shape="square" 
+            />
             <span>지정 견적 요청</span>
           </div>
           <div className="flex items-center gap-2">
-            <CustomCheckbox checked={isServiceAreaChecked} onChange={setIsServiceAreaChecked} shape="square" />
+            <CustomCheckbox 
+              checked={isAvailableRegionChecked} 
+              onChange={(checked) => {
+                setIsAvailableRegionChecked(checked);
+                if (checked) setIsDesignatedChecked(false);
+              }} 
+              shape="square" 
+            />
             <span>서비스 가능 지역</span>
           </div>
         </div>

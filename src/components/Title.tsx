@@ -42,15 +42,15 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       <div className="text-lg font-semibold text-gray-900 md:hidden">{message}</div>
 
       {/* md 이상 */}
-      <div className="mb-4 flex-wrap gap-2 sm:hidden md:flex">
+      <div className="mb-4 hidden flex-wrap gap-2 md:flex">
         {labels.map((label) => (
           <ChipRectangle key={label} moveType={label} size="md" />
         ))}
       </div>
 
       {/* md 이상 */}
-      <div className="flex justify-between sm:hidden md:flex">
-        <p className="text-2xl font-semibold text-gray-900">{message}</p>
+      <div className="hidden justify-between md:flex">
+        <p className="text-2xl font-semibold text-gray-900 md:max-w-[70%] lg:max-w-[100%]">{message}</p>
         {status !== undefined && status !== "AUTO_REJECTED" && <EstimateStatus status={status} />}
       </div>
 
