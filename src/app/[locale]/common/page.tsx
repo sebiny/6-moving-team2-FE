@@ -56,7 +56,9 @@ const mockData = [
 
 function CommonPage() {
   const moveTypes: MoveType[] = ["SMALL", "HOME", "OFFICE", "REQUEST"];
-  const [page, setPage] = useState(1);
+  const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
+  const [isDesignatedChecked, setIsDesignatedChecked] = useState(false);
+  const [isAvailableRegionChecked, setIsAvailableRegionChecked] = useState(false);
   return (
     /**
      * Title 컴포넌트
@@ -77,7 +79,14 @@ function CommonPage() {
 
       {/* 기사님 -> 받은 요청 필터 버튼 */}
       <div className="flex">
-        <FilterSection />
+        <FilterSection
+          selectedMoveTypes={selectedMoveTypes}
+          setSelectedMoveTypes={setSelectedMoveTypes}
+          isDesignatedChecked={isDesignatedChecked}
+          setIsDesignatedChecked={setIsDesignatedChecked}
+          isAvailableRegionChecked={isAvailableRegionChecked}
+          setIsAvailableRegionChecked={setIsAvailableRegionChecked}
+        />
       </div>
 
       {/* ChipCircle 보여주기 */}

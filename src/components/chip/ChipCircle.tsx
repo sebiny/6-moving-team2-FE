@@ -7,10 +7,15 @@ interface ChipCircleType {
   text: string;
   color?: "orange" | "gray";
   click?: boolean;
+  isSelected?: boolean;
+  onSelect?: (text: string) => void;
 }
 
-function ChipCircle({ type, color = "gray", text, click = false }: ChipCircleType) {
-  const [isClicked, setIsClicked] = useState(false);
+function ChipCircle({ type, color = "gray", text, click = false, isSelected = false, onSelect }: ChipCircleType) {
+  const [internalClicked, setInternalClicked] = useState(false);
+  
+  // 외부에서 제어하는 경우 isSelected 사용, 내부 제어하는 경우 internalClicked 사용
+  const isClicked = onSelect ? isSelected : internalClicked;
   const design = clsx(
     " flex items-center justify-center",
     type === "address"
@@ -31,7 +36,11 @@ function ChipCircle({ type, color = "gray", text, click = false }: ChipCircleTyp
   );
 
   const handleClick = () => {
-    setIsClicked((isClicked) => !isClicked);
+    if (onSelect) {
+      onSelect(text);
+    } else {
+      setInternalClicked((prev) => !prev);
+    }
   };
 
   return (
