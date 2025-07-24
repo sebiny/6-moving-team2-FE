@@ -40,6 +40,7 @@ export default function PastEstimates() {
                   견적서 목록 <span className="font-semibold text-orange-400">{group.estimates.length}</span>
                 </div>
                 <FilterDropdown
+                  translator={(key) => key} // Assuming a simple translator function for now
                   label="전체"
                   options={["전체", "확정견적"]}
                   selected={selectedService}
