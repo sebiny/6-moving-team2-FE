@@ -23,26 +23,26 @@ export default function EstimateDetail({ moveType, startAddress, endAddress, dat
       <div className="space-y-3 text-sm md:text-base">
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">이사 유형</span>
-          <span className="font-semibold text-gray-900">{moveType}</span>
+          <span className="font-semibold text-wrap text-gray-900">{moveType}</span>
         </div>
 
         <hr className="border-t border-gray-100 lg:hidden" />
 
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">출발지</span>
-          <span className="max-w-[60%] text-right font-semibold">{startAddress}</span>
+          <span className="max-w-[70%] text-right font-semibold text-wrap">{startAddress}</span>
         </div>
 
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">도착지</span>
-          <span className="max-w-[60%] text-right font-semibold">{endAddress}</span>
+          <span className="max-w-[70%] text-right font-semibold text-wrap">{endAddress}</span>
         </div>
 
         <hr className="border-t border-gray-100 lg:hidden" />
 
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">이용일</span>
-          <span className="font-semibold">{date}</span>
+          <span className="font-semibold text-wrap">{date}</span>
         </div>
       </div>
 
