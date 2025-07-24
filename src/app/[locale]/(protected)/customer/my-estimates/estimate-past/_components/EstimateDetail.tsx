@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import { useTranslations } from "next-intl";
+import React, { use } from "react";
 
 interface EstimateDetailProps {
   moveType: string;
@@ -11,38 +12,39 @@ interface EstimateDetailProps {
 }
 
 export default function EstimateDetail({ moveType, startAddress, endAddress, date, createdDate }: EstimateDetailProps) {
+  const t = useTranslations("MyEstimates");
   return (
     <div className="w-full rounded-xl bg-white whitespace-nowrap md:pb-7">
       {/* 상단: 제목 + 생성일 */}
       <div className="mb-6 flex flex-col items-center justify-between md:mb-8 md:flex-row">
-        <h2 className="text-lg font-bold text-gray-900 md:text-xl">견적 정보</h2>
+        <h2 className="text-lg font-bold text-gray-900 md:text-xl">{t("estimateInfo")}</h2>
         <p className="mt-2 hidden text-sm text-gray-400 md:mt-0 md:flex">{createdDate}</p>
       </div>
 
       {/* 본문 정보 */}
       <div className="space-y-3 text-sm md:text-base">
         <div className="flex justify-between">
-          <span className="font-bold text-orange-400">이사 유형</span>
-          <span className="font-semibold text-wrap text-gray-900">{moveType}</span>
+          <span className="font-bold text-orange-400">{t("moveType")}</span>
+          <span className="font-semibold text-gray-900">{moveType}</span>
         </div>
 
         <hr className="border-t border-gray-100 lg:hidden" />
 
         <div className="flex justify-between">
-          <span className="font-bold text-orange-400">출발지</span>
-          <span className="max-w-[70%] text-right font-semibold text-wrap">{startAddress}</span>
+          <span className="font-bold text-orange-400">{t("from")}</span>
+          <span className="max-w-[60%] text-right font-semibold">{startAddress}</span>
         </div>
 
         <div className="flex justify-between">
-          <span className="font-bold text-orange-400">도착지</span>
-          <span className="max-w-[70%] text-right font-semibold text-wrap">{endAddress}</span>
+          <span className="font-bold text-orange-400">{t("to")}</span>
+          <span className="max-w-[60%] text-right font-semibold">{endAddress}</span>
         </div>
 
         <hr className="border-t border-gray-100 lg:hidden" />
 
         <div className="flex justify-between">
-          <span className="font-bold text-orange-400">이용일</span>
-          <span className="font-semibold text-wrap">{date}</span>
+          <span className="font-bold text-orange-400">{t("date")}</span>
+          <span className="font-semibold">{date}</span>
         </div>
       </div>
 

@@ -1,0 +1,26 @@
+{
+  "estimateInfo": "견적 정보",
+  "moveType": "이사 유형",
+  "from": "출발지",
+  "to": "도착지",
+  "date": "날짜",
+
+  "list": "견적서 목록",
+  "total": "전체",
+  "confirmed": "확정견적",
+  "driver": "기사님",
+  "experience": "경력",
+  "year": "년",
+  "count": "건",
+  "confirm": "확정",
+  "estimateCost": "견적가",
+
+  "estimateDetail": "견적 상세",
+  "shareEstimate": "견적서 공유하기",
+
+  "requestDate": "견적 요청일",
+  "service": "서비스",
+  "moveDate": "이용일",
+
+  "notConfirmed": "확정하지 않은 견적이에요!"
+}

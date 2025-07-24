@@ -1,0 +1,26 @@
+{
+  "estimateInfo": "Estimate Information",
+  "moveType": "Type of Move",
+  "from": "Origin",
+  "to": "Destination",
+  "date": "Date",
+
+  "list": "List of Estimates",
+  "total": "Total",
+  "confirmed": "Confirmed Estimate",
+  "driver": "Driver",
+  "experience": "Experience",
+  "year": "Year",
+  "count": "Count",
+  "confirm": "Confirm",
+  "estimateCost": "Estimate Cost",
+
+  "estimateDetail": "Estimate Detail",
+  "shareEstimate": "Share the Estimate",
+
+  "requestDate": "Request Date",
+  "service": "Service",
+  "moveDate": "Move Date",
+
+  "notConfirmed": "This estimate has not been confirmed yet!"
+}

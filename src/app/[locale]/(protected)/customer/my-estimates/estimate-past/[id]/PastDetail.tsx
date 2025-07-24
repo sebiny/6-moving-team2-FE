@@ -8,12 +8,14 @@ import OrangeBackground from "@/components/OrangeBackground";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import AutoRejectedAlert from "./_components/AutoRejectedAlert";
+import { useTranslations } from "use-intl";
 import { useEstimateDetail } from "@/lib/api/api-myEstimate";
 import dayjs from "dayjs";
 import { getMoveTypeLabel } from "@/utills/moveUtils";
 import { formatStreetAddress } from "@/utills/addressUtils";
 
 export default function PastDetailPage() {
+  const t = useTranslations("MyEstimates");
   const { id } = useParams();
   const { data } = useEstimateDetail(id as string);
 
@@ -31,7 +33,7 @@ export default function PastDetailPage() {
     <>
       {/* 상단 서브 헤더 */}
       <div className="sticky top-14 z-9 bg-white lg:top-22">
-        <SubHeader title="견적 상세" />
+        <SubHeader title={t("estimateDetail")} />
       </div>
 
       {/* 상단 배경 + 프로필 */}
@@ -84,7 +86,7 @@ export default function PastDetailPage() {
 
           <div className="my-6 border-t border-gray-100 lg:hidden" />
 
-          <ShareDriver text="견적서 공유하기" />
+          <ShareDriver text={t("shareEstimate")} />
         </div>
       </div>
     </>
