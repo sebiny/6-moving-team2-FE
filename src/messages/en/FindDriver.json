@@ -1,0 +1,76 @@
+{
+  "findDriver": "Find Driver",
+  "LikedDrivers": "Liked Drivers",
+  "textPlaceholder": "Please enter text",
+  "loading": "Loading...",
+  "noDrivers": "Cannot load drivers",
+  "driverFindCard": {
+    "driver": "Driver",
+    "career": "Career",
+    "confirm": "Confirm",
+    "year": "Year",
+    "count": "Count"
+  },
+  "driverPage": {
+    "completed": "Completed",
+    "review": "Review",
+    "Experience": "Experience",
+    "offerService": "Offer Service",
+    "servicePossibleRegion": "Service Possible Region",
+    "wannaRecommend?": "Wanna Recommend?",
+    "noReviews": "No Reviews Yet!",
+    "noReviewsDesc": "Be the first to leave a review",
+    "reviewCount": "Reviews",
+    "star": "Stars",
+    "requestQuote": "Request a Quote"
+  },
+  "requestQuote": {
+    "title": "To the Driver",
+    "subtitle": "Request a Quote",
+    "like Driver": "Like",
+    "dislike Driver": "Dislike",
+    "modal": {
+      "title": "Request a Quote",
+      "no": "No ongoing quote requests.",
+      "generalBtn": "Request a General Quote"
+    }
+  },
+
+  "filters": {
+    "region": "Region",
+    "service": "Service",
+    "reset": "Reset"
+  },
+  "region": {
+    "SEOUL": "Seoul",
+    "BUSAN": "Busan",
+    "DAEGU": "Daegu",
+    "INCHEON": "Incheon",
+    "GWANGJU": "Gwangju",
+    "DAEJEON": "Daejeon",
+    "ULSAN": "Ulsan",
+    "SEJONG": "Sejong",
+    "GYEONGGI": "Gyeonggi",
+    "GANGWON": "Gangwon",
+    "CHUNGBUK": "Chungbuk",
+    "CHUNGNAM": "Chungnam",
+    "JEONBUK": "Jeonbuk",
+    "JEONNAM": "Jeonnam",
+    "GYEONGBUK": "Gyeongbuk",
+    "GYEONGNAM": "Gyeongnam",
+    "JEJU": "Jeju"
+  },
+  "service": {
+    "SMALL": "Small Move",
+    "HOME": "Home Move",
+    "OFFICE": "Office Move",
+    "WHOLE": "Whole Move",
+    "ESTIMATE": "Confirm Estimate"
+  },
+  "sortOptions": {
+    "reviewCount": "Most Reviews",
+    "career": "Most Experience",
+    "work": "Most Confirmed",
+    "averageRating": "Highest Rating"
+  }
+}

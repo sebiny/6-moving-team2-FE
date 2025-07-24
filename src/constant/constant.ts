@@ -26,7 +26,7 @@ export const getProfileDropdownMenu = (
   CUSTOMER: [
     { label: t("myProfile"), path: "/customer/profile" },
     { label: t("likedDrivers"), path: "/customer/my-estimates/favorite-drivers" },
-    { label: t("moveReviews"), path: "/review" }
+    { label: t("moveReviews"), path: "/customer/review" }
   ],
   DRIVER: [{ label: t("myPage"), path: "/driver/my-page" }]
 });

@@ -1,0 +1,77 @@
+{
+  "findDriver": "기사님 찾기",
+  "LikedDrivers": "찜한 기사님",
+  "textPlaceholder": "텍스트를 입력해주세요",
+  "loading": "로딩중...",
+  "noDrivers": "기사님을 불러올 수 없습니다",
+  "reviewFetchFailed": "리뷰 데이터를 불러오지 못했습니다.",
+  "driverFindCard": {
+    "driver": "기사님",
+    "career": "경력",
+    "confirm": "확정",
+    "year": "년",
+    "count": "건"
+  },
+  "driverPage": {
+    "completed": "진행",
+    "review": "리뷰",
+    "Experience": "총 경력",
+    "offerService": "제공 서비스",
+    "servicePossibleRegion": "서비스 가능 지역",
+    "wannaRecommend?": "나만 알기엔 아쉬운 기사님인가요?",
+    "noReviews": "아직 등록된 리뷰가 없어요!",
+    "noReviewsDesc": "가장 먼저 리뷰를 등록해보세요",
+    "reviewCount": "개의 리뷰",
+    "star": "점",
+    "requestQuote": "지정 견적 요청하기"
+  },
+  "requestQuote": {
+    "title": "기사님에게",
+    "subtitle": "지정 견적을 요청해보세요!",
+    "like Driver": "찜하기",
+    "dislike Driver": "찜 해제하기",
+    "modal": {
+      "title": "지정 견적 요청",
+      "no": "진행 중인 지정 견적 요청이 없습니다.",
+      "generalBtn": "일반 견적 요청하기"
+    }
+  },
+
+  "filters": {
+    "region": "지역",
+    "service": "서비스",
+    "reset": "초기화"
+  },
+  "region": {
+    "SEOUL": "서울",
+    "BUSAN": "부산",
+    "DAEGU": "대구",
+    "INCHEON": "인천",
+    "GWANGJU": "광주",
+    "DAEJEON": "대전",
+    "ULSAN": "울산",
+    "SEJONG": "세종",
+    "GYEONGGI": "경기",
+    "GANGWON": "강원",
+    "CHUNGBUK": "충북",
+    "CHUNGNAM": "충남",
+    "JEONBUK": "전북",
+    "JEONNAM": "전남",
+    "GYEONGBUK": "경북",
+    "GYEONGNAM": "경남",
+    "JEJU": "제주"
+  },
+  "service": {
+    "SMALL": "소형이사",
+    "HOME": "가정이사",
+    "OFFICE": "사무실이사",
+    "WHOLE": "전체이사",
+    "ESTIMATE": "확정견적"
+  },
+  "sortOptions": {
+    "reviewCount": "리뷰 많은순",
+    "career": "경력 높은순",
+    "work": "확정 많은순",
+    "averageRating": "평점 높은순"
+  }
+}

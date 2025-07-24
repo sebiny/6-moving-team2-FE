@@ -1,6 +1,7 @@
 import { getRequestConfig } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { routing } from "./routing";
+import FindDrivers from "@/app/[locale]/(guest)/drivers/_components/FindDrivers";
 
 export default getRequestConfig(async ({ requestLocale }) => {
   // Typically corresponds to the `[locale]` segment
@@ -13,8 +14,10 @@ export default getRequestConfig(async ({ requestLocale }) => {
     // ...(await import(`../messages/${locale}/Driver.json`)).default,
     Review: (await import(`../messages/${locale}/Review.json`)).default,
     Landing: (await import(`../messages/${locale}/Landing.json`)).default,
+    FindDriver: (await import(`../messages/${locale}/FindDriver.json`)).default,
     Gnb: (await import(`../messages/${locale}/Gnb.json`)).default,
-    Chip: (await import(`../messages/${locale}/Chip.json`)).default
+    Chip: (await import(`../messages/${locale}/Chip.json`)).default,
+    EstimateReq: (await import(`../messages/${locale}/EstimateReq.json`)).default
     // 필요시 계속 추가 가능
   };
   return {

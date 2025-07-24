@@ -10,14 +10,15 @@ import AddressCardModal from "./_components/modal/AddressCardModal";
 import Button from "@/components/Button";
 import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
-
-const moveTypes = [
-  { label: "소형이사", description: "원룸, 투룸, 20평대 미만" },
-  { label: "가정이사", description: "쓰리룸, 20평대 이상" },
-  { label: "사무실이사", description: "사무실, 상업공간" }
-];
+import { useTranslations } from "next-intl";
 
 export default function MobileEstimateForm() {
+  const t = useTranslations("EstimateReq");
+  const moveTypes = [
+    { label: t("smallBox.text"), description: t("smallBox.subText") },
+    { label: t("familyBox.text"), description: t("familyBox.subText") },
+    { label: t("officeBox.text"), description: t("officeBox.subText") }
+  ];
   const queryClient = useQueryClient();
 
   const [step, setStep] = useState(1);
@@ -54,9 +55,9 @@ export default function MobileEstimateForm() {
         fromAddressId: String(addressFrom.id),
         toAddressId: String(addressTo.id)
       });
-      alert("견적 요청 완료!");
+      alert(t("estimateReqSuccess"));
     } catch {
-      alert("견적 요청 실패");
+      alert(t("estimateReqFailure"));
     }
   };
 
@@ -81,8 +82,8 @@ export default function MobileEstimateForm() {
         <div className="flex flex-col items-center">
           {/* 타이틀 */}
           <div className="mb-4 flex flex-col text-center">
-            <h2 className="text-xl font-bold">이사 유형을 선택해주세요</h2>
-            <p className="text-sm text-gray-400">견적을 요청하면 최대 5개의 견적을 받을 수 있어요 :)</p>
+            <h2 className="text-xl font-bold">{t("typeText")}</h2>
+            <p className="text-sm text-gray-400">{t("estimateReqSubTitle")}</p>
           </div>
           <div className="w-[327px]">
             {/* 이동 유형 카드 */}
@@ -102,7 +103,7 @@ export default function MobileEstimateForm() {
               <Button
                 isDisabled={!isValidStep1}
                 onClick={() => setStep(2)}
-                text="다음"
+                text={t("next")}
                 type="orange"
                 className="w-[155.5px]"
               />
@@ -116,8 +117,8 @@ export default function MobileEstimateForm() {
         <>
           {/* 타이틀 */}
           <div className="mb-[70px] flex flex-col text-center">
-            <h2 className="text-xl font-bold">이사 예정일을 선택해주세요</h2>
-            <p className="text-sm text-gray-400">견적을 요청하면 최대 5개의 견적을 받을 수 있어요 :)</p>
+            <h2 className="text-xl font-bold">{t("dateText")}</h2>
+            <p className="text-sm text-gray-400">{t("estimateReqSubTitle")}</p>
           </div>
           {/* 달력 */}
           <div>
@@ -125,11 +126,16 @@ export default function MobileEstimateForm() {
           </div>
           {/* 이전, 다음 버튼 */}
           <div className="mt-32 flex justify-center gap-2">
-            <Button type="white-orange" onClick={() => setStep(1)} text="이전" className="h-[54px] w-[158px]" />
+            <Button
+              type="white-orange"
+              onClick={() => setStep(1)}
+              text={t("previous")}
+              className="h-[54px] w-[158px]"
+            />
             <Button
               isDisabled={!isValidStep2}
               onClick={() => setStep(3)}
-              text="다음"
+              text={t("next")}
               type="orange"
               className="w-[155.5px]"
             />
@@ -142,24 +148,24 @@ export default function MobileEstimateForm() {
         <div className="flex flex-col items-center">
           {/* 타이틀 */}
           <div className="mb-[62px] flex flex-col text-center">
-            <h2 className="text-xl font-bold">이사 지역을 선택해주세요</h2>
-            <p className="text-sm text-gray-400">견적을 요청하면 최대 5개의 견적을 받을 수 있어요 :)</p>
+            <h2 className="text-xl font-bold">{t("areaText")}</h2>
+            <p className="text-sm text-gray-400">{t("estimateReqSubTitle")}</p>
           </div>
           {/* 주소 검색 버튼 */}
           <div className="flex w-[327px] flex-col gap-6">
             <div className="flex flex-col gap-3">
-              <p className="font-medium">출발지</p>
+              <p className="font-medium">{t("from")}</p>
               <Button
-                text={addressFrom ? AddressSummary(addressFrom.roadAddress) : "출발지 선택하기"}
+                text={addressFrom ? AddressSummary(addressFrom.roadAddress) : t("fromChoose")}
                 type="white-orange"
                 className="h-[54px] justify-start rounded-xl px-8 leading-[22px]"
                 onClick={() => setShowModal("from")}
               />
             </div>
             <div className="flex flex-col gap-3 lg:w-full">
-              <p className="font-medium">도착지</p>
+              <p className="font-medium">{t("to")}</p>
               <Button
-                text={addressTo ? AddressSummary(addressTo.roadAddress) : "도착지 선택하기"}
+                text={addressTo ? AddressSummary(addressTo.roadAddress) : t("toChoose")}
                 type="white-orange"
                 className="h-[54px] justify-start rounded-xl px-8 leading-[22px]"
                 onClick={() => setShowModal("to")}
@@ -169,12 +175,17 @@ export default function MobileEstimateForm() {
 
           {/* 이전, 요청 버튼 */}
           <div className="mt-71 flex justify-center gap-2">
-            <Button type="white-orange" onClick={() => setStep(2)} text="이전" className="h-[54px] w-[158px]" />
+            <Button
+              type="white-orange"
+              onClick={() => setStep(2)}
+              text={t("previous")}
+              className="h-[54px] w-[158px]"
+            />
 
             <Button
               isDisabled={!isValidStep3 || isPending}
               onClick={handleRequest}
-              text={isPending ? "요청 중..." : "견적 요청하기"}
+              text={isPending ? t("requesting") : t("requestEstimate")}
               type="orange"
               className="h-[54px] w-[158px]"
             />
@@ -185,8 +196,8 @@ export default function MobileEstimateForm() {
       {/* 주소 검색 모달 */}
       {showModal && (
         <AddressCardModal
-          title={showModal === "from" ? "출발지 선택" : "도착지 선택"}
-          confirmLabel="선택 완료"
+          title={showModal === "from" ? t("fromSelect") : t("toSelect")}
+          confirmLabel={t("confirm")}
           onClose={() => setShowModal(null)}
           onConfirm={(value: Address) => {
             if (showModal === "from") setAddressFrom(value);

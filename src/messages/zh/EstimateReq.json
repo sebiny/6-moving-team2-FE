@@ -1,0 +1,36 @@
+{
+  "smallBox": {
+    "text": "小型搬家",
+    "subText": "单间公寓，1卧室，20坪以下"
+  },
+  "familyBox": {
+    "text": "家庭搬家",
+    "subText": "三卧室，20坪以下"
+  },
+  "officeBox": {
+    "text": "办公室搬家",
+    "subText": "办公室，商业空间"
+  },
+  "estimateReqTitle": "请选择搬家类型、预期日期和地区",
+  "estimateReqSubTitle": "通过请求报价，您可以收到最多5个报价 :)",
+  "movingType": "搬家类型",
+  "typeText": "请选择搬家类型",
+  "dateText": "请选择搬家预期日期",
+  "areaText": "请选择搬家地区",
+  "movingExpectedDate": "预期日期",
+  "movingArea": "搬家地区",
+  "from": "出发地",
+  "fromChoose": "选择出发地",
+  "toChoose": "选择目的地",
+  "placeholder": "请输入文本",
+  "confirm": "选择",
+  "to": "目的地",
+  "requestEstimate": "请求报价",
+  "requesting": "请求中...",
+  "requestQuote": "请求报价",
+  "estimateReqSuccess": "报价请求成功！",
+  "estimateReqFailure": "报价请求失败。请再试一次。",
+  "previous": "上一步",
+  "next": "下一步",
+  "close": "关闭"
+}

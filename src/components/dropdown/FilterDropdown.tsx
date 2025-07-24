@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { TranslateRegion, TranslateService } from "@/utills/TranslateFunction";
 
@@ -9,6 +9,7 @@ interface DropdownProps {
   onSelect: (value: string) => void;
   isMultiColumn?: boolean;
   type?: "region" | "service";
+  translator: (key: string) => string;
 }
 
 function FilterDropdown({
@@ -17,15 +18,33 @@ function FilterDropdown({
   selected,
   onSelect,
   isMultiColumn = false,
-  type = "service"
+  type = "service",
+  translator
 }: DropdownProps) {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const isActive = selected !== "" || open;
 
   const handleSelect = (item: string) => {
     onSelect(item === selected ? "" : item);
     setOpen(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    if (open) document.addEventListener("mousedown", handleClickOutside);
+    else document.removeEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
 
   const buttonClass = `flex items-center justify-between gap-[6px] rounded-xl px-[14px] py-2 
     md:h-[50px] md:w-40 md:px-5 md:py-4
@@ -39,12 +58,10 @@ function FilterDropdown({
     "px-[14px] py-[6px] text-sm leading-6 font-medium hover:bg-[var(--color-orange-100)] cursor-pointer md:px-5 md:py-5 md:text-base";
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       {/* 버튼 */}
       <button onClick={() => setOpen((prev) => !prev)} className={buttonClass}>
-        <span className="truncate text-sm font-medium md:text-base">
-          {selected ? (type === "service" ? TranslateService(selected) : TranslateRegion(selected)) : label}
-        </span>
+        <span className="truncate text-sm font-medium md:text-base">{selected ? translator(selected) : label} </span>
         <Image
           src={`/assets/icons/${open ? "ic_chevron_up" : "ic_chevron_down"}.svg`}
           alt="화살표"
@@ -69,7 +86,8 @@ function FilterDropdown({
                   item === selected ? "bg-[var(--color-orange-100)] text-[var(--color-orange-400)]" : ""
                 }`}
               >
-                {type === "service" ? TranslateService(item) : TranslateRegion(item)}
+                {/* {type === "service" ? TranslateService(item) : TranslateRegion(item)} */}
+                {translator(item)}
               </div>
             ))
           ) : (
@@ -80,7 +98,8 @@ function FilterDropdown({
                   onClick={() => handleSelect(item)}
                   className={`${itemClass} ${item === selected ? "bg-[var(--color-orange-100)] text-[var(--color-orange-400)]" : ""}`}
                 >
-                  {type === "service" ? TranslateService(item) : TranslateRegion(item)}
+                  {/* {type === "service" ? TranslateService(item) : TranslateRegion(item)} */}
+                  {translator(item)}
                 </li>
               ))}
             </ul>

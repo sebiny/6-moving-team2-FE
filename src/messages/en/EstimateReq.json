@@ -1,0 +1,36 @@
+{
+  "smallBox": {
+    "text": "Small Move",
+    "subText": "Studio, 1-bedroom, under 20 pyeong"
+  },
+  "familyBox": {
+    "text": "Family Move",
+    "subText": "3-bedroom, under 20 pyeong"
+  },
+  "officeBox": {
+    "text": "Office Move",
+    "subText": "Office, commercial space"
+  },
+  "estimateReqTitle": "Please select the moving type, expected date, and area",
+  "estimateReqSubTitle": "You can receive up to 5 quotes by requesting a quote :)",
+  "movingType": "Moving Type",
+  "typeText": "Please select the type of move",
+  "dateText": "Please select the expected date for the move",
+  "areaText": "Please select the area for the move",
+  "movingExpectedDate": "Expected Date",
+  "movingArea": "Moving Area",
+  "from": "Origin",
+  "fromChoose": "Choose Origin",
+  "toChoose": "Choose Destination",
+  "placeholder": "Please enter text",
+  "confirm": "confirm",
+  "to": "Destination",
+  "requestEstimate": "Request Quote",
+  "requesting": "Requesting...",
+  "requestQuote": "Request Quote",
+  "estimateReqSuccess": "Quote request successful!",
+  "estimateReqFailure": "Quote request failed. Please try again.",
+  "previous": "Previous",
+  "next": "Next",
+  "close": "Close"
+}

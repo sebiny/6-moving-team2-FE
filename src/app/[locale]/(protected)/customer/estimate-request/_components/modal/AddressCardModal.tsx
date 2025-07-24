@@ -8,6 +8,7 @@ import DaumPostcodeModal from "./DaumPostcodeModal";
 import { Address } from "@/types/Address";
 import { createAddress } from "@/lib/api/api-estimateRequest";
 import { formatAddress } from "@/utills/AddressMapper";
+import { useTranslations } from "next-intl";
 
 interface AddressCardModalProps {
   title: string;
@@ -25,6 +26,7 @@ export default function AddressCardModal({
   onConfirm,
   selectedAddress
 }: AddressCardModalProps) {
+  const t = useTranslations("EstimateReq");
   const [inputValue, setInputValue] = useState("");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showPostcode, setShowPostcode] = useState(false);
@@ -58,7 +60,7 @@ export default function AddressCardModal({
             <div className="flex h-[52px] w-full items-center justify-between rounded-2xl bg-[var(--color-background-100)] px-4 md:h-[64px]">
               <input
                 type="text"
-                placeholder="텍스트를 입력해주세요."
+                placeholder={t("placeholder")}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => {

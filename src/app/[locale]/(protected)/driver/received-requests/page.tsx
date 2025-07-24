@@ -16,6 +16,7 @@ import RejectEstimateModal from "./_components/RejectEstimateModal";
 import FilterSection from "@/components/filter/FilterSection";
 import { driverService } from "@/lib/api/api-driver";
 import { mapBackendRequestToFrontend } from "@/utills/RequestMapper";
+import { TranslateSorting } from "@/utills/TranslateFunction";
 
 export default function ReceivedRequestsPage() {
   const queryClient = useQueryClient();
@@ -227,7 +228,12 @@ export default function ReceivedRequestsPage() {
             </div>
             {/* 모바일에선 오른쪽 붙고, lg 이상에선 이 div가 무시됨 */}
             <div className="flex items-center gap-2 lg:hidden">
-              <SortDropdown sortings={["date", "request"]} sort={sort} setSort={setSort} />
+              <SortDropdown
+                sortings={["date", "request"]}
+                sort={sort}
+                setSort={setSort}
+                translator={TranslateSorting}
+              />
               <FilterSection
                 selectedMoveTypes={selectedMoveTypes}
                 setSelectedMoveTypes={setSelectedMoveTypes}
@@ -266,7 +272,7 @@ export default function ReceivedRequestsPage() {
                 <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
               </label>
             </div>
-            <SortDropdown sortings={["date", "request"]} sort={sort} setSort={setSort} />
+            <SortDropdown sortings={["date", "request"]} sort={sort} setSort={setSort} translator={TranslateSorting} />
           </div>
         </div>
         {isPending ? (
