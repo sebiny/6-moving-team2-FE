@@ -17,7 +17,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
     FindDriver: (await import(`../messages/${locale}/FindDriver.json`)).default,
     Gnb: (await import(`../messages/${locale}/Gnb.json`)).default,
     Chip: (await import(`../messages/${locale}/Chip.json`)).default,
-    EstimateReq: (await import(`../messages/${locale}/EstimateReq.json`)).default
+    EstimateReq: (await import(`../messages/${locale}/EstimateReq.json`)).default,
+    MyEstimates: (await import(`../messages/${locale}/MyEstimates.json`)).default
     // 필요시 계속 추가 가능
   };
   return {

@@ -5,12 +5,14 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import EstimateStatus from "@/components/chip/EstimateStatus";
 import { ReceivedEstimateItem } from "./ReceivedEstimateData";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface Props {
   data: ReceivedEstimateItem;
 }
 
 export default function ReceivedEstimate({ data }: Props) {
+  const t = useTranslations("MyEstimates");
   const { labels, driver, message, price, status, id } = data;
 
   const router = useRouter();
@@ -58,7 +60,9 @@ export default function ReceivedEstimate({ data }: Props) {
           <div className="flex items-center justify-between text-base font-medium">
             <div className="flex items-center gap-1">
               <Image src="/assets/icons/ic_profileMark.svg" alt="기사 마크" width={16} height={16} />
-              <span>{driver.name} 기사님</span>
+              <span>
+                {driver.name} {t("driver")}
+              </span>
             </div>
 
             <div className="flex items-center">
@@ -76,11 +80,19 @@ export default function ReceivedEstimate({ data }: Props) {
             </div>
             <div className="mx-2 text-gray-300">|</div>
             <span>
-              경력 <span className="font-medium text-black">{driver.experienceYear}년</span>
+              {t("experience")}{" "}
+              <span className="font-medium text-black">
+                {driver.experienceYear}
+                {t("year")}
+              </span>
             </span>
             <div className="mx-2 text-gray-300">|</div>
             <span>
-              <span className="font-medium text-black">{driver.confirmedCount}건</span> 확정
+              <span className="font-medium text-black">
+                {driver.confirmedCount}
+                {t("count")}
+              </span>{" "}
+              {t("confirm")}
             </span>
           </div>
         </div>
@@ -88,7 +100,7 @@ export default function ReceivedEstimate({ data }: Props) {
 
       {/* 견적가 (md 이상) */}
       <div className="hidden items-center justify-end text-2xl font-extrabold text-gray-900 md:flex">
-        <span className="mr-2 text-base font-medium text-gray-500">견적 금액</span>
+        <span className="mr-2 text-base font-medium text-gray-500">{t("estimateCost")}</span>
         {price.toLocaleString()}원
       </div>
 
@@ -96,7 +108,7 @@ export default function ReceivedEstimate({ data }: Props) {
       <div className="flex items-center justify-between py-2 md:hidden">
         <EstimateStatus status={status} />
         <div className="flex text-lg font-extrabold text-gray-900">
-          <span className="mt-1 mr-2 text-sm font-normal text-gray-500">견적 금액</span>
+          <span className="mt-1 mr-2 text-sm font-normal text-gray-500">{t("estimateCost")}</span>
           {price.toLocaleString()}원
         </div>
       </div>

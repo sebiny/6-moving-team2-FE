@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import FilterDropdown from "@/components/dropdown/FilterDropdown";
 import EstimateDetail from "./_components/EstimateDetail";
 import ReceivedEstimate from "./_components/ReceivedEstimate";
 import { receivedEstimateData } from "./_components/ReceivedEstimateData";
+import { useTranslations } from "next-intl";
 
 export default function PastEstimates() {
   const [selectedService, setSelectedService] = useState("");
-
+  const t = useTranslations("MyEstimates");
   return (
     <main className="md:bg-background-200 mt-11 bg-white md:mt-22 lg:mt-35">
       {receivedEstimateData.map((group, index) => (
@@ -37,12 +38,12 @@ export default function PastEstimates() {
               {/* 목록 상단 - 제목 + 필터 */}
               <div className="flex flex-col gap-4">
                 <div className="flex gap-2 text-xl font-bold text-gray-900">
-                  견적서 목록 <span className="font-semibold text-orange-400">{group.estimates.length}</span>
+                  {t("list")} <span className="font-semibold text-orange-400">{group.estimates.length}</span>
                 </div>
                 <FilterDropdown
                   translator={(key) => key} // Assuming a simple translator function for now
-                  label="전체"
-                  options={["전체", "확정견적"]}
+                  label={t("total")}
+                  options={[t("total"), t("confirmed")]}
                   selected={selectedService}
                   onSelect={setSelectedService}
                 />

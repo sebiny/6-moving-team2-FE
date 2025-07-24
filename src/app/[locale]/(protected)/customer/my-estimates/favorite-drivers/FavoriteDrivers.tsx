@@ -5,8 +5,10 @@ import DriverFindCard from "@/components/card/DriverFindCard";
 import SubHeader from "../_components/SubHeader";
 import { useState } from "react";
 import CustomCheckbox from "@/components/button/CustomCheckbox";
+import { useTranslations } from "next-intl";
 
 export default function FavoriteDrivers() {
+  const t = useTranslations("Gnb");
   const [checkedList, setCheckedList] = useState<boolean[]>(drivers.map(() => false));
 
   // 전체 선택 여부
@@ -30,7 +32,7 @@ export default function FavoriteDrivers() {
     <div className="bg-background-200 flex min-h-screen flex-col">
       {/* 스티키 헤더 */}
       <div className="fixed z-9 w-full bg-white lg:top-22">
-        <SubHeader title="찜한 기사님" />
+        <SubHeader title={t("likedDrivers")} />
       </div>
 
       {/* 실제 내용 */}
@@ -39,10 +41,10 @@ export default function FavoriteDrivers() {
           <div className="flex">
             <CustomCheckbox checked={isAllChecked} onChange={(val) => toggleAll(val)} shape="square" />
             <div className="mt-1.5">
-              전체선택({checkedList.filter(Boolean).length}/{drivers.length})
+              {t("chooseAll")} ({checkedList.filter(Boolean).length}/{drivers.length})
             </div>
           </div>
-          <div className="mt-1.5 mr-2.5">선택항목 삭제</div>
+          <div className="mt-1.5 mr-2.5">{t("deleteItem")}</div>
         </div>
 
         {drivers.map((driver, index) => (

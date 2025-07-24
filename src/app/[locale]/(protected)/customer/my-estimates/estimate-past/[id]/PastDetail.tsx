@@ -9,8 +9,10 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { receivedEstimateData } from "../_components/ReceivedEstimateData";
 import AutoRejectedAlert from "./_components/AutoRejectedAlert";
+import { useTranslations } from "use-intl";
 
 export default function PastDetailPage() {
+  const t = useTranslations("MyEstimates");
   const { id } = useParams();
   const estimateId = Number(id);
 
@@ -25,7 +27,7 @@ export default function PastDetailPage() {
     <>
       {/* 상단 서브 헤더 */}
       <div className="sticky top-14 z-9 bg-white lg:top-22">
-        <SubHeader title="견적 상세" />
+        <SubHeader title={t("estimateDetail")} />
       </div>
 
       {/* 상단 배경 + 프로필 */}
@@ -72,7 +74,7 @@ export default function PastDetailPage() {
 
           <div className="my-6 border-t border-gray-100 lg:hidden" />
 
-          <ShareDriver text="견적서 공유하기" />
+          <ShareDriver text={t("shareEstimate")} />
         </div>
       </div>
     </>
