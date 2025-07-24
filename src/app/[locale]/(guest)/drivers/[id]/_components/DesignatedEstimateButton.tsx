@@ -7,8 +7,10 @@ import EstimateRequestModal from "./EstimateRequestModal";
 import { createDesignatedEstimateRequest } from "@/lib/api/api-estimateRequest";
 import { useMutation } from "@tanstack/react-query";
 import { useModal } from "@/providers/ModalProvider";
+import { useTranslations } from "next-intl";
 
 function DesignatedEstimateButton() {
+  const t = useTranslations("FindDriver");
   const router = useRouter();
   const { user } = useAuth();
   const { id } = useParams();
@@ -18,6 +20,7 @@ function DesignatedEstimateButton() {
     mutationFn: () => createDesignatedEstimateRequest({ driverId }),
     onError: (err) => {
       openModal(<EstimateRequestModal onClose={closeModal} errorMsg={err.message} />);
+      //동적인 에러 메세지 처리
     }
   });
   const handleClickRequest = () => {
@@ -29,7 +32,12 @@ function DesignatedEstimateButton() {
 
   return (
     <div className="w-full">
-      <Button text="지정 견적 요청하기" type="orange" onClick={handleClickRequest} className="h-16 w-full lg:w-80" />
+      <Button
+        text={t("driverPage.requestQuote")}
+        type="orange"
+        onClick={handleClickRequest}
+        className="h-16 w-full lg:w-80"
+      />
     </div>
   );
 }
