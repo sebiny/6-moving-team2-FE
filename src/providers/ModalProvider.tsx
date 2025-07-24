@@ -6,7 +6,6 @@ interface ModalContextType {
   openModal: (type: "default" | "dropdown", content: ReactNode) => void;
   closeModal: () => void;
   isOpen: boolean;
-  modalType: "default" | "dropdown" | null;
 }
 
 const ModalContext = createContext<ModalContextType | null>(null);
@@ -19,14 +18,11 @@ export const useModal = () => {
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
-  const [modalType, setModalType] = useState<"default" | "dropdown" | null>(null);
-  const openModal = (type: "default" | "dropdown", content: ReactNode) => {
-    setModalType(type);
+  const openModal = (content: ReactNode) => {
     setModalContent(content);
   };
   const closeModal = () => {
     setModalContent(null);
-    setModalType(null);
   };
   const isOpen = modalContent !== null;
 
@@ -39,15 +35,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   }, [isOpen]);
 
   return (
-    <ModalContext.Provider value={{ openModal, closeModal, isOpen, modalType }}>
+    <ModalContext.Provider value={{ openModal, closeModal, isOpen }}>
       {children}{" "}
-      {isOpen && modalType === "default" && (
+      {isOpen && (
         <div onClick={closeModal} className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
-          <div onClick={(e) => e.stopPropagation()}>{modalContent}</div>
-        </div>
-      )}
-      {isOpen && modalType === "dropdown" && (
-        <div onClick={closeModal}>
           <div onClick={(e) => e.stopPropagation()}>{modalContent}</div>
         </div>
       )}
