@@ -10,7 +10,7 @@ function EditButtons() {
   };
 
   const handleClickEditBasic = () => {
-    router.push("/driver/basic");
+    router.push("/driver/my-page-edit");
   };
   return (
     <div className="mt-7 flex w-full flex-col gap-4 md:flex-row lg:w-70 lg:flex-col">
