@@ -1,6 +1,7 @@
 "use client";
 
 import CheckBox from "@/components/button/CustomCheckbox";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 interface MoveTypeCardProps {
@@ -11,10 +12,11 @@ interface MoveTypeCardProps {
 }
 
 export default function MoveTypeCard({ label, description, selected, onClick }: MoveTypeCardProps) {
+  const t = useTranslations("EstimateReq");
   const imageMap: Record<string, string> = {
-    소형이사: "/assets/images/img_small_moving.svg",
-    가정이사: "/assets/images/img_family_moving.svg",
-    사무실이사: "/assets/images/img_office_moving.svg"
+    [t("smallBox.text")]: "/assets/images/img_small_moving.svg",
+    [t("familyBox.text")]: "/assets/images/img_family_moving.svg",
+    [t("officeBox.text")]: "/assets/images/img_office_moving.svg"
   };
 
   const iconSrc = imageMap[label];

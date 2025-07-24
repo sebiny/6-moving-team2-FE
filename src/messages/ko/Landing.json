@@ -11,11 +11,11 @@
   "brImageTitle": "견적을 받아보세요",
   "smallBox": {
     "text": "소형이사",
-    "subText": "원룸, 투룸, 20평대 미만"
+    "subText": "원룸, 1룸, 20평 이하"
   },
   "familyBox": {
     "text": "가정이사",
-    "subText": "쓰리룸, 20평대 미만"
+    "subText": "쓰리룸, 20평 이하"
   },
   "officeBox": {
     "text": "기업, 사무실이사",
