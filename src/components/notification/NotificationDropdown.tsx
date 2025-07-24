@@ -8,7 +8,6 @@ import ImgXBtn from "/public/assets/icons/ic_X.svg";
 import { fetchNotifications, markNotificationAsReadAPI } from "@/lib/api/api-notification";
 import { useAuth } from "@/providers/AuthProvider";
 import { authUtils } from "@/lib/FetchClient";
-import { formatTimeFromNow, generateCalendarDates } from "@/utills/dateUtils";
 import { useTranslations } from "next-intl";
 
 import NotificationItem from "./_components/NotificationItem";
