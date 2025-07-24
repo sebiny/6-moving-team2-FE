@@ -1,6 +1,7 @@
 "use client";
 
 import FilterDropdown from "@/components/dropdown/FilterDropdown";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -12,6 +13,7 @@ interface FiltersType {
 }
 
 function Filters({ region, setRegion, service, setService }: FiltersType) {
+  const t = useTranslations("FindDriver");
   const router = useRouter();
   const handleClick = () => {
     const params = new URLSearchParams(window.location.search);
@@ -24,7 +26,7 @@ function Filters({ region, setRegion, service, setService }: FiltersType) {
     <div className="flex items-center gap-8">
       <div className="flex gap-3">
         <FilterDropdown
-          label="지역"
+          label={t("filters.region")}
           options={[
             "SEOUL",
             "BUSAN",
@@ -48,11 +50,19 @@ function Filters({ region, setRegion, service, setService }: FiltersType) {
           onSelect={setRegion}
           isMultiColumn
           type="region"
+          translator={(key) => t(`region.${key}`)}
         />
-        <FilterDropdown label="서비스" options={["SMALL", "HOME", "OFFICE"]} selected={service} onSelect={setService} />
+        <FilterDropdown
+          label={t("filters.service")}
+          options={["SMALL", "HOME", "OFFICE"]}
+          selected={service}
+          onSelect={setService}
+          type="service"
+          translator={(key) => t(`service.${key}`)}
+        />
       </div>
       <p className="hidden cursor-pointer text-gray-300 lg:block" onClick={handleClick}>
-        초기화
+        {t("filters.reset")}
       </p>
     </div>
   );

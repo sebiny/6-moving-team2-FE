@@ -1,0 +1,43 @@
+{
+  "findDriver": "Find Driver",
+  "LikedDrivers": "Liked Drivers",
+  "textPlaceholder": "Please enter text",
+  "loading": "Loading...",
+  "noDrivers": "Cannot load drivers",
+
+  "filters": {
+    "region": "Region",
+    "service": "Service",
+    "reset": "Reset"
+  },
+  "region": {
+    "SEOUL": "Seoul",
+    "BUSAN": "Busan",
+    "DAEGU": "Daegu",
+    "INCHEON": "Incheon",
+    "GWANGJU": "Gwangju",
+    "DAEJEON": "Daejeon",
+    "ULSAN": "Ulsan",
+    "SEJONG": "Sejong",
+    "GYEONGGI": "Gyeonggi",
+    "GANGWON": "Gangwon",
+    "CHUNGBUK": "Chungbuk",
+    "CHUNGNAM": "Chungnam",
+    "JEONBUK": "Jeonbuk",
+    "JEONNAM": "Jeonnam",
+    "GYEONGBUK": "Gyeongbuk",
+    "GYEONGNAM": "Gyeongnam",
+    "JEJU": "Jeju"
+  },
+  "service": {
+    "SMALL": "Small Move",
+    "HOME": "Home Move",
+    "OFFICE": "Office Move"
+  },
+  "sortOptions": {
+    "reviewCount": "Most Reviews",
+    "career": "Most Experience",
+    "work": "Most Confirmed",
+    "averageRating": "Highest Rating"
+  }
+}
