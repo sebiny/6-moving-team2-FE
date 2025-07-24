@@ -14,7 +14,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
     Review: (await import(`../messages/${locale}/Review.json`)).default,
     Landing: (await import(`../messages/${locale}/Landing.json`)).default,
     Gnb: (await import(`../messages/${locale}/Gnb.json`)).default,
-    Chip: (await import(`../messages/${locale}/Chip.json`)).default
+    Chip: (await import(`../messages/${locale}/Chip.json`)).default,
+    EstimateReq: (await import(`../messages/${locale}/EstimateReq.json`)).default
     // 필요시 계속 추가 가능
   };
   return {

@@ -1,0 +1,36 @@
+{
+  "smallBox": {
+    "text": "소형이사",
+    "subText": "원룸, 투룸, 20평대 미만"
+  },
+  "familyBox": {
+    "text": "가정이사",
+    "subText": "쓰리룸, 20평대 미만"
+  },
+  "officeBox": {
+    "text": "기업, 사무실이사",
+    "subText": "사무실, 상업공간"
+  },
+  "estimateReqTitle": "이사 유형, 예정일과 지역을 선택해 주세요",
+  "estimateReqSubTitle": "견적을 요청하면 최대 5개의 견적을 받을 수 있어요 :)",
+  "movingType": "이사 유형",
+  "typeText": "이사 유형을 선택해 주세요",
+  "dateText": "이사 예정일을 선택해 주세요",
+  "areaText": "이사 지역을 선택해 주세요",
+  "movingExpectedDate": "예상 예정일",
+  "movingArea": "이사 지역",
+  "from": "출발지",
+  "fromChoose": "출발지 선택",
+  "toChoose": "도착지 선택",
+  "placeholder": "텍스트를 입력해 주세요",
+  "confirm": "선택 완료",
+  "to": "도착지",
+  "requestEstimate": "견적 요청하기",
+  "requesting": "요청 중...",
+  "requestQuote": "견적 요청하기",
+  "estimateReqSuccess": "견적 요청이 완료되었습니다!",
+  "estimateReqFailure": "견적 요청에 실패했습니다.",
+  "previous": "이전",
+  "next": "다음",
+  "close": "닫기"
+}
