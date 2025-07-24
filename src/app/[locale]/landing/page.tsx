@@ -6,10 +6,15 @@ import Container from "@/components/container/PageContainer";
 import IconApp from "/public/assets/icons/ic_app.svg";
 import ImgEstimateCard from "/public/assets/images/img_landing_cardlist.svg";
 import clsx from "clsx";
+import "../../globals.css";
 
 import Image from "next/image";
 import MovingCard from "./_component/MovingCard";
 import ChangeImages from "./_component/ChangeImages";
+import { useTranslations } from "next-intl";
+
+import bgSm from "/public/assets/images/img_landing_bg_sm.svg";
+import bgLg from "/public/assets/images/img_landing_bg.svg";
 
 const CARD_TYPE = ["small", "family", "office"] as const;
 
@@ -29,6 +34,7 @@ const estimateCard = [
 ];
 
 export default function LandingPage() {
+  const t = useTranslations("Landing");
   const [show, setShow] = useState(false);
 
   const translateStyle = clsx(" transition-all", {
@@ -38,21 +44,34 @@ export default function LandingPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => setShow(true), 100);
-    return () => clearTimeout(timer); // 메모리 해제, 굳이 할 필요는 없을듯.. setinterval 이미 한번 실행했는데 왜 굳이 클리어해주는지? useEffect가 최초 마운트에 한번 실행되는거고 이미 실행이 끝났는데 클리어하는 이유
+    return () => clearTimeout(timer);
   }, []);
   return (
     <LandingPageLayout>
-      <Container
-        maxWidth="w-full"
-        className="min-h-[313px] bg-[url(/assets/images/img_landing_bg_sm.svg)] bg-top bg-no-repeat sm:min-h-[405px] sm:bg-[url(/assets/images/img_landing_bg.svg)]"
-      >
-        <div className="z-2 flex flex-col pt-40 sm:pt-53">
+      <Container maxWidth="w-full" padding="0" className="relative min-h-[313px] bg-top bg-no-repeat sm:min-h-[405px]">
+        {/* 모바일 배경 이미지 */}
+        <div className="block sm:hidden">
+          <Image src={bgSm} width={374} height={405} alt="배경이미지" className="h-full w-full object-cover" priority />
+        </div>
+        {/* PC (sm 이상) 배경은 div의 css로 */}
+        <div
+          className="absolute inset-0 hidden h-full w-full sm:block"
+          style={{
+            backgroundImage: `url(${bgLg.src})`, // 크고 넓은 배경이미지
+            backgroundSize: "cover",
+            backgroundPosition: "top",
+            backgroundRepeat: "no-repeat",
+            zIndex: 1
+          }}
+        ></div>
+        {/* 텍스트 영역: 항상 z-10로 이미지 위에 */}
+        <div className="absolute inset-0 top-30 z-2 flex flex-col items-center justify-center">
           <div className={`${translateStyle} text-center text-xl font-bold text-gray-50 duration-800 sm:text-[32px]`}>
-            이사업체, 어떻게 고르세요?
+            {t("title")}
           </div>
           <div className={`${translateStyle} mt-3 text-center text-base text-gray-100 duration-1000 sm:text-lg/snug`}>
-            무빙은 여러 견적을 한눈에 비교해
-            <br /> 이사업체 선정 과정을 간편하게 바꿔드려요
+            {t("detail")}
+            <br /> {t("brDetail")}
           </div>
         </div>
       </Container>
@@ -61,9 +80,9 @@ export default function LandingPage() {
         className="mt-13 mb-20 flex flex-col md:mt-15 lg:mt-29 lg:mb-32 lg:max-w-[1400px] lg:flex-row lg:items-center lg:justify-between"
       >
         <div className="text-black-400 ml-8 text-xl font-bold sm:text-[32px] md:ml-0">
-          번거로운 선정과정,
+          {t("typeTitle")}
           <br />
-          이사 유형부터 선택해요
+          {t("brTypeTitle")}
         </div>
         <div className="mt-8 flex max-w-[388px] flex-row items-center justify-center gap-2 sm:mt-10 sm:max-w-none sm:gap-4 md:gap-6 lg:mt-0">
           {CARD_TYPE.map((type, idx) => (
@@ -78,9 +97,9 @@ export default function LandingPage() {
       </Container>
       <Container padding="px-0 sm:px-8" className="flex justify-center md:max-w-[1400px]">
         <div className="text-black-400 ml-8 w-full bg-bottom-right bg-no-repeat pt-10 pb-46 text-xl font-bold sm:ml-0 sm:bg-[url(/assets/images/img_landing_building.svg)] sm:pt-44 sm:text-[32px] lg:bg-bottom-left">
-          여러 업체의 견적을
+          {t("compareTitle")}
           <br />
-          한눈에 비교하고 선택해요
+          {t("brCompareTitle")}
         </div>
       </Container>
 
@@ -109,7 +128,7 @@ export default function LandingPage() {
           className="transition-all duration-400 hover:-translate-y-1 sm:h-[140px] sm:w-[144px] sm:hover:-translate-y-2"
         />
         <div className="max-w-[120px] text-center text-base font-bold text-gray-50 sm:max-w-none sm:text-[28px]">
-          복잡한 이사 준비, 무빙 하나면 끝!
+          {t("endTitle")}
         </div>
       </Container>
     </LandingPageLayout>

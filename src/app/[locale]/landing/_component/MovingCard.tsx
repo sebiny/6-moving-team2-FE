@@ -3,26 +3,27 @@ import React from "react";
 import SmallMoving from "/public/assets/images/img_small_moving.svg";
 import FamilyMoving from "/public/assets/images/img_family_moving.svg";
 import OfficeMoving from "/public/assets/images/img_office_moving.svg";
-
-const MOVING_TYPE = {
-  small: {
-    src: SmallMoving,
-    titleText: "소형이사",
-    subText: "원룸, 투룸, 20평대 미만"
-  },
-  family: {
-    src: FamilyMoving,
-    titleText: "가정이사",
-    subText: "쓰리룸, 20평대 미만"
-  },
-  office: {
-    src: OfficeMoving,
-    titleText: "기업, 사무실 이사",
-    subText: "사무실, 상업공간"
-  }
-};
+import { useTranslations } from "next-intl";
 
 export default function MovingCard({ type }: { type: "small" | "family" | "office" }) {
+  const t = useTranslations("Landing");
+  const MOVING_TYPE = {
+    small: {
+      src: SmallMoving,
+      titleText: t("smallBox.text"),
+      subText: t("smallBox.subText")
+    },
+    family: {
+      src: FamilyMoving,
+      titleText: t("familyBox.text"),
+      subText: t("familyBox.subText")
+    },
+    office: {
+      src: OfficeMoving,
+      titleText: t("officeBox.text"),
+      subText: t("officeBox.subText")
+    }
+  };
   return (
     <div className="bg-background-200 flex min-h-31 min-w-31 flex-col items-center justify-center rounded-[20px] border-orange-300 transition-all delay-100 duration-300 ease-in-out hover:scale-120 hover:border-2 sm:min-h-50 sm:min-w-50 sm:hover:border-3">
       <Image src={MOVING_TYPE[type].src} alt="소형이사" width={52} height={52} className="h-14 w-14 sm:h-25 sm:w-25" />

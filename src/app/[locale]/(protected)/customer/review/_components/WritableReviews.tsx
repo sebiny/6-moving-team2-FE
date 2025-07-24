@@ -13,7 +13,10 @@ interface ReviewsProps {
   setIsModal: (value: boolean) => void;
 }
 export default function Reviews({ setIsModal }: ReviewsProps) {
-  const t = useTranslations("Button"); // 'Button' 네임스페이스로 번역
+  const t = useTranslations("Review");
+  // 'Review' 네임스페이스로 번역
+  const driverName = "김코드";
+  const driverDescription = "이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.";
 
   const SIZE_CLASSES = {
     base: ["lg:h-[242px] lg:w-280 lg:px-10 lg:py-8 lg:gap-6"],
@@ -55,11 +58,11 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                   <div className={clsx(isSm && !isMd && "flex-col", "flex gap-[6px]")}>
                     <Image src={DriverIcon} width={16} height={18} alt="driver_icon" />
                     <p className="text-black-300 font-[Pretendard] text-[16px] leading-[26px] font-bold md:text-[18px]">
-                      김코드 기사님
+                      {t("driver.title", { name: driverName })}
                     </p>
                   </div>
                   <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[12px] leading-[24px] font-normal text-ellipsis text-gray-500 md:text-[14px]">
-                    이사업계 경력 7년으로 안전한 이사를 도와드리는 김코드입니다.
+                    {t("driver.description", { description: driverDescription })}
                   </p>
                   {isMd && <ChipRectangle moveType="SMALL" size={isLg ? "md" : "sm"} className="mt-2" />}
                 </div>
@@ -72,7 +75,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
               <Button
                 onClick={() => setIsModal(true)}
                 type="orange"
-                text={t("createReview")}
+                text={t("button.createReview")}
                 className="mt-10 md:h-[54px] md:rounded-[12px] md:text-[16px] md:font-medium"
               />
             )}
@@ -81,7 +84,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
               <Button
                 onClick={() => setIsModal(true)}
                 type="orange"
-                text={t("createReview")}
+                text={t("button.createReview")}
                 className="w-[287px] py-[16px] sm:rounded-[12px] sm:font-medium"
               />
             )}

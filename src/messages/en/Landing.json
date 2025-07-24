@@ -1,0 +1,24 @@
+{
+  "title": "How do you choose a moving company?",
+  "detail": "With Moving, you can easily compare multiple quotes at a glance.",
+  "brDetail": "We make the process of selecting a moving company simple.",
+  "typeTitle": "Complicated selection process,",
+  "brTypeTitle": "Start by choosing your moving type",
+  "compareTitle": "Let's compare and choose",
+  "brCompareTitle": "multiple quotes at a glance",
+  "endTitle": "With Moving, complex moving preparations are a breeze!",
+  "imageTitle": "Request the moving service you want and",
+  "brImageTitle": "receive quotes.",
+  "smallBox": {
+    "text": "Small Move",
+    "subText": "Studio, 1-bedroom, under 20 pyeong"
+  },
+  "familyBox": {
+    "text": "Family Move",
+    "subText": "3-bedroom, under 20 pyeong"
+  },
+  "officeBox": {
+    "text": "Office Move",
+    "subText": "Office, commercial space"
+  }
+}

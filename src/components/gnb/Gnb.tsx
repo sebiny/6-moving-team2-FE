@@ -3,7 +3,7 @@
 import Logo from "./_components/Logo";
 import GnbListLayout from "@/components/gnb/GnbListLayout";
 import React, { useEffect, useRef, useState } from "react";
-import Notification from "../dropdown/NotificationDropdown";
+import Notification from "../notification/NotificationDropdown";
 import Profile from "../dropdown/ProfileDropdown";
 import GnbMenuList from "./GnbMenuList";
 import { useAuth } from "@/providers/AuthProvider";

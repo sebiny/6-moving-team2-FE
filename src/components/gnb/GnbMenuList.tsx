@@ -1,9 +1,10 @@
 import React from "react";
-import { GNB_ROUTE_USER_ROLE } from "@/constant/constant";
+import { getGnbUserRole } from "@/constant/constant";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ImgXBtn from "/public/assets/icons/ic_X.svg";
 import { useAuth } from "@/providers/AuthProvider";
+import { useTranslations } from "next-intl";
 
 interface GnbListProps {
   isOpen?: boolean;
@@ -30,7 +31,8 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
   const router = useRouter();
   const { user } = useAuth();
   const isLoggedIn = !!user;
-
+  const t = useTranslations("Gnb");
+  const profileMenu = getGnbUserRole(t);
   return (
     <div className={`${browserWidthType[browserWidth].layoutDiv}`}>
       {browserWidth === "default" && (
@@ -38,7 +40,7 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
           <Image src={ImgXBtn} alt="닫는버튼" width={24} height={24} />
         </button>
       )}
-      {GNB_ROUTE_USER_ROLE[userRole as keyof typeof GNB_ROUTE_USER_ROLE].map(({ label, path }, idx) => (
+      {profileMenu[userRole as keyof typeof profileMenu].map(({ label, path }, idx) => (
         <button
           key={idx}
           onClick={() => {
