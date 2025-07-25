@@ -18,7 +18,6 @@ interface NotificationProps {
   ref: React.Ref<HTMLDivElement> | undefined;
   isOpen: boolean;
   className?: string;
-  userId: string | undefined;
   onClick: () => void;
 }
 
@@ -29,7 +28,7 @@ export interface NotificationData {
   isRead: boolean;
 }
 
-export default function Notification({ ref, onClick, className, isOpen, userId }: NotificationProps) {
+export default function Notification({ ref, onClick, className, isOpen }: NotificationProps) {
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
   const { user, isLoading } = useAuth();
   const hasUnread = notifications.some((n) => !n.isRead);
@@ -37,6 +36,16 @@ export default function Notification({ ref, onClick, className, isOpen, userId }
 
   // '읽음 상태' 스냅샷을 위한 새로운 state 추가
   const [initialReadIds, setInitialReadIds] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    // 로딩 중이거나 로그인 상태가 아니면 아무 작업도 하지 않고 종료
+    if (isLoading || !user) {
+      if (!user) {
+        setNotifications([]);
+      }
+      return; // 이 return은 아무것도 반환하지 않으므로(void) 올바른 사용법입니다.
+    }
+  });
 
   useEffect(() => {
     if (isLoading || !user) {
@@ -83,7 +92,7 @@ export default function Notification({ ref, onClick, className, isOpen, userId }
     return () => {
       eventSource.close();
     };
-  }, [userId, isLoading, user]);
+  }, [isLoading, user]);
 
   // 💡 2. 드롭다운이 열릴 때만 스냅샷을 생성하는 useEffect 추가
   useEffect(() => {
