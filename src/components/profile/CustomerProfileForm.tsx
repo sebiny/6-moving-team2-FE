@@ -43,15 +43,29 @@ export default function CustomerProfileForm({ isEditMode, initialData }: Custome
     }
   }, [isEditMode, initialData]);
 
-  // 서버에 이미지 업로드 함수 예시 (1.5초 지연 + blob URL 반환 시뮬레이션)
+  // POST /profiles/image : 프로필 이미지 업로드 (단일 파일)
+  // form-data에서 'profileImage'라는 필드 이름으로 파일을 보내야 함
+
   async function uploadImageFile(file: File): Promise<string> {
-    // 실제 서버 업로드 로직으로 대체
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const url = URL.createObjectURL(file); // 실제론 서버 URL 받아야 함
-        resolve(url);
-      }, 1500);
-    });
+    const formData = new FormData();
+    formData.append("profileImage", file);
+
+    try {
+      const response = await cookieFetch<{ imageUrl: string }>("/profile/image", {
+        method: "POST",
+        body: formData
+      });
+
+      console.log("서버 응답 (response):", response);
+
+      if (response && response.imageUrl) {
+        return response.imageUrl;
+      }
+      throw new Error("이미지 업로드 후 URL을 받지 못했습니다.");
+    } catch (error) {
+      console.error("이미지 업로드 실패:", error);
+      throw new Error("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
+    }
   }
 
   const handleImageChange = async (file: File | null, previewUrl: string | null) => {

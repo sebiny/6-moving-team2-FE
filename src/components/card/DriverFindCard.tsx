@@ -49,7 +49,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
 
       <div className="mt-3 flex gap-5">
         <Image
-          src="/assets/images/img_profile.svg"
+          src={driver.profileImage ?? "/assets/images/img_profile.svg"}
           alt="프로필 이미지"
           width={134}
           height={134}
@@ -62,7 +62,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
           <div className="relative mt-5">
             <div className="flex gap-2">
               <Image
-                src="/assets/icons/ic_profile_bear.svg"
+                src={driver.profileImage ?? "/assets/images/img_profile.svg"}
                 alt="프로필 이미지"
                 width={50}
                 height={50}

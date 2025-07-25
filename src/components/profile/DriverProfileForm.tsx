@@ -23,7 +23,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
 
   const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
   const [nickname, setNickname] = useState("");
-  const [career, setCareer] = useState(1);
+  const [career, setCareer] = useState(0);
   const [shortIntro, setShortIntro] = useState("");
   const [detailIntro, setDetailIntro] = useState("");
   const [serviceAreas, setServiceAreas] = useState<string[]>([]);
@@ -46,15 +46,24 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
     }
   }, [isEditMode, initialData]);
 
-  // 서버에 이미지 업로드 함수 예시
   async function uploadImageFile(file: File): Promise<string> {
-    // 실제 서버 업로드 로직으로 대체
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const url = URL.createObjectURL(file); // 실제론 서버 URL 받아야 함
-        resolve(url);
-      }, 1500);
-    });
+    const formData = new FormData();
+    formData.append("profileImage", file);
+
+    try {
+      const response = await cookieFetch<{ imageUrl: string }>("/profile/image", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response && response.imageUrl) {
+        return response.imageUrl;
+      }
+      throw new Error("이미지 업로드 후 URL을 받지 못했습니다.");
+    } catch (error) {
+      console.error("이미지 업로드 실패:", error);
+      throw new Error("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
+    }
   }
 
   const handleImageChange = async (file: File | null, previewUrl: string | null) => {
@@ -74,7 +83,6 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
         setIsUploading(false);
       }
     } else {
-      // 파일 없으면 기존 미리보기 유지 또는 초기화
       setProfileImagePreview(previewUrl);
     }
   };
@@ -121,8 +129,17 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
       return;
     }
 
-    // 실제 업로드 완료된 URL(profileImagePreview)을 서버에 전송
-    const payload = {
+    interface DriverProfilePayload {
+      nickname: string;
+      career: number;
+      shortIntro: string;
+      detailIntro: string;
+      moveType: string[];
+      profileImage?: string;
+      serviceAreas: { region: string }[];
+    }
+
+    const payload: DriverProfilePayload = {
       nickname,
       career,
       shortIntro,
@@ -193,7 +210,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
         className="w-full rounded border p-2"
       />
 
-      <label>프로필 이미지 (URL, 선택)</label>
+      <label>프로필 이미지 (선택)</label>
       <ImageUploader
         id="profileImage"
         label="프로필 이미지"
