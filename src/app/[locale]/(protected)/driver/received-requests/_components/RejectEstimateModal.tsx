@@ -12,7 +12,8 @@ import useMediaHook from "@/hooks/useMediaHook";
 interface RejectEstimateModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (price: number, comment: string) => void;
+  onSubmit: (estimateRequestId: string, reason: string) => void;
+  estimateRequestId: string;
   moveType: string;
   isDesignated: boolean;
   customerName: string;
@@ -25,6 +26,7 @@ export default function RejectEstimateModal({
   open,
   onClose,
   onSubmit,
+  estimateRequestId,
   moveType,
   isDesignated,
   customerName,
@@ -32,6 +34,7 @@ export default function RejectEstimateModal({
   toAddress,
   moveDate
 }: RejectEstimateModalProps) {
+  const [comment, setComment] = useState("");
   const [commentValid, setCommentValid] = useState(false);
   // moveType을 MoveType으로 변환
   const korToMoveTypeMap: Record<string, MoveType> = {
@@ -44,6 +47,12 @@ export default function RejectEstimateModal({
   const moveTypeKey: MoveType = korToMoveTypeMap[moveType] ?? "SMALL";
   const { isLg, isSm } = useMediaHook();
   const textClass = "text-black-300 mb-3 lg:text-[18px] text-[16px] leading-[26px] font-semibold ";
+
+  const handleSubmit = () => {
+    if (commentValid) {
+      onSubmit(estimateRequestId, comment);
+    }
+  };
 
   if (!open) return null;
 
@@ -107,7 +116,7 @@ export default function RejectEstimateModal({
             <div className="flex flex-col gap-7 lg:gap-8">
               <div>
                 <p className={textClass}>반려 사유를 입력해 주세요</p>
-                <InputText setInputValid={setCommentValid} />
+                <InputText setInputValid={setCommentValid} value={comment} onChange={setComment} />
               </div>
             </div>
           </div>
@@ -117,7 +126,7 @@ export default function RejectEstimateModal({
             text="반려하기"
             className="mt-auto h-[54px] lg:h-[64px]"
             isDisabled={!commentValid}
-            onClick={() => onSubmit(0, "")}
+            onClick={handleSubmit}
           />
         </div>
       </div>

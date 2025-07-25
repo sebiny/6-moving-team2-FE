@@ -61,5 +61,17 @@ export const driverService = {
       method: "POST",
       body: JSON.stringify(data)
     });
+  },
+  // 보낸 기사견적 리스트 조회
+  getDriverEstimates: async (): Promise<unknown> => {
+    return await cookieFetch("/driver/estimates");
+  },
+  // 보낸 기사견적 상세정보 조회
+  getDriverEstimateDetail: async (estimateId: string): Promise<unknown> => {
+    return await cookieFetch(`/driver/estimates/${estimateId}`);
+  },
+  // 반려한 고객견적요청 리스트 조회
+  getRejectedRequests: async (): Promise<BackendRequest[] | null> => {
+    return await cookieFetch("/driver/estimate-requests/rejected");
   }
 };

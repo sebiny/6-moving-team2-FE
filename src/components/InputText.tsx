@@ -4,18 +4,27 @@ import React, { useEffect, useState } from "react";
 
 interface Props {
   setInputValid: (value: boolean) => void;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
-function InputText({ setInputValid }: Props) {
+function InputText({ setInputValid, value: externalValue, onChange: externalOnChange }: Props) {
   const t = useTranslations("Review");
-  const [value, setValue] = useState("");
+  const [internalValue, setInternalValue] = useState("");
   const [touched, setTouched] = useState(false);
+
+  // 외부에서 제어하는 경우와 내부에서 제어하는 경우를 구분
+  const value = externalValue !== undefined ? externalValue : internalValue;
+  const setValue = externalOnChange || setInternalValue;
+
   const isInvalid = touched && value.length < 10;
+
   useEffect(() => {
     if (touched) {
       setInputValid(!isInvalid);
     }
-  }, [touched, isInvalid]);
+  }, [touched, isInvalid, setInputValid]);
+
   const CLASSES = {
     placeholder: ["placeholder:text-[16px] placeholder:leading-[26px] placeholder:text-gray-300"],
     focus: ["focus:border-[2px] focus:border-gray-300 focus:outline-none"],
