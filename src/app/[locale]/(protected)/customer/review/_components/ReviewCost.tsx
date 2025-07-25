@@ -1,10 +1,26 @@
+import { getWritableReviews } from "@/lib/api/api-review";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
-import React, { use } from "react";
+import React, { use, useEffect, useState } from "react";
 interface CostType {
   className?: string;
 }
 export default function ReviewCost({ className }: CostType) {
+  const [cost, setCost] = useState(0);
+
+  useEffect(() => {
+    async function fetchReviews() {
+      try {
+        const reviews = await getWritableReviews();
+        const price = reviews?.[0]?.estimates?.[0]?.price ?? 0;
+        setCost(price);
+      } catch (error) {
+        console.error("리뷰 가져오기 실패", error);
+      }
+    }
+
+    fetchReviews();
+  }, []);
   const t = useTranslations("Review");
   const SIZE_CLASSES = {
     base: ["font-[Pretendard] text-gray-500 font-medium"],
@@ -19,7 +35,7 @@ export default function ReviewCost({ className }: CostType) {
   return (
     <div className={`flex items-end justify-between md:flex-col lg:pt-[41px] ${className}`}>
       <p className={clsx(...SIZE_CLASSES.base, ...SIZE_CLASSES.lg, ...SIZE_CLASSES.sm)}>{t("cost.title")}</p>
-      <p className={clsx(COST_CLASSES.base, ...COST_CLASSES.sm, ...COST_CLASSES.lg)}>180,000원</p>
+      <p className={clsx(COST_CLASSES.base, ...COST_CLASSES.sm, ...COST_CLASSES.lg)}>{cost.toLocaleString()}원</p>
     </div>
   );
 }
