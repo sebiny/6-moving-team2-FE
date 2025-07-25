@@ -34,6 +34,7 @@ export default function SendEstimateModal({
   moveDate
 }: SendEstimateModalProps) {
   const [price, setPrice] = useState("");
+  const [comment, setComment] = useState("");
   const [commentValid, setCommentValid] = useState(false);
   // moveType을 MoveType으로 변환
   const korToMoveTypeMap: Record<string, MoveType> = {
@@ -110,7 +111,7 @@ export default function SendEstimateModal({
               </div>
               <div>
                 <p className={textClass}>코멘트를 입력해 주세요</p>
-                <InputText setInputValid={setCommentValid} />
+                <InputText setInputValid={setCommentValid} value={comment} onChange={setComment} />
               </div>
             </div>
           </div>
@@ -120,7 +121,7 @@ export default function SendEstimateModal({
             text="견적 보내기"
             className="h-[54px] lg:h-[64px]"
             isDisabled={price === "" || !commentValid}
-            onClick={() => onSubmit(Number(price), "")}
+            onClick={() => onSubmit(Number(price), comment)}
           />
         </div>
       </div>
