@@ -16,7 +16,6 @@ import RejectEstimateModal from "./_components/RejectEstimateModal";
 import FilterSection from "@/components/filter/FilterSection";
 import { driverService } from "@/lib/api/api-driver";
 import { mapBackendRequestToFrontend } from "@/utills/RequestMapper";
-import { TranslateSorting } from "@/utills/TranslateFunction";
 import { useTranslations } from "next-intl";
 
 export default function ReceivedRequestsPage() {
