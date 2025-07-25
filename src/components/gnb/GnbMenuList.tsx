@@ -1,10 +1,10 @@
 import React from "react";
 import { getGnbUserRole } from "@/constant/constant";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ImgXBtn from "/public/assets/icons/ic_X.svg";
 import { useAuth } from "@/providers/AuthProvider";
 import { useTranslations } from "next-intl";
+import { useTransitionRouter } from "@/hooks/useTransitionRouter";
 
 interface GnbListProps {
   isOpen?: boolean;
@@ -28,11 +28,29 @@ const browserWidthType = {
 };
 
 export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: GnbListProps) {
-  const router = useRouter();
+  const { pushWithTransition } = useTransitionRouter();
   const { user } = useAuth();
   const isLoggedIn = !!user;
   const t = useTranslations("Gnb");
   const profileMenu = getGnbUserRole(t);
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>, path: string) => {
+    const buttonElement = event.currentTarget;
+    const uniqueName = `gnb-menu-${path.replace("/", "")}`;
+    buttonElement.style.viewTransitionName = uniqueName;
+
+    const transition = pushWithTransition(path);
+    onClick?.();
+
+    // transition 객체가 존재하면(API가 지원되면)
+    if (transition) {
+      transition.finished.finally(() => {
+        // 애니메이션이 완전히 끝나고 나면 스타일을 제거합니다.
+        buttonElement.style.viewTransitionName = "";
+      });
+    }
+  };
+
   return (
     <nav className={`${browserWidthType[browserWidth].layoutDiv}`}>
       {browserWidth === "default" && (
@@ -43,10 +61,7 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
       {profileMenu[userRole as keyof typeof profileMenu].map(({ label, path }, idx) => (
         <button
           key={idx}
-          onClick={() => {
-            router.push(path);
-            onClick?.();
-          }}
+          onClick={(e) => handleMenuClick(e, path)}
           className={`${browserWidthType[browserWidth].buttonStyle} cursor-pointer`}
         >
           <span
