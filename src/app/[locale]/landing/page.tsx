@@ -51,7 +51,14 @@ export default function LandingPage() {
       <Container maxWidth="w-full" padding="0" className="relative min-h-[313px] bg-top bg-no-repeat sm:min-h-[405px]">
         {/* 모바일 배경 이미지 */}
         <div className="block sm:hidden">
-          <Image src={bgSm} width={374} height={405} alt="배경이미지" className="h-full w-full object-cover" priority />
+          <Image
+            src={bgSm}
+            width={374}
+            height={405}
+            alt="배경이미지"
+            className="h-full min-h-[313px] w-full object-cover"
+            priority
+          />
         </div>
         {/* PC (sm 이상) 배경은 div의 css로 */}
         <div
@@ -65,7 +72,7 @@ export default function LandingPage() {
           }}
         ></div>
         {/* 텍스트 영역: 항상 z-10로 이미지 위에 */}
-        <div className="absolute inset-0 top-30 z-2 flex flex-col items-center justify-center">
+        <div className="absolute inset-0 top-30 z-2 flex flex-col items-center justify-center 2xl:top-52">
           <div className={`${translateStyle} text-center text-xl font-bold text-gray-50 duration-800 sm:text-[32px]`}>
             {t("title")}
           </div>
