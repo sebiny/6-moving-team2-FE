@@ -22,5 +22,12 @@
   "smallMove": "소형이사",
   "homeMove": "가정이사",
   "officeMove": "사무실이사",
-  "failedFetchReq": "받은 요청을 불러오는데 실패했습니다."
+  "failedFetchReq": "받은 요청을 불러오는데 실패했습니다.",
+  "rejectReq": "반려요청",
+  "enterReason": "반려 사유를 입력해 주세요",
+
+  "sendEst": "견적 보내기",
+  "enterCost": "견적가를 입력해 주세요",
+  "enter": "견적가 입력",
+  "enterComment": "코멘트를 입력해 주세요"
 }

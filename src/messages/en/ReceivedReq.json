@@ -22,5 +22,12 @@
   "smallMove": "Small Move",
   "homeMove": "Home Move",
   "officeMove": "Office Move",
-  "failedFetchReq": "Failed to fetch received Request"
+  "failedFetchReq": "Failed to fetch received Request",
+  "rejectReq": "Reject Request",
+  "enterReason": "Please enter the reason for rejection",
+
+  "sendEst": "Send Estimate",
+  "enterCost": "Please enter estimated cost",
+  "enter": "Enter estimated cost",
+  "enterComment": "Please enter comment"
 }
