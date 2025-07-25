@@ -126,3 +126,50 @@ export type DriverEstimateType = {
     };
   };
 };
+
+// ===================================================================
+
+// 기사 견적 상세 조회 타입 (백엔드 응답)
+export type DriverEstimateDetailType = {
+  id: string;
+  price: number | null;
+  comment: string | null;
+  status: "PROPOSED" | "ACCEPTED" | "REJECTED";
+  rejectReason: string | null;
+  isDesignated: boolean;
+  createdAt: string;
+  updatedAt: string;
+  estimateRequest: {
+    id: string;
+    moveType: "SMALL" | "HOME" | "OFFICE" | "REQUEST";
+    moveDate: string;
+    status: "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
+    createdAt: string;
+    updatedAt: string;
+    customer: {
+      id: string;
+      profileImage: string | null;
+      moveType: string[];
+      currentArea: string;
+      moveDate: string | null;
+      authUser: {
+        id: string;
+        name: string;
+        email: string;
+        phone: string;
+      };
+    };
+    fromAddress: {
+      id: string;
+      street: string;
+      region: string;
+      district: string;
+    };
+    toAddress: {
+      id: string;
+      street: string;
+      region: string;
+      district: string;
+    };
+  };
+};
