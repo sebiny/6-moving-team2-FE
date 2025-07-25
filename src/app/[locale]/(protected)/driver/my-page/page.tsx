@@ -12,8 +12,10 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import { DriverType } from "@/types/driverType";
 import { driverService } from "@/lib/api/api-driver";
+import { useTranslations } from "next-intl";
 
 function DriverMyPage() {
+  const t = useTranslations("DriverMypage");
   const { user } = useAuth();
   const driverId = user?.driverId as string;
 
@@ -23,12 +25,12 @@ function DriverMyPage() {
       user ? driverService.getDriverDetailCookie(driverId) : driverService.getDriverDetailDefault(driverId)
   });
 
-  if (isPending) return <div>로딩중...</div>;
-  if (!driver) return <div>기사님 정보를 불러올 수 없습니다</div>;
+  if (isPending) return <div>{t("loading")}</div>;
+  if (!driver) return <div>{t("failedFetch")}</div>;
   return (
     <div className="flex flex-col items-center">
       <div className="flex h-[54px] w-full max-w-300 items-center px-7 md:px-24 lg:h-24 lg:px-2">
-        <div className="text-lg font-semibold lg:text-2xl">마이페이지</div>
+        <div className="text-lg font-semibold lg:text-2xl">{t("mypage")}</div>
       </div>
       <OrangeBackground subTitle={true} />
       <div className="flex w-full max-w-300 flex-col items-center px-5 md:px-18 lg:items-stretch lg:px-0">
@@ -58,7 +60,7 @@ function DriverMyPage() {
           <div className="border-line-100 my-8 border-b"></div>
 
           <div className="flex flex-col gap-4">
-            <p className="text-black-400 text-xl font-semibold">활동 현황</p>
+            <p className="text-black-400 text-xl font-semibold">{t("overview")}</p>
             <DriverSimpleInfo
               type="my-page"
               career={driver.career}

@@ -4,9 +4,7 @@ import { use, useState } from "react";
 import FilterDropdown from "@/components/dropdown/FilterDropdown";
 import EstimateDetail from "./_components/EstimateDetail";
 import ReceivedEstimate from "./_components/ReceivedEstimate";
-
 import { useTranslations } from "next-intl";
-
 import { usePastEstimates } from "@/lib/api/api-myEstimate";
 import { SinglePastEstimateType } from "@/types/estimateType";
 import { getMoveTypeLabel } from "@/utills/moveUtils";
