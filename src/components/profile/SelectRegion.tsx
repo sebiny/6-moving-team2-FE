@@ -36,7 +36,7 @@ function SelectRegion({ currentArea, setCurrentArea, setCurrentAreas, currentAre
       setCurrentAreas((prev: string[]) => (prev.includes(item) ? prev.filter((r) => r !== item) : [...prev, item]));
   };
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3 lg:gap-[18px]">
       {/* {!isRegionsValid && <p className="text-base text-rose-500">* 1개 이상 선택해주세요.</p>} */}
       {Array.from({ length: Math.ceil(REGION_OPTIONS.length / 5) }).map((_, i) => (
         <div key={i} className="flex gap-1.5 lg:gap-3.5">
