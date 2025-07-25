@@ -13,6 +13,8 @@ interface TextFieldProps {
   error?: string;
   className?: string;
   mdHeight?: "64" | "54"; // md 사이즈에서 64px 와 54px 중 선택
+  required?: boolean;
+  disabled?: boolean;
 }
 export default function TextField({
   type = "text",
@@ -21,7 +23,9 @@ export default function TextField({
   onChange,
   error,
   className,
-  mdHeight = "64"
+  mdHeight = "64",
+  required = false,
+  disabled = false
 }: TextFieldProps) {
   const [internalValue, setInternalValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -108,6 +112,8 @@ export default function TextField({
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             onChange={handleChange}
+            required={required}
+            disabled={disabled}
           />
           {type === "password" && (
             <button type="button" onClick={toggleVisibility}>

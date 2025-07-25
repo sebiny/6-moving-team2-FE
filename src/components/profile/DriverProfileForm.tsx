@@ -1,10 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { cookieFetch, authUtils } from "@/lib/FetchClient";
-import { moveTypes, regions, regionMap, regionMapReverse } from "@/constant/profile";
+import { regionMap, regionMapReverse } from "@/constant/profile";
 import ImageUploader from "@/components/profile/ImageUploader";
+import Button from "@/components/Button";
+import TextField from "@/components/input/TextField";
+import InputText from "@/components/InputText";
+import SelectService from "@/components/profile/SelectService"; // 고객 컴포넌트 import
+import SelectRegion from "@/components/profile/SelectRegion"; // 고객 컴포넌트 import
 
 interface DriverProfileFormProps {
   isEditMode: boolean;
@@ -14,19 +19,16 @@ interface DriverProfileFormProps {
 export default function DriverProfileForm({ isEditMode, initialData }: DriverProfileFormProps) {
   const router = useRouter();
 
-  // 실제 업로드할 파일
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
-  // 서버에 저장된 URL 혹은 blob URL로 미리보기용
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
-  // 업로드 상태
   const [isUploading, setIsUploading] = useState(false);
 
-  const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
   const [nickname, setNickname] = useState("");
-  const [career, setCareer] = useState(0);
+  const [career, setCareer] = useState("");
   const [shortIntro, setShortIntro] = useState("");
   const [detailIntro, setDetailIntro] = useState("");
-  const [serviceAreas, setServiceAreas] = useState<string[]>([]);
+  const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
+  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
 
@@ -36,49 +38,41 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
       setProfileImagePreview(profileData.profileImage || null);
       setSelectedMoveTypes(profileData.moveType || []);
       setNickname(profileData.nickname || "");
-      setCareer(profileData.career || 0);
+      setCareer(String(profileData.career ?? ""));
       setShortIntro(profileData.shortIntro || "");
       setDetailIntro(profileData.detailIntro || "");
       const initialServiceAreas = profileData.serviceAreas
         ?.map((area: { region: string }) => regionMapReverse[area.region])
         .filter(Boolean);
-      setServiceAreas(initialServiceAreas || []);
+      setSelectedRegions(initialServiceAreas || []);
     }
   }, [isEditMode, initialData]);
 
-  async function uploadImageFile(file: File): Promise<string> {
+  const uploadImageFile = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append("profileImage", file);
 
-    try {
-      const response = await cookieFetch<{ imageUrl: string }>("/profile/image", {
-        method: "POST",
-        body: formData
-      });
+    const response = await cookieFetch<{ imageUrl: string }>("/profile/image", {
+      method: "POST",
+      body: formData
+    });
 
-      if (response && response.imageUrl) {
-        return response.imageUrl;
-      }
-      throw new Error("이미지 업로드 후 URL을 받지 못했습니다.");
-    } catch (error) {
-      console.error("이미지 업로드 실패:", error);
-      throw new Error("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
-    }
-  }
+    if (response?.imageUrl) return response.imageUrl;
+    throw new Error("이미지 업로드 실패");
+  };
 
   const handleImageChange = async (file: File | null, previewUrl: string | null) => {
     setImageError(null);
     setProfileImageFile(file);
-
     if (file) {
       setIsUploading(true);
       try {
         const uploadedUrl = await uploadImageFile(file);
         setProfileImagePreview(uploadedUrl);
       } catch (error: any) {
-        setImageError(error.message || "이미지 업로드 중 오류가 발생했습니다.");
-        setProfileImagePreview(null);
+        setImageError(error.message || "이미지 업로드 중 오류");
         setProfileImageFile(null);
+        setProfileImagePreview(null);
       } finally {
         setIsUploading(false);
       }
@@ -95,58 +89,30 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
     }
   };
 
-  const toggleMoveType = (type: string) => {
-    setSelectedMoveTypes((prev) => (prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]));
-  };
+  const isNicknameValid = useMemo(() => nickname.trim().length > 0, [nickname]);
+  const isCareerValid = useMemo(() => /^[0-9]+$/.test(career), [career]);
+  const isIntroValid = useMemo(() => shortIntro.trim().length >= 8, [shortIntro]);
+  const isDescriptionValid = useMemo(() => detailIntro.trim().length >= 10, [detailIntro]);
+  const isServicesValid = useMemo(() => selectedMoveTypes.length > 0, [selectedMoveTypes]);
+  const isRegionsValid = useMemo(() => selectedRegions.length > 0, [selectedRegions]);
 
-  const toggleRegion = (region: string) => {
-    setServiceAreas((prev) => (prev.includes(region) ? prev.filter((r) => r !== region) : [...prev, region]));
-  };
+  const isFormValid =
+    isNicknameValid && isCareerValid && isIntroValid && isDescriptionValid && isServicesValid && isRegionsValid;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isFormValid) return;
+
     setIsSubmitting(true);
-    setImageError(null);
 
-    if (!nickname.trim()) {
-      alert("별명을 입력해주세요.");
-      setIsSubmitting(false);
-      return;
-    }
-    if (career < 0) {
-      alert("경력은 0 이상의 숫자여야 합니다.");
-      setIsSubmitting(false);
-      return;
-    }
-    if (serviceAreas.length === 0) {
-      alert("서비스 가능 지역을 하나 이상 선택해주세요.");
-      setIsSubmitting(false);
-      return;
-    }
-    if (selectedMoveTypes.length === 0) {
-      alert("제공 서비스를 하나 이상 선택해주세요.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    interface DriverProfilePayload {
-      nickname: string;
-      career: number;
-      shortIntro: string;
-      detailIntro: string;
-      moveType: string[];
-      profileImage?: string;
-      serviceAreas: { region: string }[];
-    }
-
-    const payload: DriverProfilePayload = {
+    const payload = {
       nickname,
-      career,
+      career: Number(career),
       shortIntro,
       detailIntro,
       moveType: selectedMoveTypes,
       profileImage: profileImagePreview || undefined,
-      serviceAreas: serviceAreas.map((label) => ({ region: regionMap[label] }))
+      serviceAreas: selectedRegions.map((label) => ({ region: regionMap[label] }))
     };
 
     try {
@@ -158,112 +124,115 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
         body: JSON.stringify(payload)
       });
 
-      if (response && response.accessToken) {
+      if (response?.accessToken) {
         authUtils.setAccessToken(response.accessToken);
       }
 
-      alert(`프로필 ${isEditMode ? "수정" : "생성"} 완료!`);
+      alert(`프로필 ${isEditMode ? "수정" : "등록"} 완료!`);
       router.push("/");
     } catch (error: any) {
       console.error(error);
-      const message =
-        error?.message || (error?.response?.data?.message ?? `프로필 ${isEditMode ? "수정" : "생성"} 실패`);
-      alert(message);
+      alert("프로필 제출 중 오류가 발생했습니다.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-6">
-      <h2 className="text-xl font-bold">{`기사 프로필 ${isEditMode ? "수정" : "생성"}`}</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="mx-auto mt-[23px] flex w-[1200px] flex-col gap-12 rounded-[32px] bg-gray-50 px-10 pt-8 pb-10"
+    >
+      {/* Header */}
+      <div className="flex flex-col gap-8">
+        <h1 className="text-[32px] font-semibold">기사님 프로필 {isEditMode ? "수정" : "등록"}</h1>
+        <p className="text-xl">추가 정보를 입력하여 회원가입을 완료해주세요.</p>
+      </div>
+      <div className="bg-line-100 h-px" />
 
-      <label>별명</label>
-      <input
-        type="text"
-        value={nickname}
-        onChange={(e) => setNickname(e.target.value)}
-        className="w-full rounded border p-2"
-      />
+      <div className="flex justify-between">
+        {/* 왼쪽 */}
+        <div className="flex w-[500px] flex-col gap-8">
+          <div className="flex flex-col gap-4">
+            <p className="text-black-300 text-xl font-semibold">프로필 이미지</p>
+            <ImageUploader
+              id="profileImage"
+              label="프로필 이미지"
+              maxSizeMB={5}
+              onImageChange={handleImageChange}
+              onImageError={handleImageError}
+              previewUrl={profileImagePreview}
+              isSubmitting={isSubmitting || isUploading}
+              isRequired={false}
+              error={imageError}
+              allowRemove
+            />
+          </div>
+          <div className="bg-line-100 h-px" />
 
-      <label>경력 (년)</label>
-      <input
-        type="number"
-        value={career}
-        onChange={(e) => setCareer(Number(e.target.value))}
-        className="w-full rounded border p-2"
-        min={0}
-      />
+          <div className="flex flex-col gap-2">
+            <label className="text-xl font-semibold">별명</label>
+            <TextField
+              value={nickname}
+              onChange={setNickname}
+              placeholder="사이트에 노출될 별명을 입력해 주세요"
+              required
+            />
+            {!isNicknameValid && nickname.length > 0 && <p className="text-base text-rose-500">별명을 입력해주세요.</p>}
+          </div>
 
-      <label>한 줄 소개</label>
-      <input
-        type="text"
-        value={shortIntro}
-        onChange={(e) => setShortIntro(e.target.value)}
-        className="w-full rounded border p-2"
-      />
+          {/* 경력 */}
+          <div className="flex flex-col gap-2">
+            <label className="text-xl font-semibold">경력</label>
+            <TextField value={career} onChange={setCareer} placeholder="기사님의 경력을 입력해 주세요" required />
+            {!isCareerValid && career.length > 0 && <p className="text-base text-rose-500">숫자만 입력해주세요.</p>}
+          </div>
+          {/* 한 줄 소개 */}
+          <div className="flex flex-col gap-2">
+            <label className="text-xl font-semibold">한 줄 소개</label>
+            <TextField value={shortIntro} onChange={setShortIntro} placeholder="한 줄 소개를 입력해 주세요" required />
+            {!isIntroValid && shortIntro.length > 0 && (
+              <p className="text-base text-rose-500">8자 이상 입력해주세요.</p>
+            )}
+          </div>
+        </div>
 
-      <label>상세 소개</label>
-      <textarea
-        value={detailIntro}
-        onChange={(e) => setDetailIntro(e.target.value)}
-        className="w-full rounded border p-2"
-      />
+        {/* 오른쪽 */}
+        <div className="flex w-[500px] flex-col gap-8">
+          <div className="flex flex-col gap-2">
+            <label className="text-xl font-semibold">상세 설명</label>
+            <InputText value={detailIntro} onChange={setDetailIntro} setInputValid={() => {}} />
+            {!isDescriptionValid && detailIntro.length > 0 && (
+              <p className="text-base text-rose-500">10자 이상 입력해주세요.</p>
+            )}
+          </div>
+          <div className="bg-line-100 h-px" />
 
-      <label>프로필 이미지 (선택)</label>
-      <ImageUploader
-        id="profileImage"
-        label="프로필 이미지"
-        maxSizeMB={5}
-        onImageChange={handleImageChange}
-        onImageError={handleImageError}
-        previewUrl={profileImagePreview}
-        isSubmitting={isSubmitting || isUploading}
-        isRequired={false}
-        error={imageError}
-        allowRemove={true}
-      />
-      {isUploading && <p className="text-sm text-gray-500">이미지 업로드 중...</p>}
+          <div className="flex flex-col gap-2">
+            <label className="text-xl font-semibold">제공 서비스</label>
+            {!isServicesValid && <p className="text-base text-rose-500">* 1개 이상 선택해주세요.</p>}
 
-      <label>제공 서비스 (중복 선택 가능)</label>
-      <div className="flex flex-wrap gap-2">
-        {moveTypes.map((type) => (
-          <button
-            key={type.value}
-            type="button"
-            onClick={() => toggleMoveType(type.value)}
-            className={`rounded border px-3 py-1 ${
-              selectedMoveTypes.includes(type.value) ? "bg-blue-500 text-white" : "bg-gray-100"
-            }`}
-          >
-            {type.label}
-          </button>
-        ))}
+            <SelectService services={selectedMoveTypes} setServices={setSelectedMoveTypes} />
+          </div>
+          <div className="bg-line-100 h-px" />
+
+          <div className="flex flex-col gap-2">
+            <label className="text-xl font-semibold">서비스 가능 지역</label>
+            {!isRegionsValid && <p className="text-base text-rose-500">* 1개 이상 선택해주세요.</p>}
+
+            <SelectRegion currentAreas={selectedRegions} setCurrentAreas={setSelectedRegions} type="driver" />
+          </div>
+        </div>
       </div>
 
-      <label>서비스 가능 지역</label>
-      <div className="flex flex-wrap gap-2">
-        {regions.map((region) => (
-          <button
-            key={region}
-            type="button"
-            onClick={() => toggleRegion(region)}
-            className={`rounded border px-3 py-1 ${
-              serviceAreas.includes(region) ? "bg-blue-500 text-white" : "bg-gray-100"
-            }`}
-          >
-            {region}
-          </button>
-        ))}
+      <div className="flex justify-end">
+        <Button
+          text={isSubmitting ? "제출 중..." : "시작하기"}
+          type="orange"
+          className="h-15 w-[500px] rounded-2xl text-lg font-semibold"
+          isDisabled={!isFormValid || isSubmitting || isUploading}
+        />
       </div>
-
-      <button
-        type="submit"
-        disabled={isSubmitting || isUploading}
-        className="rounded bg-blue-600 px-4 py-2 text-white disabled:bg-gray-400"
-      >
-        {isSubmitting ? "제출 중..." : "제출"}
-      </button>
     </form>
   );
 }
