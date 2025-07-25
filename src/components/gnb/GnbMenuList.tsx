@@ -34,7 +34,7 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
   const t = useTranslations("Gnb");
   const profileMenu = getGnbUserRole(t);
   return (
-    <div className={`${browserWidthType[browserWidth].layoutDiv}`}>
+    <nav className={`${browserWidthType[browserWidth].layoutDiv}`}>
       {browserWidth === "default" && (
         <button className="flex h-15 w-full cursor-pointer justify-end px-4 py-[10px]" onClick={onClick}>
           <Image src={ImgXBtn} alt="닫는버튼" width={24} height={24} />
@@ -62,6 +62,6 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
           </span>
         </button>
       ))}
-    </div>
+    </nav>
   );
 }
