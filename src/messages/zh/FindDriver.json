@@ -22,7 +22,8 @@
     "noReviewsDesc": "成为第一个留下评论的人",
     "reviewCount": "评论数",
     "star": "星级",
-    "requestQuote": "指定报价请求"
+    "requestQuote": "指定报价请求",
+    "requestQuoteComplete": "指定报价请求已完成"
   },
   "requestQuote": {
     "title": "给司机",

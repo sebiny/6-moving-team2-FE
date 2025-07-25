@@ -26,8 +26,8 @@ function LikedDriverInfo({ driver }: LikedDriverInfo) {
               <div className="mt-1 flex gap-2">
                 <div className="flex gap-1">
                   <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={14} height={14} />
-                  <p>5.0</p>
-                  <p className="text-gray-300">(178)</p>
+                  <p>{driver.averageRating?.toFixed(1)}</p>
+                  <p className="text-gray-300">({driver.reviewCount})</p>
                 </div>
                 <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
                 <div className="flex gap-1">

@@ -4,12 +4,12 @@ import DesignatedEstimateButton from "./DesignatedEstimateButton";
 import { useTranslations } from "next-intl";
 
 interface RequestEstimateType {
-  userFavorite: boolean;
   favorite: boolean;
   setFavorite: (value: boolean) => void;
+  isDesignated: boolean;
 }
 
-function RequestEstimate({ favorite, setFavorite }: RequestEstimateType) {
+function RequestEstimate({ favorite, setFavorite, isDesignated }: RequestEstimateType) {
   const t = useTranslations("FindDriver");
   return (
     <div className="hidden flex-col gap-4 lg:flex">
@@ -17,7 +17,7 @@ function RequestEstimate({ favorite, setFavorite }: RequestEstimateType) {
         김코드 {t("requestQuote.title")} <br></br>
         {t("requestQuote.subtitle")}
       </p>
-      <DesignatedEstimateButton />
+      <DesignatedEstimateButton isDesignated={isDesignated} />
       <FavoriteButton favorite={favorite} setFavorite={setFavorite} />
     </div>
   );
