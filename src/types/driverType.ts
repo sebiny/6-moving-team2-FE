@@ -18,4 +18,5 @@ export interface DriverType {
   reviewCount: number;
   moveType: MoveType[];
   isDesignated?: boolean;
+  profileImage?: string;
 }
