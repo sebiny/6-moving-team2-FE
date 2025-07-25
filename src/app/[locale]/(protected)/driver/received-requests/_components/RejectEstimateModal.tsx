@@ -8,6 +8,7 @@ import clsx from "clsx";
 import arrow from "../../../../../../../public/assets/icons/ic_arrow.svg";
 import InputText from "@/components/InputText";
 import useMediaHook from "@/hooks/useMediaHook";
+import { useTranslations } from "next-intl";
 
 interface RejectEstimateModalProps {
   open: boolean;
@@ -34,6 +35,7 @@ export default function RejectEstimateModal({
   toAddress,
   moveDate
 }: RejectEstimateModalProps) {
+  const t = useTranslations("ReceivedReq");
   const [comment, setComment] = useState("");
   const [commentValid, setCommentValid] = useState(false);
   // moveType을 MoveType으로 변환
@@ -72,7 +74,7 @@ export default function RejectEstimateModal({
         <div className="flex flex-col gap-[26px] lg:gap-10">
           <div className="flex justify-between">
             <p className="text-black-400 text-[18px] leading-[26px] font-semibold lg:text-[24px] lg:leading-[32px]">
-              반려요청
+              {t("rejectReq")}
             </p>
             <Image onClick={onClose} src={XIcon} alt="X_icon" className="h-6 w-6 cursor-pointer lg:w-9" />
           </div>
@@ -86,28 +88,30 @@ export default function RejectEstimateModal({
               <div className="flex justify-between pt-[14px] pb-3 lg:py-4">
                 <div>
                   <p className="text-black-300 text-4 leading-[26px] font-semibold lg:text-[18px]">
-                    {customerName} 고객님
+                    {customerName} {t("customer")}
                   </p>
                 </div>
               </div>
               <div className="border-line-100 flex border-b py-3 lg:py-4">
                 <div className={clsx("flex items-center")}>
                   <div>
-                    <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">출발지</p>
+                    <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">{t("from")}</p>
                     <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">
                       {fromAddress}
                     </p>
                   </div>
                   <Image src={arrow} height={23} alt="arrow" className="mx-3 w-3 lg:w-4" />
                   <div>
-                    <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">도착지</p>
+                    <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">{t("to")}</p>
                     <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">
                       {toAddress}
                     </p>
                   </div>
                 </div>
                 <div className="ml-auto flex flex-col items-start justify-center lg:ml-10">
-                  <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">이사일</p>
+                  <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">
+                    {t("moveDate")}
+                  </p>
                   <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">{moveDate}</p>
                 </div>
               </div>
@@ -115,7 +119,7 @@ export default function RejectEstimateModal({
             {/* 견적/코멘트 입력 */}
             <div className="flex flex-col gap-7 lg:gap-8">
               <div>
-                <p className={textClass}>반려 사유를 입력해 주세요</p>
+                <p className={textClass}>{t("enterReason")}</p>
                 <InputText setInputValid={setCommentValid} value={comment} onChange={setComment} />
               </div>
             </div>
@@ -123,7 +127,7 @@ export default function RejectEstimateModal({
           {/* ModalContent 내용 끝 */}
           <Button
             type={commentValid ? "orange" : "gray"}
-            text="반려하기"
+            text={t("reject")}
             className="mt-auto h-[54px] lg:h-[64px]"
             isDisabled={!commentValid}
             onClick={handleSubmit}
