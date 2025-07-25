@@ -91,7 +91,7 @@ export default function ReceivedEstimate({ data, moveType }: Props) {
             </div>
             <div className="mx-2 text-gray-300">|</div>
             <span>
-              {t("experience")}{" "}
+              {t("experience")}
               <span className="font-medium text-black">
                 {driver.career}
                 {t("year")}

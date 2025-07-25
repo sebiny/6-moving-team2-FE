@@ -17,6 +17,7 @@ import FilterSection from "@/components/filter/FilterSection";
 import { driverService } from "@/lib/api/api-driver";
 import { mapBackendRequestToFrontend } from "@/utills/RequestMapper";
 import { TranslateSorting } from "@/utills/TranslateFunction";
+import { useTranslations } from "next-intl";
 
 export default function ReceivedRequestsPage() {
   const queryClient = useQueryClient();
@@ -30,6 +31,7 @@ export default function ReceivedRequestsPage() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
 
+  const t = useTranslations("ReceivedReq");
   // React Query로 데이터 가져오기
   const {
     data: requests = [],
@@ -173,17 +175,12 @@ export default function ReceivedRequestsPage() {
         moveDate={selectedRequest?.moveDate ?? ""}
       />
       <div className="flex flex-col gap-6">
-        <PageHeader title="받은 요청" />
-        <SearchBar
-          width="w-full"
-          placeholder="어떤 고객님을 찾고 계세요?"
-          value={searchKeyword}
-          onChange={setSearchKeyword}
-        />
+        <PageHeader title={t("receivedReq")} />
+        <SearchBar width="w-full" placeholder={t("placeholder")} value={searchKeyword} onChange={setSearchKeyword} />
         <div className="hidden items-start justify-start gap-3 lg:inline-flex">
           <ChipCircle
             type="region"
-            text="소형이사"
+            text={t("smallMove")}
             color="gray"
             click={true}
             isSelected={selectedMoveTypes.includes("소형이사")}
@@ -195,7 +192,7 @@ export default function ReceivedRequestsPage() {
           />
           <ChipCircle
             type="region"
-            text="가정이사"
+            text={t("homeMove")}
             color="gray"
             click={true}
             isSelected={selectedMoveTypes.includes("가정이사")}
@@ -207,7 +204,7 @@ export default function ReceivedRequestsPage() {
           />
           <ChipCircle
             type="region"
-            text="사무실이사"
+            text={t("officeMove")}
             color="gray"
             click={true}
             isSelected={selectedMoveTypes.includes("사무실이사")}
@@ -224,7 +221,8 @@ export default function ReceivedRequestsPage() {
           {/* 전체 4건 + 드롭다운 */}
           <div className="flex w-full items-center justify-between gap-2 lg:w-auto">
             <div className="font-['Pretendard'] text-lg leading-relaxed font-semibold text-neutral-800">
-              전체 {filteredRequests.length}건
+              {t("total")} {filteredRequests.length}
+              {t("count")}
             </div>
             {/* 모바일에선 오른쪽 붙고, lg 이상에선 이 div가 무시됨 */}
             <div className="flex items-center gap-2 lg:hidden">
@@ -232,7 +230,7 @@ export default function ReceivedRequestsPage() {
                 sortings={["date", "request"]}
                 sort={sort}
                 setSort={setSort}
-                translator={TranslateSorting}
+                translator={(key) => t(`${key}`)}
               />
               <FilterSection
                 selectedMoveTypes={selectedMoveTypes}
@@ -258,7 +256,7 @@ export default function ReceivedRequestsPage() {
                   }}
                   shape="square"
                 />
-                <span className="text-base font-normal text-neutral-900">지정 견적 요청</span>
+                <span className="text-base font-normal text-neutral-900">{t("filter.req")}</span>
               </label>
               <label className="flex items-center gap-2">
                 <CustomCheckbox
@@ -269,10 +267,15 @@ export default function ReceivedRequestsPage() {
                   }}
                   shape="square"
                 />
-                <span className="text-base font-normal text-neutral-900">서비스 가능 지역</span>
+                <span className="text-base font-normal text-neutral-900">{t("filter.service")}</span>
               </label>
             </div>
-            <SortDropdown sortings={["date", "request"]} sort={sort} setSort={setSort} translator={TranslateSorting} />
+            <SortDropdown
+              sortings={["date", "request"]}
+              sort={sort}
+              setSort={setSort}
+              translator={(key) => t(`${key}`)}
+            />
           </div>
         </div>
         {isPending ? (
@@ -284,9 +287,7 @@ export default function ReceivedRequestsPage() {
         ) : error ? (
           <div className="flex w-full flex-col items-center justify-center px-6 py-20">
             <div className="flex flex-col items-center gap-6">
-              <p className="text-center text-base font-normal text-red-400 lg:text-xl">
-                받은 요청을 불러오는데 실패했습니다.
-              </p>
+              <p className="text-center text-base font-normal text-red-400 lg:text-xl">{t("failedFetchReq")}</p>
             </div>
           </div>
         ) : filteredRequests.length === 0 ? (

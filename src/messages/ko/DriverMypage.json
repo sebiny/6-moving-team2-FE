@@ -1,0 +1,8 @@
+{
+  "loading": "로딩중",
+  "failedFetch": "기사님 정보를 불러올 수 없습니다.",
+  "driver": "기사님",
+  "overview": "활동 현황",
+  "editProfile": "내 프로필 수정",
+  "editBasic": "기본 정보 수정"
+}

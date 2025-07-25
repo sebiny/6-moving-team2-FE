@@ -1,0 +1,26 @@
+{
+  "receivedReq": "收到的请求",
+  "placeholder": "正在寻找哪位客户？",
+  "total": "总计",
+  "count": "条",
+  "date": "搬家优先顺序",
+  "request": "请求日期优先顺序",
+  "customer": "客户",
+  "from": "出发地",
+  "to": "目的地",
+  "moveDate": "搬家日期",
+  "reject": "拒绝",
+  "sendReq": "发送报价",
+  "filter": {
+    "filter": "筛选",
+    "moveType": "搬家类型",
+    "areaAndEst": "地区及报价",
+    "req": "指定报价请求",
+    "service": "可服务地区",
+    "btn": "查询"
+  },
+  "smallMove": "小型搬家",
+  "homeMove": "家庭搬家",
+  "officeMove": "办公室搬家",
+  "failedFetchReq": "获取收到的请求失败"
+}

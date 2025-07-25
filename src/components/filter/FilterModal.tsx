@@ -3,8 +3,7 @@ import { useState } from "react";
 import Button from "@/components/Button";
 import ChipCircle from "../chip/ChipCircle";
 import CustomCheckbox from "../button/CustomCheckbox";
-
-const MOVE_TYPES = ["소형이사", "가정이사", "사무실이사"];
+import { useTranslations } from "next-intl";
 
 interface FilterModalProps {
   onClose: () => void;
@@ -16,16 +15,18 @@ interface FilterModalProps {
   setIsAvailableRegionChecked: (checked: boolean) => void;
 }
 
-export default function FilterModal({ 
-  onClose, 
-  selectedMoveTypes, 
+export default function FilterModal({
+  onClose,
+  selectedMoveTypes,
   setSelectedMoveTypes,
   isDesignatedChecked,
   setIsDesignatedChecked,
   isAvailableRegionChecked,
   setIsAvailableRegionChecked
 }: FilterModalProps) {
-
+  const t = useTranslations("ReceivedReq.filter");
+  const tMove = useTranslations("ReceivedReq");
+  const MOVE_TYPES = [tMove("smallMove"), tMove("homeMove"), tMove("officeMove")];
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-[rgba(0,0,0,0.3)] md:items-center"
@@ -40,24 +41,24 @@ export default function FilterModal({
           ×
         </button>
 
-        <h2 className="mb-6 text-lg font-bold">필터</h2>
+        <h2 className="mb-6 text-lg font-bold">{t("filter")}</h2>
 
         {/* 이사 유형 */}
         <div className="mb-6">
-          <p className="mb-2 font-semibold">이사 유형</p>
+          <p className="mb-2 font-semibold">{t("moveType")}</p>
           <div className="flex flex-wrap gap-2">
             {MOVE_TYPES.map((type) => (
-              <ChipCircle 
-                key={type} 
-                type="region" 
-                text={type} 
+              <ChipCircle
+                key={type}
+                type="region"
+                text={type}
                 color="gray"
                 click={true}
                 isSelected={selectedMoveTypes.includes(type)}
                 onSelect={(text) => {
                   setSelectedMoveTypes(
-                    selectedMoveTypes.includes(text) 
-                      ? selectedMoveTypes.filter((t) => t !== text) 
+                    selectedMoveTypes.includes(text)
+                      ? selectedMoveTypes.filter((t) => t !== text)
                       : [...selectedMoveTypes, text]
                   );
                 }}
@@ -68,32 +69,32 @@ export default function FilterModal({
 
         {/* 지역 및 견적 */}
         <div className="mb-6">
-          <p className="mb-2 font-semibold">지역 및 견적</p>
+          <p className="mb-2 font-semibold">{t("areaAndEst")}</p>
           <div className="mb-2 flex items-center gap-2">
-            <CustomCheckbox 
-              checked={isDesignatedChecked} 
+            <CustomCheckbox
+              checked={isDesignatedChecked}
               onChange={(checked) => {
                 setIsDesignatedChecked(checked);
                 if (checked) setIsAvailableRegionChecked(false);
-              }} 
-              shape="square" 
+              }}
+              shape="square"
             />
-            <span>지정 견적 요청</span>
+            <span>{t("req")}</span>
           </div>
           <div className="flex items-center gap-2">
-            <CustomCheckbox 
-              checked={isAvailableRegionChecked} 
+            <CustomCheckbox
+              checked={isAvailableRegionChecked}
               onChange={(checked) => {
                 setIsAvailableRegionChecked(checked);
                 if (checked) setIsDesignatedChecked(false);
-              }} 
-              shape="square" 
+              }}
+              shape="square"
             />
-            <span>서비스 가능 지역</span>
+            <span>{t("service")}</span>
           </div>
         </div>
 
-        <Button type="orange" text="조회하기" onClick={onClose} />
+        <Button type="orange" text={t("btn")} onClick={onClose} />
       </div>
     </div>
   );
