@@ -52,3 +52,18 @@ export const mapBackendRequestToFrontend = (backendRequest: BackendRequest): Req
     originalMoveDate: backendRequest.moveDate // 정렬용 원본 이사일
   };
 };
+
+// 반려된 요청을 위한 매핑 함수
+export const mapBackendRejectedRequestToFrontend = (rejection: {
+  estimateRequest: BackendRequest;
+  reason?: string;
+  createdAt: string;
+}): Request & { rejectReason?: string; rejectedAt: string } => {
+  const request = mapBackendRequestToFrontend(rejection.estimateRequest);
+
+  return {
+    ...request,
+    rejectReason: rejection.reason,
+    rejectedAt: rejection.createdAt
+  };
+};

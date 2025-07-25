@@ -69,3 +69,13 @@ export function formatTimeFromNow(dateInput: string | Date): string {
 // 참고: .fromNow(true)를 사용하면 'n시간' 처럼 '전'이라는 접미사가 제거됩니다.
 // 예: dayjs('2023-01-01').fromNow() -> "2년 전"
 //
+
+// 견적 상세 페이지에서 사용할 날짜 포맷팅 함수
+export function formatDate(dateString: string): string {
+  return dayjs(dateString).format("YY.MM.DD");
+}
+
+// 견적 상세 페이지에서 사용할 날짜+시간 포맷팅 함수
+export function formatDateTime(dateString: string): string {
+  return dayjs(dateString).format("YYYY. MM. DD(ddd) A h:mm");
+}

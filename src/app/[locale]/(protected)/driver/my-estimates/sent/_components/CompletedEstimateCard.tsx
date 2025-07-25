@@ -17,7 +17,7 @@ const korToMoveTypeMap: Record<string, MoveType> = {
 };
 
 interface CompletedEstimateCardProps {
-  request: Request & { estimateAmount?: string };
+  request: Request & { estimateAmount?: string; status?: string };
 }
 
 export default function CompletedEstimateCard({ request }: CompletedEstimateCardProps) {
@@ -34,7 +34,7 @@ export default function CompletedEstimateCard({ request }: CompletedEstimateCard
             <ChipRectangle moveType={moveTypeKey} size="sm" />
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
-          <ChipConfirmed />
+          {request.status === "confirmed" && <ChipConfirmed />}
         </div>
         {/* 고객명 */}
         <div className="flex w-full flex-col gap-3">
