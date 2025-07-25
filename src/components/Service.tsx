@@ -1,7 +1,6 @@
 import ChipCircle from "@/components/chip/ChipCircle";
 import { MoveType } from "@/constant/moveTypes";
 import { ServiceAreaType } from "@/types/ServiceAreaType";
-import { TranslateRegion, TranslateService } from "@/utills/TranslateFunction";
 import { useTranslations } from "next-intl";
 import React, { use } from "react";
 
@@ -18,7 +17,7 @@ function Service({ services, serviceAreas }: ServiceType) {
         <p className="text-black-400 text-xl font-semibold">{t("driverPage.offerService")}</p>
         <div className="mt-4 flex gap-3">
           {services.map((service) => (
-            <ChipCircle key={service} type="region" color="orange" text={t(`service.${service}`)} />
+            <ChipCircle key={service} type="service" color="orange" text={service} />
           ))}
         </div>
       </div>
@@ -26,7 +25,7 @@ function Service({ services, serviceAreas }: ServiceType) {
         <p className="text-black-400 text-xl font-semibold">{t("driverPage.servicePossibleRegion")}</p>
         <div className="mt-4 flex gap-3">
           {serviceAreas.map((serviceArea) => (
-            <ChipCircle key={serviceArea.id} type="region" color="gray" text={t(`region.${serviceArea.region}`)} />
+            <ChipCircle key={serviceArea.id} type="region" color="gray" text={serviceArea.region} />
           ))}
         </div>
       </div>

@@ -191,38 +191,38 @@ export default function ReceivedRequestsPage() {
         <SearchBar width="w-full" placeholder={t("placeholder")} value={searchKeyword} onChange={setSearchKeyword} />
         <div className="hidden items-start justify-start gap-3 lg:inline-flex">
           <ChipCircle
-            type="region"
-            text={t("smallMove")}
+            type="service"
+            text="SMALL"
             color="gray"
             click={true}
             isSelected={selectedMoveTypes.includes("소형이사")}
             onSelect={(text) => {
               setSelectedMoveTypes((prev) =>
-                prev.includes(text) ? prev.filter((type) => type !== text) : [...prev, text]
+                prev.includes("소형이사") ? prev.filter((type) => type !== "소형이사") : [...prev, "소형이사"]
               );
             }}
           />
           <ChipCircle
-            type="region"
-            text={t("homeMove")}
+            type="service"
+            text="HOME"
             color="gray"
             click={true}
             isSelected={selectedMoveTypes.includes("가정이사")}
             onSelect={(text) => {
               setSelectedMoveTypes((prev) =>
-                prev.includes(text) ? prev.filter((type) => type !== text) : [...prev, text]
+                prev.includes("가정이사") ? prev.filter((type) => type !== "가정이사") : [...prev, "가정이사"]
               );
             }}
           />
           <ChipCircle
-            type="region"
-            text={t("officeMove")}
+            type="service"
+            text="OFFICE"
             color="gray"
             click={true}
             isSelected={selectedMoveTypes.includes("사무실이사")}
             onSelect={(text) => {
               setSelectedMoveTypes((prev) =>
-                prev.includes(text) ? prev.filter((type) => type !== text) : [...prev, text]
+                prev.includes("사무실이사") ? prev.filter((type) => type !== "사무실이사") : [...prev, "사무실이사"]
               );
             }}
           />
