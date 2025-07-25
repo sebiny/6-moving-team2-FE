@@ -3,6 +3,7 @@ import { cookieFetch, defaultFetch } from "../FetchClient";
 import qs from "query-string";
 import { ReviewType } from "@/types/reviewType";
 import { BackendRequest } from "@/types/request";
+import { DriverEstimateType } from "@/types/estimateType";
 
 export const driverService = {
   getAllDriversDefault: async (options: {
@@ -63,7 +64,7 @@ export const driverService = {
     });
   },
   // 보낸 기사견적 리스트 조회
-  getDriverEstimates: async (): Promise<unknown> => {
+  getDriverEstimates: async (): Promise<DriverEstimateType[] | null> => {
     return await cookieFetch("/driver/estimates");
   },
   // 보낸 기사견적 상세정보 조회

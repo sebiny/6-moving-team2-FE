@@ -73,8 +73,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                   <div className="flex items-center gap-1">
                     <Image src="/assets/icons/ic_driver.svg" alt="기사님" width={20} height={23} />
                     <p className="text-sm font-semibold md:text-base">
-                      {driver.nickname}
-                      {t("driver")}
+                      {driver.nickname} {t("driver")}
                     </p>
                   </div>
                   <div className="flex items-center justify-center md:hidden">
@@ -85,7 +84,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                 <div className="mt-[2px] flex items-center gap-2 text-[13px] md:mt-2">
                   <div className="flex gap-1">
                     <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={20} height={20} />
-                    <p>5.0</p>
+                    <p>{driver.averageRating?.toFixed(1)}</p>
                     <p className="text-gray-300">({driver.reviewsReceived?.length ?? 0})</p>
                   </div>
                   <div className="border-line-200 h-[14px] w-[1px] border-l"></div>

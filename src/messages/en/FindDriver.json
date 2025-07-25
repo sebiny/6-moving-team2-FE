@@ -22,7 +22,8 @@
     "noReviewsDesc": "Be the first to leave a review",
     "reviewCount": "Reviews",
     "star": "Stars",
-    "requestQuote": "Request a Quote"
+    "requestQuote": "Request a Quote",
+    "requestQuoteComplete": "Complete Quote"
   },
   "requestQuote": {
     "title": "To the Driver",

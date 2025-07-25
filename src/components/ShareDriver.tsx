@@ -1,6 +1,7 @@
 "use client";
 import Toast from "@/app/[locale]/(guest)/drivers/[id]/_components/Toast";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 interface ShareDriverType {
@@ -38,24 +39,28 @@ function ShareDriver({ text }: ShareDriverType) {
         >
           <Image src="/assets/icons/ic_clip.svg" alt="링크 복사하기" width={36} height={36} className="w-6 lg:w-9" />
         </button>
-        <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#FAE100] lg:h-16 lg:w-16 lg:rounded-2xl">
-          <Image
-            src="/assets/icons/ic_share_kakao.svg"
-            alt="카카오톡으로 공유하기"
-            width={28}
-            height={28}
-            className="w-6 lg:w-7"
-          />
-        </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-orange-400 lg:h-16 lg:w-16 lg:rounded-2xl">
-          <Image
-            src="/assets/icons/ic_share_facebook.svg"
-            alt="페이스북으로 공유하기"
-            width={28}
-            height={28}
-            className="w-6 lg:w-7"
-          />
-        </div>
+        <Link href="https://www.kakaocorp.com/page/">
+          <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#FAE100] lg:h-16 lg:w-16 lg:rounded-2xl">
+            <Image
+              src="/assets/icons/ic_share_kakao.svg"
+              alt="카카오톡으로 공유하기"
+              width={28}
+              height={28}
+              className="w-6 lg:w-7"
+            />
+          </div>
+        </Link>
+        <Link href="https://www.facebook.com/?locale=ko_KR">
+          <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-orange-400 lg:h-16 lg:w-16 lg:rounded-2xl">
+            <Image
+              src="/assets/icons/ic_share_facebook.svg"
+              alt="페이스북으로 공유하기"
+              width={28}
+              height={28}
+              className="w-6 lg:w-7"
+            />
+          </div>
+        </Link>
       </div>
     </div>
   );

@@ -5,13 +5,14 @@ import DesignatedEstimateButton from "./DesignatedEstimateButton";
 interface BottomNavType {
   favorite: boolean;
   setFavorite: (value: boolean) => void;
+  isDesignated: boolean;
 }
 
-function BottomNav({ favorite, setFavorite }: BottomNavType) {
+function BottomNav({ favorite, setFavorite, isDesignated }: BottomNavType) {
   return (
     <div className="fixed right-0 bottom-0 left-0 z-50 flex gap-2 bg-white px-6 py-7 lg:hidden">
       <FavoriteButton favorite={favorite} setFavorite={setFavorite} />
-      <DesignatedEstimateButton />
+      <DesignatedEstimateButton isDesignated={isDesignated} />
     </div>
   );
 }
