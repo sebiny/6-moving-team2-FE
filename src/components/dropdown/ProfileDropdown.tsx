@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import icProfile from "/public/assets/icons/ic_profile.svg";
-
+import { useTransitionRouter } from "@/hooks/useTransitionRouter";
 import { useRouter } from "next/navigation";
 
 import { getProfileDropdownMenu, UserType } from "@/constant/constant";
@@ -20,7 +20,7 @@ interface ProfileProps {
 }
 
 export default function Profile({ ref, isOpen, onClick, className, lg }: ProfileProps) {
-  const router = useRouter();
+  const { pushWithTransition } = useTransitionRouter();
   const { user, logout, isLoading } = useAuth();
   const userType = user?.userType;
 
@@ -39,6 +39,23 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
       fetchUserData();
     }
   }, [user]); // user 객체가 변경될 때 (로그인/로그아웃 시) 다시 실행
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>, path: string) => {
+    const buttonElement = event.currentTarget;
+    const uniqueName = `gnb-menu-${path.replace("/", "")}`;
+    buttonElement.style.viewTransitionName = uniqueName;
+
+    const transition = pushWithTransition(path);
+    onClick?.();
+
+    // transition 객체가 존재하면(API가 지원되면)
+    if (transition) {
+      transition.finished.finally(() => {
+        // 애니메이션이 완전히 끝나고 나면 스타일을 제거합니다.
+        buttonElement.style.viewTransitionName = "";
+      });
+    }
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -75,7 +92,7 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
           {profileMenu[userType as UserType]?.map(({ label, path }, idx) => (
             <button
               key={idx}
-              onClick={() => router.push(path)}
+              onClick={(e) => handleMenuClick(e, path)}
               className="h-10 cursor-pointer items-center pl-4 text-left text-sm hover:bg-orange-50 lg:h-13 lg:pl-6 lg:text-base"
             >
               {label}

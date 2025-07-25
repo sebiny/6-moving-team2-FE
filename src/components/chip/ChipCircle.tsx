@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 
 interface ChipCircleType {
-  type: "region" | "address";
+  type: "region" | "address" | "service";
   text: string;
   color?: "orange" | "gray";
   click?: boolean;
@@ -13,7 +14,8 @@ interface ChipCircleType {
 
 function ChipCircle({ type, color = "gray", text, click = false, isSelected = false, onSelect }: ChipCircleType) {
   const [internalClicked, setInternalClicked] = useState(false);
-  
+  const t = useTranslations("FindDriver");
+
   // 외부에서 제어하는 경우 isSelected 사용, 내부 제어하는 경우 internalClicked 사용
   const isClicked = onSelect ? isSelected : internalClicked;
   const design = clsx(
@@ -44,8 +46,8 @@ function ChipCircle({ type, color = "gray", text, click = false, isSelected = fa
   };
 
   return (
-    <button className={design} onClick={handleClick} disabled={!click}>
-      {text}
+    <button className={design} onClick={handleClick} disabled={!click} type="button">
+      {type === "region" ? t(`region.${text}`) : type === "service" ? t(`service.${text}`) : text}
     </button>
   );
 }

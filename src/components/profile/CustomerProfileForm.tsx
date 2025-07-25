@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { cookieFetch, authUtils } from "@/lib/FetchClient";
-import { moveTypes, regions, regionMap } from "@/constant/profile";
 import ImageUploader from "@/components/profile/ImageUploader";
+import SelectRegion from "./SelectRegion";
+import SelectService from "./SelectService";
+import Button from "../Button";
 
 interface CustomerProfileFormProps {
   isEditMode: boolean;
@@ -22,7 +24,7 @@ export default function CustomerProfileForm({ isEditMode, initialData }: Custome
   const [isUploading, setIsUploading] = useState(false);
 
   const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
-  const [currentArea, setCurrentArea] = useState("");
+  const [currentArea, setCurrentArea] = useState<string>("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -96,10 +98,6 @@ export default function CustomerProfileForm({ isEditMode, initialData }: Custome
     }
   };
 
-  const toggleMoveType = (type: string) => {
-    setSelectedMoveTypes((prev) => (prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -119,7 +117,7 @@ export default function CustomerProfileForm({ isEditMode, initialData }: Custome
     let payload: any = {
       moveType: selectedMoveTypes,
       profileImage: profileImagePreview || undefined,
-      currentArea
+      currentArea: currentArea
     };
 
     if (isEditMode) {
@@ -152,11 +150,19 @@ export default function CustomerProfileForm({ isEditMode, initialData }: Custome
     }
   };
 
-  const pageTitle = `고객 프로필 ${isEditMode ? "수정" : "생성"}`;
+  const pageTitle = `프로필 ${isEditMode ? "수정" : "등록"}`;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-6">
-      <h2 className="text-xl font-bold">{pageTitle}</h2>
+    <form className="w-[327px] max-w-160 space-y-4 p-6 lg:w-full">
+      <div>
+        <h2 className="text-lg font-bold lg:text-[32px] lg:font-semibold">{pageTitle}</h2>
+        {!isEditMode && (
+          <p className="text-black-100 my-4 text-xs lg:my-7 lg:text-[16px]">
+            추가 정보를 입력하여 회원가입을 완료해주세요.
+          </p>
+        )}
+        <div className="border-line-100 border-b"></div>
+      </div>
 
       {isEditMode && (
         <>
@@ -177,7 +183,6 @@ export default function CustomerProfileForm({ isEditMode, initialData }: Custome
         </>
       )}
 
-      <label>프로필 이미지 (선택)</label>
       <ImageUploader
         id="profileImage"
         label="프로필 이미지"
@@ -191,44 +196,32 @@ export default function CustomerProfileForm({ isEditMode, initialData }: Custome
         allowRemove={true}
       />
       {isUploading && <p className="text-sm text-gray-500">이미지 업로드 중...</p>}
-
-      <label>요청 서비스 (중복 선택 가능)</label>
-      <div className="flex flex-wrap gap-2">
-        {moveTypes.map((type) => (
-          <button
-            key={type.value}
-            type="button"
-            onClick={() => toggleMoveType(type.value)}
-            className={`rounded border px-3 py-1 ${
-              selectedMoveTypes.includes(type.value) ? "bg-blue-500 text-white" : "bg-gray-100"
-            }`}
-          >
-            {type.label}
-          </button>
-        ))}
+      <div className="border-line-100 my-5 border-b lg:my-8"></div>
+      <div>
+        <p className="text-black-300 font-semibold lg:text-xl">이용 서비스</p>
+        <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">
+          {isEditMode
+            ? "*견적 요청 시 이용 서비스를 선택할 수 있어요."
+            : "*이용 서비스는 중복 선택 가능하며, 언제든 수정 가능해요!"}
+        </p>
+        <SelectService services={selectedMoveTypes} setServices={setSelectedMoveTypes} />
+      </div>
+      <div className="border-line-100 my-5 border-b lg:my-5"></div>
+      <div>
+        <p className="text-black-300 font-semibold lg:text-xl">내가 사는 지역</p>
+        <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">
+          {isEditMode ? "견적 요청 시 지역을 설정할 수 있어요." : "*내가 사는 지역은 언제든 수정 가능해요!"}
+        </p>
+        <SelectRegion setCurrentArea={setCurrentArea} currentArea={currentArea} type="customer" />
       </div>
 
-      <label>현재 지역</label>
-      <select
-        value={currentArea}
-        onChange={(e) => setCurrentArea(e.target.value)}
-        className="w-full rounded border p-2"
-      >
-        <option value="">지역 선택</option>
-        {regions.map((region) => (
-          <option key={region} value={regionMap[region]}>
-            {region}
-          </option>
-        ))}
-      </select>
-
-      <button
-        type="submit"
-        disabled={isSubmitting || isUploading}
-        className="rounded bg-blue-600 px-4 py-2 text-white disabled:bg-gray-400"
-      >
-        {isSubmitting ? "제출 중..." : "제출"}
-      </button>
+      <Button
+        type="orange"
+        text={isSubmitting ? "제출 중..." : "제출"}
+        isDisabled={isSubmitting || isUploading}
+        className="mt-15 w-full rounded bg-blue-600 py-2 text-white"
+        onClick={handleSubmit}
+      ></Button>
     </form>
   );
 }

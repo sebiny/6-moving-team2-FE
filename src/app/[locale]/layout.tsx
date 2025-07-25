@@ -7,6 +7,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import ConditionalTransitionWrapper from "@/components/container/ConditionalTransitionWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,8 +45,10 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col`}>
         <NextIntlClientProvider>
           <Providers>
-            <Gnb />
-            <div className="mt-14 lg:mt-22">{children}</div>
+            <ConditionalTransitionWrapper>
+              <Gnb />
+              <div className="mt-14 flex-1 bg-white lg:mt-22">{children}</div>
+            </ConditionalTransitionWrapper>
           </Providers>
         </NextIntlClientProvider>
       </body>
