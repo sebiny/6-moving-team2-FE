@@ -23,7 +23,8 @@
     "noReviewsDesc": "가장 먼저 리뷰를 등록해보세요",
     "reviewCount": "개의 리뷰",
     "star": "점",
-    "requestQuote": "지정 견적 요청하기"
+    "requestQuote": "지정 견적 요청하기",
+    "requestQuoteComplete": "지정 견적 요청 완료"
   },
   "requestQuote": {
     "title": "기사님에게",

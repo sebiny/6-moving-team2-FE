@@ -23,7 +23,7 @@ function DriverDetailPage() {
   const [favorite, setFavorite] = useState<boolean>(false);
 
   const { data: driver, isPending } = useQuery<DriverType | null>({
-    queryKey: ["driver", driverId],
+    queryKey: ["driver", driverId, user],
     queryFn: () =>
       user ? driverService.getDriverDetailCookie(driverId) : driverService.getDriverDetailDefault(driverId)
   });
@@ -52,11 +52,11 @@ function DriverDetailPage() {
           <DriverReviews driver={driver} />
         </div>
         <div className="mt-[109px] hidden w-80 lg:block">
-          <RequestEstimate userFavorite={driver.isFavorite} favorite={favorite} setFavorite={setFavorite} />
+          <RequestEstimate favorite={favorite} setFavorite={setFavorite} isDesignated={driver.isDesignated ?? false} />
           <ShareDriver text={t("driverPage.wannaRecommend?")} />
         </div>
       </div>
-      <BottomNav favorite={favorite} setFavorite={setFavorite} />
+      <BottomNav favorite={favorite} setFavorite={setFavorite} isDesignated={driver.isDesignated ?? false} />
     </div>
   );
 }
