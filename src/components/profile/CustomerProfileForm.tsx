@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { cookieFetch, authUtils } from "@/lib/FetchClient";
 import { moveTypes, regions, regionMap } from "@/constant/profile";
 import ImageUploader from "@/components/profile/ImageUploader";
+import SelectRegion from "./SelectRegion";
 
 interface CustomerProfileFormProps {
   isEditMode: boolean;
@@ -138,11 +139,15 @@ export default function CustomerProfileForm({ isEditMode, initialData }: Custome
     }
   };
 
-  const pageTitle = `고객 프로필 ${isEditMode ? "수정" : "생성"}`;
+  const pageTitle = `프로필 ${isEditMode ? "수정" : "등록"}`;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-6">
-      <h2 className="text-xl font-bold">{pageTitle}</h2>
+      <div>
+        <h2 className="text-xl font-bold">{pageTitle}</h2>
+        <p className="text-black-200">추가 정보를 입력하여 회원가입을 완료해주세요.</p>
+        <div className="border-line-100 border-b"></div>
+      </div>
 
       {isEditMode && (
         <>
@@ -194,19 +199,7 @@ export default function CustomerProfileForm({ isEditMode, initialData }: Custome
         ))}
       </div>
 
-      <label>현재 지역</label>
-      <select
-        value={currentArea}
-        onChange={(e) => setCurrentArea(e.target.value)}
-        className="w-full rounded border p-2"
-      >
-        <option value="">지역 선택</option>
-        {regions.map((region) => (
-          <option key={region} value={regionMap[region]}>
-            {region}
-          </option>
-        ))}
-      </select>
+      <SelectRegion setCurrentArea={setCurrentArea} currentArea={currentArea} />
 
       <button
         type="submit"
