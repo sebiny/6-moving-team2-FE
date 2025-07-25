@@ -211,7 +211,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
           <div className="flex flex-col gap-2">
             <label className="text-xl font-semibold">제공 서비스</label>
             {!isServicesValid && <p className="text-base text-rose-500">* 1개 이상 선택해주세요.</p>}
-            {/* 고객 폼의 SelectService 사용 */}
+
             <SelectService services={selectedMoveTypes} setServices={setSelectedMoveTypes} />
           </div>
           <div className="bg-line-100 h-px" />
@@ -219,8 +219,8 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
           <div className="flex flex-col gap-2">
             <label className="text-xl font-semibold">서비스 가능 지역</label>
             {!isRegionsValid && <p className="text-base text-rose-500">* 1개 이상 선택해주세요.</p>}
-            {/* 고객 폼의 SelectRegion 사용, type="driver"로 구분 */}
-            <SelectRegion currentArea={selectedRegions} setCurrentArea={setSelectedRegions} type="driver" />
+
+            <SelectRegion currentAreas={selectedRegions} setCurrentAreas={setSelectedRegions} type="driver" />
           </div>
         </div>
       </div>

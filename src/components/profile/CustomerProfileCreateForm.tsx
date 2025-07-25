@@ -21,6 +21,12 @@ export default function CustomerProfileCreateForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
 
+  const handleImageError = (error: string | null) => {
+    setImageError(error);
+    setProfileImageFile(null);
+    setProfileImagePreview(null);
+  };
+
   async function uploadImageFile(file: File): Promise<string> {
     const formData = new FormData();
     formData.append("profileImage", file);
@@ -58,14 +64,6 @@ export default function CustomerProfileCreateForm() {
       }
     } else {
       setProfileImagePreview(previewUrl);
-    }
-  };
-
-  const handleImageError = (error: string | null) => {
-    setImageError(error);
-    if (error) {
-      setProfileImageFile(null);
-      setProfileImagePreview(null);
     }
   };
 
@@ -125,12 +123,12 @@ export default function CustomerProfileCreateForm() {
         label="프로필 이미지"
         maxSizeMB={5}
         onImageChange={handleImageChange}
-        onImageError={handleImageError}
         previewUrl={profileImagePreview}
         isSubmitting={isSubmitting || isUploading}
         isRequired={false}
         error={imageError}
         allowRemove={true}
+        onImageError={handleImageError}
       />
       {isUploading && <p className="text-sm text-gray-500">이미지 업로드 중...</p>}
 

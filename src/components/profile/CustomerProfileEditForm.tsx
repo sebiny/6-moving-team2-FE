@@ -81,6 +81,14 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
     }
   };
 
+  const handleImageError = (error: string | null) => {
+    setImageError(error);
+    if (error) {
+      setProfileImageFile(null);
+      setProfileImagePreview(null);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -184,6 +192,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
             isRequired={false}
             error={imageError}
             allowRemove
+            onImageError={handleImageError}
           />
         </div>
 
