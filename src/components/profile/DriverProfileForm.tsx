@@ -112,7 +112,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
       detailIntro,
       moveType: selectedMoveTypes,
       profileImage: profileImagePreview || undefined,
-      serviceAreas: selectedRegions.map((label) => ({ region: regionMap[label] }))
+      serviceAreas: selectedRegions.map((label) => ({ region: label }))
     };
 
     try {
@@ -146,15 +146,14 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
       {/* Header */}
       <div className="flex flex-col gap-8">
         <h1 className="text-[32px] font-semibold">기사님 프로필 {isEditMode ? "수정" : "등록"}</h1>
-        <p className="text-xl">추가 정보를 입력하여 회원가입을 완료해주세요.</p>
+        <p className="text-black-200 text-xl">추가 정보를 입력하여 회원가입을 완료해주세요.</p>
       </div>
       <div className="bg-line-100 h-px" />
 
-      <div className="flex justify-between">
+      <div className="flex flex-col justify-between lg:flex-row">
         {/* 왼쪽 */}
         <div className="flex w-[500px] flex-col gap-8">
           <div className="flex flex-col gap-4">
-            <p className="text-black-300 text-xl font-semibold">프로필 이미지</p>
             <ImageUploader
               id="profileImage"
               label="프로필 이미지"
@@ -171,7 +170,9 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
           <div className="bg-line-100 h-px" />
 
           <div className="flex flex-col gap-2">
-            <label className="text-xl font-semibold">별명</label>
+            <label className="text-xl font-semibold">
+              별명 <span className="text-red-500">*</span>
+            </label>
             <TextField
               value={nickname}
               onChange={setNickname}
@@ -183,13 +184,17 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
 
           {/* 경력 */}
           <div className="flex flex-col gap-2">
-            <label className="text-xl font-semibold">경력</label>
+            <label className="text-xl font-semibold">
+              경력 <span className="text-red-500">*</span>
+            </label>
             <TextField value={career} onChange={setCareer} placeholder="기사님의 경력을 입력해 주세요" required />
             {!isCareerValid && career.length > 0 && <p className="text-base text-rose-500">숫자만 입력해주세요.</p>}
           </div>
           {/* 한 줄 소개 */}
           <div className="flex flex-col gap-2">
-            <label className="text-xl font-semibold">한 줄 소개</label>
+            <label className="text-xl font-semibold">
+              한 줄 소개 <span className="text-red-500">*</span>
+            </label>
             <TextField value={shortIntro} onChange={setShortIntro} placeholder="한 줄 소개를 입력해 주세요" required />
             {!isIntroValid && shortIntro.length > 0 && (
               <p className="text-base text-rose-500">8자 이상 입력해주세요.</p>
@@ -200,7 +205,9 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
         {/* 오른쪽 */}
         <div className="flex w-[500px] flex-col gap-8">
           <div className="flex flex-col gap-2">
-            <label className="text-xl font-semibold">상세 설명</label>
+            <label className="text-xl font-semibold">
+              상세 설명 <span className="text-red-500">*</span>
+            </label>
             <InputText value={detailIntro} onChange={setDetailIntro} setInputValid={() => {}} />
             {!isDescriptionValid && detailIntro.length > 0 && (
               <p className="text-base text-rose-500">10자 이상 입력해주세요.</p>
@@ -209,7 +216,9 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
           <div className="bg-line-100 h-px" />
 
           <div className="flex flex-col gap-2">
-            <label className="text-xl font-semibold">제공 서비스</label>
+            <label className="text-xl font-semibold">
+              제공 서비스 <span className="text-red-500">*</span>
+            </label>
             {!isServicesValid && <p className="text-base text-rose-500">* 1개 이상 선택해주세요.</p>}
 
             <SelectService services={selectedMoveTypes} setServices={setSelectedMoveTypes} />
@@ -217,21 +226,22 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
           <div className="bg-line-100 h-px" />
 
           <div className="flex flex-col gap-2">
-            <label className="text-xl font-semibold">서비스 가능 지역</label>
+            <label className="text-xl font-semibold">
+              서비스 가능 지역 <span className="text-red-500">*</span>
+            </label>
             {!isRegionsValid && <p className="text-base text-rose-500">* 1개 이상 선택해주세요.</p>}
 
             <SelectRegion currentAreas={selectedRegions} setCurrentAreas={setSelectedRegions} type="driver" />
           </div>
+          <div className="flex justify-end">
+            <Button
+              text={isSubmitting ? "제출 중..." : "시작하기"}
+              type="orange"
+              className="h-15 w-[500px] rounded-2xl text-lg font-semibold"
+              isDisabled={!isFormValid || isSubmitting || isUploading}
+            />
+          </div>
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          text={isSubmitting ? "제출 중..." : "시작하기"}
-          type="orange"
-          className="h-15 w-[500px] rounded-2xl text-lg font-semibold"
-          isDisabled={!isFormValid || isSubmitting || isUploading}
-        />
       </div>
     </form>
   );
