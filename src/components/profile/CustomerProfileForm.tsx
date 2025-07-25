@@ -74,10 +74,12 @@ export default function CustomerProfileForm({ isEditMode, initialData }: Custome
     }
   };
 
-  const handleImageError = (error: string) => {
+  const handleImageError = (error: string | null) => {
     setImageError(error);
-    setProfileImagePreview(null);
-    setProfileImageFile(null);
+    if (error) {
+      setProfileImageFile(null);
+      setProfileImagePreview(null);
+    }
   };
 
   const toggleMoveType = (type: string) => {

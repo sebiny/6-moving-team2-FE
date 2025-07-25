@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import ProfileForm from "@/components/profile/ProfileForm";
 import { authService } from "@/lib/api/api-auth";
+import { User } from "@/providers/AuthProvider";
 
 export default function DriverProfileEditPage() {
-  const [initialData, setInitialData] = useState(null);
+  const [initialData, setInitialData] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -27,7 +27,7 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
   const t = useTranslations("Gnb");
   const profileMenu = getProfileDropdownMenu(t);
 
-  const [detailedUser, setDetailedUser] = useState<User | null>(null);
+  const [detailedUser, setDetailedUser] = useState<{ name: string } | null>(null);
 
   useEffect(() => {
     // 로그인된 상태일 때만 상세 정보를 가져옵니다.
