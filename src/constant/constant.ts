@@ -24,7 +24,7 @@ export const getProfileDropdownMenu = (
   t: (key: string) => string
 ): Record<MenuType, { label: string; path: string }[]> => ({
   CUSTOMER: [
-    { label: t("myProfile"), path: "/customer/profile" },
+    { label: t("myProfile"), path: "/customer/profile/edit" },
     { label: t("likedDrivers"), path: "/customer/my-estimates/favorite-drivers" },
     { label: t("moveReviews"), path: "/customer/review" }
   ],
