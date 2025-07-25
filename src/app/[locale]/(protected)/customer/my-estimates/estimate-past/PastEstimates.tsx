@@ -17,20 +17,33 @@ export default function PastEstimates() {
   const [selectedService, setSelectedService] = useState("WHOLE");
 
   if (isLoading) {
-    return <div className="mt-20 flex justify-center">로딩 중...</div>;
+    return (
+      <main className="md:bg-background-200 mt-11 bg-white md:mt-22 lg:mt-35">
+        <div className="flex justify-center py-20">
+          <span className="text-gray-400">로딩 중...</span>
+        </div>
+      </main>
+    );
   }
 
-  if (!data) {
+  if (data && data.length === 0) {
     return (
-      <div className="mt-20 flex justify-center">
-        <p className="text-gray-400">받았던 견적이 없습니다.</p>
-      </div>
+      <main className="md:bg-background-200 mt-11 bg-white md:mt-22 lg:mt-75">
+        <div className="col-span-full flex flex-col items-center justify-center gap-2 py-20">
+          <img src="/assets/images/img_empty_review.svg" alt="견적 없음" width={250} height={250} />
+          <p className="text-center text-lg font-normal text-neutral-400">
+            아직 받은 견적이 없어요
+            <br />
+            견적을 확정해 주세요!
+          </p>
+        </div>
+      </main>
     );
   }
 
   return (
     <main className="md:bg-background-200 mt-11 bg-white md:mt-22 lg:mt-35">
-      {data.map((group: SinglePastEstimateType, index) => (
+      {data?.map((group: SinglePastEstimateType, index) => (
         <div key={group.estimateRequest.id}>
           {/* 그룹 간 회색 구분선 (첫 그룹 제외) */}
           {index !== 0 && <div className="h-1.5 w-full bg-zinc-100 md:hidden" />}

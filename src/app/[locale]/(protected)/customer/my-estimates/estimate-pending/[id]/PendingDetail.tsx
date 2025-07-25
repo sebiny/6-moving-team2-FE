@@ -22,7 +22,7 @@ export default function PendingDetailPage() {
   const { mutate: acceptEstimate } = useAcceptEstimate();
 
   if (!data) {
-    return <div className="mt-20 text-center">견적 데이터를 불러오는 중입니다...</div>;
+    return <div className="mt-90 flex justify-center text-center">견적 데이터를 불러오는 중입니다...</div>;
   }
 
   const { status, comment, price, requestDate, moveDate, moveType, fromAddress, toAddress, driver, isDesignated } =
@@ -95,7 +95,7 @@ export default function PendingDetailPage() {
                     acceptEstimate(data.id, {
                       onSuccess: (data) => {
                         alert(data?.message); // 메시지 alert
-                        router.push("/customer/my-estimates/estimate-past"); // 페이지 이동
+                        router.push(`/customer/my-estimates/estimate-past/${id}`); // 페이지 이동
                       },
                       onError: (error: any) => {
                         alert(error.message || "견적 확정 중 오류가 발생했습니다.");
@@ -121,7 +121,7 @@ export default function PendingDetailPage() {
                 acceptEstimate(data.id, {
                   onSuccess: (data) => {
                     alert(data?.message); // 메시지 alert
-                    router.push("/customer/my-estimates/estimate-past"); // 페이지 이동
+                    router.push(`/customer/my-estimates/estimate-past/${id}`); // 페이지 이동
                   },
                   onError: (error: any) => {
                     alert(error.message || "견적 확정 중 오류가 발생했습니다.");
