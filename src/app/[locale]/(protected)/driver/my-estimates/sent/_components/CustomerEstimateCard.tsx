@@ -5,6 +5,7 @@ import { MoveType } from "@/constant/moveTypes";
 import Image from "next/image";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import CompletedEstimateCard from "./CompletedEstimateCard";
+import { useTranslations } from "next-intl";
 
 const korToMoveTypeMap: Record<string, MoveType> = {
   소형이사: "SMALL",
@@ -19,6 +20,7 @@ interface CustomerEstimateCardProps {
 }
 
 export default function CustomerEstimateCard({ request }: CustomerEstimateCardProps) {
+  const t = useTranslations("MyEstimate");
   const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
 
   return (
@@ -37,7 +39,7 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
         <div className="flex w-full flex-col gap-3">
           <div className="flex gap-2">
             <span className="text-xl font-semibold text-zinc-800">{request.customerName}</span>
-            <span className="text-xl font-semibold text-zinc-800">고객님</span>
+            <span className="text-xl font-semibold text-zinc-800">{t("customer")}</span>
           </div>
           <div className="h-px w-full bg-zinc-100" />
         </div>
@@ -45,7 +47,7 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
         <div className="flex w-full flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-1 items-end gap-3 md:flex-row md:items-center">
             <div className="flex flex-col">
-              <div className="text-sm font-normal text-zinc-500">출발지</div>
+              <div className="text-sm font-normal text-zinc-500">{t("to")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
                 {request.fromAddress}
               </div>
@@ -54,21 +56,21 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
               <Image src="/assets/icons/ic_arrow.svg" alt="화살표" fill className="object-center" />
             </div>
             <div className="flex flex-col">
-              <div className="text-sm font-normal text-zinc-500">도착지</div>
+              <div className="text-sm font-normal text-zinc-500">{t("from")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
                 {request.toAddress}
               </div>
             </div>
           </div>
           <div className="flex flex-col">
-            <div className="text-sm font-normal text-zinc-500">이사일</div>
+            <div className="text-sm font-normal text-zinc-500">{t("date")}</div>
             <div className="text-base font-semibold text-neutral-900">{request.moveDate}</div>
           </div>
         </div>
       </div>
       {/* 하단 */}
       <div className="flex w-full items-end justify-between border-t border-neutral-200 pt-4">
-        <div className="text-base font-medium text-neutral-800">견적 금액</div>
+        <div className="text-base font-medium text-neutral-800">{t("cost")}</div>
         <div className="text-2xl font-bold text-neutral-800">
           {request.estimateAmount ? request.estimateAmount : "미정"}
         </div>

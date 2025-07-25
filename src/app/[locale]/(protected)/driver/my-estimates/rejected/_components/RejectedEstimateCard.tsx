@@ -4,6 +4,7 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import { MoveType } from "@/constant/moveTypes";
 import Image from "next/image";
 import CompletedRejectedCard from "./CompletedRejectedCard";
+import { useTranslations } from "next-intl";
 
 const korToMoveTypeMap: Record<string, MoveType> = {
   소형이사: "SMALL",
@@ -18,6 +19,7 @@ interface CustomerEstimateCardProps {
 }
 
 export default function CustomerEstimateCard({ request }: CustomerEstimateCardProps) {
+  const t = useTranslations("MyEstimate");
   const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
 
   return (
@@ -34,7 +36,7 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
         <div className="flex w-full flex-col gap-3">
           <div className="flex gap-2">
             <span className="text-xl font-semibold text-zinc-800">{request.customerName}</span>
-            <span className="text-xl font-semibold text-zinc-800">고객님</span>
+            <span className="text-xl font-semibold text-zinc-800">{t("customer")}</span>
           </div>
           <div className="h-px w-full bg-zinc-100" />
         </div>
@@ -42,19 +44,19 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
         <div className="flex w-full items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="flex flex-col">
-              <div className="text-sm text-zinc-500">출발지</div>
+              <div className="text-sm text-zinc-500">{t("to")}</div>
               <div className="text-base font-semibold text-neutral-900">{request.fromAddress}</div>
             </div>
             <div className="relative h-5 w-4">
               <Image src="/assets/icons/ic_arrow.svg" alt="화살표" fill className="object-center" />
             </div>
             <div className="flex flex-col">
-              <div className="text-sm text-zinc-500">도착지</div>
+              <div className="text-sm text-zinc-500">{t("from")}</div>
               <div className="text-base font-semibold text-neutral-900">{request.toAddress}</div>
             </div>
           </div>
           <div className="flex flex-col">
-            <div className="text-sm text-zinc-500">이사일</div>
+            <div className="text-sm text-zinc-500">{t("date")}</div>
             <div className="text-base font-semibold text-neutral-900">{request.moveDate}</div>
           </div>
         </div>

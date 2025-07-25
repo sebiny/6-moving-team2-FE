@@ -1,0 +1,18 @@
+{
+  "customer": "Customer",
+  "from": "Origin",
+  "to": "Destination",
+  "date": "Date",
+  "cost": "Estimated Cost",
+  "ThisIsCompleted": "This Estimate has been completed",
+  "ThisIsRejected": "This request has been rejected",
+  "viewDetails": "View Details",
+  "confirmedEst": "confirmed Quote",
+  "estDetail": "Estimate Details",
+  "estimatedCost": "Estimated Cost",
+  "estimateInfo": "Estimate Information",
+  "requestDate": "Estimate Request Date",
+  "service": "Service",
+  "useDate": "Date of Use",
+  "wannaRecommend?": "Wanna Recommend The Driver?"
+}
