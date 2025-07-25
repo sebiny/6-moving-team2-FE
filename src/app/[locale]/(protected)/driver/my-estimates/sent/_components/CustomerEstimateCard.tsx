@@ -16,7 +16,7 @@ const korToMoveTypeMap: Record<string, MoveType> = {
 };
 
 interface CustomerEstimateCardProps {
-  request: Request & { estimateAmount?: string; isCompleted?: boolean };
+  request: Request & { estimateAmount?: string; isCompleted?: boolean; status?: string };
 }
 
 export default function CustomerEstimateCard({ request }: CustomerEstimateCardProps) {
@@ -32,7 +32,7 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
             <ChipRectangle moveType={moveTypeKey} size="sm" />
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
-          <ChipConfirmed />
+          {request.status === "confirmed" && <ChipConfirmed />}
           {/* 확정카드는 날짜 대신 확정 라벨만 */}
         </div>
         {/* 고객명 */}
