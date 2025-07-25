@@ -16,7 +16,7 @@ import { OpenLayer, useGnbHooks } from "@/hooks/useGnbHook";
 // 유저 상태에 따라 메뉴가 바뀜
 
 interface GnbProps {
-  userRole?: "guest" | "CUSTOMER" | "DRIVER" | undefined;
+  userRole?: "GUEST" | "CUSTOMER" | "DRIVER" | undefined;
 }
 
 export default function Gnb() {
@@ -73,7 +73,7 @@ export default function Gnb() {
   //     </div>
   //   );
   const isLoggedIn = !!user;
-  const userRole = user?.userType ?? "guest";
+  const userRole = user?.userType ?? "GUEST";
 
   const toggleLayer = (layer: OpenLayer) => {
     setOpenLayer((prev: any) => (prev === layer ? null : layer));

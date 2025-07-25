@@ -9,7 +9,7 @@ import { useTransitionRouter } from "@/hooks/useTransitionRouter";
 interface GnbListProps {
   isOpen?: boolean;
   browserWidth: "lg" | "default";
-  userRole?: "guest" | "CUSTOMER" | "DRIVER" | undefined;
+  userRole?: "GUEST" | "CUSTOMER" | "DRIVER" | undefined;
   onClick?: () => void;
   isLg: boolean;
 }
