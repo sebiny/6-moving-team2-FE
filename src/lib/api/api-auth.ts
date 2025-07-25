@@ -60,7 +60,12 @@ export const authService = {
     return response?.user ?? null;
   },
 
-  getUserById: async (): Promise<User | null> => {
+  getMeDetail: async (): Promise<User | null> => {
     return await cookieFetch("/auth/me/detail");
+  },
+
+  getMyName: async (): Promise<{ name: string } | null> => {
+    const response = await cookieFetch("/auth/me/name");
+    return response?.name ? { name: response.name } : null;
   }
 };

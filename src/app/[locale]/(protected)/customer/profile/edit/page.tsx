@@ -12,8 +12,7 @@ export default function CustomerProfileEditPage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // GET /auth/me/detail 로 현재 고객 프로필 정보를 가져옵니다.
-        const data = await authService.getUserById();
+        const data = await authService.getMeDetail();
         setInitialData(data);
       } catch (err: any) {
         setError(err.message || "프로필 정보를 불러오는데 실패했습니다.");

@@ -33,7 +33,7 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
     // 로그인된 상태일 때만 상세 정보를 가져옵니다.
     if (user) {
       const fetchUserData = async () => {
-        const userData = await authService.getUserById();
+        const userData = await authService.getMyName();
         setDetailedUser(userData);
       };
       fetchUserData();

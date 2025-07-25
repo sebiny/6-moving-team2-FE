@@ -6,7 +6,7 @@ import React from "react";
 function EditButtons() {
   const router = useRouter();
   const handleClickEditProfile = () => {
-    router.push("/driver/profile");
+    router.push("/driver/profile/edit");
   };
 
   const handleClickEditBasic = () => {
