@@ -122,7 +122,7 @@ export default function PendingCard({ data, moveType }: Props) {
               acceptEstimate(id, {
                 onSuccess: (data) => {
                   alert(data?.message); // 메시지 alert
-                  router.push("/customer/my-estimates/estimate-past"); // 페이지 이동
+                  router.push(`/customer/my-estimates/${id}`); // 페이지 이동
                 },
                 onError: (error: any) => {
                   alert(error.message || "견적 확정 중 오류가 발생했습니다.");

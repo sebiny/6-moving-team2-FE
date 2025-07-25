@@ -102,3 +102,27 @@ export type AcceptEstimateResponse = {
     estimateId: string;
   };
 };
+
+// ===================================================================
+// 기사가 보낸 견적 타입
+export type DriverEstimateType = {
+  id: string;
+  price: number;
+  comment: string;
+  status: "PROPOSED" | "ACCEPTED" | "REJECTED";
+  createdAt: string;
+  completionStatus: "CONFIRMED_AND_PAST" | "DATE_PAST" | null;
+  isCompleted: boolean;
+  customerName: string;
+  estimateRequest: {
+    id: string;
+    moveType: "SMALL" | "HOME" | "OFFICE" | "REQUEST";
+    moveDate: string;
+    fromAddress: {
+      street: string;
+    };
+    toAddress: {
+      street: string;
+    };
+  };
+};
