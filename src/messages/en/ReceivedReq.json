@@ -1,0 +1,33 @@
+{
+  "receivedReq": "Received Request",
+  "placeholder": "Which customer are you looking for?",
+  "total": "Total",
+  "count": "Count",
+  "date": "Fastest Move",
+  "request": "Earliest Request Date",
+  "customer": "Customer",
+  "from": "Origin",
+  "to": "Destination",
+  "moveDate": "Moving Date",
+  "reject": "Reject",
+  "sendReq": "Send Estimate",
+  "filter": {
+    "filter": "Filter",
+    "moveType": "Move Type",
+    "areaAndEst": "Area & Estimate",
+    "req": "Designated Estimate Request",
+    "service": "Serviceable Area",
+    "btn": "Search"
+  },
+  "smallMove": "Small Move",
+  "homeMove": "Home Move",
+  "officeMove": "Office Move",
+  "failedFetchReq": "Failed to fetch received Request",
+  "rejectReq": "Reject Request",
+  "enterReason": "Please enter the reason for rejection",
+
+  "sendEst": "Send Estimate",
+  "enterCost": "Please enter estimated cost",
+  "enter": "Enter estimated cost",
+  "enterComment": "Please enter comment"
+}

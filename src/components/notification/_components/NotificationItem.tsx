@@ -11,7 +11,7 @@ interface NotificationItemProps {
 }
 
 export default function NotificationItem({ item, onVisible, isInitiallyRead }: NotificationItemProps) {
-  const itemRef = useRef<HTMLDivElement>(null);
+  const itemRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
     // 이미 읽은 알림은 관찰할 필요가 없음
@@ -47,17 +47,17 @@ export default function NotificationItem({ item, onVisible, isInitiallyRead }: N
   }, [item.id, item.isRead, onVisible]);
 
   return (
-    <div
+    <li
       ref={itemRef}
       className={`border-line-200 flex flex-col gap-[2px] border-b p-3 text-sm font-medium transition-colors ${
         // 스타일링을 실시간 상태(item.isRead)가 아닌, 스냅샷(isInitiallyRead) 기준으로 결정합니다.
         isInitiallyRead ? "text-gray-300" : "text-black-400"
       }`}
     >
-      <span>{item.message}</span>
-      <span className={`text-[13px] ${isInitiallyRead ? "text-gray-300" : "text-gray-400"}`}>
+      <p>{item.message}</p>
+      <time dateTime={item.createdAt} className={`text-[13px] ${isInitiallyRead ? "text-gray-300" : "text-gray-400"}`}>
         {formatTimeFromNow(item.createdAt)}
-      </span>
-    </div>
+      </time>
+    </li>
   );
 }

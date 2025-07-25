@@ -17,4 +17,5 @@ export interface DriverType {
   averageRating: number;
   reviewCount: number;
   moveType: MoveType[];
+  isDesignated?: boolean;
 }

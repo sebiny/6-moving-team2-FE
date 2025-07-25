@@ -12,5 +12,8 @@
   "customer": "고객님",
   "driver": "기사님",
   "noUser": "이름없음",
-  "notification": "알림"
+  "notification": "알림",
+
+  "chooseAll": "전체 선택",
+  "deleteItem": "선택학목 삭제"
 }

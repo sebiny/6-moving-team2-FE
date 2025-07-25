@@ -1,0 +1,22 @@
+{
+  "estimateInfo": "估算信息",
+  "moveType": "搬家类型",
+  "from": "起点",
+  "to": "目的地",
+  "date": "日期",
+
+  "list": "估算列表",
+  "total": "总计",
+  "confirmed": "确认估算",
+  "driver": "司机",
+  "experience": "经验",
+  "year": "年",
+  "count": "次",
+  "confirm": "确认",
+  "estimateCost": "估算费用",
+
+  "estimateDetail": "估算详情",
+  "shareEstimate": "分享估算",
+
+  "notConfirmed": "该报价尚未确认！"
+}

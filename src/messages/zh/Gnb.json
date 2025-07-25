@@ -12,5 +12,8 @@
   "customer": "客户",
   "driver": "司机",
   "noUser": "无名",
-  "notification": "通知"
+  "notification": "通知",
+
+  "chooseAll": "全选",
+  "deleteItem": "删除所选项目"
 }

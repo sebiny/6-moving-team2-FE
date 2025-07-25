@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import DevNav from "@/components/DevNav";
 import Providers from "@/providers/Providers";
 import Gnb from "@/components/gnb/Gnb";
 import { useAuth } from "@/providers/AuthProvider";
@@ -47,7 +46,6 @@ export default async function RootLayout({
           <Providers>
             <Gnb />
             <div className="mt-14 lg:mt-22">{children}</div>
-            <DevNav />
           </Providers>
         </NextIntlClientProvider>
       </body>

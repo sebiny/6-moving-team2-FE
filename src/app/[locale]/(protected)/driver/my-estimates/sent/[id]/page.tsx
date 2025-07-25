@@ -7,11 +7,13 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import ShareDriver from "@/components/ShareDriver";
 import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
+import { useTranslations } from "next-intl";
 
 export default function EstimateDetailPage() {
+  const t = useTranslations("MyEstimate");
   return (
     <>
-      <PageHeader title="견적 상세" />
+      <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       {/* 상단 정보 + 공유 */}
       <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
@@ -32,7 +34,7 @@ export default function EstimateDetailPage() {
             <div className="flex w-full items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <div className="text-lg leading-loose font-semibold text-zinc-800 md:text-2xl">김민서</div>
-                <div className="text-lg leading-loose font-semibold text-zinc-800 md:text-2xl">고객님</div>
+                <div className="text-lg leading-loose font-semibold text-zinc-800 md:text-2xl">{t("customer")}</div>
               </div>
               {/* md 이상일 때만 보여지는 확정견적 칩 */}
               <div className="ml-auto hidden md:block">
@@ -44,8 +46,8 @@ export default function EstimateDetailPage() {
           <div className="h-0 w-full outline outline-offset-[-0.5px] outline-zinc-100" />
 
           {/* 견적가 */}
-          <div className="flex w-full md:w-1/2 items-center justify-between">
-            <div className="text-base leading-loose font-semibold text-neutral-800 md:text-xl">견적가</div>
+          <div className="flex w-full items-center justify-between md:w-1/2">
+            <div className="text-base leading-loose font-semibold text-neutral-800 md:text-xl">{t("cost")}</div>
             <div className="text-xl leading-loose font-bold text-neutral-800 md:text-2xl">180,000원</div>
           </div>
 
@@ -63,7 +65,7 @@ export default function EstimateDetailPage() {
 
         {/* 오른쪽 - 공유 버튼 */}
         <div className="items-left mb-10 flex flex-col md:flex-row">
-          <ShareDriver text="나만 알기엔 아쉬운 기사님인가요?" />
+          <ShareDriver text={t("wannaRecommend?")} />
         </div>
       </div>
     </>

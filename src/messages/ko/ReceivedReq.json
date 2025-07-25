@@ -1,0 +1,33 @@
+{
+  "receivedReq": "받은 요청",
+  "placeholder": "어떤 고객님은 찾고 계세요?",
+  "total": "전체",
+  "count": "건",
+  "date": "이사 빠른순",
+  "request": "요청일 빠른순",
+  "customer": "고객님",
+  "from": "출발지",
+  "to": "도착지",
+  "moveDate": "이사일",
+  "reject": "반려하기",
+  "sendReq": "견적 보내기",
+  "filter": {
+    "filter": "필터",
+    "moveType": "이사 유형",
+    "areaAndEst": "지역 및 견적",
+    "req": "지정 견적 요청",
+    "service": "서비스 가능 지역",
+    "btn": "조회하기"
+  },
+  "smallMove": "소형이사",
+  "homeMove": "가정이사",
+  "officeMove": "사무실이사",
+  "failedFetchReq": "받은 요청을 불러오는데 실패했습니다.",
+  "rejectReq": "반려요청",
+  "enterReason": "반려 사유를 입력해 주세요",
+
+  "sendEst": "견적 보내기",
+  "enterCost": "견적가를 입력해 주세요",
+  "enter": "견적가 입력",
+  "enterComment": "코멘트를 입력해 주세요"
+}

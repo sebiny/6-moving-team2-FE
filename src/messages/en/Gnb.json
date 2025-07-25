@@ -12,5 +12,8 @@
   "customer": "Customer",
   "driver": "Driver",
   "noUser": "No User",
-  "notification": "Notification"
+  "notification": "Notification",
+
+  "chooseAll": "Choose all",
+  "deleteItem": "Delete selected item"
 }

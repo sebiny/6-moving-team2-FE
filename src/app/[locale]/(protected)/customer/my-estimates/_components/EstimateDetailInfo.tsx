@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import React from "react";
 
 interface EstimateInfoProps {
@@ -11,17 +12,18 @@ interface EstimateInfoProps {
 }
 
 export default function EstimateDetailInfo({ requestDate, serviceType, moveDate, from, to }: EstimateInfoProps) {
+  const t = useTranslations("MyEstimates");
   const infoList = [
-    { label: "견적 요청일", value: requestDate },
-    { label: "서비스", value: serviceType },
-    { label: "이용일", value: moveDate },
-    { label: "출발지", value: from },
-    { label: "도착지", value: to }
+    { label: t("requestDate"), value: requestDate },
+    { label: t("service"), value: serviceType },
+    { label: t("moveDate"), value: moveDate },
+    { label: t("from"), value: from },
+    { label: t("to"), value: to }
   ];
 
   return (
     <section className="flex flex-col gap-7">
-      <h2 className="text-xl font-semibold text-black">견적 정보</h2>
+      <h2 className="text-xl font-semibold text-black">{t("estimateInfo")}</h2>
 
       <div className="flex flex-col gap-3 md:gap-5">
         {infoList.map((item) => (
