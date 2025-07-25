@@ -1,12 +1,12 @@
 // MoveType의 영어를 한글로 반환해 ui에 보이는 용
-import { MoveType, moveTypeMap } from "@/constant/moveTypes";
+import { MoveType, moveTypeLabelMap, moveTypeMap } from "@/constant/moveTypes";
 
 /**
  * MoveType에 대응하는 한글 라벨을 반환
  */
 
 export const getMoveTypeLabel = (moveType: MoveType): string => {
-  return moveTypeMap[moveType]?.label ?? "기타";
+  return moveTypeLabelMap[moveType]?.label ?? "기타";
 };
 
 /**
