@@ -72,7 +72,7 @@ function MyPageEditPage() {
   useEffect(() => {
     if (user) {
       const fetchUserData = async () => {
-        const userData = await authService.getUserById();
+        const userData = await authService.getMeDetail();
         setName(userData?.name ?? "");
         setEmail(userData?.email ?? "");
         setPhone(userData?.phone ?? "");
