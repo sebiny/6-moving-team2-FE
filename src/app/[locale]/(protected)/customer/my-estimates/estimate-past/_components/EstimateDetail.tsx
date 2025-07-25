@@ -14,7 +14,7 @@ interface EstimateDetailProps {
 export default function EstimateDetail({ moveType, startAddress, endAddress, date, createdDate }: EstimateDetailProps) {
   const t = useTranslations("MyEstimates");
   return (
-    <div className="w-full rounded-xl bg-white whitespace-nowrap md:pb-7">
+    <div className="w-full rounded-xl bg-white md:pb-7">
       {/* 상단: 제목 + 생성일 */}
       <div className="mb-6 flex flex-col items-center justify-between md:mb-8 md:flex-row">
         <h2 className="text-lg font-bold text-gray-900 md:text-xl">{t("estimateInfo")}</h2>
@@ -25,19 +25,19 @@ export default function EstimateDetail({ moveType, startAddress, endAddress, dat
       <div className="space-y-3 text-sm md:text-base">
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">{t("moveType")}</span>
-          <span className="font-semibold text-gray-900">{moveType}</span>
+          <span className="font-semibold">{moveType}</span>
         </div>
 
         <hr className="border-t border-gray-100 lg:hidden" />
 
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">{t("from")}</span>
-          <span className="max-w-[60%] text-right font-semibold">{startAddress}</span>
+          <span className="max-w-[60%] text-right font-semibold break-words">{startAddress}</span>
         </div>
 
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">{t("to")}</span>
-          <span className="max-w-[60%] text-right font-semibold">{endAddress}</span>
+          <span className="max-w-[60%] text-right font-semibold break-words">{endAddress}</span>
         </div>
 
         <hr className="border-t border-gray-100 lg:hidden" />

@@ -28,16 +28,20 @@ export default function EstimateSubHeader({ data }: EstimateSubHeaderProps) {
         {/* lg, md 버전: 기존 레이아웃 유지 */}
         <div className="hidden gap-10 text-sm md:flex lg:flex-row lg:items-end lg:justify-end lg:gap-12">
           {/* 출발지 → 도착지 */}
-          <div className="flex flex-col gap-1">
-            <div className="flex gap-20 text-xs text-gray-400 lg:text-sm">
-              <span>출발지</span>
-              <span>도착지</span>
+          <div className="flex items-end gap-10 text-sm md:flex-row lg:gap-5">
+            {/* 출발지 */}
+            <div className="flex flex-col gap-1">
+              <span className="text-xs text-gray-400 lg:text-sm">출발지</span>
+              <span className="text-base font-semibold text-black lg:text-lg">{from}</span>
             </div>
-            <div className="flex items-center gap-2 text-base font-semibold text-black lg:text-lg">
-              <span>{from}</span>
-              {/* 다국어 기능 추가로 이미지가 연결이 안됨 */}
-              <Image src="/assets/icons/ic_arrow.svg" alt="화살표" width={15} height={15} />
-              <span>{to}</span>
+
+            {/* 화살표 */}
+            <img src="/assets/icons/ic_arrow_short.svg" alt="화살표" width={13} height={13} className="" />
+
+            {/* 도착지 */}
+            <div className="flex flex-col gap-1">
+              <span className="text-xs text-gray-400 lg:text-sm">도착지</span>
+              <span className="text-base font-semibold text-black lg:text-lg">{to}</span>
             </div>
           </div>
 
