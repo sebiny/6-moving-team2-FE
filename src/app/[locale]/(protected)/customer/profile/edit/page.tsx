@@ -33,5 +33,9 @@ export default function CustomerProfileEditPage() {
     return <div>에러: {error}</div>;
   }
 
-  return <ProfileForm userType="customer" isEditMode={true} initialData={initialData} />;
+  return (
+    <div className="flex justify-center">
+      <ProfileForm userType="customer" isEditMode={true} initialData={initialData} />
+    </div>
+  );
 }

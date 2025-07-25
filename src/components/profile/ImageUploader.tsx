@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useEffect, FC } from "react";
 
 interface ImageUploaderProps {
@@ -58,15 +59,6 @@ const ImageUploader: FC<ImageUploaderProps> = ({
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleRemoveImage = () => {
-    if (previewUrl && previewUrl.startsWith("blob:")) {
-      URL.revokeObjectURL(previewUrl);
-    }
-    onImageChange(null, null);
-    onImageError(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
   useEffect(() => {
     const currentPreview = previewUrl;
     return () => {
@@ -76,52 +68,21 @@ const ImageUploader: FC<ImageUploaderProps> = ({
     };
   }, [previewUrl]);
 
+  const handleClickImage = () => {
+    if (!isSubmitting) {
+      fileInputRef.current?.click();
+    }
+  };
   return (
     <div className="mb-6">
-      <label className="mb-2 block text-lg leading-[26px] font-bold text-gray-600">
-        {label}{" "}
-        {isRequired ? <span className="text-red-500">*</span> : <span className="text-sm text-gray-500">(선택)</span>}{" "}
-        (최대 {maxSizeMB}MB)
-      </label>
+      <label className="mb-2 block text-lg leading-[26px] font-bold text-gray-600">{label}</label>
       <div className="flex h-auto w-full items-start gap-4 md:w-[588px]">
-        {/* 업로드 박스 */}
-        <label
-          htmlFor={id}
-          className={`flex h-[282px] w-[282px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-gray-50 transition-colors hover:bg-gray-100 ${
-            error ? "border-red-500" : "border-gray-300"
-          }`}
-        >
-          <svg
-            className="mb-2 h-10 w-10 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-            ></path>
-          </svg>
-          <span className="text-sm text-gray-500">{previewUrl ? "이미지 변경" : "이미지 등록"}</span>
-          <input
-            id={id}
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            disabled={isSubmitting}
-            required={isRequired && !previewUrl}
-            className="hidden"
-          />
-        </label>
-
-        {/* 미리보기 */}
-        <div className="relative flex h-[282px] w-[282px] items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
+        <div className="relative h-[282px] w-[282px]">
           {previewUrl ? (
-            <>
+            <div
+              onClick={handleClickImage}
+              className="group relative h-full w-full cursor-pointer overflow-hidden rounded-lg"
+            >
               <img
                 src={isValidSrc(previewUrl) ? previewUrl : "/default.png"}
                 alt="미리보기"
@@ -132,20 +93,28 @@ const ImageUploader: FC<ImageUploaderProps> = ({
                   (e.target as HTMLImageElement).style.display = "none";
                 }}
               />
-              {allowRemove && !isSubmitting && (
-                <button
-                  type="button"
-                  onClick={handleRemoveImage}
-                  className="bg-opacity-50 hover:bg-opacity-75 absolute top-2 right-2 rounded-full bg-black p-1 text-xs leading-none text-white"
-                  aria-label="이미지 제거"
-                >
-                  &times;
-                </button>
-              )}
-            </>
+            </div>
           ) : (
-            <span className="text-sm text-gray-400">미리보기</span>
+            <label
+              htmlFor={id}
+              className={`bg-background-200 flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 ${
+                error ? "border-red-500" : "border-gray-300"
+              }`}
+            >
+              <Image src="/assets/icons/ic_profile_upload.svg" alt="이미지 업로드" width={40} height={40} />
+            </label>
           )}
+
+          <input
+            id={id}
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            disabled={isSubmitting}
+            required={isRequired && !previewUrl}
+            className="hidden"
+          />
         </div>
       </div>
 
