@@ -15,7 +15,7 @@ function DriverInfo({ driver }: DriverInfoType) {
   return (
     <div className="relative mt-[35px] md:mt-[46px] lg:mt-[62px]">
       <Image
-        src="/assets/images/img_profile.svg"
+        src={driver.profileImage ?? "/assets/images/img_profile.svg"}
         alt="프로필"
         width={134}
         height={134}
