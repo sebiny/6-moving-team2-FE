@@ -3,7 +3,7 @@ import { cookieFetch, defaultFetch } from "../FetchClient";
 import qs from "query-string";
 import { ReviewType } from "@/types/reviewType";
 import { BackendRequest } from "@/types/request";
-import { DriverEstimateType } from "@/types/estimateType";
+import { DriverEstimateType, DriverEstimateDetailType } from "@/types/estimateType";
 
 export const driverService = {
   getAllDriversDefault: async (options: {
@@ -68,7 +68,7 @@ export const driverService = {
     return await cookieFetch("/driver/estimates");
   },
   // 보낸 기사견적 상세정보 조회
-  getDriverEstimateDetail: async (estimateId: string): Promise<unknown> => {
+  getDriverEstimateDetail: async (estimateId: string): Promise<DriverEstimateDetailType | null> => {
     return await cookieFetch(`/driver/estimates/${estimateId}`);
   },
   // 반려한 고객견적요청 리스트 조회

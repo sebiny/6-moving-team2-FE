@@ -6,7 +6,6 @@ import OrangeBackground from "@/components/OrangeBackground";
 import Service from "@/components/Service";
 import Image from "next/image";
 import React from "react";
-import { driver } from "@/constant/constant";
 import EditButtons from "./_components/EditButtons";
 import { useAuth } from "@/providers/AuthProvider";
 import { useQuery } from "@tanstack/react-query";

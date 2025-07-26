@@ -61,7 +61,7 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
     await logout();
   };
   return (
-    <div className={`${className} flex items-center`} ref={ref}>
+    <div className={`${className} relative flex items-center`} ref={ref}>
       {lg ? (
         <button className="flex cursor-pointer items-center justify-between gap-3" onClick={onClick}>
           <Image src={icProfile} alt="프로필 이미지" width={26} height={26} />
@@ -79,7 +79,7 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
 
       {/* 프로필 레이어 */}
       {isOpen && (
-        <div className="text-black-400 border-line-200 absolute top-12 z-99 flex w-38 -translate-x-1/2 flex-col rounded-2xl border bg-gray-50 pt-4 pb-1 shadow-gray-300 lg:top-18 lg:w-62 lg:-translate-x-36 xl:translate-x-0">
+        <div className="text-black-400 border-line-200 absolute top-8 -right-25 z-50 flex w-38 -translate-x-1/3 flex-col rounded-2xl border bg-gray-50 pt-4 pb-1 shadow-gray-300 lg:top-10 lg:w-62 lg:-translate-x-24 2xl:translate-x-5">
           <button className="h-10 items-center pl-4 text-left text-base font-bold lg:h-13 lg:pl-6 lg:text-lg">
             {/* // {user?.name ?? t("noUser")} {userType === "CUSTOMER" ? t("customer") : t("driver")} */}
 

@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import ChipCircle from "../chip/ChipCircle";
 import CustomCheckbox from "../button/CustomCheckbox";
 import { useTranslations } from "next-intl";
+import { moveTypeValueMap } from "@/types/moveType";
 
 interface FilterModalProps {
   onClose: () => void;
@@ -26,7 +27,7 @@ export default function FilterModal({
 }: FilterModalProps) {
   const t = useTranslations("ReceivedReq.filter");
   const tMove = useTranslations("ReceivedReq");
-  const MOVE_TYPES = [tMove("smallMove"), tMove("homeMove"), tMove("officeMove")];
+  const MOVE_TYPES = ["소형이사", "가정이사", "사무실이사"];
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-[rgba(0,0,0,0.3)] md:items-center"
@@ -50,16 +51,16 @@ export default function FilterModal({
             {MOVE_TYPES.map((type) => (
               <ChipCircle
                 key={type}
-                type="region"
-                text={type}
+                type="service"
+                text={moveTypeValueMap[type]}
                 color="gray"
                 click={true}
                 isSelected={selectedMoveTypes.includes(type)}
                 onSelect={(text) => {
                   setSelectedMoveTypes(
-                    selectedMoveTypes.includes(text)
-                      ? selectedMoveTypes.filter((t) => t !== text)
-                      : [...selectedMoveTypes, text]
+                    selectedMoveTypes.includes(type)
+                      ? selectedMoveTypes.filter((t) => t !== type)
+                      : [...selectedMoveTypes, type]
                   );
                 }}
               />

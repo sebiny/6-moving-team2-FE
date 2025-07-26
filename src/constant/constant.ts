@@ -2,7 +2,7 @@ import { DriverType } from "@/types/driverType";
 import { ReviewType } from "@/types/reviewType";
 
 export const getGnbUserRole = (t: (key: string) => string) => ({
-  guest: [
+  GUEST: [
     { label: t("findDeliver"), path: "/drivers" },
     { label: t("login"), path: "/customer/login" }
   ],

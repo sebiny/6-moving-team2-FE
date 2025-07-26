@@ -23,6 +23,7 @@
     "reviewCount": "Reviews",
     "star": "Stars",
     "requestQuote": "Request a Quote",
+    "requestingQuote": "Requesting a Quote",
     "requestQuoteComplete": "Complete Quote"
   },
   "requestQuote": {

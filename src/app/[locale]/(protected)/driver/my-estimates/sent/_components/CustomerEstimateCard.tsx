@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import { MoveType } from "@/constant/moveTypes";
@@ -16,15 +17,23 @@ const korToMoveTypeMap: Record<string, MoveType> = {
 };
 
 interface CustomerEstimateCardProps {
-  request: Request & { estimateAmount?: string; isCompleted?: boolean };
+  request: Request & { estimateAmount?: string; isCompleted?: boolean; status?: string };
 }
 
 export default function CustomerEstimateCard({ request }: CustomerEstimateCardProps) {
   const t = useTranslations("MyEstimate");
+  const router = useRouter();
   const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
 
+  const handleCardClick = () => {
+    router.push(`/driver/my-estimates/sent/${request.id}`);
+  };
+
   return (
-    <div className="flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.20)] outline outline-offset-[-0.5px] outline-zinc-100 md:w-[588px] md:gap-8 md:px-10 md:py-8">
+    <div
+      className="flex w-80 cursor-pointer flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.20)] outline outline-offset-[-0.5px] outline-zinc-100 transition-shadow hover:shadow-[-2px_-2px_15px_0px_rgba(220,220,220,0.30)] md:w-[588px] md:gap-8 md:px-10 md:py-8"
+      onClick={handleCardClick}
+    >
       {/* 상단 */}
       <div className="flex w-full flex-col gap-4">
         <div className="flex h-8 items-center justify-between">
@@ -32,7 +41,7 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
             <ChipRectangle moveType={moveTypeKey} size="sm" />
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
-          <ChipConfirmed />
+          {request.status === "confirmed" && <ChipConfirmed />}
           {/* 확정카드는 날짜 대신 확정 라벨만 */}
         </div>
         {/* 고객명 */}
