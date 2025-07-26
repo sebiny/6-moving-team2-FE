@@ -13,8 +13,7 @@
     "date": "评价日期"
   },
   "driver": {
-    "title": "{name} 司机",
-    "description": "{description}"
+    "title": "司机"
   },
   "cost": {
     "title": "报价金额"

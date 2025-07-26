@@ -13,8 +13,7 @@
     "date": "Review Date"
   },
   "driver": {
-    "title": "{name} Driver",
-    "description": "{description}"
+    "title": "Driver"
   },
   "cost": {
     "title": "Cost"

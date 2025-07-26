@@ -13,8 +13,7 @@
     "date": "작성일"
   },
   "driver": {
-    "title": "{name} 기사님",
-    "description": "{description}"
+    "title": "기사님"
   },
   "cost": {
     "title": "견적 금액"
