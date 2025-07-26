@@ -24,6 +24,7 @@
     "reviewCount": "개의 리뷰",
     "star": "점",
     "requestQuote": "지정 견적 요청하기",
+    "requestingQuote": "지정 견적 요청 중...",
     "requestQuoteComplete": "지정 견적 요청 완료"
   },
   "requestQuote": {

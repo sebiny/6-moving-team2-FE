@@ -23,6 +23,7 @@
     "reviewCount": "评论数",
     "star": "星级",
     "requestQuote": "指定报价请求",
+    "requestingQuote": "正在请求指定报价…",
     "requestQuoteComplete": "指定报价请求已完成"
   },
   "requestQuote": {

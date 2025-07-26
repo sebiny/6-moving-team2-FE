@@ -47,13 +47,13 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
         ))}
       </div>
 
-      <div className="mt-3 flex gap-5">
+      <div className="mt-3 flex gap-5 overflow-hidden">
         <Image
           src={driver.profileImage ?? "/assets/images/img_profile.svg"}
           alt="프로필 이미지"
           width={134}
           height={134}
-          className="hidden md:block"
+          className="hidden object-cover md:block"
         />
         <div className="w-full">
           <p className="text-black-300 text-xl font-semibold">{driver.shortIntro}</p>
@@ -66,7 +66,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                 alt="프로필 이미지"
                 width={50}
                 height={50}
-                className="md:hidden"
+                className="object-cover md:hidden"
               />
               <div className="w-full">
                 <div className="flex items-center justify-between">

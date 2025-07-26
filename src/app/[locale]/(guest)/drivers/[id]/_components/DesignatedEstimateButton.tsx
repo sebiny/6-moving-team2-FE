@@ -33,15 +33,20 @@ function DesignatedEstimateButton({ isDesignated }: DesignatedEstimateButtonType
       mutation.mutate();
     }
   };
+  const buttonText = mutation.isPending
+    ? t("driverPage.requestingQuote")
+    : isDesignated
+      ? t("driverPage.requestQuoteComplete")
+      : t("driverPage.requestQuote");
 
   return (
     <div className="w-full">
       <Button
-        text={isDesignated ? t("driverPage.requestQuoteComplete") : t("driverPage.requestQuote")}
+        text={buttonText}
         type="orange"
         onClick={handleClickRequest}
         className="h-16 w-full lg:w-80"
-        isDisabled={isDesignated}
+        isDisabled={isDesignated || mutation.isPending}
       />
     </div>
   );
