@@ -1,7 +1,7 @@
 "use client";
 
 import SearchBar from "@/components/input/SearchBar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Filters from "./Filters";
 import SortDropdown from "@/components/dropdown/SortDropdown";
 import DriverFindCard from "@/components/card/DriverFindCard";
@@ -22,6 +22,7 @@ function FindDrivers() {
   const region = searchParams.get("region") || "";
   const service = searchParams.get("service") || "";
   const orderBy = searchParams.get("orderBy") || "work";
+  const [keywordInput, setKeywordInput] = useState(keyword);
   const { user } = useAuth();
   const { ref, inView } = useInView();
 
@@ -33,6 +34,10 @@ function FindDrivers() {
       params.delete(key);
     }
     router.replace(`?${params.toString()}`);
+  };
+
+  const handleSearch = (val: string) => {
+    updateQuery("keyword", val);
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useInfiniteQuery<{
@@ -59,6 +64,7 @@ function FindDrivers() {
 
   if (isPending) return <div>{t("loading")}</div>;
   const drivers = data?.pages.flatMap((page) => page?.data ?? []) ?? [];
+  console.log(drivers.map((d) => d.id));
 
   return (
     <div className="mb-20 flex justify-center">
@@ -67,8 +73,9 @@ function FindDrivers() {
         <SearchBar
           width="w-full"
           placeholder={t("textPlaceholder")}
-          value={keyword}
-          onChange={(val) => updateQuery("keyword", val)}
+          value={keywordInput}
+          onChange={(val) => setKeywordInput(val)}
+          onSearch={handleSearch}
         />
         <div className="my-[38px] flex justify-between">
           <Filters
