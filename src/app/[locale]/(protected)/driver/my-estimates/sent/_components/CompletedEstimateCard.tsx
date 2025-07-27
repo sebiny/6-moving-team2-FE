@@ -45,22 +45,26 @@ export default function CompletedEstimateCard({ request }: CompletedEstimateCard
           <div className="h-px w-full bg-zinc-100" />
         </div>
         {/* 출발/도착지 + 이사일 */}
-        <div className="flex w-full items-start justify-between">
-          <div className="flex items-center gap-3">
+        <div className="flex w-full flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-1 items-end gap-3 md:flex-row md:items-center">
             <div className="flex flex-col">
-              <div className="text-sm text-zinc-500">{t("from")}</div>
-              <div className="text-base font-semibold text-neutral-900">{request.fromAddress}</div>
+              <div className="text-sm font-normal text-zinc-500">{t("to")}</div>
+              <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
+                {request.fromAddress}
+              </div>
             </div>
-            <div className="relative h-5 w-4">
+            <div className="relative h-5 w-4 flex-shrink-0">
               <Image src="/assets/icons/ic_arrow.svg" alt="화살표" fill className="object-center" />
             </div>
             <div className="flex flex-col">
-              <div className="text-sm text-zinc-500">{t("to")}</div>
-              <div className="text-base font-semibold text-neutral-900">{request.toAddress}</div>
+              <div className="text-sm font-normal text-zinc-500">{t("from")}</div>
+              <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
+                {request.toAddress}
+              </div>
             </div>
           </div>
           <div className="flex flex-col">
-            <div className="text-sm text-zinc-500">{t("to")}</div>
+            <div className="text-sm font-normal text-zinc-500">{t("date")}</div>
             <div className="text-base font-semibold text-neutral-900">{request.moveDate}</div>
           </div>
         </div>
