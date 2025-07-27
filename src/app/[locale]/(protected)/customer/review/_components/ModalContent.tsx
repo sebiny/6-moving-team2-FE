@@ -15,6 +15,10 @@ import { TranslateRegion } from "@/utills/TranslateFunction";
 
 interface Props {
   setIsValid: (value: boolean) => void;
+  setRating: (value: number) => void;
+  setContent: (value: string) => void;
+  setEstimateRequestId: (id: string) => void;
+  setDriverId: (id: string) => void;
 }
 
 type ReviewItem = {
@@ -33,7 +37,7 @@ type ReviewItem = {
   }[];
 };
 
-export default function ModalContent({ setIsValid }: Props) {
+export default function ModalContent({ setIsValid, setRating, setContent, setDriverId, setEstimateRequestId }: Props) {
   const { isSm, isLg } = useMediaHook();
   const [review, setReview] = useState<ReviewItem | null>(null);
   const t = useTranslations("Review");
@@ -42,7 +46,13 @@ export default function ModalContent({ setIsValid }: Props) {
     async function fetchReviews() {
       try {
         const [first] = await getWritableReviews();
-        setReview(first);
+        console.log("리뷰 불러옴:", first);
+
+        if (first) {
+          setEstimateRequestId(first.id);
+          setDriverId(first.estimates[0].driver.id);
+          setReview(first);
+        }
       } catch (error) {
         console.error("리뷰 가져오기 실패", error);
       }
@@ -105,7 +115,7 @@ export default function ModalContent({ setIsValid }: Props) {
           </div>
         </div>
       )}
-      <ReviewWrite setIsValid={setIsValid} />
+      <ReviewWrite setIsValid={setIsValid} setRating={setRating} setContent={setContent} />
     </div>
   );
 }

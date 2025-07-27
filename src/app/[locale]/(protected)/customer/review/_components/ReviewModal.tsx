@@ -5,6 +5,7 @@ import XIcon from "/public/assets/icons/ic_X_gray.svg";
 import ModalContent from "./ModalContent";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
+import { createReview } from "@/lib/api/api-review";
 
 interface Props {
   setIsModal: (value: boolean) => void;
@@ -13,6 +14,34 @@ interface Props {
 export default function ReviewModal({ setIsModal }: Props) {
   const t = useTranslations("Review");
   const [isValid, setIsValid] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [content, setContent] = useState("");
+  const [estimateRequestId, setEstimateRequestId] = useState("");
+  const [driverId, setDriverId] = useState("");
+
+  const handleSubmit = async () => {
+    console.log("🔥 제출 시 상태", { isValid, rating, content, estimateRequestId, driverId });
+
+    if (!isValid || !estimateRequestId || !driverId) {
+      alert("모든 값을 정확히 입력해주세요!");
+      return;
+    }
+
+    try {
+      await createReview({
+        estimateRequestId,
+        driverId,
+        rating,
+        content
+      });
+      alert("리뷰가 등록되었습니다.");
+      setIsModal(false);
+    } catch (error) {
+      console.error("리뷰 등록 실패:", error);
+      alert("리뷰 등록에 실패했습니다.");
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 md:items-center">
       <div
@@ -35,8 +64,19 @@ export default function ReviewModal({ setIsModal }: Props) {
               className="h-6 w-6 cursor-pointer lg:w-9"
             />
           </div>
-          <ModalContent setIsValid={setIsValid} />
-          <Button type={isValid ? "orange" : "gray"} text={t("button.createReview")} className="h-[54px] lg:h-[64px]" />
+          <ModalContent
+            setIsValid={setIsValid}
+            setRating={setRating}
+            setContent={setContent}
+            setEstimateRequestId={setEstimateRequestId}
+            setDriverId={setDriverId}
+          />
+          <Button
+            onClick={handleSubmit}
+            type={isValid ? "orange" : "gray"}
+            text={t("button.createReview")}
+            className="h-[54px] lg:h-[64px]"
+          />
         </div>
       </div>
     </div>

@@ -10,10 +10,13 @@ import Button from "@/components/Button";
 import ReviewCost from "./ReviewCost";
 import { useTranslations } from "next-intl";
 import { getWritableReviews } from "@/lib/api/api-review";
+import NoReview from "./NoReview";
+import Pagination from "@/components/Pagination";
 
 interface ReviewsProps {
   setIsModal: (value: boolean) => void;
 }
+
 type ReviewItem = {
   id: string;
   moveType: string;
@@ -22,6 +25,8 @@ type ReviewItem = {
 };
 
 export default function Reviews({ setIsModal }: ReviewsProps) {
+  const [page, setPage] = useState(1); //임의로 추가
+
   const t = useTranslations("Review");
   const SIZE_CLASSES = {
     base: ["lg:h-[242px] lg:w-280 lg:px-10 lg:py-8 lg:gap-6"],
@@ -29,23 +34,35 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
     md: ["md:h-[316px] md:w-[600px] md:p-8"]
   };
   const { isSm, isMd, isLg } = useMediaHook();
-  const [reviews, setReviews] = useState<ReviewItem[]>([]);
+  const [isNoReview, setIsNoReview] = useState(false);
 
+  const [reviews, setReviews] = useState<ReviewItem[]>([]);
   useEffect(() => {
     async function fetchReviews() {
       try {
         const reviewsData = await getWritableReviews();
-        setReviews(reviewsData);
+        if (!reviewsData || reviewsData.length === 0) {
+          setIsNoReview(true);
+        } else {
+          setReviews(reviewsData);
+          setIsNoReview(false);
+        }
       } catch (error) {
         console.error("리뷰 가져오기 실패", error);
       }
     }
     fetchReviews();
   }, []);
-
+  if (!isNoReview && reviews.length === 0) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <NoReview />
+      </div>
+    );
+  }
   return (
     <div>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col items-center gap-5">
         {reviews.map((review) => (
           <div
             key={review.id}
@@ -77,11 +94,11 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                   <div className={clsx(isSm && !isMd && "flex-col", "flex gap-[6px]")}>
                     <Image src={DriverIcon} width={16} height={18} alt="driver_icon" />
                     <p className="text-black-300 font-[Pretendard] text-[16px] leading-[26px] font-bold md:text-[18px]">
-                      {t("driver.title", { name: review.estimates[0].driver.nickname })}
+                      {review.estimates[0].driver.nickname} {t("driver.title")}
                     </p>
                   </div>
                   <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[12px] leading-[24px] font-normal text-ellipsis text-gray-500 md:text-[14px]">
-                    {t("driver.description", { description: review.estimates[0].driver.shortIntro })}
+                    {review.estimates[0].driver.shortIntro}
                   </p>
                   {isMd && <ChipRectangle moveType="SMALL" size={isLg ? "md" : "sm"} className="mt-2" />}
                 </div>
@@ -109,6 +126,9 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
             )}
           </div>
         ))}
+        <div className="mt-10">
+          <Pagination currentPage={page} setCurrentPage={setPage} />
+        </div>
       </div>
     </div>
   );

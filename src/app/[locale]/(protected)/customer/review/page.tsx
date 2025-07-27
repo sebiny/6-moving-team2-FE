@@ -8,7 +8,7 @@ function Page() {
   return (
     <div>
       <Header type="review" selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} />
-      <Main selectedIdx={selectedIdx} />
+      <Main selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} />
     </div>
   );
 }
