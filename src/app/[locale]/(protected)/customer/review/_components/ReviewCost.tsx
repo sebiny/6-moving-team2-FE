@@ -4,23 +4,9 @@ import { useTranslations } from "next-intl";
 import React, { use, useEffect, useState } from "react";
 interface CostType {
   className?: string;
+  cost: number;
 }
-export default function ReviewCost({ className }: CostType) {
-  const [cost, setCost] = useState(0);
-
-  useEffect(() => {
-    async function fetchReviews() {
-      try {
-        const reviews = await getWritableReviews();
-        const price = reviews?.[0]?.estimates?.[0]?.price ?? 0;
-        setCost(price);
-      } catch (error) {
-        console.error("리뷰 가져오기 실패", error);
-      }
-    }
-
-    fetchReviews();
-  }, []);
+export default function ReviewCost({ className, cost }: CostType) {
   const t = useTranslations("Review");
   const SIZE_CLASSES = {
     base: ["font-[Pretendard] text-gray-500 font-medium"],

@@ -21,12 +21,10 @@ export default function ReviewModal({ setIsModal }: Props) {
 
   const handleSubmit = async () => {
     console.log("🔥 제출 시 상태", { isValid, rating, content, estimateRequestId, driverId });
-
     if (!isValid || !estimateRequestId || !driverId) {
       alert("모든 값을 정확히 입력해주세요!");
       return;
     }
-
     try {
       await createReview({
         estimateRequestId,

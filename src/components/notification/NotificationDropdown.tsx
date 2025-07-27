@@ -41,7 +41,7 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
     // 로딩 중이거나 로그인 상태가 아니면 아무 작업도 하지 않고 종료
     if (isLoading || !user) {
       if (!user) {
-        setNotifications([]);
+        //   setNotifications([]);
       }
       return; // 이 return은 아무것도 반환하지 않으므로(void) 올바른 사용법입니다.
     }

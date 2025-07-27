@@ -12,6 +12,7 @@ import { getWritableReviews } from "@/lib/api/api-review";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { TranslateRegion } from "@/utills/TranslateFunction";
+import { MoveType } from "@/constant/moveTypes";
 
 interface Props {
   setIsValid: (value: boolean) => void;
@@ -23,7 +24,7 @@ interface Props {
 
 type ReviewItem = {
   id: string;
-  moveType: string;
+  moveType: MoveType;
   moveDate: string;
   fromAddress: { region: string; district: string };
   toAddress: { region: string; district: string };
@@ -45,8 +46,9 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
   useEffect(() => {
     async function fetchReviews() {
       try {
-        const [first] = await getWritableReviews();
-        console.log("리뷰 불러옴:", first);
+        const data = await getWritableReviews(); // page 파라미터 생략 가능
+        const first = data?.reviewableEstimates?.[0]; // 첫 번째 리뷰만 선택
+        console.log("🔥 첫 번째 리뷰:", first);
 
         if (first) {
           setEstimateRequestId(first.id);
@@ -85,8 +87,7 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
       {review && (
         <div>
           <div className="flex gap-3">
-            <ChipRectangle moveType="SMALL" size={!isLg && isSm ? "sm" : "md"} />
-            <ChipRectangle moveType="REQUEST" size={!isLg && isSm ? "sm" : "md"} />
+            <ChipRectangle moveType={review.moveType} size={!isLg && isSm ? "sm" : "md"} />
           </div>
 
           <div className="border-line-100 flex justify-between border-b pt-[14px] pb-3 lg:py-4">
@@ -94,7 +95,8 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
               {!isLg && isSm && <Image src={DriverIcon} width={15} height={18} alt="driver_icon" />}
               {isLg && <Image src={DriverIcon} width={18} height={20} alt="driver_icon" />}
               <p className="text-black-300 text-4 leading-[26px] font-semibold lg:text-[18px]">
-                {t("driver.title", { name: review.estimates[0].driver.nickname })}
+                {review.estimates[0].driver.nickname}
+                {t("driver.title")}
               </p>
             </div>
             <Image src={DriverImg} width={50} height={50} alt="driver_img" />

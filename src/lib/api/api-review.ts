@@ -1,10 +1,12 @@
 import { cookieFetch } from "../FetchClient";
 
 //작성가능한 리뷰(견적) 가져오기
-export async function getWritableReviews() {
-  return cookieFetch("/reviews/reviewable", {
+export async function getWritableReviews(page?: number) {
+  const query = page ? `?page=${page}` : "";
+  const res = await cookieFetch(`/reviews/reviewable${query}`, {
     method: "GET"
   });
+  return res;
 }
 
 //리뷰 생성하기
@@ -21,8 +23,8 @@ export async function createReview(data: {
 }
 
 //내가 쓴 리뷰 가져오기
-export async function getMyReviews() {
-  return cookieFetch("/reviews/mine", {
+export async function getMyReviews(page: number) {
+  return cookieFetch(`/reviews/mine?page=${page}`, {
     method: "GET"
   });
 }

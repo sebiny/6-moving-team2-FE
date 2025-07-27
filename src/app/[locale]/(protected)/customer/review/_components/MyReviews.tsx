@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DriverImg from "/public/assets/images/img_profile.svg";
 import Image from "next/image";
 import clsx from "clsx";
@@ -15,6 +15,8 @@ import { TranslateRegion } from "@/utills/TranslateFunction";
 import NoMyReview from "./NoMyReview";
 import Pagination from "@/components/Pagination";
 import Button from "@/components/Button";
+import { useQuery } from "@tanstack/react-query";
+import { MoveType } from "@/constant/moveTypes";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
@@ -36,14 +38,17 @@ type ReviewItem = {
   };
   request: {
     moveDate: string;
+    moveType: MoveType;
     fromAddress: Address;
     toAddress: Address;
   };
 };
+type ReviewListResponse = {
+  reviews: ReviewItem[];
+  totalCount: number;
+};
 export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const t = useTranslations("Review");
-  const [reviews, setReviews] = useState<ReviewItem[]>([]);
-  const [isNoReview, setIsNoReview] = useState(false);
   const [page, setPage] = useState(1); //임의로 추가
 
   const SIZE_CLASSES = {
@@ -52,31 +57,24 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
     md: ["md:w-147 md:h-91 md:p-10"]
   };
   const { isSm, isMd, isLg } = useMediaHook();
+  const { data, isLoading, isError } = useQuery<ReviewListResponse>({
+    queryKey: ["reviews", page],
+    queryFn: () => getMyReviews(page)
+  });
 
-  useEffect(() => {
-    async function fetchReviews() {
-      try {
-        const data = await getMyReviews();
-        if (!data || data.length === 0) {
-          setIsNoReview(true);
-        } else {
-          setReviews(data);
-          setIsNoReview(false);
-        }
-        console.log(reviews);
-      } catch (error) {
-        console.error("리뷰 가져오기 실패", error);
-        setIsNoReview(true);
-      }
-    }
-    fetchReviews();
-  }, []);
+  const totalCount = data?.totalCount ?? 0;
+  const reviews = data?.reviews ?? [];
+  console.log(data);
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
     return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
   };
 
-  if (isNoReview) {
+  if (isLoading) {
+    return <div>로딩중</div>;
+  }
+
+  if (isError || !reviews || reviews.length === 0) {
     return (
       <div className="flex h-full items-center justify-center">
         <NoMyReview setSelectedIdx={setSelectedIdx} />
@@ -87,18 +85,18 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
     <div>
       <div className="flex flex-col items-center gap-5">
         {reviews.map((review) => {
-          const { id, content, rating, driver, request } = review;
+          const { content, rating, driver, request } = review;
           const { nickname, shortIntro } = driver;
           const { fromAddress, toAddress } = request;
           const moveDate = format(new Date(request.moveDate), "yyyy. MM. dd");
           const moveDetails = [
             {
               label: "from",
-              content: `${TranslateRegion(review.request.fromAddress.region)} ${review.request.fromAddress.district}`
+              content: `${TranslateRegion(fromAddress.region)} ${fromAddress.district}`
             },
             {
               label: "to",
-              content: `${TranslateRegion(review.request.fromAddress.region)} ${review.request.toAddress.district}`
+              content: `${TranslateRegion(fromAddress.region)} ${toAddress.district}`
             },
             {
               label: "date",
@@ -118,8 +116,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
               <div className={clsx("flex flex-col", isSm && !isMd && "border-line-100 border-b pb-4")}>
                 {isSm && !isMd && (
                   <div className="mb-3 flex gap-2">
-                    <ChipRectangle moveType="SMALL" size="sm" />
-                    <ChipRectangle moveType="REQUEST" size="sm" />
+                    <ChipRectangle moveType={request.moveType} size="sm" />
                   </div>
                 )}
 
@@ -137,16 +134,16 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       <div className={clsx(isMd && "flex gap-[6px]", isSm && !isMd && "flex flex-col gap-[4px]")}>
                         <Image src={DriverIcon} width={16} height={18} alt="driver_icon" />
                         <p className="text-black-300 font-[Pretendard] text-[16px] leading-[26px] font-bold md:text-[18px]">
-                          {review.driver.nickname} {t("driver.title")}
+                          {nickname} {t("driver.title")}
                         </p>
                       </div>
                       {isMd && (
                         <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[12px] leading-[24px] font-normal text-ellipsis text-gray-500 md:text-[14px]">
-                          {review.driver.shortIntro}
+                          {shortIntro}
                         </p>
                       )}
                     </div>
-                    {isMd && <ChipRectangle moveType="SMALL" size={isLg ? "md" : "sm"} className="mt-2" />}
+                    {isMd && <ChipRectangle moveType={request.moveType} size={isLg ? "md" : "sm"} className="mt-2" />}
                   </div>
                 </div>
               </div>
@@ -163,9 +160,9 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                 ))}
               </div>
               <div className={clsx("flex flex-col gap-3")}>
-                <StarIcon rating={review.rating} width={100} height={20} />
+                <StarIcon rating={rating} width={100} height={20} />
                 <p className="text-black-400 min-w-[287px] font-[Pretendard] text-[16px] leading-[26px] font-medium md:text-[18px]">
-                  {review.content}
+                  {content}
                 </p>
               </div>
               {isSm && !isMd && (
@@ -190,7 +187,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
           );
         })}
         <div className="mt-10">
-          <Pagination currentPage={page} setCurrentPage={setPage} />
+          <Pagination currentPage={page} setCurrentPage={setPage} totalReviews={totalCount} />
         </div>
       </div>
     </div>
