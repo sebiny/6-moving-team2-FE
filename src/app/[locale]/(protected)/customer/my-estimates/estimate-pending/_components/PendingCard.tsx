@@ -136,7 +136,7 @@ export default function PendingCard({ data, moveType }: Props) {
         </div>
 
         {showModal && (
-          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center">
             <AlertModal
               type="handleClick"
               message="견적이 확정되었습니다!"
