@@ -160,6 +160,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
               프로필 이미지
             </label>
             <ImageUploader
+              label=""
               id="profileImage"
               maxSizeMB={5}
               onImageChange={handleImageChange}
