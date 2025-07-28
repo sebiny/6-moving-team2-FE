@@ -12,6 +12,7 @@ import DriverFindCard from "@/components/card/DriverFindCard";
 import FilterSection from "@/components/filter/FilterSection";
 import { driver } from "@/constant/constant";
 import { useState } from "react";
+import DriverFindCardSkeleton from "@/components/card/DriverFindCardSkeleton";
 
 // Title 더미데이터
 const mockData = [
@@ -128,6 +129,9 @@ function CommonPage() {
       </div>
       <div>
         <DriverFindCard driver={driver} />
+      </div>
+      <div>
+        <DriverFindCardSkeleton />
       </div>
     </div>
   );
