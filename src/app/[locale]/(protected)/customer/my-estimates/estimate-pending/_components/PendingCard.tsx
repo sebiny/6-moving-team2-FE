@@ -9,7 +9,7 @@ import { Estimate } from "@/types/estimateType";
 import { useAcceptEstimate } from "@/lib/api/api-myEstimate";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import { useState } from "react";
-import AlertModal from "@/components/AlertModal";
+import AlertModal from "@/components/common-modal/AlertModal";
 
 interface Props {
   data: Estimate;

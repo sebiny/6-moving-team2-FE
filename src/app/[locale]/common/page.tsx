@@ -12,8 +12,8 @@ import DriverFindCard from "@/components/card/DriverFindCard";
 import FilterSection from "@/components/filter/FilterSection";
 import { driver } from "@/constant/constant";
 import { useState } from "react";
-import AlertModal from "@/components/AlertModal";
 import { useRouter } from "next/navigation";
+import AlertModal from "@/components/common-modal/AlertModal";
 
 // Title 더미데이터
 const mockData = [

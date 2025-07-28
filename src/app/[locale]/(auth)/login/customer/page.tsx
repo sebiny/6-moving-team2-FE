@@ -4,10 +4,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLoginForm } from "@/hooks/useAuthForm";
 import TextField from "@/components/input/TextField";
+import { ToastModal } from "@/components/common-modal/ToastModal";
+import { useEffect } from "react";
 
 export default function LoginCustomer() {
   const { email, setEmail, password, setPassword, onSubmit, isEmailValid, isPasswordValid, isFormValid } =
     useLoginForm();
+
+  useEffect(() => {
+    const signupSuccess = localStorage.getItem("signupSuccess");
+    if (signupSuccess === "true") {
+      ToastModal("회원가입이 완료되었습니다!");
+      localStorage.removeItem("signupSuccess");
+    }
+  }, []);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0 md:pb-15 lg:pb-15">
