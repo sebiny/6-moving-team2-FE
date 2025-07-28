@@ -8,6 +8,8 @@ import { MoveType } from "@/constant/moveTypes";
 import { Estimate } from "@/types/estimateType";
 import { useAcceptEstimate } from "@/lib/api/api-myEstimate";
 import ChipRectangle from "@/components/chip/ChipRectangle";
+import { useState } from "react";
+import AlertModal from "@/components/AlertModal";
 
 interface Props {
   data: Estimate;
@@ -28,6 +30,8 @@ export default function PendingCard({ data, moveType }: Props) {
   const ClickDetail = () => {
     router.push(`/customer/my-estimates/estimate-pending/${id}`);
   };
+
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="w-full space-y-4 rounded-2xl bg-white shadow-lg sm:p-5 md:px-8 md:py-6 lg:px-10 lg:py-8">
@@ -121,8 +125,7 @@ export default function PendingCard({ data, moveType }: Props) {
             onClick={() =>
               acceptEstimate(id, {
                 onSuccess: (data) => {
-                  alert(data?.message); // 메시지 alert
-                  router.push(`/customer/my-estimates/${id}`); // 페이지 이동
+                  setShowModal(true);
                 },
                 onError: (error: any) => {
                   alert(error.message || "견적 확정 중 오류가 발생했습니다.");
@@ -131,6 +134,18 @@ export default function PendingCard({ data, moveType }: Props) {
             }
           />
         </div>
+
+        {showModal && (
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+            <AlertModal
+              type="handleClick"
+              message="견적이 확정되었습니다!"
+              buttonText="받았던 견적 보러가기"
+              onClose={() => setShowModal(false)}
+              onConfirm={() => router.push("/customer/my-estimates?tab=past")}
+            />
+          </div>
+        )}
 
         {/* 상세보기 버튼 */}
         <div className="order-2 w-full md:order-1 md:w-1/2">

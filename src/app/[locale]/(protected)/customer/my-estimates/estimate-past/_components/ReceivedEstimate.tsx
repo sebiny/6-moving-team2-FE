@@ -112,7 +112,8 @@ export default function ReceivedEstimate({ data, moveType }: Props) {
       {/* 견적가 (md 이상) */}
       <div className="hidden items-center justify-end text-2xl font-extrabold text-gray-900 md:flex">
         <span className="mr-2 text-base font-medium text-gray-500">{t("estimateCost")}</span>
-        {price.toLocaleString()}원
+        {price.toLocaleString()}
+        {t("won")}
       </div>
 
       {/* 견적 상태 및 가격 (sm) */}
@@ -120,7 +121,8 @@ export default function ReceivedEstimate({ data, moveType }: Props) {
         <EstimateStatus status={status} />
         <div className="flex text-lg font-extrabold text-gray-900">
           <span className="mt-1 mr-2 text-sm font-normal text-gray-500">{t("estimateCost")}</span>
-          {price.toLocaleString()}원
+          {price.toLocaleString()}
+          {t("won")}
         </div>
       </div>
     </div>
