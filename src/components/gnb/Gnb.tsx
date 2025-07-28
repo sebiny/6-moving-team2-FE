@@ -10,6 +10,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import Button from "../Button";
 import { useRouter } from "next/navigation";
 import { OpenLayer, useGnbHooks } from "@/hooks/useGnbHook";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 // Gnb에서 정의해야 하는 요소들
 // 화면 너비에 따라 UI가 바뀜
@@ -89,6 +90,10 @@ export default function Gnb() {
               <GnbMenuList browserWidth="lg" isLg={true} userRole={userRole} />
             </GnbListLayout>
             <div className="flex items-center justify-between">
+              <div className="mr-5">
+                <LanguageSwitcher />
+              </div>
+
               {isLoggedIn ? (
                 <div className="flex flex-row justify-between gap-5">
                   <Notification
@@ -117,6 +122,7 @@ export default function Gnb() {
           </div>
         ) : (
           <div className="flex items-center justify-between gap-5">
+            <LanguageSwitcher /> {/* 여기! */}
             <Notification
               ref={notificationRef}
               className={isLoggedIn ? "block" : "hidden"}
