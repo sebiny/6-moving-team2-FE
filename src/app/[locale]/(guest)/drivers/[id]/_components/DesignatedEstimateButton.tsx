@@ -13,15 +13,17 @@ interface DesignatedEstimateButtonType {
   isDesignated: boolean;
 }
 
-function DesignatedEstimateButton({ isDesignated }: DesignatedEstimateButtonType) {
+function DesignatedEstimateButton({ isDesignated: initialIsDesignated }: DesignatedEstimateButtonType) {
   const t = useTranslations("FindDriver");
   const router = useRouter();
   const { user } = useAuth();
   const { id } = useParams();
   const driverId = id as string;
   const { openModal, closeModal } = useModal();
+  const [isDesignated, setIsDesignated] = useState(initialIsDesignated);
   const mutation = useMutation({
     mutationFn: () => createDesignatedEstimateRequest({ driverId }),
+    onSuccess: () => setIsDesignated(true),
     onError: (err) => {
       openModal(<EstimateRequestModal onClose={closeModal} errorMsg={err.message} />);
       //동적인 에러 메세지 처리

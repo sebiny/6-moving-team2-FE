@@ -32,12 +32,12 @@ export default function EstimateDetail({ moveType, startAddress, endAddress, dat
 
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">{t("from")}</span>
-          <span className="max-w-[60%] text-right font-semibold break-words">{startAddress}</span>
+          <span className="max-w-[60%] truncate font-semibold">{startAddress}</span>
         </div>
 
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">{t("to")}</span>
-          <span className="max-w-[60%] text-right font-semibold break-words">{endAddress}</span>
+          <span className="max-w-[60%] truncate font-semibold">{endAddress}</span>
         </div>
 
         <hr className="border-t border-gray-100 lg:hidden" />
@@ -53,3 +53,6 @@ export default function EstimateDetail({ moveType, startAddress, endAddress, dat
     </div>
   );
 }
+
+// truncate: overflow-hidden + whitespace-nowrap + text-ellipsis Tailwind 유틸
+//  두 줄까지만 보여주고 넘치면 ... 처리하고 싶다면 line-clamp-2

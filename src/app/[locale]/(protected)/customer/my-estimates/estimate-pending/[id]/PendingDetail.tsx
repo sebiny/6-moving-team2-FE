@@ -3,7 +3,6 @@
 import Title from "@/components/Title";
 import SubHeader from "../../_components/SubHeader";
 import Button from "@/components/Button";
-import EstimateDetailInfo from "../../_components/EstimateDetailInfo";
 import ShareDriver from "@/components/ShareDriver";
 import OrangeBackground from "@/components/OrangeBackground";
 import Image from "next/image";
@@ -12,6 +11,9 @@ import { useAcceptEstimate, useEstimateDetail } from "@/lib/api/api-myEstimate";
 import dayjs from "dayjs";
 import { getMoveTypeLabel } from "@/utills/moveUtils";
 import { formatStreetAddress } from "@/utills/addressUtils";
+import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
+import { useState } from "react";
+import AlertModal from "@/components/AlertModal";
 
 export default function PendingDetailPage() {
   const { id } = useParams();
@@ -30,6 +32,8 @@ export default function PendingDetailPage() {
 
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
+
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <>
@@ -94,8 +98,7 @@ export default function PendingDetailPage() {
                   onClick={() =>
                     acceptEstimate(data.id, {
                       onSuccess: (data) => {
-                        alert(data?.message); // 메시지 alert
-                        router.push(`/customer/my-estimates/estimate-past/${id}`); // 페이지 이동
+                        setShowModal(true);
                       },
                       onError: (error: any) => {
                         alert(error.message || "견적 확정 중 오류가 발생했습니다.");
@@ -104,6 +107,18 @@ export default function PendingDetailPage() {
                   }
                 />
               </div>
+
+              {showModal && (
+                <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+                  <AlertModal
+                    type="handleClick"
+                    message="견적이 확정되었습니다!"
+                    buttonText="받았던 견적 보러가기"
+                    onClose={() => setShowModal(false)}
+                    onConfirm={() => router.push("/customer/my-estimates?tab=past")}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
@@ -120,8 +135,7 @@ export default function PendingDetailPage() {
               onClick={() =>
                 acceptEstimate(data.id, {
                   onSuccess: (data) => {
-                    alert(data?.message); // 메시지 alert
-                    router.push(`/customer/my-estimates/estimate-past/${id}`); // 페이지 이동
+                    setShowModal(true);
                   },
                   onError: (error: any) => {
                     alert(error.message || "견적 확정 중 오류가 발생했습니다.");
@@ -129,6 +143,18 @@ export default function PendingDetailPage() {
                 })
               }
             />
+
+            {showModal && (
+              <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+                <AlertModal
+                  type="handleClick"
+                  message="견적이 확정되었습니다!"
+                  buttonText="받았던 견적 보러가기"
+                  onClose={() => setShowModal(false)}
+                  onConfirm={() => router.push("/customer/my-estimates?tab=past")}
+                />
+              </div>
+            )}
 
             <div className="my-3 border-t border-gray-100" />
 
