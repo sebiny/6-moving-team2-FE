@@ -132,6 +132,8 @@ export default function CustomerProfileCreateForm() {
       />
       {isUploading && <p className="text-sm text-gray-500">이미지 업로드 중...</p>}
 
+      <div className="border-line-100 border-b"></div>
+
       <div>
         <p className="text-black-300 font-semibold lg:text-xl">이용 서비스</p>
         <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">
@@ -139,6 +141,8 @@ export default function CustomerProfileCreateForm() {
         </p>
         <SelectService services={selectedMoveTypes} setServices={setSelectedMoveTypes} />
       </div>
+
+      <div className="border-line-100 border-b"></div>
 
       <div>
         <p className="text-black-300 font-semibold lg:text-xl">내가 사는 지역</p>
