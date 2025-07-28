@@ -13,7 +13,7 @@ import { getMoveTypeLabel } from "@/utills/moveUtils";
 import { formatStreetAddress } from "@/utills/addressUtils";
 import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
 import { useState } from "react";
-import AlertModal from "@/components/AlertModal";
+import AlertModal from "@/components/common-modal/AlertModal";
 
 export default function PendingDetailPage() {
   const { id } = useParams();
