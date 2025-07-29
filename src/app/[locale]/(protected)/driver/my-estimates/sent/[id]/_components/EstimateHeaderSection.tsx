@@ -45,12 +45,12 @@ export default function EstimateHeaderSection({ moveType, isDesignated, status, 
       <div className="h-0 w-full outline outline-offset-[-0.5px] outline-zinc-100" />
 
       {/* 견적가 */}
-      <div className="flex w-full items-start text-base">
+      <div className="flex w-full items-start text-base md:max-w-[420px]">
         {/* label - 고정 너비 */}
-        <span className="w-28 font-semibold text-neutral-800 md:w-32 md:text-xl">{t("cost")}</span>
+        <span className="w-28 font-semibold text-neutral-800 md:w-[200px] md:text-xl">{t("cost")}</span>
 
         {/* value - 오른쪽 정렬 */}
-        <span className="flex-1 text-right text-xl font-bold text-neutral-800 md:text-2xl">
+        <span className="flex-1 text-right text-xl font-bold text-neutral-800 md:text-left md:text-2xl">
           {price ? `${price.toLocaleString()}원` : "견적가 없음"}
         </span>
       </div>

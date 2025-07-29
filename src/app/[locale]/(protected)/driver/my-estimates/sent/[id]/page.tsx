@@ -101,9 +101,7 @@ export default function EstimateDetailPage() {
       <OrangeBackground />
       {/* 상단 정보 + 공유 */}
       <div className="mt-8 flex w-full flex-col gap-5 px-5 md:gap-7 md:px-18 lg:flex-row lg:items-start lg:justify-between lg:px-90">
-        {/* 왼쪽 - 헤더 섹션 + 견적 정보 섹션 */}
-        <div className="flex flex-col items-start gap-7">
-          {/* 헤더 섹션 */}
+        <div className="w-full lg:w-[60%]">
           <EstimateHeaderSection
             moveType={moveType as MoveType}
             isDesignated={isDesignated}
@@ -112,18 +110,19 @@ export default function EstimateDetailPage() {
             price={price}
           />
 
-          {/* 견적 정보 섹션 */}
-          <EstimateInfoSection
-            createdAt={formatDate(estimateRequest.createdAt)}
-            moveTypeLabel={getMoveTypeLabel(moveType)}
-            moveDate={formatDateTime(moveDate)}
-            from={fromAddress.street}
-            to={toAddress.street}
-          />
+          <div className="mt-5 lg:mt-7">
+            <EstimateInfoSection
+              createdAt={formatDate(estimateRequest.createdAt)}
+              moveTypeLabel={getMoveTypeLabel(moveType)}
+              moveDate={formatDateTime(moveDate)}
+              from={fromAddress.street}
+              to={toAddress.street}
+            />
+          </div>
         </div>
 
         {/* 오른쪽 - 공유 버튼 (lg에서만 보임) */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:flex lg:w-[30%] lg:items-start lg:justify-end">
           <ShareDriver text={t("shareEstimate")} />
         </div>
       </div>
