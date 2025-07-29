@@ -91,7 +91,7 @@ export default function Gnb() {
             </GnbListLayout>
             <div className="flex items-center justify-between">
               <div className="mr-5">
-                <LanguageSwitcher />
+                {isLoggedIn ? <LanguageSwitcher /> : <LanguageSwitcher classname={"py-2 px-4 text-lg"} />}
               </div>
 
               {isLoggedIn ? (
