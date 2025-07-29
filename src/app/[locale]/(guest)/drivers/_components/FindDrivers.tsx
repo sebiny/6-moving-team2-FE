@@ -13,6 +13,7 @@ import { DriverType } from "@/types/driverType";
 import { useInView } from "react-intersection-observer";
 import { useAuth } from "@/providers/AuthProvider";
 import { useTranslations } from "next-intl";
+import DriverFindCardSkeleton from "@/components/card/DriverFindCardSkeleton";
 
 function FindDrivers() {
   const t = useTranslations("FindDriver");
@@ -62,7 +63,6 @@ function FindDrivers() {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isPending) return <div>{t("loading")}</div>;
   const drivers = data?.pages.flatMap((page) => page?.data ?? []) ?? [];
   console.log(drivers.map((d) => d.id));
 
@@ -92,15 +92,13 @@ function FindDrivers() {
           />
         </div>
         <div className="flex flex-col gap-5">
-          {drivers?.map((driver) => (
-            <div className="cursor-pointer">
-              <DriverFindCard key={driver.id} driver={driver} />
-            </div>
-          ))}
+          {isPending
+            ? Array.from({ length: 5 }).map((_, i) => <DriverFindCardSkeleton key={i} />)
+            : drivers.map((driver) => <DriverFindCard key={driver.id} driver={driver} />)}
           <div ref={ref} className="h-1" />
           {isFetchingNextPage && (
             <div className="mt-4 flex justify-center">
-              <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500" />
+              <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-orange-400" />
             </div>
           )}
         </div>

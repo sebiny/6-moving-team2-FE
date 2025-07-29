@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { driverService } from "@/lib/api/api-driver";
 import { ReviewType } from "@/types/reviewType";
 import { useTranslations } from "next-intl";
+import DriverReviewSkeleton from "./DriverReviewSkeleton";
 
 interface ReviewsType {
   driver: DriverType;
@@ -17,11 +18,14 @@ interface ReviewsType {
 function DriverReviews({ driver }: ReviewsType) {
   const [page, setPage] = useState<number>(1);
   const t = useTranslations("FindDriver");
-  const { data: reviews, isPending } = useQuery<ReviewType[] | null>({
+  const {
+    data: reviews,
+    isPending,
+    isFetching
+  } = useQuery<ReviewType[] | null>({
     queryKey: ["reviews", driver.id, page],
     queryFn: () => driverService.getDriverReviews(driver.id, page)
   });
-  if (isPending) return <div>{t("loading")}</div>;
   if (!reviews) return <p>{t("reviewFetchFailed")}</p>;
 
   function StarBar(count: number) {
@@ -33,7 +37,13 @@ function DriverReviews({ driver }: ReviewsType) {
   return (
     <div className="mb-50">
       <div className="text-black-400 text-xl font-semibold">{t("driverPage.review")}</div>
-      {reviews.length ? (
+      {isPending || isFetching ? (
+        <div className="mt-8 space-y-4">
+          {[...Array(3)].map((_, i) => (
+            <DriverReviewSkeleton key={i} />
+          ))}
+        </div>
+      ) : reviews.length ? (
         <div>
           <div className="mt-4 flex justify-between">
             <div className="flex gap-[18px]">
