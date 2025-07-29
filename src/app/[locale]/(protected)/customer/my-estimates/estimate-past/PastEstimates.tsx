@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 export default function PastEstimates() {
   const t = useTranslations("MyEstimates");
   const { data, isLoading } = usePastEstimates();
-  const [selectedService, setSelectedService] = useState("WHOLE");
+  const [selectedService, setSelectedService] = useState(t("total"));
 
   if (isLoading) {
     return (
@@ -85,7 +85,7 @@ export default function PastEstimates() {
               <div className="flex flex-col gap-6">
                 {group.estimates
                   .filter((estimate) => {
-                    if (selectedService === "ESTIMATE") return estimate.status === "ACCEPTED";
+                    if (selectedService === t("confirmed")) return estimate.status === "ACCEPTED";
                     return true; // "WHOLE" 또는 ""일 경우 전체 표시
                   })
                   .map((estimate) => (

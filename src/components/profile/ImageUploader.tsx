@@ -77,7 +77,7 @@ const ImageUploader: FC<ImageUploaderProps> = ({
     <div className="mb-6">
       <label className="mb-2 block text-lg leading-[26px] font-bold text-gray-600">{label}</label>
       <div className="flex h-auto w-full items-start gap-4 md:w-[588px]">
-        <div className="relative h-[282px] w-[282px]">
+        <div className="relative h-[160px] w-[160px]">
           {previewUrl ? (
             <div
               onClick={handleClickImage}

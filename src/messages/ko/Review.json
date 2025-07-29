@@ -1,7 +1,7 @@
 {
   "estimate": {
-    "waiting": "견적 대기",
-    "received": "받은 견적"
+    "waiting": "대기 중인 견적",
+    "received": "받았던 견적"
   },
   "driverEstimate": {
     "sent": "보낸 견적",

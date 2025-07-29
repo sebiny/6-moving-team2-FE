@@ -2,7 +2,6 @@
 
 import Title from "@/components/Title";
 import SubHeader from "../../_components/SubHeader";
-import EstimateDetailInfo from "../../_components/EstimateDetailInfo";
 import ShareDriver from "@/components/ShareDriver";
 import OrangeBackground from "@/components/OrangeBackground";
 import Image from "next/image";
@@ -13,6 +12,7 @@ import { useEstimateDetail } from "@/lib/api/api-myEstimate";
 import dayjs from "dayjs";
 import { getMoveTypeLabel } from "@/utills/moveUtils";
 import { formatStreetAddress } from "@/utills/addressUtils";
+import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
 
 export default function PastDetailPage() {
   const t = useTranslations("MyEstimates");

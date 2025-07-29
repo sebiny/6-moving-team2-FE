@@ -12,6 +12,8 @@ import DriverFindCard from "@/components/card/DriverFindCard";
 import FilterSection from "@/components/filter/FilterSection";
 import { driver } from "@/constant/constant";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import AlertModal from "@/components/common-modal/AlertModal";
 import DriverFindCardSkeleton from "@/components/card/DriverFindCardSkeleton";
 
 // Title 더미데이터
@@ -60,6 +62,12 @@ function CommonPage() {
   const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
   const [isDesignatedChecked, setIsDesignatedChecked] = useState(false);
   const [isAvailableRegionChecked, setIsAvailableRegionChecked] = useState(false);
+
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+
+  const router = useRouter();
+
   return (
     /**
      * Title 컴포넌트
@@ -89,6 +97,29 @@ function CommonPage() {
           setIsAvailableRegionChecked={setIsAvailableRegionChecked}
         />
       </div>
+
+      <Button type="orange" text="알림모달을 나타낼 버튼1" onClick={() => setShowModal1(true)} />
+
+      {showModal1 && (
+        <AlertModal
+          type="confirm"
+          message="확인되었습니다."
+          buttonText="모달 내 확인 버튼"
+          onClose={() => setShowModal1(false)}
+        />
+      )}
+
+      <Button type="orange" text="알림모달을 나타낼 버튼2" onClick={() => setShowModal2(true)} />
+
+      {showModal2 && (
+        <AlertModal
+          type="handleClick"
+          message="성공했습니다! 페이지 이동합니다"
+          buttonText="모달 내 페이지 이동할 버튼"
+          onClose={() => setShowModal2(false)}
+          onConfirm={() => router.push("이동할 페이지 주소")}
+        />
+      )}
 
       {/* ChipCircle 보여주기 */}
       <div className="flex gap-2">

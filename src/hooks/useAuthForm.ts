@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { parseBackendError } from "@/utills/ErrorParser";
 import { UserType } from "@/types/UserType";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 const NAME_REGEX = /^[가-힣]{2,5}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -115,11 +116,15 @@ export function useSignupForm(userType: UserType) {
         phone,
         userType
       });
-      router.push("/login/" + userType.toLowerCase());
+
+      localStorage.setItem("signupSuccess", "true");
+      setTimeout(() => {
+        router.push("/login/" + userType.toLowerCase());
+      }, 100);
     } catch (error: any) {
       console.error("Signup failed:", error);
       const message = parseBackendError(error.status, error.message);
-      alert(message);
+      ToastModal(message);
     }
   };
 
