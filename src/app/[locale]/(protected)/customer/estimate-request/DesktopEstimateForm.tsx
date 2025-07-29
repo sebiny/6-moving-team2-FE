@@ -10,6 +10,7 @@ import Button from "@/components/Button";
 import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
 import { useTranslations } from "next-intl";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 export default function DesktopEstimateForm() {
   const t = useTranslations("EstimateReq");
@@ -49,9 +50,9 @@ export default function DesktopEstimateForm() {
         fromAddressId: String(addressFrom.id),
         toAddressId: String(addressTo.id)
       });
-      alert(t("estimateReqSuccess"));
+      ToastModal(t("estimateReqSuccess"));
     } catch {
-      alert(t("estimateReqFailure"));
+      ToastModal(t("estimateReqFailure"));
     }
   };
 
