@@ -4,14 +4,24 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLoginForm } from "@/hooks/useAuthForm";
 import TextField from "@/components/input/TextField";
+import { ToastModal } from "@/components/common-modal/ToastModal";
+import { useEffect } from "react";
 
 export default function LoginCustomer() {
   const { email, setEmail, password, setPassword, onSubmit, isEmailValid, isPasswordValid, isFormValid } =
     useLoginForm();
 
+  useEffect(() => {
+    const signupSuccess = localStorage.getItem("signupSuccess");
+    if (signupSuccess === "true") {
+      ToastModal("회원가입이 완료되었습니다!");
+      localStorage.removeItem("signupSuccess");
+    }
+  }, []);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0 md:pb-15 lg:pb-15">
-      <div className="relative flex w-full max-w-[327px] flex-col gap-[40px] md:w-[640px] md:max-w-none md:gap-[48px] md:rounded-[40px] md:bg-gray-50 md:px-[40px] md:py-[68px] lg:h-[876px] lg:w-[740px] lg:px-[50px] lg:py-[48px]">
+      <div className="relative mt-[36px] flex w-full max-w-[327px] flex-col gap-[40px] md:mt-[40px] md:w-[640px] md:max-w-none md:gap-[48px] md:rounded-[40px] md:bg-gray-50 md:px-[40px] md:py-[68px] lg:mt-[48px] lg:w-[740px] lg:px-[50px] lg:py-[48px]">
         <div className="flex flex-col md:gap-[8px]">
           <div className="flex h-[84px] w-full items-center justify-center md:h-[100px]">
             <Image

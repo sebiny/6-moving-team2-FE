@@ -8,6 +8,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import ConditionalTransitionWrapper from "@/components/container/ConditionalTransitionWrapper";
+import { cssTransition, ToastContainer } from "react-toastify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +48,16 @@ export default async function RootLayout({
           <Providers>
             <ConditionalTransitionWrapper>
               <Gnb />
-              <div className="mt-14 flex-1 bg-white lg:mt-22">{children}</div>
+              <div className="mt-14 flex-1 bg-white lg:mt-22">
+                {children}
+                <ToastContainer
+                  position="top-center"
+                  theme="light"
+                  closeButton={false}
+                  style={{ zIndex: 9999 }}
+                  toastClassName="!bg-transparent !shadow-none !backdrop-blur-md rounded-xl"
+                />
+              </div>
             </ConditionalTransitionWrapper>
           </Providers>
         </NextIntlClientProvider>
