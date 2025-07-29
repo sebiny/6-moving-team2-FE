@@ -98,7 +98,7 @@ function FindDrivers() {
           <div ref={ref} className="h-1" />
           {isFetchingNextPage && (
             <div className="mt-4 flex justify-center">
-              <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500" />
+              <div className="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-orange-400" />
             </div>
           )}
         </div>

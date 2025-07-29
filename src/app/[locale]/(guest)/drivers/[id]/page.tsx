@@ -34,6 +34,14 @@ function DriverDetailPage() {
     }
   }, [driver]);
 
+  if (isPending)
+    return (
+      <div className="flex flex-col items-center">
+        <OrangeBackground />
+        <div className="mt-40 h-10 w-10 animate-spin rounded-full border-5 border-gray-300 border-t-orange-400 lg:mt-60 lg:h-20 lg:w-20 lg:border-10" />
+      </div>
+    );
+
   if (!driver) return <div>기사님 정보를 불러올 수 없습니다</div>;
 
   return (

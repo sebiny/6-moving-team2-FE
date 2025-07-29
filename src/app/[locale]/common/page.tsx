@@ -15,6 +15,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import AlertModal from "@/components/common-modal/AlertModal";
 import DriverFindCardSkeleton from "@/components/card/DriverFindCardSkeleton";
+import DriverReviewSkeleton from "@/components/driver/DriverReviewSkeleton";
+import DriverReview from "@/components/driver/DriverReview";
 
 // Title 더미데이터
 const mockData = [
@@ -162,7 +164,7 @@ function CommonPage() {
         <DriverFindCard driver={driver} />
       </div>
       <div>
-        <DriverFindCardSkeleton />
+        <DriverReviewSkeleton />
       </div>
     </div>
   );

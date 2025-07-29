@@ -18,7 +18,11 @@ interface ReviewsType {
 function DriverReviews({ driver }: ReviewsType) {
   const [page, setPage] = useState<number>(1);
   const t = useTranslations("FindDriver");
-  const { data: reviews, isPending } = useQuery<ReviewType[] | null>({
+  const {
+    data: reviews,
+    isPending,
+    isFetching
+  } = useQuery<ReviewType[] | null>({
     queryKey: ["reviews", driver.id, page],
     queryFn: () => driverService.getDriverReviews(driver.id, page)
   });
@@ -33,7 +37,7 @@ function DriverReviews({ driver }: ReviewsType) {
   return (
     <div className="mb-50">
       <div className="text-black-400 text-xl font-semibold">{t("driverPage.review")}</div>
-      {isPending ? (
+      {isPending || isFetching ? (
         <div className="mt-8 space-y-4">
           {[...Array(3)].map((_, i) => (
             <DriverReviewSkeleton key={i} />

@@ -12,9 +12,7 @@ function DriverReviewSkeleton() {
         <div className="mt-2 h-5 w-[100px] rounded bg-gray-200" />
       </div>
       <div className="space-y-2">
-        <div className="h-4 w-full rounded bg-gray-200" />
         <div className="h-4 w-[80%] rounded bg-gray-200" />
-        <div className="h-4 w-[60%] rounded bg-gray-200" />
       </div>
     </div>
   );
