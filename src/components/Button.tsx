@@ -8,9 +8,18 @@ interface ButtonType {
   className?: string;
   isDisabled?: boolean;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  buttonType?: "button" | "submit"; // 버튼 타입 추가
 }
 
-function Button({ text, type, image = false, className = "w-full", isDisabled = false, onClick }: ButtonType) {
+function Button({
+  text,
+  type,
+  image = false,
+  className = "w-full",
+  isDisabled = false,
+  onClick,
+  buttonType = "submit" //수정
+}: ButtonType) {
   let color = "";
   if (type === "gray" || isDisabled) {
     color = "bg-gray-100 text-white";
@@ -26,6 +35,7 @@ function Button({ text, type, image = false, className = "w-full", isDisabled = 
 
   return (
     <button
+      type={buttonType} //수정
       disabled={isDisabled}
       onClick={onClick}
       className={`flex cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold md:py-[17px] md:text-lg ${color} ${className}`}
