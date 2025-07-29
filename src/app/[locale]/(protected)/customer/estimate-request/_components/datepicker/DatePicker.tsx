@@ -77,9 +77,10 @@ function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
         <button
           onClick={onConfirm}
           disabled={!selectedDate}
-          className={`h-[54px] w-[279px] rounded-xl py-3 text-base font-semibold text-white ${
+          className={clsx(
+            "h-[54px] w-[279px] rounded-xl py-3 text-base font-semibold text-white",
             selectedDate ? "bg-[var(--color-orange-400)]" : "bg-gray-100"
-          }`}
+          )}
         >
           선택완료
         </button>

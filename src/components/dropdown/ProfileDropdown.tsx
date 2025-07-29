@@ -35,7 +35,6 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
       const fetchUserData = async () => {
         const userData = await authService.getMyName();
         setDetailedUser(userData);
-        console.log(detailedUser?.profileImage);
       };
       fetchUserData();
     }

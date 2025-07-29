@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createEstimateRequest } from "@/lib/api/api-estimateRequest";
-import { moveTypeValueMap } from "@/types/moveType";
 import CalenderDropdown from "./_components/dropdown/CalenderDropdown";
 import MoveTypeCard from "./_components/card/MoveTypeCard";
 import AddressCardModal from "./_components/modal/AddressCardModal";
@@ -15,19 +14,20 @@ import { useTranslations } from "next-intl";
 export default function DesktopEstimateForm() {
   const t = useTranslations("EstimateReq");
   const moveTypes = [
-    { label: t("smallBox.text"), description: t("smallBox.subText") },
-    { label: t("familyBox.text"), description: t("familyBox.subText") },
-    { label: t("officeBox.text"), description: t("officeBox.subText") }
-  ];
+    { key: "SMALL", label: t("smallBox.text"), description: t("smallBox.subText") },
+    { key: "HOME", label: t("familyBox.text"), description: t("familyBox.subText") },
+    { key: "OFFICE", label: t("officeBox.text"), description: t("officeBox.subText") }
+  ] as const;
   const queryClient = useQueryClient();
-  const [selectedMoveType, setSelectedMoveType] = useState<string | null>(null);
+  type MoveTypeKey = (typeof moveTypes)[number]["key"];
+  const [selectedMoveType, setSelectedMoveType] = useState<MoveTypeKey | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showModal, setShowModal] = useState<"from" | "to" | null>(null);
   const [addressFrom, setAddressFrom] = useState<Address | null>(null);
   const [addressTo, setAddressTo] = useState<Address | null>(null);
 
-  const handleMoveTypeSelect = (label: string) => {
-    setSelectedMoveType((prev) => (prev === label ? null : label));
+  const handleMoveTypeSelect = (key: "SMALL" | "HOME" | "OFFICE") => {
+    setSelectedMoveType((prev) => (prev === key ? null : key));
   };
 
   const isFormValid = selectedMoveType !== null && selectedDate !== null && addressFrom !== null && addressTo !== null;
@@ -44,7 +44,7 @@ export default function DesktopEstimateForm() {
 
     try {
       await requestEstimate({
-        moveType: moveTypeValueMap[selectedMoveType],
+        moveType: selectedMoveType,
         moveDate: selectedDate.toISOString(),
         fromAddressId: String(addressFrom.id),
         toAddressId: String(addressTo.id)
@@ -70,13 +70,13 @@ export default function DesktopEstimateForm() {
           <div className="lg mb-12 flex flex-col gap-2">
             <p className="text-lg font-bold">{t("movingType")}</p>
             <div className="flex flex-row gap-3 lg:gap-4">
-              {moveTypes.map(({ label, description }) => (
+              {moveTypes.map(({ key, label, description }) => (
                 <MoveTypeCard
-                  key={label}
+                  key={key}
                   label={label}
                   description={description}
-                  selected={selectedMoveType === label}
-                  onClick={() => handleMoveTypeSelect(label)}
+                  selected={selectedMoveType === key}
+                  onClick={() => handleMoveTypeSelect(key)}
                 />
               ))}
             </div>
