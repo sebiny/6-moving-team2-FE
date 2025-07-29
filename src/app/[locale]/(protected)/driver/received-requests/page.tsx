@@ -17,6 +17,8 @@ import FilterSection from "@/components/filter/FilterSection";
 import { driverService } from "@/lib/api/api-driver";
 import { mapBackendRequestToFrontend } from "@/utills/RequestMapper";
 import { useTranslations } from "next-intl";
+import { ToastModal } from "@/components/common-modal/ToastModal";
+import { moveTypeLabelMap } from "@/constant/moveTypes";
 
 const MOVE_TYPES = ["소형이사", "가정이사", "사무실이사"] as const;
 const SORT_OPTIONS = ["date", "request"];
@@ -65,7 +67,10 @@ export default function ReceivedRequestsPage() {
 
     // 이사 유형 필터링
     if (selectedMoveTypes.length > 0) {
-      filtered = filtered.filter((request) => selectedMoveTypes.includes(request.moveType));
+      filtered = filtered.filter((request) => {
+        const requestMoveTypeLabel = moveTypeLabelMap[request.moveType]?.label || "";
+        return selectedMoveTypes.includes(requestMoveTypeLabel);
+      });
     }
 
     // 검색어 필터링
@@ -117,7 +122,7 @@ export default function ReceivedRequestsPage() {
         price,
         message: comment
       });
-      alert("견적이 성공적으로 전송되었습니다.");
+      ToastModal("견적이 성공적으로 전송되었습니다.");
       handleCloseModal();
       // React Query로 데이터 새로고침
       queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
@@ -126,9 +131,9 @@ export default function ReceivedRequestsPage() {
 
       // 409 Conflict 에러인 경우 (이미 견적을 보낸 경우)
       if (err instanceof Error && err.message.includes("이미 견적을 보냈습니다")) {
-        alert("이미 이 요청에 대해 견적을 보내셨습니다.");
+        ToastModal("이미 이 요청에 대해 견적을 보내셨습니다.");
       } else {
-        alert("견적 전송에 실패했습니다.");
+        ToastModal("견적 전송에 실패했습니다.");
       }
     }
   };
@@ -151,7 +156,7 @@ export default function ReceivedRequestsPage() {
       await driverService.rejectEstimateRequest(estimateRequestId, {
         reason
       });
-      alert("견적 요청이 반려되었습니다.");
+      ToastModal("견적 요청이 반려되었습니다.");
       handleCloseRejectModal();
       // React Query로 데이터 새로고침
       queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
@@ -160,9 +165,9 @@ export default function ReceivedRequestsPage() {
 
       // 견적이 존재하지 않는 경우
       if (err instanceof Error && err.message.includes("이미 반려한 견적 요청입니다")) {
-        alert("이미 반려한 견적 요청입니다.");
+        ToastModal("이미 반려한 견적 요청입니다.");
       } else {
-        alert("견적 요청 반려에 실패했습니다.");
+        ToastModal("견적 요청 반려에 실패했습니다.");
       }
     }
   };

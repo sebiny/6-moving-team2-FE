@@ -1,7 +1,6 @@
 import React from "react";
 import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
 import Image from "next/image";
 import Button from "@/components/Button";
 import { useTranslations } from "next-intl";
@@ -13,7 +12,6 @@ interface ReceivedRequestCardProps {
 }
 
 export default function ReceivedRequestCard({ request, onSendEstimate, onRejectEstimate }: ReceivedRequestCardProps) {
-  const moveTypeKey: MoveType = moveTypeFromKorean[request.moveType] ?? "SMALL";
   const t = useTranslations("ReceivedReq");
 
   return (
@@ -22,7 +20,7 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
       <div className="flex w-full flex-col gap-4">
         <div className="flex h-8 items-center justify-between">
           <div className="flex gap-2">
-            <ChipRectangle moveType={moveTypeKey} size="sm" />
+            <ChipRectangle moveType={request.moveType} size="sm" />
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
           <div className="text-sm text-zinc-500">{request.createdAt}</div>
