@@ -24,7 +24,13 @@ function DriverMyPage() {
       user ? driverService.getDriverDetailCookie(driverId) : driverService.getDriverDetailDefault(driverId)
   });
 
-  if (isPending) return <div>{t("loading")}</div>;
+  if (isPending)
+    return (
+      <div className="flex flex-col items-center">
+        <OrangeBackground />
+        <div className="mt-40 h-10 w-10 animate-spin rounded-full border-5 border-gray-300 border-t-orange-400 lg:mt-60 lg:h-20 lg:w-20 lg:border-10" />
+      </div>
+    );
   if (!driver) return <div>{t("failedFetch")}</div>;
   return (
     <div className="flex flex-col items-center">
