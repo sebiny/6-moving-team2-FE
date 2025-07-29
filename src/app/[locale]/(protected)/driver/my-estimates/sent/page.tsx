@@ -61,7 +61,7 @@ export default function SentEstimatesPage() {
   return (
     <>
       <Header type="driver-estimate" selectedIdx={selectedIdx} setSelectedIdx={handleTabChange} />
-      <div className="flex justify-center bg-neutral-50 px-4 pt-6 pb-10 md:pt-8 lg:pt-11">
+      <div className="flex min-h-screen flex-col bg-neutral-50 px-4 pt-6 pb-10 md:pt-8 lg:pt-11">
         <div className="flex w-full flex-col items-center justify-center px-6 py-20">
           <div className="flex flex-col items-center gap-6">{renderContent()}</div>
         </div>

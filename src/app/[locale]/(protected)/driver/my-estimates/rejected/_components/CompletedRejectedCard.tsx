@@ -1,7 +1,6 @@
 import React from "react";
 import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
 import Image from "next/image";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import { useTranslations } from "next-intl";
@@ -12,7 +11,6 @@ interface CompletedRejectedCardProps {
 
 export default function CompletedRejectedCard({ request }: CompletedRejectedCardProps) {
   const t = useTranslations("MyEstimate");
-  const moveTypeKey: MoveType = moveTypeFromKorean[request.moveType] ?? "SMALL";
 
   return (
     <div className="relative inline-flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.20)] outline-[0.5px] outline-offset-[-0.5px] outline-zinc-100 md:w-[588px] md:gap-8 md:px-10 md:py-8">
@@ -20,7 +18,7 @@ export default function CompletedRejectedCard({ request }: CompletedRejectedCard
       <div className="flex w-full flex-col gap-6">
         <div className="flex h-8 items-center justify-between">
           <div className="flex gap-2">
-            <ChipRectangle moveType={moveTypeKey} size="sm" />
+            <ChipRectangle moveType={request.moveType} size="sm" />
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
           {request.status === "confirmed" && <ChipConfirmed />}

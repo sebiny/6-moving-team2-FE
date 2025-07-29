@@ -1,12 +1,11 @@
 "use client";
-import { TranslateSorting } from "@/utills/TranslateFunction";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 interface SortDropdownType {
   sortings: string[];
   sort: string;
-  setSort?: (value: string) => void;
+  setSort: (value: string) => void;
   translator: (key: string) => string;
 }
 
@@ -15,7 +14,7 @@ function SortDropdown({ sortings, sort, setSort, translator }: SortDropdownType)
   const dropdownRef = useRef<HTMLDivElement>(null);
   const handleClick = (sorting: string) => {
     setIsModalOpen(false);
-    if (setSort) setSort(sorting);
+    setSort(sorting);
   };
 
   useEffect(() => {

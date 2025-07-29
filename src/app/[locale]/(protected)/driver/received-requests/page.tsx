@@ -31,6 +31,12 @@ export default function ReceivedRequestsPage() {
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [sort, setSort] = useState("request");
+
+  const handleSortChange = (newSort: string) => {
+    if (sort !== newSort) {
+      setSort(newSort);
+    }
+  };
   const [filteredRequests, setFilteredRequests] = useState<Request[]>([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
@@ -58,12 +64,19 @@ export default function ReceivedRequestsPage() {
 
       return backendRequests ? backendRequests.map(mapBackendRequestToFrontend) : [];
     },
-    staleTime: 5 * 60 * 1000 // 5분
+    staleTime: 5 * 60 * 1000, // 5분 캐시
+    refetchOnWindowFocus: false // 창 포커스 시 재조회 비활성화
   });
 
   // 검색, 이사 유형 필터링, 정렬
   useEffect(() => {
-    let filtered = requests;
+    // requests가 비어있으면 처리하지 않음
+    if (!requests || requests.length === 0) {
+      setFilteredRequests([]);
+      return;
+    }
+
+    let filtered = [...requests]; // 원본 배열 복사
 
     // 이사 유형 필터링
     if (selectedMoveTypes.length > 0) {
@@ -87,13 +100,17 @@ export default function ReceivedRequestsPage() {
         case "date":
           // 이사일 빠른순 (7월 25일이 8월 10일보다 먼저 나와야 함)
           if (a.originalMoveDate && b.originalMoveDate) {
-            return new Date(a.originalMoveDate).getTime() - new Date(b.originalMoveDate).getTime();
+            const dateA = new Date(a.originalMoveDate).getTime();
+            const dateB = new Date(b.originalMoveDate).getTime();
+            return dateA - dateB;
           }
           return 0;
         case "request":
-          // 요청일 빠른순 (원본 createdAt 기준)
+          // 요청일 빠른순 (원본 createdAt 기준) - 최신 요청부터
           if (a.originalCreatedAt && b.originalCreatedAt) {
-            return new Date(a.originalCreatedAt).getTime() - new Date(b.originalCreatedAt).getTime();
+            const dateA = new Date(a.originalCreatedAt).getTime();
+            const dateB = new Date(b.originalCreatedAt).getTime();
+            return dateB - dateA; // 순서 반전: 최신 요청부터
           }
           return 0;
         default:
@@ -102,7 +119,7 @@ export default function ReceivedRequestsPage() {
     });
 
     setFilteredRequests(filtered);
-  }, [searchKeyword, selectedMoveTypes, requests, sort]);
+  }, [searchKeyword, selectedMoveTypes, sort, requests.length]); // requests.length로 변경
 
   const handleSendEstimate = (request: Request) => {
     setSelectedRequest(request);
@@ -269,7 +286,12 @@ export default function ReceivedRequestsPage() {
             </div>
             {/* 모바일에선 오른쪽 붙고, lg 이상에선 이 div가 무시됨 */}
             <div className="flex items-center gap-2 lg:hidden">
-              <SortDropdown sortings={SORT_OPTIONS} sort={sort} setSort={setSort} translator={(key) => t(`${key}`)} />
+              <SortDropdown
+                sortings={SORT_OPTIONS}
+                sort={sort}
+                setSort={handleSortChange}
+                translator={(key) => t(`${key}`)}
+              />
               <FilterSection
                 selectedMoveTypes={selectedMoveTypes}
                 setSelectedMoveTypes={setSelectedMoveTypes}
@@ -302,7 +324,12 @@ export default function ReceivedRequestsPage() {
                 <span className="text-base font-normal text-neutral-900">{t("filter.service")}</span>
               </label>
             </div>
-            <SortDropdown sortings={SORT_OPTIONS} sort={sort} setSort={setSort} translator={(key) => t(`${key}`)} />
+            <SortDropdown
+              sortings={SORT_OPTIONS}
+              sort={sort}
+              setSort={handleSortChange}
+              translator={(key) => t(`${key}`)}
+            />
           </div>
         </div>
         {renderContent()}
