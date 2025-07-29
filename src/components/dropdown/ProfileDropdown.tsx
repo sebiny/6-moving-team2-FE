@@ -27,7 +27,7 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
   const t = useTranslations("Gnb");
   const profileMenu = getProfileDropdownMenu(t);
 
-  const [detailedUser, setDetailedUser] = useState<{ name: string } | null>(null);
+  const [detailedUser, setDetailedUser] = useState<{ name: string; profileImage: string } | null>(null);
 
   useEffect(() => {
     // 로그인된 상태일 때만 상세 정보를 가져옵니다.
@@ -64,7 +64,13 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
     <div className={`${className} relative flex items-center`} ref={ref}>
       {lg ? (
         <button className="flex cursor-pointer items-center justify-between gap-3" onClick={onClick}>
-          <Image src={icProfile} alt="프로필 이미지" width={26} height={26} />
+          <Image
+            src={detailedUser?.profileImage ?? icProfile}
+            alt="프로필 이미지"
+            width={26}
+            height={26}
+            className="h-[26px] w-[26px] rounded-full object-cover object-center"
+          />
           {isLoading ? (
             <div className="h-5 w-20 animate-pulse rounded bg-gray-300"></div> // 스켈레톤 UI
           ) : (
@@ -73,7 +79,13 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
         </button>
       ) : (
         <button className="cursor-pointer" onClick={onClick}>
-          <Image src={icProfile} alt="프로필 이미지" width={26} height={26} />
+          <Image
+            src={detailedUser?.profileImage ?? icProfile}
+            alt="프로필 이미지"
+            width={26}
+            height={26}
+            className="h-[26px] w-[26px] rounded-full border object-cover object-center"
+          />
         </button>
       )}
 

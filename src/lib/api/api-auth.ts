@@ -64,8 +64,8 @@ export const authService = {
     return await cookieFetch("/auth/me/detail");
   },
 
-  getMyName: async (): Promise<{ name: string } | null> => {
+  getMyName: async (): Promise<{ name: string; profileImage: string } | null> => {
     const response = await cookieFetch("/auth/me/name");
-    return response?.name ? { name: response.name } : null;
+    return { name: response.name, profileImage: response.profileImage };
   }
 };
