@@ -1,6 +1,6 @@
 "use client";
 
-import useMediaQuery from "@/hooks/useMediaQuery";
+import useMediaHook from "@/hooks/useMediaHook";
 import MobileEstimateForm from "./MobileEstimateForm";
 import DesktopEstimateForm from "./DesktopEstimateForm";
 import DisabledForm from "./DisabledForm";
@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getActiveEstimateRequest } from "@/lib/api/api-estimateRequest";
 
 export default function MoveRequestPage() {
-  const isMobile = useMediaQuery("(max-width: 743px)");
+  const { isMd } = useMediaHook();
 
   const { data: activeRequest, isPending } = useQuery({
     queryKey: ["estimate", "active"],
@@ -22,5 +22,5 @@ export default function MoveRequestPage() {
     return <DisabledForm />;
   }
 
-  return isMobile ? <MobileEstimateForm /> : <DesktopEstimateForm />;
+  return !isMd ? <MobileEstimateForm /> : <DesktopEstimateForm />;
 }

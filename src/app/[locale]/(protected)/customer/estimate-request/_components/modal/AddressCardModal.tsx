@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Button from "@/components/Button";
 import AddressResultCard from "../card/AddressResultCard";
 import DaumPostcodeModal from "./DaumPostcodeModal";
-import { Address } from "@/types/Address";
+import { Address, DaumPostcodeAddress } from "@/types/Address";
 import { createAddress } from "@/lib/api/api-estimateRequest";
 import { formatAddress } from "@/utills/AddressMapper";
 import { useTranslations } from "next-intl";
@@ -43,6 +43,38 @@ export default function AddressCardModal({
     }
   }, [selectedAddress]);
 
+  const handleClearInput = () => setInputValue("");
+
+  const handleSearch = () => {
+    if (inputValue.trim()) setShowPostcode(true);
+  };
+
+  const handleSelectAddress = (idx: number) => {
+    setSelectedIndex((prev) => (prev === idx ? null : idx));
+  };
+
+  const handleCompletePostcode = useCallback(async (addr: DaumPostcodeAddress) => {
+    const savedAddress = await createAddress(
+      formatAddress({
+        postalcode: addr.zonecode,
+        roadAddress: addr.roadAddress,
+        jibunAddress: addr.jibunAddress,
+        buildingName: addr.buildingName
+      })
+    );
+
+    const newAddress: Address = {
+      id: savedAddress.id,
+      postalCode: savedAddress.postalCode,
+      roadAddress: savedAddress.street,
+      jibunAddress: savedAddress.detail || addr.jibunAddress
+    };
+
+    setAddressList((prev) => [newAddress, ...prev]);
+    setSelectedIndex(0);
+    setShowPostcode(false);
+  }, []);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#141414]/40">
       <div className="flex w-[292px] flex-col justify-between rounded-3xl bg-white px-4 py-6 shadow-xl md:w-[608px] md:rounded-4xl md:px-6 md:pt-8 md:pb-10">
@@ -57,23 +89,19 @@ export default function AddressCardModal({
         <div className="flex-1 overflow-auto">
           {/* 인풋 영역 */}
           <div className="mb-4 w-full md:mb-6">
-            <div className="flex h-[52px] w-full items-center justify-between rounded-2xl bg-[var(--color-background-100)] px-4 md:h-[64px]">
+            <div className="bg-background-100 flex h-[52px] w-full items-center justify-between rounded-2xl px-4 md:h-[64px]">
               <input
                 type="text"
                 placeholder={t("placeholder")}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && inputValue.trim() !== "") {
-                    setShowPostcode(true);
-                  }
-                }}
-                className="h-[24px] w-[132px] flex-1 bg-transparent text-sm text-black outline-none placeholder:text-[var(--color-black-400)]"
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                className="placeholder:text-black-400 h-[24px] w-[132px] flex-1 bg-transparent text-sm text-black outline-none"
                 style={{ border: "none", caretColor: "black" }}
               />
 
               <div className="flex items-center gap-3 md:gap-4">
-                <button type="button" onClick={() => setInputValue("")}>
+                <button type="button" onClick={handleClearInput}>
                   <Image
                     src="/assets/icons/ic_x_circle.svg"
                     width={24}
@@ -82,7 +110,7 @@ export default function AddressCardModal({
                     className="md:h-9 md:w-9"
                   />
                 </button>
-                <button type="button" onClick={() => setShowPostcode(true)}>
+                <button type="button" onClick={handleSearch}>
                   <Image
                     src="/assets/icons/ic_search.svg"
                     width={24}
@@ -107,9 +135,7 @@ export default function AddressCardModal({
                 roadAddress={addr.roadAddress}
                 jibunAddress={addr.jibunAddress}
                 selected={selectedIndex === idx}
-                onClick={() => {
-                  setSelectedIndex((prev) => (prev === idx ? null : idx));
-                }}
+                onClick={() => handleSelectAddress(idx)}
               />
             ))}
           </div>
@@ -132,27 +158,7 @@ export default function AddressCardModal({
         <DaumPostcodeModal
           query={inputValue}
           onClose={() => setShowPostcode(false)}
-          onComplete={async (addr) => {
-            // 백엔드에서 받아온 주소
-            const savedAddress = await createAddress(
-              formatAddress({
-                postalcode: addr.zonecode,
-                roadAddress: addr.roadAddress,
-                jibunAddress: addr.jibunAddress,
-                buildingName: addr.buildingName
-              })
-            );
-            // 프론트 변환 주소
-            const newAddress: Address = {
-              id: savedAddress.id,
-              postalCode: savedAddress.postalCode,
-              roadAddress: savedAddress.street,
-              jibunAddress: savedAddress.detail || addr.jibunAddress
-            };
-
-            setAddressList((prev) => [newAddress, ...prev]);
-            setSelectedIndex(0);
-          }}
+          onComplete={handleCompletePostcode}
         />
       )}
     </div>
