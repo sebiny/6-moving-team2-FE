@@ -101,14 +101,33 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
             )}
             <div className="flex justify-between">
               <div className="flex justify-between gap-6">
-                <Image
-                  className={clsx(
-                    isLg ? "h-[100px] w-[100px]" : isMd ? "h-[80px] w-[80px]" : "h-[64px] w-[64px]",
-                    "order-2 rounded-[12px] md:order-1"
-                  )}
-                  src={reviewable.estimates[0].driver.profileImage ?? DriverImg}
-                  alt="driverImg"
-                />
+                {isLg && (
+                  <Image
+                    className="order-2 rounded-[12px]"
+                    src={reviewable.estimates[0].driver.profileImage ?? DriverImg}
+                    alt="driverImg"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {isMd && !isLg && (
+                  <Image
+                    className="rounded-[12px] md:order-1"
+                    src={reviewable.estimates[0].driver.profileImage ?? DriverImg}
+                    alt="driverImg"
+                    width={80}
+                    height={80}
+                  />
+                )}
+                {isSm && !isMd && (
+                  <Image
+                    className="order-2 rounded-[12px]"
+                    src={reviewable.estimates[0].driver.profileImage ?? DriverImg}
+                    alt="driverImg"
+                    width={64}
+                    height={64}
+                  />
+                )}
 
                 <div className={clsx("order-1 md:order-2 lg:pt-[10px]", isSm && !isMd && "w-50")}>
                   <div className={clsx(isSm && !isMd && "flex-col", "flex gap-[6px]")}>

@@ -10,6 +10,7 @@ import Button from "@/components/Button";
 import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
 import { useTranslations } from "next-intl";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 export default function MobileEstimateForm() {
   const t = useTranslations("EstimateReq");
@@ -56,9 +57,9 @@ export default function MobileEstimateForm() {
         fromAddressId: String(addressFrom.id),
         toAddressId: String(addressTo.id)
       });
-      alert(t("estimateReqSuccess"));
+      ToastModal(t("estimateReqSuccess"));
     } catch {
-      alert(t("estimateReqFailure"));
+      ToastModal(t("estimateReqFailure"));
     }
   };
 
@@ -197,7 +198,7 @@ export default function MobileEstimateForm() {
       {/* 주소 검색 모달 */}
       {showModal && (
         <AddressCardModal
-          title={showModal === "from" ? t("fromSelect") : t("toSelect")}
+          title={showModal === "from" ? t("fromChoose") : t("toChoose")}
           confirmLabel={t("confirm")}
           onClose={() => setShowModal(null)}
           onConfirm={(value: Address) => {

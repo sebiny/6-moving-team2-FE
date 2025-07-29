@@ -10,6 +10,7 @@ import { useAcceptEstimate } from "@/lib/api/api-myEstimate";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import { useState } from "react";
 import AlertModal from "@/components/common-modal/AlertModal";
+import { useTranslations } from "next-intl";
 
 interface Props {
   data: Estimate;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function PendingCard({ data, moveType }: Props) {
+  const t = useTranslations("MyEstimates");
   const { driver, comment, price, status, id, isDesignated } = data;
 
   const router = useRouter();
@@ -75,7 +77,9 @@ export default function PendingCard({ data, moveType }: Props) {
             {/* 기사 이름 */}
             <div className="flex items-center gap-1">
               <Image src="/assets/icons/ic_profileMark.svg" alt="기사 마크" width={16} height={16} />
-              <span>{driver.authUser.name} 기사님</span>
+              <span>
+                {driver.authUser.name} {t("driver")}
+              </span>
             </div>
 
             {/* 좋아요 */}
@@ -96,11 +100,19 @@ export default function PendingCard({ data, moveType }: Props) {
             </div>
             <span className="text-gray-100">|</span>
             <span>
-              경력 <span className="font-medium text-black">{driver.career}년</span>
+              {t("experience")}{" "}
+              <span className="font-medium text-black">
+                {driver.career}
+                {t("year")}
+              </span>
             </span>
             <span className="text-gray-100">|</span>
             <span>
-              <span className="font-medium text-black">{driver.work}건</span> 확정
+              <span className="font-medium text-black">
+                {driver.work}
+                {t("count")}
+              </span>{" "}
+              {t("confirm")}
             </span>
           </div>
         </div>
@@ -111,8 +123,11 @@ export default function PendingCard({ data, moveType }: Props) {
 
       {/* 가격 */}
       <div className="flex items-center justify-between">
-        <span className="text-base font-medium text-gray-700">견적 금액</span>
-        <span className="text-[24px] font-bold text-gray-900">{price.toLocaleString()}원</span>
+        <span className="text-base font-medium text-gray-700">{t("proposedCost")}</span>
+        <span className="text-[24px] font-bold text-gray-900">
+          {price.toLocaleString()}
+          {t("won")}
+        </span>
       </div>
 
       {/* 버튼 - 반응형 대응 */}

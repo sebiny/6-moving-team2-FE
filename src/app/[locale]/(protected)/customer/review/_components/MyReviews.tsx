@@ -9,7 +9,6 @@ import useMediaHook from "@/hooks/useMediaHook";
 import { useTranslations } from "next-intl";
 import { deleteMyReview, getMyReviews } from "@/lib/api/api-review";
 import { ko } from "date-fns/locale";
-
 import { format } from "date-fns";
 import { TranslateRegion } from "@/utills/TranslateFunction";
 import NoMyReview from "./NoMyReview";
@@ -75,15 +74,16 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
     const date = new Date(isoString);
     return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
   };
-
   if (isLoading) {
-    <div className="flex flex-col items-center gap-5 pt-30">
-      <Lottie loop animationData={reviewLottie} play style={{ width: 150, height: 150 }} />
-      <p className="font-Pretendard text-lg font-semibold text-gray-400">내가 작성한 리뷰들을 불러오고 있어요!!</p>
-    </div>;
+    return (
+      <div className="flex flex-col items-center gap-5 pt-30">
+        <Lottie loop animationData={reviewLottie} play style={{ width: 150, height: 150 }} />
+        <p className="font-Pretendard text-lg font-semibold text-gray-400">내가 작성한 리뷰들을 불러오고 있어요!!</p>
+      </div>
+    );
   }
 
-  if (!isError || !reviews || reviews.length === 0) {
+  if (isError || !reviews || reviews.length === 0) {
     return (
       <div className="flex h-full items-center justify-center">
         <NoMyReview setSelectedIdx={setSelectedIdx} />
@@ -131,14 +131,34 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                 )}
 
                 <div className={clsx(isSm && !isMd && "justify-between", "flex md:gap-5")}>
-                  <Image
-                    className={clsx(
-                      isLg ? "h-[100px] w-[100px]" : isMd ? "h-[80px] w-[80px]" : "h-[50x] w-[50px]",
-                      "order-2 rounded-[12px] md:order-1"
-                    )}
-                    src={review.driver.profileImage ?? DriverImg}
-                    alt="driverImg"
-                  />
+                  {isLg && (
+                    <Image
+                      className="order-2 rounded-[12px]"
+                      src={review.driver.profileImage ?? DriverImg}
+                      alt="driverImg"
+                      width={100}
+                      height={100}
+                    />
+                  )}
+                  {isMd && !isLg && (
+                    <Image
+                      className="rounded-[12px] md:order-1"
+                      src={review.driver.profileImage ?? DriverImg}
+                      alt="driverImg"
+                      width={80}
+                      height={80}
+                    />
+                  )}
+                  {isSm && !isMd && (
+                    <Image
+                      className="order-2 rounded-[12px]"
+                      src={review.driver.profileImage ?? DriverImg}
+                      alt="driverImg"
+                      width={50}
+                      height={50}
+                    />
+                  )}
+
                   <div className="order-1 md:order-2 lg:pt-[10px]">
                     <div>
                       <div className={clsx(isMd && "flex gap-[6px]", isSm && !isMd && "flex flex-col gap-[4px]")}>
@@ -184,6 +204,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                   <p className="text-[12px] leading-[18px] text-gray-300">{moveDate}</p>
                 </div>
               )}
+              {/* 지울거 */}
               <Button
                 text="삭제"
                 type="orange"
