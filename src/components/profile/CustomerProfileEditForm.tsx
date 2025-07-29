@@ -13,6 +13,8 @@ interface CustomerProfileEditFormProps {
   initialData?: any;
 }
 
+const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
+
 export default function CustomerProfileEditForm({ initialData }: CustomerProfileEditFormProps) {
   const router = useRouter();
 
@@ -31,6 +33,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [newPasswordError, setNewPasswordError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
 
@@ -47,6 +50,15 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
       setPhone(initialData.phone || "");
     }
   }, [initialData]);
+
+  // newPassword가 바뀔 때마다 유효성 검사
+  useEffect(() => {
+    if (newPassword && !PASSWORD_REGEX.test(newPassword)) {
+      setNewPasswordError("비밀번호는 8자 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.");
+    } else {
+      setNewPasswordError(null);
+    }
+  }, [newPassword]);
 
   const uploadImageFile = async (file: File): Promise<string> => {
     const formData = new FormData();
@@ -100,6 +112,20 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
       return;
     }
 
+    // 새 비밀번호가 있으면 유효성 및 확인 검사
+    if (newPassword) {
+      if (!PASSWORD_REGEX.test(newPassword)) {
+        alert("새 비밀번호는 8자 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.");
+        setIsSubmitting(false);
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        alert("새 비밀번호와 확인이 일치하지 않습니다.");
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
     const payload: any = {
       name,
       phone,
@@ -109,15 +135,9 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
     };
 
     if (currentPassword || newPassword || confirmPassword) {
-      if (newPassword !== confirmPassword) {
-        alert("새 비밀번호와 확인이 일치하지 않습니다.");
-        setIsSubmitting(false);
-        return;
-      }
-      payload.password = {
-        currentPassword,
-        newPassword
-      };
+      payload.currentPassword = currentPassword;
+      payload.newPassword = newPassword;
+      payload.passwordConfirmation = confirmPassword;
     }
 
     try {
@@ -183,6 +203,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
           <div className="mb-5 flex flex-col pt-5">
             <label className="mb-5 text-xl font-semibold">새 비밀번호</label>
             <TextField value={newPassword} onChange={setNewPassword} type="password" mdHeight="54" />
+            {newPasswordError && <p className="mt-1 text-sm text-red-500">{newPasswordError}</p>}
           </div>
 
           {/* 새 비밀번호 확인 */}
@@ -237,6 +258,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
           <Button
             text="취소"
             type="gray"
+            buttonType="button" // ← 폼 제출 막기 위해
             className="h-15 w-full rounded-2xl bg-gray-200 text-lg font-semibold text-gray-700 md:w-full"
             onClick={() => router.back()}
           />

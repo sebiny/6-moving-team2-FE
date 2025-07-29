@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createEstimateRequest } from "@/lib/api/api-estimateRequest";
-import { moveTypeValueMap } from "@/types/moveType";
 import MoveTypeCard from "./_components/card/MoveTypeCard";
 import MobileDatePicker from "./_components/datepicker/MobileDatePicker";
 import AddressCardModal from "./_components/modal/AddressCardModal";
@@ -15,14 +14,16 @@ import { useTranslations } from "next-intl";
 export default function MobileEstimateForm() {
   const t = useTranslations("EstimateReq");
   const moveTypes = [
-    { label: t("smallBox.text"), description: t("smallBox.subText") },
-    { label: t("familyBox.text"), description: t("familyBox.subText") },
-    { label: t("officeBox.text"), description: t("officeBox.subText") }
-  ];
+    { key: "SMALL", label: t("smallBox.text"), description: t("smallBox.subText") },
+    { key: "HOME", label: t("familyBox.text"), description: t("familyBox.subText") },
+    { key: "OFFICE", label: t("officeBox.text"), description: t("officeBox.subText") }
+  ] as const;
+
   const queryClient = useQueryClient();
 
   const [step, setStep] = useState(1);
-  const [moveType, setMoveType] = useState<string | null>(null);
+  type MoveTypeKey = (typeof moveTypes)[number]["key"];
+  const [moveType, setMoveType] = useState<MoveTypeKey | null>(null);
   const [moveDate, setMoveDate] = useState<Date | null>(null);
   const [addressFrom, setAddressFrom] = useState<Address | null>(null);
   const [addressTo, setAddressTo] = useState<Address | null>(null);
@@ -41,8 +42,8 @@ export default function MobileEstimateForm() {
     }
   });
 
-  const handleMoveTypeSelect = (label: string) => {
-    setMoveType((prev) => (prev === label ? null : label));
+  const handleMoveTypeSelect = (key: MoveTypeKey) => {
+    setMoveType((prev) => (prev === key ? null : key));
   };
 
   const handleRequest = async () => {
@@ -50,7 +51,7 @@ export default function MobileEstimateForm() {
 
     try {
       await requestEstimate({
-        moveType: moveTypeValueMap[moveType],
+        moveType: moveType,
         moveDate: moveDate.toISOString(),
         fromAddressId: String(addressFrom.id),
         toAddressId: String(addressTo.id)
@@ -88,13 +89,13 @@ export default function MobileEstimateForm() {
           <div className="w-[327px]">
             {/* 이동 유형 카드 */}
             <div className="flex flex-col gap-4">
-              {moveTypes.map(({ label, description }) => (
+              {moveTypes.map(({ key, label, description }) => (
                 <MoveTypeCard
-                  key={label}
+                  key={key}
                   label={label}
                   description={description}
-                  selected={moveType === label}
-                  onClick={() => handleMoveTypeSelect(label)}
+                  selected={moveType === key}
+                  onClick={() => handleMoveTypeSelect(key)}
                 />
               ))}
             </div>
