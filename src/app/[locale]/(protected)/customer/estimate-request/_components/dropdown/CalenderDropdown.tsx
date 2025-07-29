@@ -1,7 +1,6 @@
-"use client";
-
 import { useState } from "react";
 import Image from "next/image";
+import clsx from "clsx";
 import DatePicker from "../datepicker/DatePicker";
 
 interface CalenderDropdownProps {
@@ -12,17 +11,11 @@ interface CalenderDropdownProps {
 function CalenderDropdown({ date, onChange }: CalenderDropdownProps) {
   const [open, setOpen] = useState(false);
 
-  const formatted = date
-    ? date.toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      })
-    : new Date().toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      });
+  const formatted = (date ?? new Date()).toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
 
   const handleConfirm = () => {
     if (date) setOpen(false);
@@ -32,13 +25,14 @@ function CalenderDropdown({ date, onChange }: CalenderDropdownProps) {
     <div className="relative">
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className={`flex h-[50px] w-100 items-center justify-between rounded-xl border pr-3 pl-5 ${
+        className={clsx(
+          "flex h-[50px] w-100 items-center justify-between rounded-xl border bg-white pr-3 pl-5 text-black",
           date ? "border-[var(--color-orange-400)]" : "border-[var(--color-gray-100)]"
-        } bg-white text-black`}
+        )}
       >
         <div className="flex items-center gap-2">
           <Image src="/assets/icons/ic_calendar.svg" alt="캘린더" width={24} height={24} />
-          <span className={`font-medium ${date ? "" : "text-black-400"}`}>{date ? formatted : formatted}</span>
+          <span className={clsx("font-medium", !date && "text-black-400")}>{formatted}</span>
         </div>
 
         <Image

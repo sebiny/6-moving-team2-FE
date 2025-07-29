@@ -3,6 +3,7 @@
 import CheckBox from "@/components/button/CustomCheckbox";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import clsx from "clsx";
 
 interface MoveTypeCardProps {
   label: string;
@@ -25,11 +26,13 @@ export default function MoveTypeCard({ label, description, selected, onClick }: 
     <button
       type="button"
       onClick={onClick}
-      className={`relative flex flex-col rounded-2xl border-2 px-4 pt-5 pb-5 text-left transition-colors md:pb-4 ${
+      className={clsx(
+        "relative flex flex-col rounded-2xl border-2 px-4 pt-5 pb-5 text-left transition-colors md:pb-4",
+        "h-[160px] w-[327px] md:h-[222px] md:w-50 lg:h-[222px] lg:w-[256px]",
         selected
           ? "border-[var(--color-orange-400)] bg-[var(--color-orange-100)]"
           : "border-transparent bg-[var(--color-background-200)]"
-      } h-[160px] w-[327px] md:h-[222px] md:w-50 lg:h-[222px] lg:w-[256px]`}
+      )}
     >
       <div className="flex h-full w-full flex-row justify-between md:flex-col">
         <div className="flex flex-col gap-2 md:flex-grow md:flex-row md:items-start">
@@ -38,10 +41,12 @@ export default function MoveTypeCard({ label, description, selected, onClick }: 
 
           {/* 텍스트 */}
           <div className="flex flex-col">
-            <p className={`leading-6 font-semibold ${selected ? "text-[var(--color-orange-400)]" : "text-black"}`}>
+            <p className={clsx("leading-6 font-semibold", selected ? "text-[var(--color-orange-400)]" : "text-black")}>
               {label}
             </p>
-            <p className={`text-sm ${selected ? "text-[var(--color-orange-400)]" : "text-gray-500"}`}>{description}</p>
+            <p className={clsx("text-sm", selected ? "text-[var(--color-orange-400)]" : "text-gray-500")}>
+              {description}
+            </p>
           </div>
         </div>
 
