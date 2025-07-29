@@ -48,7 +48,7 @@ export type PendingEstimateType = {
 export type SinglePastEstimateType = {
   estimateRequest: {
     id: string;
-
+    moveType: "SMALL" | "HOME" | "OFFICE" | "REQUEST";
     moveDate: string;
     requestDate: string;
     fromAddress: StreetAddress;
