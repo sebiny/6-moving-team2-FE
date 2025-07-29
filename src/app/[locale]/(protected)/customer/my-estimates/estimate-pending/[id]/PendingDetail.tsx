@@ -23,6 +23,8 @@ export default function PendingDetailPage() {
 
   const { mutate: acceptEstimate } = useAcceptEstimate();
 
+  const [showModal, setShowModal] = useState(false);
+
   if (!data) {
     return <div className="mt-90 flex justify-center text-center">견적 데이터를 불러오는 중입니다...</div>;
   }
@@ -33,7 +35,14 @@ export default function PendingDetailPage() {
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
 
-  const [showModal, setShowModal] = useState(false);
+  const handleAcceptEstimate = () => {
+    acceptEstimate(data.id, {
+      onSuccess: () => setShowModal(true),
+      onError: (error: any) => {
+        alert(error.message || "견적 확정 중 오류가 발생했습니다.");
+      }
+    });
+  };
 
   return (
     <>
@@ -87,38 +96,14 @@ export default function PendingDetailPage() {
               from={formatStreetAddress(fromAddress)}
               to={formatStreetAddress(toAddress)}
             />
+
             {/* 기본 버전 */}
             <div className="flex flex-col gap-6 lg:hidden">
               <div className="my-3 border-t border-gray-100" />
               <ShareDriver text="견적서 공유하기" />
               <div className="mt-10">
-                <Button
-                  type="orange"
-                  text="견적 확정하기"
-                  onClick={() =>
-                    acceptEstimate(data.id, {
-                      onSuccess: (data) => {
-                        setShowModal(true);
-                      },
-                      onError: (error: any) => {
-                        alert(error.message || "견적 확정 중 오류가 발생했습니다.");
-                      }
-                    })
-                  }
-                />
+                <Button type="orange" text="견적 확정하기" onClick={handleAcceptEstimate} />
               </div>
-
-              {showModal && (
-                <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
-                  <AlertModal
-                    type="handleClick"
-                    message="견적이 확정되었습니다!"
-                    buttonText="받았던 견적 보러가기"
-                    onClose={() => setShowModal(false)}
-                    onConfirm={() => router.push("/customer/my-estimates?tab=past")}
-                  />
-                </div>
-              )}
             </div>
           </div>
 
@@ -129,32 +114,7 @@ export default function PendingDetailPage() {
               <p className="text-black-500 text-2xl font-bold">{price.toLocaleString()}원</p>
             </div>
 
-            <Button
-              type="orange"
-              text="견적 확정하기"
-              onClick={() =>
-                acceptEstimate(data.id, {
-                  onSuccess: (data) => {
-                    setShowModal(true);
-                  },
-                  onError: (error: any) => {
-                    alert(error.message || "견적 확정 중 오류가 발생했습니다.");
-                  }
-                })
-              }
-            />
-
-            {showModal && (
-              <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
-                <AlertModal
-                  type="handleClick"
-                  message="견적이 확정되었습니다!"
-                  buttonText="받았던 견적 보러가기"
-                  onClose={() => setShowModal(false)}
-                  onConfirm={() => router.push("/customer/my-estimates?tab=past")}
-                />
-              </div>
-            )}
+            <Button type="orange" text="견적 확정하기" onClick={handleAcceptEstimate} />
 
             <div className="my-3 border-t border-gray-100" />
 
@@ -162,6 +122,18 @@ export default function PendingDetailPage() {
           </div>
         </div>
       </div>
+
+      {showModal && (
+        <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+          <AlertModal
+            type="handleClick"
+            message="견적이 확정되었습니다!"
+            buttonText="받았던 견적 보러가기"
+            onClose={() => setShowModal(false)}
+            onConfirm={() => router.push("/customer/my-estimates?tab=past")}
+          />
+        </div>
+      )}
     </>
   );
 }
