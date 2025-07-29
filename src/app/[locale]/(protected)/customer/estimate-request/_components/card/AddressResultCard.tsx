@@ -1,4 +1,5 @@
 import ChipCircle from "@/components/chip/ChipCircle";
+import clsx from "clsx";
 
 interface AddressResultCardProps {
   postalCode: string;
@@ -18,7 +19,13 @@ export default function AddressResultCard({
   return (
     <div
       onClick={onClick}
-      className={`flex w-full cursor-pointer gap-4 rounded-2xl border px-4 pt-5 pb-6 shadow-[2px_2px_10px_0px_rgba(224,224,224,0.20)] transition-colors ${selected ? "border-[var(--color-orange-500)] bg-[var(--color-orange-100)]" : "border-[var(--color-line-100)] bg-white"}`}
+      className={clsx(
+        "flex w-full cursor-pointer gap-4 rounded-2xl border px-4 pt-5 pb-6",
+        "shadow-[2px_2px_10px_0px_rgba(224,224,224,0.20)] transition-colors",
+        selected
+          ? "border-[var(--color-orange-500)] bg-[var(--color-orange-100)]"
+          : "border-[var(--color-line-100)] bg-white"
+      )}
     >
       <div className="flex flex-col gap-4 text-sm md:text-base">
         <p className="text-black-400 text-sm font-semibold md:text-base">{postalCode}</p>

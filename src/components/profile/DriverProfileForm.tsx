@@ -41,9 +41,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
       setCareer(String(profileData.career ?? ""));
       setShortIntro(profileData.shortIntro || "");
       setDetailIntro(profileData.detailIntro || "");
-      const initialServiceAreas = profileData.serviceAreas
-        ?.map((area: { region: string }) => regionMapReverse[area.region])
-        .filter(Boolean);
+      const initialServiceAreas = profileData.serviceAreas?.map((area: { region: string }) => area.region);
       setSelectedRegions(initialServiceAreas || []);
     }
   }, [isEditMode, initialData]);
@@ -254,8 +252,11 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
             <Button
               text="취소"
               type="gray"
-              className="h-15 w-full rounded-2xl bg-gray-200 text-lg font-semibold text-gray-700 md:w-[full]"
-              onClick={() => router.push("/driver/my-page")}
+              buttonType="button" //  폼 제출 안 됨
+              className="h-15 w-full rounded-2xl bg-gray-200 text-lg font-semibold text-gray-700 md:w-full" // md:w-[full] → md:w-full로 수정
+              onClick={() => {
+                router.push("/driver/my-page");
+              }}
             />
             <Button
               text={isSubmitting ? "제출 중..." : "수정하기"}

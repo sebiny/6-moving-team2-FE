@@ -1,4 +1,4 @@
-import DaumPostcode from "react-daum-postcode";
+import DaumPostcode, { Address } from "react-daum-postcode";
 import Image from "next/image";
 
 interface PostcodeProps {
@@ -14,6 +14,19 @@ interface PostcodeProps {
 }
 
 export default function DaumPostcodeModal({ onComplete, onClose, query }: PostcodeProps) {
+  const handleComplete = (data: Address) => {
+    const fullRoadAddress = data.buildingName ? `${data.roadAddress} (${data.buildingName})` : data.roadAddress;
+
+    onComplete({
+      zonecode: data.zonecode,
+      roadAddress: fullRoadAddress,
+      jibunAddress: data.jibunAddress || data.autoJibunAddress,
+      buildingName: data.buildingName,
+      apartment: data.apartment
+    });
+
+    onClose();
+  };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
       <div className="w-[608px] max-w-lg overflow-hidden rounded-2xl bg-white shadow-xl">
@@ -34,21 +47,7 @@ export default function DaumPostcodeModal({ onComplete, onClose, query }: Postco
         {/* 다음 우편번호 검색창 */}
         <div className="p-4">
           <DaumPostcode
-            onComplete={(data) => {
-              const fullRoadAddress = data.buildingName
-                ? `${data.roadAddress} (${data.buildingName})`
-                : data.roadAddress;
-
-              onComplete({
-                zonecode: data.zonecode,
-                roadAddress: fullRoadAddress,
-                jibunAddress: data.jibunAddress || data.autoJibunAddress,
-                buildingName: data.buildingName,
-                apartment: data.apartment
-              });
-
-              onClose();
-            }}
+            onComplete={handleComplete}
             autoClose={false}
             defaultQuery={query}
             style={{

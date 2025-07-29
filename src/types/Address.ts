@@ -24,3 +24,14 @@ export type RegionType =
   | "GYEONGBUK"
   | "GYEONGNAM"
   | "JEJU";
+
+export interface DaumPostcodeAddress {
+  zonecode: string;
+  roadAddress: string;
+  jibunAddress: string;
+  buildingName: string;
+  apartment?: string;
+  addressType?: string;
+  bname?: string;
+  userSelectedType?: "R" | "J";
+}
