@@ -10,22 +10,10 @@ interface Props {
   to: string;
 }
 
-export default function EstimateInfoSection({
-  createdAt,
-  moveTypeLabel,
-  moveDate,
-  from,
-  to
-}: Props) {
+export default function EstimateInfoSection({ createdAt, moveTypeLabel, moveDate, from, to }: Props) {
   return (
-    <div className="w-full max-w-[744px]">
-      <EstimateDetailInfo
-        requestDate={createdAt}
-        serviceType={moveTypeLabel}
-        moveDate={moveDate}
-        from={from}
-        to={to}
-      />
+    <div>
+      <EstimateDetailInfo requestDate={createdAt} serviceType={moveTypeLabel} moveDate={moveDate} from={from} to={to} />
     </div>
   );
 }

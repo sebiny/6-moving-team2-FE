@@ -100,8 +100,8 @@ export default function EstimateDetailPage() {
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       {/* 상단 정보 + 공유 */}
-      <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
-        {/* 왼쪽 - 상단 정보 + 견적 정보 */}
+      <div className="mt-8 flex w-full flex-col gap-5 px-5 md:gap-7 md:px-18 lg:flex-row lg:items-start lg:justify-between lg:px-90">
+        {/* 왼쪽 - 헤더 섹션 + 견적 정보 섹션 */}
         <div className="flex flex-col items-start gap-7">
           {/* 헤더 섹션 */}
           <EstimateHeaderSection
@@ -122,10 +122,20 @@ export default function EstimateDetailPage() {
           />
         </div>
 
-        {/* 오른쪽 - 공유 버튼 */}
-        <div className="items-left mb-10 flex flex-col md:flex-row">
-          <ShareDriver text={t("wannaRecommend?")} />
+        {/* 오른쪽 - 공유 버튼 (lg에서만 보임) */}
+        <div className="hidden lg:block">
+          <ShareDriver text={t("shareEstimate")} />
         </div>
+      </div>
+
+      {/* 모바일/태블릿용 구분선과 공유 버튼 */}
+      {/* 오른쪽 - 공유 버튼 */}
+      <div className="mt-5 px-5 md:my-8 md:mt-8 md:px-18 lg:hidden">
+        <div className="h-0 w-full outline outline-offset-[-0.5px] outline-zinc-100" />
+      </div>
+
+      <div className="items-left mb-10 flex flex-col px-5 md:flex-row md:px-18 lg:hidden">
+        <ShareDriver text={t("wannaRecommend?")} />
       </div>
     </>
   );
