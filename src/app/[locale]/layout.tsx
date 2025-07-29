@@ -8,7 +8,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import ConditionalTransitionWrapper from "@/components/container/ConditionalTransitionWrapper";
-import { ToastContainer } from "react-toastify";
+import { cssTransition, ToastContainer } from "react-toastify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,7 +55,7 @@ export default async function RootLayout({
                   theme="light"
                   closeButton={false}
                   style={{ zIndex: 9999 }}
-                  toastClassName="toast-enter !bg-transparent !shadow-none !backdrop-blur-md rounded-xl"
+                  toastClassName="!bg-transparent !shadow-none !backdrop-blur-md rounded-xl"
                 />
               </div>
             </ConditionalTransitionWrapper>
