@@ -3,7 +3,7 @@ import Image from "next/image";
 import Button from "@/components/Button";
 import XIcon from "../../../../../../../public/assets/icons/ic_X_gray.svg";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-import { MoveType } from "@/constant/moveTypes";
+import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
 import clsx from "clsx";
 import arrow from "../../../../../../../public/assets/icons/ic_arrow.svg";
 import InputText from "@/components/InputText";
@@ -38,15 +38,8 @@ export default function SendEstimateModal({
   const [price, setPrice] = useState("");
   const [comment, setComment] = useState("");
   const [commentValid, setCommentValid] = useState(false);
-  // moveType을 MoveType으로 변환
-  const korToMoveTypeMap: Record<string, MoveType> = {
-    소형이사: "SMALL",
-    가정이사: "HOME",
-    사무실이사: "OFFICE",
-    지정견적요청: "REQUEST",
-    "지정 견적 요청": "REQUEST"
-  };
-  const moveTypeKey: MoveType = korToMoveTypeMap[moveType] ?? "SMALL";
+
+  const moveTypeKey: MoveType = moveTypeFromKorean[moveType] ?? "SMALL";
   const { isLg, isSm } = useMediaHook();
   const textClass = "text-black-300 mb-3 lg:text-[18px] text-[16px] leading-[26px] font-semibold ";
 

@@ -18,6 +18,9 @@ import { driverService } from "@/lib/api/api-driver";
 import { mapBackendRequestToFrontend } from "@/utills/RequestMapper";
 import { useTranslations } from "next-intl";
 
+const MOVE_TYPES = ["소형이사", "가정이사", "사무실이사"] as const;
+const SORT_OPTIONS = ["date", "request"];
+
 export default function ReceivedRequestsPage() {
   const queryClient = useQueryClient();
   const [isDesignatedChecked, setIsDesignatedChecked] = useState(false);
@@ -31,6 +34,7 @@ export default function ReceivedRequestsPage() {
   const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
 
   const t = useTranslations("ReceivedReq");
+
   // React Query로 데이터 가져오기
   const {
     data: requests = [],
@@ -134,10 +138,12 @@ export default function ReceivedRequestsPage() {
     setRejectModalOpen(true);
     setModalOpen(false);
   };
+
   const handleCloseRejectModal = () => {
     setRejectModalOpen(false);
     setSelectedRequest(null);
   };
+
   const handleSubmitReject = async (estimateRequestId: string, reason: string) => {
     if (!selectedRequest) return;
 
@@ -159,6 +165,51 @@ export default function ReceivedRequestsPage() {
         alert("견적 요청 반려에 실패했습니다.");
       }
     }
+  };
+
+  const handleMoveTypeToggle = (moveType: string) => {
+    setSelectedMoveTypes((prev) =>
+      prev.includes(moveType) ? prev.filter((type) => type !== moveType) : [...prev, moveType]
+    );
+  };
+
+  const handleCheckboxChange = (type: "designated" | "available", checked: boolean) => {
+    if (type === "designated") {
+      setIsDesignatedChecked(checked);
+      if (checked) setIsAvailableRegionChecked(false);
+    } else {
+      setIsAvailableRegionChecked(checked);
+      if (checked) setIsDesignatedChecked(false);
+    }
+  };
+
+  const renderContent = () => {
+    if (isPending) return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">로딩 중...</p>;
+    if (error)
+      return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{t("failedFetchReq")}</p>;
+    if (filteredRequests.length === 0) {
+      return (
+        <div className="flex w-full flex-col items-center justify-center px-6 py-20">
+          <div className="flex flex-col items-center gap-6">
+            <div className="relative h-48 w-48">
+              <Image
+                src={imgEmptyReview}
+                alt="empty"
+                className="absolute top-0 left-0 h-full w-full object-contain opacity-50"
+              />
+            </div>
+            <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">아직 받은 요청이 없어요!</p>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <RequestCardList
+        requests={filteredRequests}
+        onSendEstimate={handleSendEstimate}
+        onRejectEstimate={handleRejectEstimate}
+      />
+    );
   };
 
   return (
@@ -190,42 +241,17 @@ export default function ReceivedRequestsPage() {
         <PageHeader title={t("receivedReq")} />
         <SearchBar width="w-full" placeholder={t("placeholder")} value={searchKeyword} onChange={setSearchKeyword} />
         <div className="hidden items-start justify-start gap-3 lg:inline-flex">
-          <ChipCircle
-            type="service"
-            text="SMALL"
-            color="gray"
-            click={true}
-            isSelected={selectedMoveTypes.includes("소형이사")}
-            onSelect={(text) => {
-              setSelectedMoveTypes((prev) =>
-                prev.includes("소형이사") ? prev.filter((type) => type !== "소형이사") : [...prev, "소형이사"]
-              );
-            }}
-          />
-          <ChipCircle
-            type="service"
-            text="HOME"
-            color="gray"
-            click={true}
-            isSelected={selectedMoveTypes.includes("가정이사")}
-            onSelect={(text) => {
-              setSelectedMoveTypes((prev) =>
-                prev.includes("가정이사") ? prev.filter((type) => type !== "가정이사") : [...prev, "가정이사"]
-              );
-            }}
-          />
-          <ChipCircle
-            type="service"
-            text="OFFICE"
-            color="gray"
-            click={true}
-            isSelected={selectedMoveTypes.includes("사무실이사")}
-            onSelect={(text) => {
-              setSelectedMoveTypes((prev) =>
-                prev.includes("사무실이사") ? prev.filter((type) => type !== "사무실이사") : [...prev, "사무실이사"]
-              );
-            }}
-          />
+          {MOVE_TYPES.map((moveType) => (
+            <ChipCircle
+              key={moveType}
+              type="service"
+              text={moveType === "소형이사" ? "SMALL" : moveType === "가정이사" ? "HOME" : "OFFICE"}
+              color="gray"
+              click={true}
+              isSelected={selectedMoveTypes.includes(moveType)}
+              onSelect={() => handleMoveTypeToggle(moveType)}
+            />
+          ))}
         </div>
 
         {/* 모바일/태블릿에서는 전체 옆에 드롭다운 */}
@@ -238,12 +264,7 @@ export default function ReceivedRequestsPage() {
             </div>
             {/* 모바일에선 오른쪽 붙고, lg 이상에선 이 div가 무시됨 */}
             <div className="flex items-center gap-2 lg:hidden">
-              <SortDropdown
-                sortings={["date", "request"]}
-                sort={sort}
-                setSort={setSort}
-                translator={(key) => t(`${key}`)}
-              />
+              <SortDropdown sortings={SORT_OPTIONS} sort={sort} setSort={setSort} translator={(key) => t(`${key}`)} />
               <FilterSection
                 selectedMoveTypes={selectedMoveTypes}
                 setSelectedMoveTypes={setSelectedMoveTypes}
@@ -262,10 +283,7 @@ export default function ReceivedRequestsPage() {
               <label className="flex items-center gap-2">
                 <CustomCheckbox
                   checked={isDesignatedChecked}
-                  onChange={(checked) => {
-                    setIsDesignatedChecked(checked);
-                    if (checked) setIsAvailableRegionChecked(false);
-                  }}
+                  onChange={(checked) => handleCheckboxChange("designated", checked)}
                   shape="square"
                 />
                 <span className="text-base font-normal text-neutral-900">{t("filter.req")}</span>
@@ -273,57 +291,16 @@ export default function ReceivedRequestsPage() {
               <label className="flex items-center gap-2">
                 <CustomCheckbox
                   checked={isAvailableRegionChecked}
-                  onChange={(checked) => {
-                    setIsAvailableRegionChecked(checked);
-                    if (checked) setIsDesignatedChecked(false);
-                  }}
+                  onChange={(checked) => handleCheckboxChange("available", checked)}
                   shape="square"
                 />
                 <span className="text-base font-normal text-neutral-900">{t("filter.service")}</span>
               </label>
             </div>
-            <SortDropdown
-              sortings={["date", "request"]}
-              sort={sort}
-              setSort={setSort}
-              translator={(key) => t(`${key}`)}
-            />
+            <SortDropdown sortings={SORT_OPTIONS} sort={sort} setSort={setSort} translator={(key) => t(`${key}`)} />
           </div>
         </div>
-        {isPending ? (
-          <div className="flex w-full flex-col items-center justify-center px-6 py-20">
-            <div className="flex flex-col items-center gap-6">
-              <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">로딩 중...</p>
-            </div>
-          </div>
-        ) : error ? (
-          <div className="flex w-full flex-col items-center justify-center px-6 py-20">
-            <div className="flex flex-col items-center gap-6">
-              <p className="text-center text-base font-normal text-red-400 lg:text-xl">{t("failedFetchReq")}</p>
-            </div>
-          </div>
-        ) : filteredRequests.length === 0 ? (
-          <div className="flex w-full flex-col items-center justify-center px-6 py-20">
-            <div className="flex flex-col items-center gap-6">
-              {/* 이미지 */}
-              <div className="relative h-48 w-48">
-                <Image
-                  src={imgEmptyReview}
-                  alt="empty"
-                  className="absolute top-0 left-0 h-full w-full object-contain opacity-50"
-                />
-              </div>
-              {/* 텍스트 */}
-              <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">아직 받은 요청이 없어요!</p>
-            </div>
-          </div>
-        ) : (
-          <RequestCardList
-            requests={filteredRequests}
-            onSendEstimate={handleSendEstimate}
-            onRejectEstimate={handleRejectEstimate}
-          />
-        )}
+        {renderContent()}
       </div>
     </div>
   );

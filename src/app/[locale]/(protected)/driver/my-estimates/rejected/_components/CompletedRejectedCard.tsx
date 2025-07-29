@@ -1,18 +1,10 @@
 import React from "react";
 import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-import { MoveType } from "@/constant/moveTypes";
+import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
 import Image from "next/image";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import { useTranslations } from "next-intl";
-
-const korToMoveTypeMap: Record<string, MoveType> = {
-  소형이사: "SMALL",
-  가정이사: "HOME",
-  사무실이사: "OFFICE",
-  지정견적요청: "REQUEST",
-  "지정 견적 요청": "REQUEST"
-};
 
 interface CompletedRejectedCardProps {
   request: Request & { estimateAmount?: string; status?: string };
@@ -20,7 +12,7 @@ interface CompletedRejectedCardProps {
 
 export default function CompletedRejectedCard({ request }: CompletedRejectedCardProps) {
   const t = useTranslations("MyEstimate");
-  const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
+  const moveTypeKey: MoveType = moveTypeFromKorean[request.moveType] ?? "SMALL";
 
   return (
     <div className="relative inline-flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.20)] outline-[0.5px] outline-offset-[-0.5px] outline-zinc-100 md:w-[588px] md:gap-8 md:px-10 md:py-8">

@@ -12,7 +12,7 @@ import { useTranslations } from "next-intl";
 import { driverService } from "@/lib/api/api-driver";
 import { DriverEstimateDetailType } from "@/types/estimateType";
 import { formatDate, formatDateTime } from "@/utills/dateUtils";
-import { MoveType } from "@/constant/moveTypes";
+import { MoveType, moveTypeLabelMap } from "@/constant/moveTypes";
 
 export default function EstimateDetailPage() {
   const t = useTranslations("MyEstimate");
@@ -21,7 +21,7 @@ export default function EstimateDetailPage() {
 
   const {
     data: estimateDetail,
-    isLoading,
+    isPending,
     error
   } = useQuery<DriverEstimateDetailType | null>({
     queryKey: ["driverEstimateDetail", estimateId],
@@ -29,71 +29,45 @@ export default function EstimateDetailPage() {
     enabled: !!estimateId
   });
 
-  // 디버깅을 위한 콘솔 로그
-  console.log("estimateDetail:", estimateDetail);
-
-  if (isLoading) {
-    return (
-      <>
-        <PageHeader title={t("estDetail")} />
-        <OrangeBackground />
-        <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
-          <div className="flex flex-col items-start gap-7">
-            <div className="h-8 w-32 animate-pulse rounded bg-gray-200"></div>
-            <div className="h-6 w-48 animate-pulse rounded bg-gray-200"></div>
-            <div className="h-4 w-24 animate-pulse rounded bg-gray-200"></div>
-          </div>
+  const renderLoadingState = () => (
+    <>
+      <PageHeader title={t("estDetail")} />
+      <OrangeBackground />
+      <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
+        <div className="flex flex-col items-start gap-7">
+          <div className="h-8 w-32 animate-pulse rounded bg-gray-200"></div>
+          <div className="h-6 w-48 animate-pulse rounded bg-gray-200"></div>
+          <div className="h-4 w-24 animate-pulse rounded bg-gray-200"></div>
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 
-  if (error || !estimateDetail) {
-    return (
-      <>
-        <PageHeader title={t("estDetail")} />
-        <OrangeBackground />
-        <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
-          <div className="flex flex-col items-start gap-7">
-            <div className="text-red-500">견적 정보를 불러올 수 없습니다.</div>
-          </div>
+  const renderErrorState = (message: string) => (
+    <>
+      <PageHeader title={t("estDetail")} />
+      <OrangeBackground />
+      <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
+        <div className="flex flex-col items-start gap-7">
+          <div className="text-red-500">{message}</div>
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
+
+  if (isPending) return renderLoadingState();
+  if (error || !estimateDetail) return renderErrorState("견적 정보를 불러올 수 없습니다.");
 
   const { estimateRequest, price, status, isDesignated } = estimateDetail;
   const { customer, moveType, moveDate, fromAddress, toAddress } = estimateRequest;
 
   // 데이터 안전성 검증
-  if (!customer || !customer.authUser || !fromAddress || !toAddress) {
+  if (!customer?.authUser || !fromAddress || !toAddress) {
     console.error("Missing required data:", { customer, fromAddress, toAddress });
-    return (
-      <>
-        <PageHeader title={t("estDetail")} />
-        <OrangeBackground />
-        <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
-          <div className="flex flex-col items-start gap-7">
-            <div className="text-red-500">견적 정보가 불완전합니다.</div>
-          </div>
-        </div>
-      </>
-    );
+    return renderErrorState("견적 정보가 불완전합니다.");
   }
 
-  // moveType을 한글로 변환
-  const getMoveTypeLabel = (moveType: string) => {
-    const moveTypeMap: Record<string, string> = {
-      SMALL: "소형이사",
-      HOME: "가정이사",
-      OFFICE: "사무실이사",
-      REQUEST: "지정견적요청"
-    };
-    return moveTypeMap[moveType] || moveType;
-  };
-
-  // 고객 이름 안전하게 가져오기
-  const customerName = customer.authUser?.name || "고객명 없음";
+  const customerName = customer.authUser.name || "고객명 없음";
 
   return (
     <>
@@ -113,7 +87,7 @@ export default function EstimateDetailPage() {
           <div className="mt-5 lg:mt-7">
             <EstimateInfoSection
               createdAt={formatDate(estimateRequest.createdAt)}
-              moveTypeLabel={getMoveTypeLabel(moveType)}
+              moveTypeLabel={moveTypeLabelMap[moveType as MoveType]?.label || moveType}
               moveDate={formatDateTime(moveDate)}
               from={fromAddress.street}
               to={toAddress.street}

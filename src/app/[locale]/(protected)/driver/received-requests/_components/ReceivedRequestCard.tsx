@@ -1,18 +1,10 @@
 import React from "react";
 import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-import { MoveType } from "@/constant/moveTypes";
+import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
 import Image from "next/image";
 import Button from "@/components/Button";
 import { useTranslations } from "next-intl";
-
-const korToMoveTypeMap: Record<string, MoveType> = {
-  소형이사: "SMALL",
-  가정이사: "HOME",
-  사무실이사: "OFFICE",
-  지정견적요청: "REQUEST",
-  "지정 견적 요청": "REQUEST"
-};
 
 interface ReceivedRequestCardProps {
   request: Request;
@@ -21,8 +13,9 @@ interface ReceivedRequestCardProps {
 }
 
 export default function ReceivedRequestCard({ request, onSendEstimate, onRejectEstimate }: ReceivedRequestCardProps) {
-  const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
+  const moveTypeKey: MoveType = moveTypeFromKorean[request.moveType] ?? "SMALL";
   const t = useTranslations("ReceivedReq");
+
   return (
     <div className="inline-flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.20)] outline outline-offset-[-0.5px] outline-zinc-100 md:w-full md:gap-8 md:px-10 md:py-8">
       {/* 상단 */}

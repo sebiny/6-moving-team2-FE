@@ -116,3 +116,15 @@ export const reviews: ReviewType[] = [
     createdAt: new Date("2024-07-01")
   }
 ];
+
+// 견적 상태 상수
+export const ESTIMATE_STATUS = {
+  PENDING: "pending",
+  CONFIRMED: "confirmed",
+  REJECTED: "rejected"
+} as const;
+
+// 견적 관련 텍스트 상수
+export const ESTIMATE_TEXT = {
+  UNDEFINED: "미정"
+} as const;

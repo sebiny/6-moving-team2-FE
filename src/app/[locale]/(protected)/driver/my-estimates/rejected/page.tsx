@@ -6,8 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
 import RejectedCardList from "./_components/RejectedCardList";
 import { driverService } from "@/lib/api/api-driver";
-import { BackendRequest } from "@/types/request";
 import { mapBackendRejectedRequestToFrontend } from "@/utills/RequestMapper";
+import { BackendRequest } from "@/types/request";
 
 export default function RejectedEstimatesPage() {
   const router = useRouter();
@@ -38,35 +38,26 @@ export default function RejectedEstimatesPage() {
     (backendEstimates as unknown as { estimateRequest: BackendRequest; reason?: string; createdAt: string }[]) || []
   ).map(mapBackendRejectedRequestToFrontend);
 
+  const renderContent = () => {
+    if (isPending) return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">로딩 중...</p>;
+    if (error)
+      return (
+        <p className="text-center text-base font-normal text-red-400 lg:text-xl">거절된 견적 조회에 실패했습니다.</p>
+      );
+    if (estimates.length === 0)
+      return (
+        <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">아직 거절된 견적이 없어요!</p>
+      );
+    return <RejectedCardList requests={estimates} />;
+  };
+
   return (
     <>
       <Header type="driver-estimate" selectedIdx={selectedIdx} setSelectedIdx={handleTabChange} />
       <div className="flex justify-center bg-neutral-50 px-4 pt-6 pb-10 md:pt-8 lg:pt-11">
-        {isPending ? (
-          <div className="flex w-full flex-col items-center justify-center px-6 py-20">
-            <div className="flex flex-col items-center gap-6">
-              <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">로딩 중...</p>
-            </div>
-          </div>
-        ) : error ? (
-          <div className="flex w-full flex-col items-center justify-center px-6 py-20">
-            <div className="flex flex-col items-center gap-6">
-              <p className="text-center text-base font-normal text-red-400 lg:text-xl">
-                거절된 견적 조회에 실패했습니다.
-              </p>
-            </div>
-          </div>
-        ) : estimates.length === 0 ? (
-          <div className="flex w-full flex-col items-center justify-center px-6 py-20">
-            <div className="flex flex-col items-center gap-6">
-              <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">
-                아직 거절된 견적이 없어요!
-              </p>
-            </div>
-          </div>
-        ) : (
-          <RejectedCardList requests={estimates} />
-        )}
+        <div className="flex w-full flex-col items-center justify-center px-6 py-20">
+          <div className="flex flex-col items-center gap-6">{renderContent()}</div>
+        </div>
       </div>
     </>
   );
