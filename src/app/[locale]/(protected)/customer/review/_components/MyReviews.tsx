@@ -17,6 +17,10 @@ import Pagination from "@/components/Pagination";
 import Button from "@/components/Button";
 import { useQuery } from "@tanstack/react-query";
 import { MoveType } from "@/constant/moveTypes";
+import Lottie from "react-lottie-player";
+import reviewLottie from "../../../../../../../public/lottie/review-lottie.json";
+import Toast from "@/app/[locale]/(guest)/drivers/[id]/_components/Toast";
+
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
@@ -41,6 +45,7 @@ type ReviewItem = {
     moveType: MoveType;
     fromAddress: Address;
     toAddress: Address;
+    isDesignated: boolean;
   };
 };
 type ReviewListResponse = {
@@ -64,6 +69,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
 
   const totalCount = data?.totalCount ?? 0;
   const reviews = data?.reviews ?? [];
+
   console.log(data);
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
@@ -71,10 +77,13 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   };
 
   if (isLoading) {
-    return <div>로딩중</div>;
+    <div className="flex flex-col items-center gap-5 pt-30">
+      <Lottie loop animationData={reviewLottie} play style={{ width: 150, height: 150 }} />
+      <p className="font-Pretendard text-lg font-semibold text-gray-400">내가 작성한 리뷰들을 불러오고 있어요!!</p>
+    </div>;
   }
 
-  if (isError || !reviews || reviews.length === 0) {
+  if (!isError || !reviews || reviews.length === 0) {
     return (
       <div className="flex h-full items-center justify-center">
         <NoMyReview setSelectedIdx={setSelectedIdx} />
@@ -117,6 +126,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                 {isSm && !isMd && (
                   <div className="mb-3 flex gap-2">
                     <ChipRectangle moveType={request.moveType} size="sm" />
+                    {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
                   </div>
                 )}
 
@@ -126,7 +136,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       isLg ? "h-[100px] w-[100px]" : isMd ? "h-[80px] w-[80px]" : "h-[50x] w-[50px]",
                       "order-2 rounded-[12px] md:order-1"
                     )}
-                    src={DriverImg}
+                    src={review.driver.profileImage ?? DriverImg}
                     alt="driverImg"
                   />
                   <div className="order-1 md:order-2 lg:pt-[10px]">
@@ -144,12 +154,15 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       )}
                     </div>
                     {isMd && <ChipRectangle moveType={request.moveType} size={isLg ? "md" : "sm"} className="mt-2" />}
+                    {isMd && request.isDesignated && (
+                      <ChipRectangle moveType="REQUEST" size={isLg ? "md" : "sm"} className="mt-2 ml-2" />
+                    )}
                   </div>
                 </div>
               </div>
               <div className={clsx("flex gap-5", isSm && !isMd && "border-line-100 border-b pb-4")}>
                 {moveDetails.map(({ label, content }, index) => (
-                  <div className={clsx(index == 1 && "md:border-line-100 md:border-x md:px-5")}>
+                  <div key={label} className={clsx(index == 1 && "md:border-line-100 md:border-x md:px-5")}>
                     <p className="text-[12px] leading-[18px] text-gray-500 md:text-[14px] md:leading-[24px]">
                       {t(`moveDetails.${label}`)}
                     </p>
@@ -177,9 +190,9 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                 onClick={async () => {
                   try {
                     await deleteMyReview(review.id);
-                    alert("리뷰 삭제");
+                    <Toast text="리뷰를 삭제했습니다" />;
                   } catch (err) {
-                    alert("삭제 실패");
+                    <Toast text="리뷰를 삭제를 실패했습니다." />;
                   }
                 }}
               />

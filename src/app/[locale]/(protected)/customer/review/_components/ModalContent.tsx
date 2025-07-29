@@ -35,6 +35,7 @@ type ReviewItem = {
       shortIntro: string;
       profileImage: string | null;
     };
+    isDesignated: boolean;
   }[];
 };
 
@@ -88,6 +89,9 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
         <div>
           <div className="flex gap-3">
             <ChipRectangle moveType={review.moveType} size={!isLg && isSm ? "sm" : "md"} />
+            {review.estimates[0].isDesignated && (
+              <ChipRectangle moveType="REQUEST" size={!isLg && isSm ? "sm" : "md"} />
+            )}
           </div>
 
           <div className="border-line-100 flex justify-between border-b pt-[14px] pb-3 lg:py-4">
@@ -99,7 +103,8 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
                 {t("driver.title")}
               </p>
             </div>
-            <Image src={DriverImg} width={50} height={50} alt="driver_img" />
+
+            <Image src={review.estimates[0].driver.profileImage ?? DriverImg} width={50} height={50} alt="driver_img" />
           </div>
 
           <div className="border-line-100 flex border-b py-3 lg:py-4">

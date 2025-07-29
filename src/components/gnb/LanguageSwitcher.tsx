@@ -4,14 +4,17 @@ import { useRouter, usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-
+import clsx from "clsx";
+type prop = {
+  classname?: string;
+};
 const LANGUAGES = [
   { label: "한국어", code: "ko" },
   { label: "English", code: "en" },
   { label: "中文", code: "zh" }
 ];
 
-export default function GnbLanguageSwitcher() {
+export default function LanguageSwitcher({ classname }: prop) {
   const router = useRouter();
   const pathname = usePathname();
   const currentLocale = useLocale();
@@ -31,7 +34,11 @@ export default function GnbLanguageSwitcher() {
     <div className="relative text-sm">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="font-Pretendard flex cursor-pointer items-center gap-1 rounded-md border-[1.5] bg-orange-100 px-3 py-1 font-semibold text-orange-500 hover:bg-orange-200"
+        className={clsx(
+          "font-Pretendard flex cursor-pointer items-center gap-1 rounded-md border-[1.5] px-3 py-1",
+          "bg-orange-100 font-semibold text-orange-500 hover:bg-orange-200",
+          classname
+        )}
       >
         {currentLabel}
 
@@ -44,9 +51,10 @@ export default function GnbLanguageSwitcher() {
             <li key={code}>
               <button
                 onClick={() => handleLocaleChange(code)}
-                className={`font-Pretendard w-full cursor-pointer px-4 py-2 text-left hover:bg-orange-100 ${
+                className={clsx(
+                  "font-Pretendard w-full cursor-pointer px-4 py-2 text-left hover:bg-orange-100",
                   code === currentLocale ? "bg-orange-200 font-semibold text-orange-500" : ""
-                }`}
+                )}
               >
                 {label}
               </button>

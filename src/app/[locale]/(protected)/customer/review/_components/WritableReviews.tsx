@@ -14,6 +14,8 @@ import NoReview from "./NoReview";
 import Pagination from "@/components/Pagination";
 import { useQuery } from "@tanstack/react-query";
 import { MoveType } from "@/constant/moveTypes";
+import Lottie from "react-lottie-player";
+import reviewLottie from "../../../../../../../public/lottie/review-lottie.json";
 
 interface ReviewsProps {
   setIsModal: (value: boolean) => void;
@@ -31,10 +33,12 @@ type ReviewableItem = {
   estimates: {
     id: string;
     price: number;
+    isDesignated: boolean;
     driver: {
       id: string;
       nickname: string;
       shortIntro: string;
+      profileImage: string | null;
     };
   }[];
 };
@@ -57,13 +61,16 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
     queryKey: ["reviewable", page],
     queryFn: () => getWritableReviews(page)
   });
+
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];
-  console.log(reviewables);
-  console.log(totalCount);
-
   if (isLoading) {
-    return <div>로딩중</div>;
+    return (
+      <div className="flex flex-col items-center gap-5 pt-30">
+        <Lottie loop animationData={reviewLottie} play style={{ width: 150, height: 150 }} />
+        <p className="font-Pretendard text-lg font-semibold text-gray-400">작성 가능한 리뷰들을 불러오고 있어요!!</p>
+      </div>
+    );
   }
 
   if (isError || !reviewables || reviewables.length === 0) {
@@ -89,6 +96,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
             {isSm && !isMd && (
               <div className="mb-3 flex gap-2">
                 <ChipRectangle moveType={reviewable.moveType} size="sm" />
+                {reviewable.estimates[0].isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
               </div>
             )}
             <div className="flex justify-between">
@@ -98,7 +106,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                     isLg ? "h-[100px] w-[100px]" : isMd ? "h-[80px] w-[80px]" : "h-[64px] w-[64px]",
                     "order-2 rounded-[12px] md:order-1"
                   )}
-                  src={DriverImg}
+                  src={reviewable.estimates[0].driver.profileImage ?? DriverImg}
                   alt="driverImg"
                 />
 
@@ -113,6 +121,9 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                     {reviewable.estimates[0].driver.shortIntro}
                   </p>
                   {isMd && <ChipRectangle moveType={reviewable.moveType} size={isLg ? "md" : "sm"} className="mt-2" />}
+                  {reviewable.estimates[0].isDesignated && (
+                    <ChipRectangle moveType="REQUEST" size={isLg ? "md" : "sm"} className="mt-2 ml-2" />
+                  )}
                 </div>
               </div>
 
