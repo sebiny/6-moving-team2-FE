@@ -8,6 +8,7 @@
   "ThisIsRejected": "This request has been rejected",
   "viewDetails": "View Details",
   "confirmedEst": "confirmed Quote",
+  "waitingEst": "waiting Quote",
   "estDetail": "Estimate Details",
   "estimatedCost": "Estimated Cost",
   "estimateInfo": "Estimate Information",

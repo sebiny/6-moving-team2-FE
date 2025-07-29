@@ -141,22 +141,27 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto mt-[23px] flex w-[1200px] flex-col gap-12 rounded-[32px] bg-gray-50 px-10 pt-8 pb-10"
+      className="mx-auto mt-[23px] box-border flex w-[375px] max-w-[1200px] flex-col gap-12 rounded-[32px] bg-gray-50 px-6 pt-8 pb-10 md:w-[375px] lg:w-[1200px] lg:px-10"
     >
       {/* Header */}
       <div className="flex flex-col gap-8">
         <h1 className="text-[32px] font-semibold">기사님 프로필 {isEditMode ? "수정" : "등록"}</h1>
-        <p className="text-black-200 text-xl">추가 정보를 입력하여 회원가입을 완료해주세요.</p>
+        {!isEditMode && <p className="text-black-200 text-xl">추가 정보를 입력하여 회원가입을 완료해주세요.</p>}
       </div>
+
       <div className="bg-line-100 h-px" />
 
-      <div className="flex flex-col justify-between lg:flex-row">
+      {/* 왼쪽/오른쪽 콘텐츠 래퍼 (gap-6 있음) */}
+      <div className="flex flex-col justify-between gap-6 lg:flex-row">
         {/* 왼쪽 */}
-        <div className="flex w-[500px] flex-col gap-8">
-          <div className="flex flex-col gap-4">
+        <div className="flex w-full flex-col gap-8">
+          <div className="flex h-[196px] flex-col gap-2">
+            <label htmlFor="profileImage" className="text-xl font-semibold">
+              프로필 이미지
+            </label>
             <ImageUploader
+              label=""
               id="profileImage"
-              label="프로필 이미지"
               maxSizeMB={5}
               onImageChange={handleImageChange}
               onImageError={handleImageError}
@@ -181,6 +186,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
             />
             {!isNicknameValid && nickname.length > 0 && <p className="text-base text-rose-500">별명을 입력해주세요.</p>}
           </div>
+          <div className="bg-line-100 h-px" />
 
           {/* 경력 */}
           <div className="flex flex-col gap-2">
@@ -190,6 +196,9 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
             <TextField value={career} onChange={setCareer} placeholder="기사님의 경력을 입력해 주세요" required />
             {!isCareerValid && career.length > 0 && <p className="text-base text-rose-500">숫자만 입력해주세요.</p>}
           </div>
+
+          <div className="bg-line-100 h-px" />
+
           {/* 한 줄 소개 */}
           <div className="flex flex-col gap-2">
             <label className="text-xl font-semibold">
@@ -202,8 +211,10 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
           </div>
         </div>
 
+        <div className="bg-line-100 my-6 h-px" />
+
         {/* 오른쪽 */}
-        <div className="flex w-[500px] flex-col gap-8">
+        <div className="flex w-full flex-col gap-8">
           <div className="flex flex-col gap-2">
             <label className="text-xl font-semibold">
               상세 설명 <span className="text-red-500">*</span>
@@ -233,7 +244,28 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
 
             <SelectRegion currentAreas={selectedRegions} setCurrentAreas={setSelectedRegions} type="driver" />
           </div>
-          <div className="flex justify-end">
+        </div>
+      </div>
+
+      {/* 버튼 영역 - gap 영향을 받지 않도록 부모 밖으로 분리 */}
+      <div className="mt-6 flex justify-end">
+        {isEditMode ? (
+          <div className="flex w-full flex-col gap-4 md:gap-[20px] lg:w-[500px] lg:flex-row">
+            <Button
+              text="취소"
+              type="gray"
+              className="h-15 w-full rounded-2xl bg-gray-200 text-lg font-semibold text-gray-700 md:w-[full]"
+              onClick={() => router.push("/driver/my-page")}
+            />
+            <Button
+              text={isSubmitting ? "제출 중..." : "수정하기"}
+              type="orange"
+              className="h-15 w-full rounded-2xl text-lg font-semibold md:w-[full]"
+              isDisabled={!isFormValid || isSubmitting || isUploading}
+            />
+          </div>
+        ) : (
+          <div className="flex w-full justify-end">
             <Button
               text={isSubmitting ? "제출 중..." : "시작하기"}
               type="orange"
@@ -241,7 +273,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
               isDisabled={!isFormValid || isSubmitting || isUploading}
             />
           </div>
-        </div>
+        )}
       </div>
     </form>
   );

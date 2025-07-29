@@ -1,3 +1,4 @@
+import { useTranslations } from "use-intl";
 import ChipConfirmed from "./ChipConfirmed";
 
 interface EstimateStatusLabelProps {
@@ -13,13 +14,14 @@ const normalizedStatusMap: Record<EstimateStatusLabelProps["status"], "WAITING" 
 
 export default function EstimateStatus({ status, className = "" }: EstimateStatusLabelProps) {
   const normalized = normalizedStatusMap[status];
+  const t = useTranslations("MyEstimate");
 
   if (normalized === "WAITING") {
     return (
       <div
         className={`inline-flex items-center justify-center bg-white text-base font-semibold whitespace-nowrap text-neutral-400 ${className}`}
       >
-        견적대기
+        {t("waitingEst")}
       </div>
     );
   }

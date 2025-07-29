@@ -93,7 +93,9 @@ function FindDrivers() {
         </div>
         <div className="flex flex-col gap-5">
           {drivers?.map((driver) => (
-            <DriverFindCard key={driver.id} driver={driver} />
+            <div className="cursor-pointer">
+              <DriverFindCard key={driver.id} driver={driver} />
+            </div>
           ))}
           <div ref={ref} className="h-1" />
           {isFetchingNextPage && (
