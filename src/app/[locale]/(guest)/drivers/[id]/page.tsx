@@ -34,7 +34,6 @@ function DriverDetailPage() {
     }
   }, [driver]);
 
-  if (isPending) return <div>로딩중...</div>;
   if (!driver) return <div>기사님 정보를 불러올 수 없습니다</div>;
 
   return (
@@ -52,7 +51,12 @@ function DriverDetailPage() {
           <DriverReviews driver={driver} />
         </div>
         <div className="mt-[109px] hidden w-80 lg:block">
-          <RequestEstimate favorite={favorite} setFavorite={setFavorite} isDesignated={driver.isDesignated ?? false} />
+          <RequestEstimate
+            nickname={driver.nickname}
+            favorite={favorite}
+            setFavorite={setFavorite}
+            isDesignated={driver.isDesignated ?? false}
+          />
           <ShareDriver text={t("driverPage.wannaRecommend?")} />
         </div>
       </div>
