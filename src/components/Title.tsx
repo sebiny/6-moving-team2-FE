@@ -101,7 +101,10 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
           <div className="my-6 border-t border-gray-100" />
           <div className="flex items-center justify-between md:justify-start md:gap-14">
             <p className="text-xl font-semibold text-gray-700">{t("estimateCost")}</p>
-            <p className="text-2xl font-bold text-gray-900 sm:ml-2">{estimatePrice.toLocaleString()}원</p>
+            <p className="text-2xl font-bold text-gray-900 sm:ml-2">
+              {estimatePrice.toLocaleString()}
+              {t("won")}
+            </p>
           </div>
         </>
       )}

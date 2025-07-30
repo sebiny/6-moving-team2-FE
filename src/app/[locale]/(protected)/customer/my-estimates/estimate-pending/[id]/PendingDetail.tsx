@@ -14,8 +14,12 @@ import { formatStreetAddress } from "@/utills/addressUtils";
 import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
 import { useState } from "react";
 import AlertModal from "@/components/common-modal/AlertModal";
+import { useTranslations } from "next-intl";
 
 export default function PendingDetailPage() {
+  const t = useTranslations("MyEstimates");
+  const t1 = useTranslations("MyEstimate");
+
   const { id } = useParams();
   const { data } = useEstimateDetail(id as string);
 
@@ -48,7 +52,7 @@ export default function PendingDetailPage() {
     <>
       {/* 상단 서브 헤더 */}
       <div className="sticky top-14 z-9 bg-white lg:top-22">
-        <SubHeader title="견적 상세" />
+        <SubHeader title={t1("estDetail")} />
       </div>
 
       {/* 상단 배경 + 프로필 */}
@@ -100,9 +104,9 @@ export default function PendingDetailPage() {
             {/* 기본 버전 */}
             <div className="flex flex-col gap-6 lg:hidden">
               <div className="my-3 border-t border-gray-100" />
-              <ShareDriver text="견적서 공유하기" />
+              <ShareDriver text={t("shareEstimate")} />
               <div className="mt-10">
-                <Button type="orange" text="견적 확정하기" onClick={handleAcceptEstimate} />
+                <Button type="orange" text={t("acceptEstimate")} onClick={handleAcceptEstimate} />
               </div>
             </div>
           </div>
@@ -110,29 +114,30 @@ export default function PendingDetailPage() {
           {/* 오른쪽 사이드 열 */}
           <div className="mt-7 hidden lg:flex lg:flex-col lg:justify-center lg:gap-6">
             <div>
-              <p className="text-lg font-semibold text-neutral-400">견적가</p>
-              <p className="text-black-500 text-2xl font-bold">{price.toLocaleString()}원</p>
+              <p className="text-lg font-semibold text-neutral-400">{t("estimateCost")}</p>
+              <p className="text-black-500 text-2xl font-bold">
+                {price.toLocaleString()}
+                {t("won")}
+              </p>
             </div>
 
-            <Button type="orange" text="견적 확정하기" onClick={handleAcceptEstimate} />
+            <Button type="orange" text={t("acceptEstimate")} onClick={handleAcceptEstimate} />
 
             <div className="my-3 border-t border-gray-100" />
 
-            <ShareDriver text="견적서 공유하기" />
+            <ShareDriver text={t("shareEstimate")} />
           </div>
         </div>
       </div>
 
       {showModal && (
-        <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
-          <AlertModal
-            type="handleClick"
-            message="견적이 확정되었습니다!"
-            buttonText="받았던 견적 보러가기"
-            onClose={() => setShowModal(false)}
-            onConfirm={() => router.push("/customer/my-estimates?tab=past")}
-          />
-        </div>
+        <AlertModal
+          type="handleClick"
+          message="견적이 확정되었습니다!"
+          buttonText="받았던 견적 보러가기"
+          onClose={() => setShowModal(false)}
+          onConfirm={() => router.push("/customer/my-estimates?tab=past")}
+        />
       )}
     </>
   );

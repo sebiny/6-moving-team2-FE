@@ -136,7 +136,7 @@ export default function PendingCard({ data, moveType }: Props) {
         <div className="order-1 w-full md:order-2 md:w-1/2">
           <Button
             type="orange"
-            text="견적 확정하기"
+            text={t("acceptEstimate")}
             onClick={() =>
               acceptEstimate(id, {
                 onSuccess: (data) => {
@@ -164,7 +164,7 @@ export default function PendingCard({ data, moveType }: Props) {
 
         {/* 상세보기 버튼 */}
         <div className="order-2 w-full md:order-1 md:w-1/2">
-          <Button type="white-orange" text="상세보기" onClick={ClickDetail} />
+          <Button type="white-orange" text={t("viewDetail")} onClick={ClickDetail} />
         </div>
       </div>
     </div>

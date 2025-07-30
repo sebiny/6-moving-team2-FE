@@ -18,9 +18,13 @@
   "won": "원",
 
   "estimateDetail": "견적 상세",
+  "viewDetail": "상세보기",
+
   "shareEstimate": "견적서 공유하기",
+  "acceptEstimate": "견적 확정하기",
 
   "requestDate": "견적 요청일",
+  "applicationDate": "견적 신청일",
   "service": "서비스",
   "moveDate": "이용일",
 
