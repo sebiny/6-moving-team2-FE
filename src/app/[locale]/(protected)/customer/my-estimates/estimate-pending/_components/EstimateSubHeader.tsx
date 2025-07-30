@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface EstimateSubHeaderProps {
   data: {
@@ -14,6 +15,9 @@ interface EstimateSubHeaderProps {
 }
 
 export default function EstimateSubHeader({ data }: EstimateSubHeaderProps) {
+  const t = useTranslations("MyEstimates");
+  const t1 = useTranslations("MyEstimate");
+
   const { label, requestDate, from, to, date } = data;
 
   return (
@@ -22,7 +26,9 @@ export default function EstimateSubHeader({ data }: EstimateSubHeaderProps) {
         {/* 왼쪽: 제목 + 신청일 */}
         <div className="flex flex-col gap-1">
           <h2 className="text-[20px] font-semibold text-black sm:text-[18px] md:text-[20px] lg:text-[24px]">{label}</h2>
-          <p className="text-sm text-gray-400 sm:text-xs md:text-sm">견적 신청일: {requestDate}</p>
+          <p className="text-sm text-gray-400 sm:text-xs md:text-sm">
+            {t("applicationDate")}: {requestDate}
+          </p>
         </div>
 
         {/* lg, md 버전: 기존 레이아웃 유지 */}
@@ -31,7 +37,7 @@ export default function EstimateSubHeader({ data }: EstimateSubHeaderProps) {
           <div className="flex items-end gap-10 text-sm md:flex-row lg:gap-5">
             {/* 출발지 */}
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-gray-400 lg:text-sm">출발지</span>
+              <span className="text-xs text-gray-400 lg:text-sm">{t1("from")}</span>
               <span className="text-base font-semibold text-black lg:text-lg">{from}</span>
             </div>
 
@@ -40,14 +46,14 @@ export default function EstimateSubHeader({ data }: EstimateSubHeaderProps) {
 
             {/* 도착지 */}
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-gray-400 lg:text-sm">도착지</span>
+              <span className="text-xs text-gray-400 lg:text-sm">{t1("to")}</span>
               <span className="text-base font-semibold text-black lg:text-lg">{to}</span>
             </div>
           </div>
 
           {/* 이사일 */}
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-gray-400 lg:text-sm">이사일</span>
+            <span className="text-xs text-gray-400 lg:text-sm">{t1("date")}</span>
             <span className="text-sm font-semibold text-black lg:text-lg">{date}</span>
           </div>
         </div>
@@ -56,17 +62,17 @@ export default function EstimateSubHeader({ data }: EstimateSubHeaderProps) {
         <div className="flex flex-col gap-2 p-1 md:hidden">
           {/* 출발지 */}
           <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-400">출발지</span>
+            <span className="text-xs text-gray-400">{t1("from")}</span>
             <span className="text-sm font-semibold text-black">{from}</span>
           </div>
           {/* 도착지 */}
           <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-400">도착지</span>
+            <span className="text-xs text-gray-400">{t1("to")}</span>
             <span className="text-sm font-semibold text-black">{to}</span>
           </div>
           {/* 이사일 */}
           <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-400">이사일</span>
+            <span className="text-xs text-gray-400">{t1("date")}</span>
             <span className="text-sm font-semibold text-black">{date}</span>
           </div>
         </div>
