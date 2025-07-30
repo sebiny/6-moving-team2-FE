@@ -16,8 +16,8 @@ import Pagination from "@/components/Pagination";
 import Button from "@/components/Button";
 import { useQuery } from "@tanstack/react-query";
 import { MoveType } from "@/constant/moveTypes";
-import Toast from "@/app/[locale]/(guest)/drivers/[id]/_components/Toast";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
@@ -205,9 +205,9 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                 onClick={async () => {
                   try {
                     await deleteMyReview(review.id);
-                    <Toast text="리뷰를 삭제했습니다" />;
+                    ToastModal("리뷰를 삭제했습니다");
                   } catch (err) {
-                    <Toast text="리뷰를 삭제를 실패했습니다." />;
+                    ToastModal("리뷰를 삭제를 실패했습니다.");
                   }
                 }}
               />
