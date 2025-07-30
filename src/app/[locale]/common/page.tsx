@@ -145,6 +145,7 @@ function CommonPage() {
           translator={(key) => key}
           sortings={["리뷰 많은순", "평점 높은순", "경력 높은순", "확정 많은순"]}
           sort="리뷰 많은순"
+          setSort={() => {}} // 임시 함수
         />
       </div>
 

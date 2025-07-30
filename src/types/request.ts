@@ -1,6 +1,8 @@
+import { MoveType } from "@/constant/moveTypes";
+
 export interface Request {
   id: string;
-  moveType: string; // "소형이사" | "가정이사" | "사무실이사"
+  moveType: MoveType;
   isDesignated: boolean;
   createdAt: string;
   originalCreatedAt?: string; // 정렬용 원본 날짜
@@ -15,7 +17,7 @@ export interface Request {
 // 백엔드 응답 데이터 형식
 export interface BackendRequest {
   id: string;
-  moveType: "SMALL" | "HOME" | "OFFICE";
+  moveType: MoveType;
   moveDate: string;
   status: string;
   createdAt: string;

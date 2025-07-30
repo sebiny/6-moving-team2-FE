@@ -33,3 +33,12 @@ export const moveTypeLabelMap: Record<MoveType, { label: string }> = {
     label: "지정 견적 요청"
   }
 };
+
+// 한글에서 MoveType으로 변환하는 매핑
+export const moveTypeFromKorean: Record<string, MoveType> = {
+  소형이사: "SMALL",
+  가정이사: "HOME",
+  사무실이사: "OFFICE",
+  지정견적요청: "REQUEST",
+  "지정 견적 요청": "REQUEST"
+};
