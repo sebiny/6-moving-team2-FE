@@ -17,7 +17,7 @@ const formatNumberWithCommas = (value: string): string => {
 };
 
 // 쉼표 제거 함수
-const removeCommas = (value: string): string => {
+export const removeCommas = (value: string): string => {
   return value.replace(/,/g, "");
 };
 
@@ -34,6 +34,11 @@ export default function InputPrice({
     const inputValue = e.target.value;
     // 쉼표 제거 후 숫자만 추출
     const numbersOnly = removeCommas(inputValue).replace(/[^0-9]/g, "");
+    // 숫자가 없으면 빈 문자열 반환
+    if (!numbersOnly) {
+      onChange("");
+      return;
+    }
     // 천 단위 쉼표 추가
     const formattedValue = formatNumberWithCommas(numbersOnly);
     onChange(formattedValue);

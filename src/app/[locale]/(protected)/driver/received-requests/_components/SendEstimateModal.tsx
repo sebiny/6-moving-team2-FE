@@ -7,7 +7,7 @@ import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
 import clsx from "clsx";
 import arrow from "../../../../../../../public/assets/icons/ic_arrow.svg";
 import InputText from "@/components/InputText";
-import InputPrice from "./InputPrice";
+import InputPrice, { removeCommas } from "./InputPrice";
 import useMediaHook from "@/hooks/useMediaHook";
 import { useTranslations } from "next-intl";
 
@@ -117,8 +117,12 @@ export default function SendEstimateModal({
             type={price !== "" && commentValid ? "orange" : "gray"}
             text={t("sendEst")}
             className="h-[54px] lg:h-[64px]"
-            isDisabled={price === "" || !commentValid}
-            onClick={() => onSubmit(Number(price), comment)}
+            isDisabled={price === "" || !commentValid || Number(removeCommas(price)) <= 0}
+            onClick={() => {
+              const cleanPrice = removeCommas(price);
+              const numericPrice = Number(cleanPrice);
+              onSubmit(numericPrice, comment);
+            }}
           />
         </div>
       </div>
