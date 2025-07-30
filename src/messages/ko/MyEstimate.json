@@ -3,12 +3,11 @@
   "from": "출발지",
   "to": "도착지",
   "date": "이사일",
-  "cost": "견적 금액",
+  "cost": "견적가",
   "ThisIsCompleted": "이사 완료된 견적이에요",
   "ThisIsRejected": "반려된 요청이에요",
   "viewDetails": "견적 상세보기",
   "confirmedEst": "확정견적",
-  "waitingEst": "견적대기",
   "estDetail": "견적 상세",
   "estimatedCost": "견적가",
   "estimateInfo": "견적 정보",
@@ -16,6 +15,7 @@
   "service": "서비스",
   "useDate": "이용일",
   "wannaRecommend?": "나만 알기엔 아쉬운 기사님인가요?",
+  "shareEstimate": "견적서 공유하기",
   "comment": "코멘트",
   "rejectReason": "거절 사유"
 }

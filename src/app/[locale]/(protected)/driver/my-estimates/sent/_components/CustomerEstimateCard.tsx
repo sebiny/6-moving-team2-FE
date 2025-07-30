@@ -1,38 +1,27 @@
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-import { MoveType } from "@/constant/moveTypes";
+import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
+import { CompletedEstimateCardType } from "@/types/estimateType";
+import { ESTIMATE_STATUS, ESTIMATE_TEXT } from "@/constant/constant";
 import Image from "next/image";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import CompletedEstimateCard from "./CompletedEstimateCard";
 import { useTranslations } from "next-intl";
 
-const korToMoveTypeMap: Record<string, MoveType> = {
-  소형이사: "SMALL",
-  가정이사: "HOME",
-  사무실이사: "OFFICE",
-  지정견적요청: "REQUEST",
-  "지정 견적 요청": "REQUEST"
-};
-
 interface CustomerEstimateCardProps {
-  request: Request & { estimateAmount?: string; isCompleted?: boolean; status?: string };
+  request: CompletedEstimateCardType;
 }
 
 export default function CustomerEstimateCard({ request }: CustomerEstimateCardProps) {
   const t = useTranslations("MyEstimate");
   const router = useRouter();
-  const moveTypeKey: MoveType = korToMoveTypeMap[request.moveType] ?? "SMALL";
-
-  const handleCardClick = () => {
-    router.push(`/driver/my-estimates/sent/${request.id}`);
-  };
+  const moveTypeKey: MoveType = moveTypeFromKorean[request.moveType] ?? "SMALL";
 
   return (
     <div
       className="flex w-80 cursor-pointer flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.20)] outline outline-offset-[-0.5px] outline-zinc-100 transition-shadow hover:shadow-[-2px_-2px_15px_0px_rgba(220,220,220,0.30)] md:w-[588px] md:gap-8 md:px-10 md:py-8"
-      onClick={handleCardClick}
+      onClick={() => router.push(`/driver/my-estimates/sent/${request.id}`)}
     >
       {/* 상단 */}
       <div className="flex w-full flex-col gap-4">
@@ -41,8 +30,7 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
             <ChipRectangle moveType={moveTypeKey} size="sm" />
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
-          {request.status === "confirmed" && <ChipConfirmed />}
-          {/* 확정카드는 날짜 대신 확정 라벨만 */}
+          {request.status === ESTIMATE_STATUS.CONFIRMED && <ChipConfirmed />}
         </div>
         {/* 고객명 */}
         <div className="flex w-full flex-col gap-3">
@@ -81,7 +69,7 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
       <div className="flex w-full items-end justify-between border-t border-neutral-200 pt-4">
         <div className="text-base font-medium text-neutral-800">{t("cost")}</div>
         <div className="text-2xl font-bold text-neutral-800">
-          {request.estimateAmount ? request.estimateAmount : "미정"}
+          {request.estimateAmount ? request.estimateAmount : ESTIMATE_TEXT.UNDEFINED}
         </div>
       </div>
       {/* 오버레이 */}

@@ -8,6 +8,19 @@ interface InputPriceProps {
   size?: "md" | "sm";
 }
 
+// 천 단위 쉼표 추가 함수
+const formatNumberWithCommas = (value: string): string => {
+  // 숫자가 아닌 문자 제거
+  const numbersOnly = value.replace(/[^0-9]/g, "");
+  // 천 단위 쉼표 추가
+  return numbersOnly.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+// 쉼표 제거 함수
+const removeCommas = (value: string): string => {
+  return value.replace(/,/g, "");
+};
+
 export default function InputPrice({
   value,
   onChange,
@@ -16,6 +29,16 @@ export default function InputPrice({
   size = "md"
 }: InputPriceProps) {
   const isSm = size === "sm";
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    // 쉼표 제거 후 숫자만 추출
+    const numbersOnly = removeCommas(inputValue).replace(/[^0-9]/g, "");
+    // 천 단위 쉼표 추가
+    const formattedValue = formatNumberWithCommas(numbersOnly);
+    onChange(formattedValue);
+  };
+
   return (
     <div
       className={
@@ -39,7 +62,7 @@ export default function InputPrice({
           inputMode="numeric"
           pattern="[0-9]*"
           value={value}
-          onChange={(e) => onChange(e.target.value.replace(/[^0-9]/g, ""))}
+          onChange={handleChange}
           placeholder={placeholder}
         />
         {icon && isSm && (

@@ -27,9 +27,9 @@ export default function EstimateDetailInfo({ requestDate, serviceType, moveDate,
 
       <div className="flex flex-col gap-3 md:gap-5">
         {infoList.map((item) => (
-          <div key={item.label} className="flex justify-between text-sm md:justify-start md:gap-12 md:text-base">
+          <div key={item.label} className="flex justify-between text-sm md:justify-start md:gap-5 md:text-base">
             <span className="text-gray-400 md:w-[100px]">{item.label}</span>
-            <span className="text-right font-semibold text-black">{item.value}</span>
+            <span className="max-w-[70%] text-right font-semibold text-black md:max-w-[100%]">{item.value}</span>
           </div>
         ))}
       </div>

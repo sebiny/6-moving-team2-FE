@@ -1,3 +1,5 @@
+import { MoveType } from "@/constant/moveTypes";
+
 // 대기 중인 견적용 주소 데이터
 export type Address = {
   region: string;
@@ -116,7 +118,7 @@ export type DriverEstimateType = {
   customerName: string;
   estimateRequest: {
     id: string;
-    moveType: "SMALL" | "HOME" | "OFFICE" | "REQUEST";
+    moveType: MoveType;
     moveDate: string;
     fromAddress: {
       street: string;
@@ -141,7 +143,7 @@ export type DriverEstimateDetailType = {
   updatedAt: string;
   estimateRequest: {
     id: string;
-    moveType: "SMALL" | "HOME" | "OFFICE" | "REQUEST";
+    moveType: MoveType;
     moveDate: string;
     status: "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
     createdAt: string;
@@ -149,7 +151,7 @@ export type DriverEstimateDetailType = {
     customer: {
       id: string;
       profileImage: string | null;
-      moveType: string[];
+      moveType: MoveType[];
       currentArea: string;
       moveDate: string | null;
       authUser: {
@@ -172,4 +174,18 @@ export type DriverEstimateDetailType = {
       district: string;
     };
   };
+};
+
+// 완료된 견적 카드 타입
+export type CompletedEstimateCardType = {
+  id: string;
+  moveType: MoveType;
+  isDesignated: boolean;
+  isCompleted?: boolean;
+  customerName: string;
+  fromAddress: string;
+  toAddress: string;
+  moveDate: string;
+  estimateAmount?: string;
+  status?: string;
 };
