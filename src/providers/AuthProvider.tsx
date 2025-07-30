@@ -17,7 +17,7 @@ export type User = {
 type AuthContextType = {
   user: User | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, userType: UserType) => Promise<void>;
   logout: () => Promise<void>;
   register: (data: {
     name: string;
@@ -78,9 +78,9 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const login = useCallback(
-    async (email: string, password: string) => {
+    async (email: string, password: string, userType: UserType) => {
       try {
-        await authService.logInUser(email, password);
+        await authService.logInUser(email, password, userType);
         await getUser();
       } catch (error) {
         console.error("로그인 실패:", error);
