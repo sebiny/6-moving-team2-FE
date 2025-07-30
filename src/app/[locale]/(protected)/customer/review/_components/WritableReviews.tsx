@@ -14,8 +14,7 @@ import NoReview from "./NoReview";
 import Pagination from "@/components/Pagination";
 import { useQuery } from "@tanstack/react-query";
 import { MoveType } from "@/constant/moveTypes";
-import Lottie from "react-lottie-player";
-import reviewLottie from "../../../../../../../public/lottie/review-lottie.json";
+import LoadingLottie from "@/components/lottie/LoadingLottie";
 
 interface ReviewsProps {
   setIsModal: (value: boolean) => void;
@@ -64,13 +63,9 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
 
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];
+
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center gap-5 pt-30">
-        <Lottie loop animationData={reviewLottie} play style={{ width: 150, height: 150 }} />
-        <p className="font-Pretendard text-lg font-semibold text-gray-400">작성 가능한 리뷰들을 불러오고 있어요!!</p>
-      </div>
-    );
+    return <LoadingLottie text="작성 가능한 리뷰들을 불러오고 있어요!!" />;
   }
 
   if (isError || !reviewables || reviewables.length === 0) {

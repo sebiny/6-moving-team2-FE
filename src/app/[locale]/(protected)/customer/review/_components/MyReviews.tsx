@@ -16,9 +16,8 @@ import Pagination from "@/components/Pagination";
 import Button from "@/components/Button";
 import { useQuery } from "@tanstack/react-query";
 import { MoveType } from "@/constant/moveTypes";
-import Lottie from "react-lottie-player";
-import reviewLottie from "../../../../../../../public/lottie/review-lottie.json";
 import Toast from "@/app/[locale]/(guest)/drivers/[id]/_components/Toast";
+import LoadingLottie from "@/components/lottie/LoadingLottie";
 
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
@@ -75,12 +74,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
     return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
   };
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center gap-5 pt-30">
-        <Lottie loop animationData={reviewLottie} play style={{ width: 150, height: 150 }} />
-        <p className="font-Pretendard text-lg font-semibold text-gray-400">내가 작성한 리뷰들을 불러오고 있어요!!</p>
-      </div>
-    );
+    return <LoadingLottie text="내가 작성한 리뷰들을 불러오고 있어요!!" />;
   }
 
   if (isError || !reviews || reviews.length === 0) {
