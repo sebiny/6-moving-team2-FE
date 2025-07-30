@@ -44,7 +44,7 @@ export default function SentEstimatesPage() {
     fromAddress: formatAddress(estimate.estimateRequest.fromAddress),
     toAddress: formatAddress(estimate.estimateRequest.toAddress),
     moveDate: formatDate(estimate.estimateRequest.moveDate),
-    estimateAmount: `${estimate.price.toLocaleString()}원`,
+    estimateAmount: estimate.price ? `${estimate.price.toLocaleString()}원` : "견적 금액 없음",
     status: estimate.status === "PROPOSED" ? "pending" : estimate.status === "ACCEPTED" ? "confirmed" : "rejected",
     createdAt: formatTimeAgo(estimate.createdAt)
   }));

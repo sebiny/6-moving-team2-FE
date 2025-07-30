@@ -1,5 +1,4 @@
 // 모달창
-import { useState } from "react";
 import Button from "@/components/Button";
 import ChipCircle from "../chip/ChipCircle";
 import CustomCheckbox from "../button/CustomCheckbox";
@@ -76,7 +75,6 @@ export default function FilterModal({
               checked={isDesignatedChecked}
               onChange={(checked) => {
                 setIsDesignatedChecked(checked);
-                if (checked) setIsAvailableRegionChecked(false);
               }}
               shape="square"
             />
@@ -87,7 +85,6 @@ export default function FilterModal({
               checked={isAvailableRegionChecked}
               onChange={(checked) => {
                 setIsAvailableRegionChecked(checked);
-                if (checked) setIsDesignatedChecked(false);
               }}
               shape="square"
             />
