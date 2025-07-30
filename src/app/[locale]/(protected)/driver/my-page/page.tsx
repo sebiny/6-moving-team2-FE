@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DriverType } from "@/types/driverType";
 import { driverService } from "@/lib/api/api-driver";
 import { useTranslations } from "next-intl";
+import LoadingLottie from "@/components/lottie/LoadingLottie";
 
 function DriverMyPage() {
   const t = useTranslations("DriverMypage");
@@ -28,7 +29,7 @@ function DriverMyPage() {
     return (
       <div className="flex flex-col items-center">
         <OrangeBackground />
-        <div className="mt-40 h-10 w-10 animate-spin rounded-full border-5 border-gray-300 border-t-orange-400 lg:mt-60 lg:h-20 lg:w-20 lg:border-10" />
+        <LoadingLottie text="기사님 정보를 불러오고 있어요!!" />
       </div>
     );
   if (!driver) return <div>{t("failedFetch")}</div>;

@@ -6,7 +6,7 @@ import ModalContent from "./ModalContent";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import { createReview } from "@/lib/api/api-review";
-import Toast from "@/app/[locale]/(guest)/drivers/[id]/_components/Toast";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 interface Props {
   setIsModal: (value: boolean) => void;
@@ -19,7 +19,6 @@ export default function ReviewModal({ setIsModal }: Props) {
   const [content, setContent] = useState("");
   const [estimateRequestId, setEstimateRequestId] = useState("");
   const [driverId, setDriverId] = useState("");
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     try {
@@ -29,23 +28,14 @@ export default function ReviewModal({ setIsModal }: Props) {
         rating,
         content
       });
-      setToastMessage("리뷰가 등록되었습니다.");
-
-      setTimeout(() => {
-        setToastMessage(null);
-        setIsModal(false);
-      }, 2000);
+      ToastModal("리뷰가 등록되었습니다.");
     } catch (error) {
-      setToastMessage("리뷰 등록에 실패했습니다.");
-
-      setTimeout(() => setToastMessage(null), 2000);
+      ToastModal("리뷰 등록에 실패했습니다.");
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 md:items-center">
-      {toastMessage && <Toast text={toastMessage} classname="opacity-80" />}
-
       <div
         className={clsx(
           "h-[678px] w-full rounded-t-[32px] bg-gray-50 px-6 py-8 shadow-[4px_4px_10px_rgba(169,169,169,0.2)]",
