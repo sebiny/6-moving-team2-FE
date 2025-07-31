@@ -195,21 +195,39 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
           {/* 현재 비밀번호 */}
           <div className="mb-5 flex flex-col pt-5">
             <label className="mb-5 text-xl font-semibold">현재 비밀번호</label>
-            <TextField value={currentPassword} onChange={setCurrentPassword} type="password" mdHeight="54" />
+            <TextField
+              placeholder="현재 비밀번호를 입력해주세요"
+              value={currentPassword}
+              onChange={setCurrentPassword}
+              type="password"
+              mdHeight="54"
+            />
           </div>
           <div className="border-line-100 my-2.5 border-t" />
 
           {/* 새 비밀번호 */}
           <div className="mb-5 flex flex-col pt-5">
             <label className="mb-5 text-xl font-semibold">새 비밀번호</label>
-            <TextField value={newPassword} onChange={setNewPassword} type="password" mdHeight="54" />
+            <TextField
+              placeholder="새 비밀번호를 입력해주세요"
+              value={newPassword}
+              onChange={setNewPassword}
+              type="password"
+              mdHeight="54"
+            />
             {newPasswordError && <p className="mt-1 text-sm text-red-500">{newPasswordError}</p>}
           </div>
 
           {/* 새 비밀번호 확인 */}
           <div className="mb-5 flex flex-col pt-5">
             <label className="mb-5 text-xl font-semibold">새 비밀번호 확인</label>
-            <TextField value={confirmPassword} onChange={setConfirmPassword} type="password" mdHeight="54" />
+            <TextField
+              placeholder="새 비밀번호를 다시 입력해주세요"
+              value={confirmPassword}
+              onChange={setConfirmPassword}
+              type="password"
+              mdHeight="54"
+            />
           </div>
         </div>
 

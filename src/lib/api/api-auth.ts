@@ -17,11 +17,11 @@ export const authService = {
     });
   },
 
-  logInUser: async (email: string, password: string): Promise<{ accessToken: string }> => {
+  logInUser: async (email: string, password: string, userType: UserType): Promise<{ accessToken: string }> => {
     try {
       const response = await defaultFetch("/auth/login", {
         method: "POST",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, userType }),
         credentials: "include",
         cache: "no-store"
       });
