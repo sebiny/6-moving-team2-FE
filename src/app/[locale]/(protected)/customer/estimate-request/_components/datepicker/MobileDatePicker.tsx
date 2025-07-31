@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import clsx from "clsx";
 import Image from "next/image";
-import { generateCalendarDates } from "@/utills/dateUtils";
+import { generateCalendarDates, setDayjsLocale } from "@/utills/dateUtils";
+import { useLocale, useTranslations } from "use-intl";
 
 interface MobileDatePickerProps {
   selectedDate: Date | null;
@@ -12,10 +13,16 @@ interface MobileDatePickerProps {
 }
 
 export default function MobileDatePicker({ selectedDate, onSelectDate }: MobileDatePickerProps) {
+  const t = useTranslations("Date");
+  const locale = useLocale();
   const today = dayjs();
   const [current, setCurrent] = useState(dayjs());
 
-  const days = ["일", "월", "화", "수", "목", "금", "토"];
+  useEffect(() => {
+    setDayjsLocale(locale);
+  }, [locale]);
+
+  const days = [t("day.sun"), t("day.mon"), t("day.tue"), t("day.wed"), t("day.thu"), t("day.fri"), t("day.sat")];
 
   const gridDates = generateCalendarDates(current);
 

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import clsx from "clsx";
-import { generateCalendarDates } from "@/utills/dateUtils";
+import { generateCalendarDates, setDayjsLocale } from "@/utills/dateUtils";
+import { useLocale, useTranslations } from "next-intl";
 
 interface DateProps {
   selectedDate: Date | null;
@@ -13,10 +14,16 @@ interface DateProps {
 }
 
 function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
+  const t = useTranslations("Date");
+  const locale = useLocale();
   const today = dayjs();
   const [current, setCurrent] = useState(dayjs());
 
-  const days = ["일", "월", "화", "수", "목", "금", "토"];
+  useEffect(() => {
+    setDayjsLocale(locale);
+  }, [locale]);
+
+  const days = [t("day.sun"), t("day.mon"), t("day.tue"), t("day.wed"), t("day.thu"), t("day.fri"), t("day.sat")];
 
   const gridDates = generateCalendarDates(current);
 
@@ -28,12 +35,20 @@ function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
     <div className="flex h-full w-full flex-col justify-between rounded-2xl border border-[var(--color-line-200)] bg-white px-[45.5px] py-8 shadow-md">
       {/* 헤더 */}
       <div className="mb-[13px] flex items-center justify-between">
-        <button onClick={() => setCurrent((prev) => prev.subtract(1, "month"))} aria-label="이전 달" className="p-2">
-          <Image src="/assets/icons/ic_chevron_left.svg" alt="이전 달" width={24} height={24} />
+        <button
+          onClick={() => setCurrent((prev) => prev.subtract(1, "month"))}
+          aria-label={t("label.prevMonth")}
+          className="p-2"
+        >
+          <Image src="/assets/icons/ic_chevron_left.svg" alt={t("label.prevMonth")} width={24} height={24} />
         </button>
         <div className="text-lg font-bold text-black">{current.format("YYYY. MM")}</div>
-        <button onClick={() => setCurrent((prev) => prev.add(1, "month"))} aria-label="다음 달" className="p-2">
-          <Image src="/assets/icons/ic_chevron_right.svg" alt="다음 달" width={24} height={24} />
+        <button
+          onClick={() => setCurrent((prev) => prev.add(1, "month"))}
+          aria-label={t("label.nextMonth")}
+          className="p-2"
+        >
+          <Image src="/assets/icons/ic_chevron_right.svg" alt={t("label.nextMonth")} width={24} height={24} />
         </button>
       </div>
 
@@ -69,7 +84,7 @@ function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
               </button>
             </div>
           );
-        })}
+        })}{" "}
       </div>
 
       {/* 선택완료 버튼 */}
@@ -82,7 +97,7 @@ function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
             selectedDate ? "bg-[var(--color-orange-400)]" : "bg-gray-100"
           )}
         >
-          선택완료
+          {t("button.confirm")}
         </button>
       </div>
     </div>

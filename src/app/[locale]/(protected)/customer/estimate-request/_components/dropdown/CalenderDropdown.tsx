@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocale } from "use-intl";
 import Image from "next/image";
 import clsx from "clsx";
 import DatePicker from "../datepicker/DatePicker";
@@ -11,7 +12,9 @@ interface CalenderDropdownProps {
 function CalenderDropdown({ date, onChange }: CalenderDropdownProps) {
   const [open, setOpen] = useState(false);
 
-  const formatted = (date ?? new Date()).toLocaleDateString("ko-KR", {
+  const locale = useLocale();
+
+  const formatted = (date ?? new Date()).toLocaleDateString(locale, {
     year: "numeric",
     month: "long",
     day: "numeric"

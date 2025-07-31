@@ -1,0 +1,23 @@
+{
+  "day": {
+    "sun": "Sun",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat"
+  },
+  "button": {
+    "confirm": "Confirm"
+  },
+  "label": {
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "format": {
+    "yearMonth": "YYYY. MM"
+  }
+}
