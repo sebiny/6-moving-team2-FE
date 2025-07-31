@@ -32,5 +32,14 @@
   "estimateReqFailure": "Quote request failed. Please try again.",
   "previous": "Previous",
   "next": "Next",
-  "close": "Close"
+  "close": "Close",
+  "disabled": {
+    "title": "Estimate Request",
+    "imageAlt": "Estimate Unavailable",
+    "message": {
+      "line1": "You already have an active estimate request!",
+      "line2": "Please complete your ongoing move before making a new request."
+    },
+    "button": "View Received Estimates"
+  }
 }

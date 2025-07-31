@@ -115,6 +115,7 @@ export type DriverEstimateType = {
   createdAt: string;
   completionStatus: "CONFIRMED_AND_PAST" | "DATE_PAST" | null;
   isCompleted: boolean;
+  isDesignated: boolean;
   customerName: string;
   estimateRequest: {
     id: string;

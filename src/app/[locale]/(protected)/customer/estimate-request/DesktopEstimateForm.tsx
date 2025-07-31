@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createEstimateRequest } from "@/lib/api/api-estimateRequest";
 import CalenderDropdown from "./_components/dropdown/CalenderDropdown";
@@ -11,6 +11,7 @@ import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
 import { useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
+import LoadingLottie from "@/components/lottie/LoadingLottie";
 
 export default function DesktopEstimateForm() {
   const t = useTranslations("EstimateReq");
@@ -26,6 +27,16 @@ export default function DesktopEstimateForm() {
   const [showModal, setShowModal] = useState<"from" | "to" | null>(null);
   const [addressFrom, setAddressFrom] = useState<Address | null>(null);
   const [addressTo, setAddressTo] = useState<Address | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRequesting, setIsRequesting] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleMoveTypeSelect = (key: "SMALL" | "HOME" | "OFFICE") => {
     setSelectedMoveType((prev) => (prev === key ? null : key));
@@ -33,7 +44,7 @@ export default function DesktopEstimateForm() {
 
   const isFormValid = selectedMoveType !== null && selectedDate !== null && addressFrom !== null && addressTo !== null;
 
-  const { mutateAsync: requestEstimate, isPending } = useMutation({
+  const { mutateAsync: requestEstimate } = useMutation({
     mutationFn: createEstimateRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["estimate", "active"] });
@@ -44,6 +55,7 @@ export default function DesktopEstimateForm() {
     if (!selectedMoveType || !selectedDate || !addressFrom || !addressTo) return;
 
     try {
+      setIsRequesting(true);
       await requestEstimate({
         moveType: selectedMoveType,
         moveDate: selectedDate.toISOString(),
@@ -53,8 +65,18 @@ export default function DesktopEstimateForm() {
       ToastModal(t("estimateReqSuccess"));
     } catch {
       ToastModal(t("estimateReqFailure"));
+    } finally {
+      setIsRequesting(false);
     }
   };
+
+  if (isLoading) {
+    return <LoadingLottie text="견적 요청 페이지로 이동중입니다." />;
+  }
+
+  if (isRequesting) {
+    return <LoadingLottie text="견적 요청 진행중입니다." />;
+  }
 
   return (
     <div className="bg-background-100 min-h-screen pt-1">
@@ -115,9 +137,9 @@ export default function DesktopEstimateForm() {
         {/* 태블릿 버튼 */}
         <div className="mt-[57px] flex w-full justify-end lg:hidden">
           <Button
-            text={isPending ? t("requesting") : t("requestQuote")}
+            text={t("requestQuote")}
             type="orange"
-            isDisabled={!isFormValid || isPending}
+            isDisabled={!isFormValid}
             className="px-[51px]"
             onClick={handleRequest}
           />
@@ -128,9 +150,9 @@ export default function DesktopEstimateForm() {
       <div className="hidden lg:block">
         <div className="mx-20 mt-10 mb-[50px] hidden justify-end lg:flex">
           <Button
-            text={isPending ? t("requesting") : t("requestQuote")}
+            text={t("requestQuote")}
             type="orange"
-            isDisabled={!isFormValid || isPending}
+            isDisabled={!isFormValid}
             className="px-[51px]"
             onClick={handleRequest}
           />

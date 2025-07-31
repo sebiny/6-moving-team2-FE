@@ -18,9 +18,13 @@
   "won": "won",
 
   "estimateDetail": "Estimate Detail",
+  "viewDetail": "view Detail",
+
   "shareEstimate": "Share the Estimate",
+  "acceptEstimate": "Accept the Quote",
 
   "requestDate": "Request Date",
+  "applicationDate": "Quote application date",
   "service": "Service",
   "moveDate": "Move Date",
 

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { NotificationData } from "../NotificationDropdown"; // 기존 Notification 컴포넌트에서 export
 import { formatTimeFromNow } from "@/utills/dateUtils";
+import parse from "html-react-parser";
 
 interface NotificationItemProps {
   item: NotificationData;
@@ -49,12 +50,9 @@ export default function NotificationItem({ item, onVisible, isInitiallyRead }: N
   return (
     <li
       ref={itemRef}
-      className={`border-line-200 flex flex-col gap-[2px] border-b p-3 text-sm font-medium transition-colors ${
-        // 스타일링을 실시간 상태(item.isRead)가 아닌, 스냅샷(isInitiallyRead) 기준으로 결정합니다.
-        isInitiallyRead ? "text-gray-300" : "text-black-400"
-      }`}
+      className={`border-line-200 text-black-400 flex flex-col gap-[2px] border-b p-3 text-sm font-medium transition-colors`}
     >
-      <p>{item.message}</p>
+      <p>{parse(item.message)}</p>
       <time dateTime={item.createdAt} className={`text-[13px] ${isInitiallyRead ? "text-gray-300" : "text-gray-400"}`}>
         {formatTimeFromNow(item.createdAt)}
       </time>

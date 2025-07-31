@@ -1,36 +1,25 @@
 "use client";
-import Toast from "@/app/[locale]/(guest)/drivers/[id]/_components/Toast";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { ToastModal } from "./common-modal/ToastModal";
 
 interface ShareDriverType {
   text: string;
 }
 
 function ShareDriver({ text }: ShareDriverType) {
-  const [toast, setToast] = useState("");
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      setToast("링크가 복사되었어요");
+      ToastModal("링크가 복사되었어요");
     } catch (err) {
-      setToast("링크 복사에 실패했어요");
+      ToastModal("링크 복사에 실패했어요");
     }
   };
 
-  useEffect(() => {
-    if (toast) {
-      const timer = setTimeout(() => {
-        setToast("");
-      }, 2000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [toast]);
   return (
     <div className="mt-4 lg:mt-[40px]">
-      {toast && <Toast text={toast} />}
       <p className="text-black-400 text-xl font-semibold">{text}</p>
       <div className="mt-3 flex gap-4 lg:mt-[22px]">
         <button

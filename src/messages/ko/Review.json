@@ -4,8 +4,8 @@
     "received": "받았던 견적"
   },
   "driverEstimate": {
-    "sent": "보낸 견적",
-    "rejected": "거절된 요청"
+    "sent": "보낸 견적 조회",
+    "rejected": "반려 요청"
   },
   "review": {
     "writable": "작성 가능한 리뷰",

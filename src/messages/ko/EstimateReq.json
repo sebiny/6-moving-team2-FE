@@ -32,5 +32,14 @@
   "estimateReqFailure": "견적 요청에 실패했습니다.",
   "previous": "이전",
   "next": "다음",
-  "close": "닫기"
+  "close": "닫기",
+  "disabled": {
+    "title": "견적 요청",
+    "imageAlt": "견적 불가",
+    "message": {
+      "line1": "현재 진행 중인 이사 견적이 있어요!",
+      "line2": "진행 중인 이사 완료 후 새로운 견적을 받아보세요."
+    },
+    "button": "받은 견적 보러가기"
+  }
 }

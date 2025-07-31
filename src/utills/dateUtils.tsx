@@ -11,7 +11,12 @@ import "dayjs/locale/ko"; // 한국어 로케일 파일 불러옴
 dayjs.extend(relativeTime);
 
 // 기본 로케일을 한국어로 설정
-dayjs.locale("ko");
+// dayjs.locale("ko");
+
+export const setDayjsLocale = (locale: string) => {
+  const supported = ["ko", "en", "zh"];
+  dayjs.locale(supported.includes(locale) ? locale : "ko");
+};
 
 export interface CalendarDate {
   date: Date;

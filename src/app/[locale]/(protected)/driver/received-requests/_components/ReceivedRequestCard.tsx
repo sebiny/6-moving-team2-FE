@@ -3,6 +3,7 @@ import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import Image from "next/image";
 import Button from "@/components/Button";
+import EstimateButton from "@/components/button/EstimateButton";
 import { useTranslations } from "next-intl";
 
 interface ReceivedRequestCardProps {
@@ -61,7 +62,13 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
       {/* 하단 */}
       <div className="flex w-full flex-col gap-2.5 md:flex-row-reverse">
         <div className="w-full md:w-1/2">
-          <Button text={t("sendReq")} type="orange" image={true} onClick={() => onSendEstimate(request)} />
+          <EstimateButton
+            text={t("sendReq")}
+            type="orange"
+            image={true}
+            onClick={() => onSendEstimate(request)}
+            estimateCount={request.estimateCount}
+          />
         </div>
         <div className="w-full md:w-1/2">
           <Button text={t("reject")} type="white-orange" onClick={() => onRejectEstimate(request)} />

@@ -49,11 +49,11 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
 
   useEffect(() => {
     if (isLoading || !user) {
-      setNotifications([]); // 로그아웃 시 알림 목록 초기화
+      setNotifications([]);
       return;
     }
 
-    // 기존 알림 불러오기 (최신순)
+    // 기존 알림 불러오기
     fetchNotifications()
       .then((data) => {
         if (data && Array.isArray(data)) {
@@ -67,30 +67,83 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
         setNotifications([]);
       });
 
-    // SSE 연결
     const token = authUtils.getAccessToken();
     if (!token) return;
 
-    // EventSourcePolyfill : 브라우저 호환성, JS버전을 내부적으로 인식, 호환성 보충
-    const eventSource = new EventSourcePolyfill(`${API_URL}/notification/sse`, {
-      headers: { Authorization: `Bearer ${token}` },
-      withCredentials: true,
-      heartbeatTimeout: 300000
-    });
-    eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      setNotifications((prev) => [
-        { id: data.id, message: data.message, createdAt: data.createdAt, isRead: false },
-        ...prev
-      ]);
-    };
-    eventSource.onerror = (err) => {
-      console.error("SSE 에러:", err);
-      eventSource.close();
+    let eventSource: EventSourcePolyfill | null = null;
+    let reconnectTimer: NodeJS.Timeout | null = null;
+    let reconnectAttempts = 0;
+
+    const connectSSE = () => {
+      try {
+        eventSource = new EventSourcePolyfill(`${API_URL}/notification/sse`, {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+          heartbeatTimeout: 300000 // 5분
+        });
+
+        eventSource.onopen = (event) => {
+          reconnectAttempts = 0; // 성공 시 재연결 횟수 초기화
+        };
+
+        // 일반 알림 메시지 처리
+        eventSource.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            setNotifications((prev) => [
+              { id: data.id, message: data.message, createdAt: data.createdAt, isRead: false },
+              ...prev
+            ]);
+          } catch (parseError) {
+            console.error("SSE 메시지 파싱 오류:", parseError);
+          }
+        };
+
+        // 특정 이벤트 타입 처리 (ping 등)
+        eventSource.addEventListener("ping", (event) => {
+          // ping 메시지는 단순히 연결 유지용이므로 특별한 처리 불필요
+        });
+
+        eventSource.onerror = (err) => {
+          console.error("SSE 에러:", err);
+
+          if (eventSource) {
+            eventSource.close();
+            eventSource = null;
+          }
+
+          // 재연결 로직 (최대 5회까지)
+          if (reconnectAttempts < 5) {
+            reconnectAttempts++;
+            const delay = Math.min(30000, 3000 * Math.pow(2, reconnectAttempts - 1)); // 지수백오프
+
+            console.log(`${delay / 1000}초 후 SSE 재연결 시도... (${reconnectAttempts}/5)`);
+
+            reconnectTimer = setTimeout(() => {
+              reconnectTimer = null;
+              connectSSE();
+            }, delay);
+          } else {
+            console.error("SSE 재연결 한도 초과. 페이지를 새로고침해주세요.");
+          }
+        };
+      } catch (error) {
+        console.error("SSE 초기화 오류:", error);
+      }
     };
 
+    connectSSE();
+
     return () => {
-      eventSource.close();
+      console.log("SSE 정리 중...");
+
+      if (eventSource) {
+        eventSource.close();
+      }
+
+      if (reconnectTimer) {
+        clearTimeout(reconnectTimer);
+      }
     };
   }, [isLoading, user]);
 
@@ -106,16 +159,13 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
   }, [isOpen]);
 
   const handleMarkAsRead = async (notificationId: string) => {
-    // 1. 사용자 경험을 위해 UI를 먼저 변경)
     setNotifications((prev) => prev.map((n) => (n.id === notificationId ? { ...n, isRead: true } : n)));
 
     try {
-      // 2. 올바른 API 함수를 호출하여 백엔드 데이터 업데이트
       await markNotificationAsReadAPI(notificationId);
     } catch (error) {
       console.error("알림 읽음 처리 API 실패:", error);
 
-      // 3. 에러 처리: API 요청 실패 시 UI 상태를 원상 복구
       alert("오류가 발생하여 알림을 읽음 처리하지 못했습니다.");
       setNotifications((prev) => prev.map((n) => (n.id === notificationId ? { ...n, isRead: false } : n)));
     }

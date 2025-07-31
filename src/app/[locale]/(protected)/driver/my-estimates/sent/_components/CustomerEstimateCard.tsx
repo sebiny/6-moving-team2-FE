@@ -28,7 +28,7 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
         <div className="flex h-8 items-center justify-between">
           <div className="flex gap-2">
             <ChipRectangle moveType={moveTypeKey} size="sm" />
-            {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
+            {request.isDesignated === true && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
           {request.status === ESTIMATE_STATUS.CONFIRMED && <ChipConfirmed />}
         </div>

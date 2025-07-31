@@ -2,5 +2,7 @@
   "SMALL": "小型搬家",
   "HOME": "家庭搬家",
   "OFFICE": "办公室搬家",
-  "REQUEST": "指定报价请求"
+  "REQUEST": "指定报价请求",
+  "road": "道路名",
+  "jibun": "地番"
 }
