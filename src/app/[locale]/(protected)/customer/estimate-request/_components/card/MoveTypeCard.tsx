@@ -56,6 +56,7 @@ export default function MoveTypeCard({ label, description, selected, onClick }: 
           alt={label}
           width={120}
           height={120}
+          priority
           unoptimized
           className="self-center object-contain md:mt-auto md:self-end"
         />

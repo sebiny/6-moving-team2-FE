@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import useMediaHook from "@/hooks/useMediaHook";
 import ReviewCost from "./ReviewCost";
 import clsx from "clsx";
-import { getWritableReviews } from "@/lib/api/api-review";
 import Button from "@/components/Button";
 import { useTranslations } from "next-intl";
 import { format } from "date-fns";

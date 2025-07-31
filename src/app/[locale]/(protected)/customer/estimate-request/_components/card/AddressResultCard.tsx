@@ -1,5 +1,6 @@
 import ChipCircle from "@/components/chip/ChipCircle";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 
 interface AddressResultCardProps {
   postalCode: string;
@@ -16,6 +17,7 @@ export default function AddressResultCard({
   selected = false,
   onClick
 }: AddressResultCardProps) {
+  const t = useTranslations("Chip");
   return (
     <div
       onClick={onClick}
@@ -30,12 +32,12 @@ export default function AddressResultCard({
       <div className="flex flex-col gap-4 text-sm md:text-base">
         <p className="text-black-400 text-sm font-semibold md:text-base">{postalCode}</p>
         <div className="flex items-start gap-2">
-          <ChipCircle type="address" color="orange" text="도로명" />
+          <ChipCircle type="address" color="orange" text={t("road")} />
           <p className="max-w-[176px] break-words whitespace-pre-wrap text-black md:max-w-full">{roadAddress}</p>
         </div>
 
         <div className="flex items-start gap-2">
-          <ChipCircle type="address" color="orange" text="지번" />
+          <ChipCircle type="address" color="orange" text={t("jibun")} />
           <p className="max-w-[176px] break-words whitespace-pre-wrap text-black md:max-w-full">{jibunAddress}</p>
         </div>
       </div>

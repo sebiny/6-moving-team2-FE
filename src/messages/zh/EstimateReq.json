@@ -32,5 +32,14 @@
   "estimateReqFailure": "报价请求失败。请再试一次。",
   "previous": "上一步",
   "next": "下一步",
-  "close": "关闭"
+  "close": "关闭",
+  "disabled": {
+    "title": "搬家估价请求",
+    "imageAlt": "无法请求估价",
+    "message": {
+      "line1": "您已有正在进行的搬家估价请求！",
+      "line2": "完成当前搬家后，才能再次申请估价。"
+    },
+    "button": "查看收到的估价"
+  }
 }

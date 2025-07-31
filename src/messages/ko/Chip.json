@@ -2,5 +2,7 @@
   "SMALL": "소형이사",
   "HOME": "가정이사",
   "OFFICE": "사무실이사",
-  "REQUEST": "지정 견적 요청"
+  "REQUEST": "지정 견적 요청",
+  "road": "도로명",
+  "jibun": "지번"
 }

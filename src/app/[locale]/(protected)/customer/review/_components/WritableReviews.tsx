@@ -60,12 +60,12 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
     queryKey: ["reviewable", page],
     queryFn: () => getWritableReviews(page)
   });
-
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];
+  //console.log("지정견적 있을까용?? ", reviewables[0].estimates[0].isDesignated);
 
   if (isLoading) {
-    return <LoadingLottie text="작성 가능한 리뷰들을 불러오고 있어요!!" />;
+    return <LoadingLottie className="mt-10" text="작성 가능한 리뷰들을 불러오고 있어요!!" />;
   }
 
   if (isError || !reviewables || reviewables.length === 0) {
