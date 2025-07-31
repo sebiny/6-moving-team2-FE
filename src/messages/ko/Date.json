@@ -1,0 +1,23 @@
+{
+  "day": {
+    "sun": "일",
+    "mon": "월",
+    "tue": "화",
+    "wed": "수",
+    "thu": "목",
+    "fri": "금",
+    "sat": "토"
+  },
+  "button": {
+    "confirm": "선택완료"
+  },
+  "label": {
+    "prevMonth": "이전 달",
+    "nextMonth": "다음 달",
+    "prev": "이전",
+    "next": "다음"
+  },
+  "format": {
+    "yearMonth": "YYYY. MM"
+  }
+}

@@ -2,5 +2,7 @@
   "SMALL": "Small Move",
   "HOME": "Home Move",
   "OFFICE": "Office Move",
-  "REQUEST": "Custom Quote Request"
+  "REQUEST": "Custom Quote Request",
+  "road": "Rd",
+  "jibun": "Land lot"
 }

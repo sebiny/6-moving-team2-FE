@@ -11,6 +11,7 @@ import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
 import { useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
+import LoadingLottie from "@/components/lottie/LoadingLottie";
 
 export default function MobileEstimateForm() {
   const t = useTranslations("EstimateReq");
@@ -29,6 +30,7 @@ export default function MobileEstimateForm() {
   const [addressFrom, setAddressFrom] = useState<Address | null>(null);
   const [addressTo, setAddressTo] = useState<Address | null>(null);
   const [showModal, setShowModal] = useState<"from" | "to" | null>(null);
+  const [isRequesting, setIsRequesting] = useState(false);
 
   const isValidStep1 = !!moveType;
   const isValidStep2 = !!moveDate;
@@ -36,7 +38,7 @@ export default function MobileEstimateForm() {
 
   const stepList = [1, 2, 3];
 
-  const { mutateAsync: requestEstimate, isPending } = useMutation({
+  const { mutateAsync: requestEstimate } = useMutation({
     mutationFn: createEstimateRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["estimate", "active"] });
@@ -51,6 +53,7 @@ export default function MobileEstimateForm() {
     if (!moveType || !moveDate || !addressFrom || !addressTo) return;
 
     try {
+      setIsRequesting(true);
       await requestEstimate({
         moveType: moveType,
         moveDate: moveDate.toISOString(),
@@ -60,8 +63,14 @@ export default function MobileEstimateForm() {
       ToastModal(t("estimateReqSuccess"));
     } catch {
       ToastModal(t("estimateReqFailure"));
+    } finally {
+      setIsRequesting(false);
     }
   };
+
+  if (isRequesting) {
+    return <LoadingLottie text="견적 요청 진행중입니다." />;
+  }
 
   return (
     <main className="mt-[90px] min-h-screen justify-center bg-white px-6">
@@ -185,9 +194,9 @@ export default function MobileEstimateForm() {
             />
 
             <Button
-              isDisabled={!isValidStep3 || isPending}
+              isDisabled={!isValidStep3}
               onClick={handleRequest}
-              text={isPending ? t("requesting") : t("requestEstimate")}
+              text={t("requestEstimate")}
               type="orange"
               className="h-[54px] w-[158px]"
             />
