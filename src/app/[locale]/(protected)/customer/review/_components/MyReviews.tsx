@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DriverImg from "/public/assets/images/img_profile.svg";
 import Image from "next/image";
 import clsx from "clsx";
@@ -7,18 +7,17 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import StarIcon from "@/components/icon/StarIcon";
 import useMediaHook from "@/hooks/useMediaHook";
 import { useTranslations } from "next-intl";
-import { deleteMyReview, getMyReviews } from "@/lib/api/api-review";
+import { getMyReviews } from "@/lib/api/api-review";
 import { ko } from "date-fns/locale";
 import { format } from "date-fns";
 import { TranslateRegion } from "@/utills/TranslateFunction";
 import NoMyReview from "./NoMyReview";
 import Pagination from "@/components/Pagination";
-import Button from "@/components/Button";
 import { useQuery } from "@tanstack/react-query";
 import { MoveType } from "@/constant/moveTypes";
-import Toast from "@/app/[locale]/(guest)/drivers/[id]/_components/Toast";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
-
+import { useLocale } from "next-intl";
+import { translateWithDeepL } from "../../../../../../utills/translateWithDeepL";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
@@ -53,28 +52,101 @@ type ReviewListResponse = {
 export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const t = useTranslations("Review");
   const [page, setPage] = useState(1); //임의로 추가
-
   const SIZE_CLASSES = {
     lg: ["lg:h-[338px] lg:w-[1120px] lg:p-10 lg:gap-5"],
     sm: ["w-[327px] h-[410px] py-6 px-5"],
     md: ["md:w-147 md:h-91 md:p-10"]
   };
   const { isSm, isMd, isLg } = useMediaHook();
+  //리액트쿼리로 리뷰 불러오기
   const { data, isLoading, isError } = useQuery<ReviewListResponse>({
     queryKey: ["reviews", page],
     queryFn: () => getMyReviews(page)
   });
-
   const totalCount = data?.totalCount ?? 0;
   const reviews = data?.reviews ?? [];
+  //DeepL로 동적 다국어
 
-  console.log(data);
+  const locale = useLocale();
+  const [translatedMeta, setTranslatedMeta] = useState<
+    Record<
+      string,
+      {
+        content: string;
+        fromRegion: string;
+        toRegion: string;
+        fromDistrict: string;
+        toDistrict: string;
+        moveDate: string;
+        nickname: string;
+        shortIntro: string;
+      }
+    >
+  >({});
+  useEffect(() => {
+    const translateAllMeta = async () => {
+      if (!reviews) return;
+
+      const updatedMeta: typeof translatedMeta = {};
+
+      for (const review of reviews) {
+        try {
+          const { fromAddress, toAddress, moveDate } = review.request;
+          const { nickname, shortIntro } = review.driver;
+
+          const translatedContent = await translateWithDeepL(review.content, locale.toUpperCase());
+          const translatedFrom = await translateWithDeepL(fromAddress.district, locale.toUpperCase());
+          const translatedTo = await translateWithDeepL(toAddress.district, locale.toUpperCase());
+
+          const translatedRegionFrom = await translateWithDeepL(toAddress.region, locale.toUpperCase());
+          const translatedRegionTo = await translateWithDeepL(toAddress.region, locale.toUpperCase());
+
+          const translatedDate = await translateWithDeepL(formatDate(moveDate), locale.toUpperCase());
+          const translatedNickname = await translateWithDeepL(nickname, locale.toUpperCase());
+          const translatedIntro = await translateWithDeepL(shortIntro, locale.toUpperCase());
+
+          updatedMeta[review.id] = {
+            content: translatedContent,
+            fromRegion: translatedRegionFrom,
+            toRegion: translatedRegionTo,
+            fromDistrict: translatedFrom,
+            toDistrict: translatedTo,
+            moveDate: translatedDate,
+            nickname: translatedNickname,
+            shortIntro: translatedIntro
+          };
+        } catch (e) {
+          console.warn("번역 실패, 원문 사용", e);
+          updatedMeta[review.id] = {
+            content: review.content,
+            fromRegion: review.request.fromAddress.region,
+            toRegion: review.request.toAddress.region,
+
+            fromDistrict: review.request.fromAddress.district,
+            toDistrict: review.request.toAddress.district,
+            moveDate: formatDate(review.request.moveDate),
+            nickname: review.driver.nickname,
+            shortIntro: review.driver.shortIntro
+          };
+        }
+
+        // 한 건씩 완료될 때마다 적용
+        setTranslatedMeta((prev) => ({
+          ...prev,
+          [review.id]: updatedMeta[review.id]
+        }));
+      }
+    };
+
+    translateAllMeta();
+  }, [reviews, locale]);
+
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
-    return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
+    return format(date, "yyyy. MM. dd (EEE)");
   };
   if (isLoading) {
-    return <LoadingLottie text="내가 작성한 리뷰들을 불러오고 있어요!!" />;
+    return <LoadingLottie className="mt-10" text="내가 작성한 리뷰들을 불러오고 있어요!!" />;
   }
 
   if (isError || !reviews || reviews.length === 0) {
@@ -95,11 +167,11 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
           const moveDetails = [
             {
               label: "from",
-              content: `${TranslateRegion(fromAddress.region)} ${fromAddress.district}`
+              content: `${translatedMeta[review.id]?.fromRegion || fromAddress.region} ${translatedMeta[review.id]?.fromDistrict || fromAddress.district}`
             },
             {
               label: "to",
-              content: `${TranslateRegion(fromAddress.region)} ${toAddress.district}`
+              content: `${translatedMeta[review.id]?.toRegion || fromAddress.region} ${translatedMeta[review.id]?.toDistrict || toAddress.district}`
             },
             {
               label: "date",
@@ -158,12 +230,12 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       <div className={clsx(isMd && "flex gap-[6px]", isSm && !isMd && "flex flex-col gap-[4px]")}>
                         <Image src={DriverIcon} width={16} height={18} alt="driver_icon" />
                         <p className="text-black-300 font-[Pretendard] text-[16px] leading-[26px] font-bold md:text-[18px]">
-                          {nickname} {t("driver.title")}
+                          {translatedMeta[review.id]?.nickname || nickname} {t("driver.title")}
                         </p>
                       </div>
                       {isMd && (
                         <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[12px] leading-[24px] font-normal text-ellipsis text-gray-500 md:text-[14px]">
-                          {shortIntro}
+                          {translatedMeta[review.id]?.shortIntro || shortIntro}
                         </p>
                       )}
                     </div>
@@ -189,7 +261,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
               <div className={clsx("flex flex-col gap-3")}>
                 <StarIcon rating={rating} width={100} height={20} />
                 <p className="text-black-400 min-w-[287px] font-[Pretendard] text-[16px] leading-[26px] font-medium md:text-[18px]">
-                  {content}
+                  {translatedMeta[review.id]?.content || content}{" "}
                 </p>
               </div>
               {isSm && !isMd && (
@@ -198,19 +270,6 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                   <p className="text-[12px] leading-[18px] text-gray-300">{moveDate}</p>
                 </div>
               )}
-              {/* 지울거 */}
-              <Button
-                text="삭제"
-                type="orange"
-                onClick={async () => {
-                  try {
-                    await deleteMyReview(review.id);
-                    <Toast text="리뷰를 삭제했습니다" />;
-                  } catch (err) {
-                    <Toast text="리뷰를 삭제를 실패했습니다." />;
-                  }
-                }}
-              />
             </div>
           );
         })}
