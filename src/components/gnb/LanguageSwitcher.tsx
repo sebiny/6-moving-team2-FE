@@ -35,7 +35,7 @@ export default function LanguageSwitcher({ classname }: prop) {
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className={clsx(
-          "font-Pretendard flex cursor-pointer items-center gap-1 rounded-md border-[1.5] px-3 py-1",
+          "font-Pretendard flex cursor-pointer items-center gap-1 rounded-md px-3 py-1",
           "bg-orange-100 font-semibold text-orange-500 hover:bg-orange-200",
           classname
         )}
