@@ -12,6 +12,7 @@ export interface Request {
   moveDate: string;
   originalMoveDate?: string; // 정렬용 원본 이사일
   price?: number; // 추가 (optional)
+  estimateCount?: number; // 견적 개수
 }
 
 // 백엔드 응답 데이터 형식
@@ -22,6 +23,7 @@ export interface BackendRequest {
   status: string;
   createdAt: string;
   isDesignated?: boolean; // 지정견적 여부
+  estimateCount?: number; // 견적 개수
   customer: {
     id: string;
     authUser: {

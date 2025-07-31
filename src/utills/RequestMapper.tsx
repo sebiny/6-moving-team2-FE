@@ -43,7 +43,8 @@ export const mapBackendRequestToFrontend = (backendRequest: BackendRequest): Req
     fromAddress: formatAddress(backendRequest.fromAddress),
     toAddress: formatAddress(backendRequest.toAddress),
     moveDate: formatDate(backendRequest.moveDate),
-    originalMoveDate: backendRequest.moveDate // 정렬용 원본 이사일
+    originalMoveDate: backendRequest.moveDate, // 정렬용 원본 이사일
+    estimateCount: backendRequest.estimateCount || 0 // 견적 개수
   };
 };
 

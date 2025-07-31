@@ -38,7 +38,7 @@ export default function SentEstimatesPage() {
   const estimates = (backendEstimates || []).map((estimate: DriverEstimateType) => ({
     id: estimate.id,
     moveType: estimate.estimateRequest.moveType as MoveType,
-    isDesignated: estimate.estimateRequest.moveType === "REQUEST",
+    isDesignated: estimate.isDesignated,
     isCompleted: estimate.isCompleted,
     customerName: estimate.customerName,
     fromAddress: formatAddress(estimate.estimateRequest.fromAddress),
