@@ -6,7 +6,7 @@ import { ToastModal } from "./common-modal/ToastModal";
 
 interface ShareDriverType {
   text: string;
-  onKakaoShare: () => void;
+  onKakaoShare?: () => void;
   // onFacebookShare: () => void;
 }
 
