@@ -75,19 +75,35 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
     let reconnectAttempts = 0;
 
     const connectSSE = () => {
+      // 토큰 유효성 검사
+      if (!token) {
+        console.warn("SSE: 토큰이 없습니다.");
+        return;
+      }
+
+      // 토큰 만료 검사 (JWT인 경우)
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        if (payload.exp * 1000 < Date.now()) {
+          console.warn("SSE: 토큰이 만료되었습니다.");
+          return;
+        }
+      } catch (e) {
+        console.warn("SSE: 토큰 파싱 실패");
+      }
       try {
         eventSource = new EventSourcePolyfill(`${API_URL}/notification/sse`, {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
-          heartbeatTimeout: 300000 // 5분
+          heartbeatTimeout: 120000 // 2분
         });
 
-        eventSource.onopen = (event) => {
+        eventSource.addEventListener("open", (event: Event) => {
           reconnectAttempts = 0; // 성공 시 재연결 횟수 초기화
-        };
+        });
 
         // 일반 알림 메시지 처리
-        eventSource.onmessage = (event) => {
+        eventSource.addEventListener("message", (event: MessageEvent) => {
           try {
             const data = JSON.parse(event.data);
             setNotifications((prev) => [
@@ -97,15 +113,31 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
           } catch (parseError) {
             console.error("SSE 메시지 파싱 오류:", parseError);
           }
-        };
+        });
 
         // 특정 이벤트 타입 처리 (ping 등)
         eventSource.addEventListener("ping", (event) => {
           // ping 메시지는 단순히 연결 유지용이므로 특별한 처리 불필요
         });
 
-        eventSource.onerror = (err) => {
-          console.error("SSE 에러:", err);
+        eventSource.addEventListener("error", (err: Event) => {
+          console.error("SSE 에러 상세:", {
+            error: err,
+            readyState: eventSource?.readyState,
+            url: `${API_URL}/notification/sse`,
+            timestamp: new Date().toISOString()
+          });
+
+          if (eventSource) {
+            console.log(
+              "EventSource readyState:",
+              {
+                0: "CONNECTING",
+                1: "OPEN",
+                2: "CLOSED"
+              }[eventSource.readyState]
+            );
+          }
 
           if (eventSource) {
             eventSource.close();
@@ -126,7 +158,7 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
           } else {
             console.error("SSE 재연결 한도 초과. 페이지를 새로고침해주세요.");
           }
-        };
+        });
       } catch (error) {
         console.error("SSE 초기화 오류:", error);
       }
