@@ -37,7 +37,7 @@ function ShareDriver({ text, onKakaoShare }: ShareDriverType) {
           <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#FAE100] lg:h-16 lg:w-16 lg:rounded-2xl">
             <Image
               src="/assets/icons/ic_share_kakao.svg"
-              alt="카카오톡으로 공유하기"
+              alt="카카오톡으로 공유하기!"
               width={28}
               height={28}
               className="w-6 lg:w-7"
