@@ -1,8 +1,8 @@
 "use client";
 
+import { createContext, useContext, useEffect, useState, useCallback, ReactNode, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { authService } from "@/lib/api/api-auth";
-import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from "react";
 import { UserType } from "@/types/UserType";
 
 export type User = {
@@ -17,6 +17,7 @@ export type User = {
 type AuthContextType = {
   user: User | null;
   isLoading: boolean;
+  isLoggedIn: boolean;
   login: (email: string, password: string, userType: UserType) => Promise<void>;
   logout: () => Promise<void>;
   register: (data: {
@@ -42,8 +43,11 @@ export const useAuth = () => {
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const prevUserRef = useRef<User | null>(null);
+  const didMount = useRef(false);
+
+  const pathname = usePathname(); // 경로 감지
 
   const getUser = useCallback(async () => {
     setIsLoading(true);
@@ -56,6 +60,35 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false);
     }
   }, []);
+
+  // 페이지가 바뀔 때마다 액세스 토큰 체크 후 getUser 호출
+  useEffect(() => {
+    const accessToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("accessToken="))
+      ?.split("=")[1];
+
+    if (accessToken) {
+      getUser();
+    } else {
+      setUser(null);
+    }
+  }, [pathname, getUser]);
+
+  useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+
+    const prevUser = prevUserRef.current;
+
+    if ((prevUser === null && user !== null) || (prevUser !== null && user === null)) {
+      getUser();
+    }
+
+    prevUserRef.current = user;
+  }, [user, getUser]);
 
   const register = useCallback(
     async (data: {
@@ -102,13 +135,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
-    getUser();
-  }, [pathname, getUser]);
-
   const value: AuthContextType = {
     user,
     isLoading,
+    isLoggedIn: !!user,
     login,
     logout,
     register,
