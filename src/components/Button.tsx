@@ -38,7 +38,7 @@ function Button({
       type={buttonType} //수정
       disabled={isDisabled}
       onClick={onClick}
-      className={`flex cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold md:py-[17px] md:text-lg ${color} ${className}`}
+      className={`flex h-[48px] cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold md:h-[56px] md:py-[17px] md:text-lg ${color} ${className}`}
     >
       <p>{text}</p>
       {image && <WritingIcon color={type === "orange" ? "text-white" : "text-gray-300"} />}
