@@ -1,0 +1,22 @@
+{
+  "driver": "师傅",
+  "customer": "客户",
+  "loading": "加载中...",
+
+  "writableLoading": "正在加载您可以撰写的评价！",
+  "noReview": "当前没有可写的评价！",
+  "myReviewLoading": "正在加载您已撰写的评价！",
+  "noMyReview": "您还没有撰写任何评价！",
+  "GotoWrite": "去写评价",
+
+  "RequestYet?": "还没有申请报价吗？",
+  "RequestFirst": "请先提交报价申请！",
+  "noRequest": "您还没有收到任何报价。",
+  "confirmReq": "请确认报价！",
+
+  "driverIsChecking": "师傅们正在查看您的请求！",
+  "quoteWillSoon": "您的报价马上就会到了！",
+
+  "pendingCardMsg": "您的报价已确认！",
+  "pendingCardBtn": "查看我的报价"
+}

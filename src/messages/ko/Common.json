@@ -1,0 +1,22 @@
+{
+  "driver": "기사님",
+  "customer": "고객님",
+  "loading": "불러오는 중입니다...",
+
+  "writableLoading": "작성 가능한 리뷰들을 불러오고 있어요!!",
+  "noReview": "작성 가능한 리뷰가 없어요!",
+  "myReviewLoading": "내가 작성한 리뷰들을 불러오고 있어요!!",
+  "noMyReview": "내가 작성한 리뷰가 없어요!",
+  "GotoWrite": "리뷰 작성하러 가기",
+
+  "RequestYet?": "아직 견적 요청 안하셨나요?",
+  "RequestFirst": "견적 요청 먼저 작성해주세요!",
+  "noRequest": "아직 받은 견적이 없어요",
+  "confirmReq": "견적을 확정해 주세요!",
+
+  "driverIsChecking": "기사님들이 열심히 확인 중이에요",
+  "quoteWillSoon": "곧 견적이 도착할 거예요!",
+
+  "pendingCardMsg": "견적이 확정되었습니다!",
+  "pendingCardBtn": "받았던 견적 보러가기"
+}

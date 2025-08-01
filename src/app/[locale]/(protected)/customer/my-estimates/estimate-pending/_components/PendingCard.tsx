@@ -8,9 +8,10 @@ import { MoveType } from "@/constant/moveTypes";
 import { Estimate } from "@/types/estimateType";
 import { useAcceptEstimate } from "@/lib/api/api-myEstimate";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AlertModal from "@/components/common-modal/AlertModal";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { translateWithDeepL } from "@/utills/translateWithDeepL";
 
 interface Props {
   data: Estimate;
@@ -19,15 +20,28 @@ interface Props {
 
 export default function PendingCard({ data, moveType }: Props) {
   const t = useTranslations("MyEstimates");
+  const tC = useTranslations("Common");
+  const locale = useLocale();
+  const [translatedComment, setTranslatedComment] = useState<string | null>(null);
   const { driver, comment, price, status, id, isDesignated } = data;
-
   const router = useRouter();
-
   // 라벨 목록 구성
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
-
   const { mutate: acceptEstimate } = useAcceptEstimate();
+
+  (useEffect(() => {
+    const translate = async () => {
+      try {
+        const translated = await translateWithDeepL(data.comment, locale.toUpperCase());
+        setTranslatedComment(translated);
+      } catch {
+        setTranslatedComment(data.comment); //fallback
+      }
+    };
+    translate();
+  }),
+    [data.comment, locale]);
 
   const ClickDetail = () => {
     router.push(`/customer/my-estimates/estimate-pending/${id}`);
@@ -58,7 +72,9 @@ export default function PendingCard({ data, moveType }: Props) {
       </div>
 
       {/* 소개 메시지 */}
-      <p className="mt-4 font-semibold text-gray-800 sm:text-[16px] lg:text-[19px]">{comment}</p>
+      <p className="mt-4 font-semibold text-gray-800 sm:text-[16px] lg:text-[19px]">
+        {translatedComment ?? data.comment}
+      </p>
 
       {/* 기사 프로필 */}
       <div className="flex items-start gap-3">
@@ -100,7 +116,7 @@ export default function PendingCard({ data, moveType }: Props) {
             </div>
             <span className="text-gray-100">|</span>
             <span>
-              {t("experience")}{" "}
+              {t("experience")}
               <span className="font-medium text-black">
                 {driver.career}
                 {t("year")}
@@ -154,8 +170,8 @@ export default function PendingCard({ data, moveType }: Props) {
           <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center">
             <AlertModal
               type="handleClick"
-              message="견적이 확정되었습니다!"
-              buttonText="받았던 견적 보러가기"
+              message={tC("pendingCardMsg")}
+              buttonText={tC("pendingCardBtn")}
               onClose={() => setShowModal(false)}
               onConfirm={() => router.push("/customer/my-estimates?tab=past")}
             />
