@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import PageHeader from "@/components/common/PageHeader";
@@ -18,6 +18,14 @@ export default function EstimateDetailPage() {
   const t = useTranslations("MyEstimate");
   const params = useParams();
   const estimateId = params.id as string;
+
+  const estimateUrl = `https://www.moving-2.click/driver/my-estimates/sent/${estimateId}`;
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+    }
+  }, []);
 
   const {
     data: estimateDetail,
@@ -69,6 +77,34 @@ export default function EstimateDetailPage() {
 
   const customerName = customer.authUser.name || "고객명 없음";
 
+  const handleKakaoShare = () => {
+    if (typeof window !== "undefined" && window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: "feed",
+        content: {
+          title: `보낸 견적서 - ${customerName}님`,
+          description: `가격: ${price?.toLocaleString()}원\n이사 날짜: ${formatDateTime(
+            moveDate
+          )}\n출발: ${fromAddress.street}\n도착: ${toAddress.street}`,
+          imageUrl: "/assets/images/img_profile.svg",
+          link: {
+            mobileWebUrl: estimateUrl,
+            webUrl: estimateUrl
+          }
+        },
+        buttons: [
+          {
+            title: "견적서 보기",
+            link: {
+              mobileWebUrl: estimateUrl,
+              webUrl: estimateUrl
+            }
+          }
+        ]
+      });
+    }
+  };
+
   return (
     <>
       <PageHeader title={t("estDetail")} />
@@ -97,7 +133,7 @@ export default function EstimateDetailPage() {
 
         {/* 오른쪽 - 공유 버튼 (lg에서만 보임) */}
         <div className="hidden lg:flex lg:w-[30%] lg:items-start lg:justify-end">
-          <ShareDriver text={t("shareEstimate")} />
+          <ShareDriver text={t("shareEstimate")} onKakaoShare={handleKakaoShare} />
         </div>
       </div>
 
@@ -108,7 +144,7 @@ export default function EstimateDetailPage() {
       </div>
 
       <div className="items-left mb-10 flex flex-col px-5 md:flex-row md:px-18 lg:hidden">
-        <ShareDriver text={t("wannaRecommend?")} />
+        <ShareDriver text={t("wannaRecommend?")} onKakaoShare={handleKakaoShare} />
       </div>
     </>
   );
