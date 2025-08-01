@@ -1,0 +1,17 @@
+{
+  "signupCompleted": "注册完成！",
+  "areYouDriver": "您是司机吗？",
+  "areYouCustomer": "您是普通用户吗？",
+  "forOnlyDrivers": "司机专用页面",
+  "forOnlyCustomer": "普通用户专用页面",
+  "email": "邮箱",
+  "emailPlaceholder": "请输入您的邮箱",
+  "isNotEmailValid": "邮箱格式无效。",
+  "pwd": "密码",
+  "pwdPlaceholder": "请输入您的密码",
+  "isNotPasswordValid": "密码至少8位，且必须包含字母、数字和特殊字符。",
+  "login": "登录",
+  "areYouMember": "还不是Moving会员？",
+  "signupWithEmail": "邮箱注册",
+  "signupWithSNS": "社交账号快捷注册"
+}

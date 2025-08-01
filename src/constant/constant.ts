@@ -4,7 +4,7 @@ import { ReviewType } from "@/types/reviewType";
 export const getGnbUserRole = (t: (key: string) => string) => ({
   GUEST: [
     { label: t("findDeliver"), path: "/drivers" },
-    { label: t("login"), path: "/customer/login" }
+    { label: t("login"), path: "/login/customer" }
   ],
   CUSTOMER: [
     { label: t("estimateRequest"), path: "/customer/estimate-request" },
