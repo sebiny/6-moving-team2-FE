@@ -89,7 +89,8 @@ export const review: ReviewType = {
   rating: 5,
   content:
     "듣던대로 정말 친절하시고 물건도 잘 옮겨주셨어요~~ 나중에 또 짐 옮길 일 있으면 김코드 기사님께 부탁드릴 예정입니다!! 비 오는데 꼼꼼히 잘 해주셔서 감사드립니다 :)",
-  createdAt: new Date("2024-07-01")
+  createdAt: new Date("2024-07-01"),
+  email: "customer@example.com"
 };
 
 export const reviews: ReviewType[] = [
@@ -98,7 +99,8 @@ export const reviews: ReviewType[] = [
     customerId: "customer",
     rating: 5,
     content: "기사님 덕분에 안전하고 신속한 이사를 했습니다! 정말 감사합니다~",
-    createdAt: new Date("2024-07-01")
+    createdAt: new Date("2024-07-01"),
+    email: "customer@example.com"
   },
   {
     id: "secondReview",
@@ -106,14 +108,16 @@ export const reviews: ReviewType[] = [
     rating: 3,
     content:
       "듣던대로 정말 친절하시고 물건도 잘 옮겨주셨어요~~ 나중에 또 짐 옮길 일 있으면 김코드 기사님께 부탁드릴 예정입니다!! 비 오는데 꼼꼼히 잘 해주셔서 감사드립니다 :)",
-    createdAt: new Date("2024-07-01")
+    createdAt: new Date("2024-07-01"),
+    email: "customer@example.com"
   },
   {
     id: "thirdReview",
     customerId: "customer",
     rating: 2,
     content: "김코드 기사님께 두 번째 받은 견적인데, 항상 친절하시고 너무 좋으세요!",
-    createdAt: new Date("2024-07-01")
+    createdAt: new Date("2024-07-01"),
+    email: "customer@example.com"
   }
 ];
 

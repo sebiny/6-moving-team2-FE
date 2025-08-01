@@ -86,7 +86,16 @@ export default function Pagination({
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
         >
-          <Image src="/assets/icons/ic_chevron_right_black.svg" width={24} height={24} alt="right_black_Icon" />
+          <Image
+            src={
+              currentPage === totalPages
+                ? "/assets/icons/ic_chevron_right.svg"
+                : "/assets/icons/ic_chevron_right_black.svg"
+            }
+            width={24}
+            height={24}
+            alt="right_black_Icon"
+          />
         </button>
       </div>
     </div>

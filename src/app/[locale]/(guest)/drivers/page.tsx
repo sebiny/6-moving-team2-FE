@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 function DriversPage() {
   const t = useTranslations("FindDriver");
   return (
-    <Suspense fallback={<div>{t("loading")}</div>}>
+    <Suspense>
       <FindDrivers />
     </Suspense>
   );

@@ -85,7 +85,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                   <div className="flex gap-1">
                     <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={20} height={20} />
                     <p>{driver.averageRating?.toFixed(1)}</p>
-                    <p className="text-gray-300">({driver.reviewsReceived?.length ?? 0})</p>
+                    <p className="text-gray-300">({driver.reviewCount ?? 0})</p>
                   </div>
                   <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
                   <div className="flex gap-1">

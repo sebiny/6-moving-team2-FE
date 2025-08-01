@@ -62,9 +62,7 @@ function FindDrivers() {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-
   const drivers = data?.pages.flatMap((page) => page?.data ?? []) ?? [];
-  console.log(drivers.map((d) => d.id));
 
   return (
     <div className="mb-20 flex justify-center">
