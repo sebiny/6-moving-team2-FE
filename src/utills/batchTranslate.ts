@@ -1,4 +1,3 @@
-// utils/batchTranslate.ts
 import { translateWithDeepL } from "./translateWithDeepL";
 
 export async function batchTranslate<T extends Record<string, string>>(texts: T, locale: string): Promise<T> {
@@ -16,3 +15,5 @@ export async function batchTranslate<T extends Record<string, string>>(texts: T,
 
   return Object.fromEntries(entries) as T;
 }
+//await batchTranslate({ hello: "Hello", bye: "Goodbye" }, "ko");
+// 결과 예: { hello: "안녕하세요", bye: "안녕히 가세요" }
