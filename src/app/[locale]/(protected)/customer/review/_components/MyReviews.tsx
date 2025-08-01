@@ -1,63 +1,40 @@
 import React, { useEffect, useState } from "react";
-import DriverImg from "/public/assets/images/img_profile.svg";
 import Image from "next/image";
 import clsx from "clsx";
-import DriverIcon from "/public/assets/icons/ic_driver.svg";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import StarIcon from "@/components/icon/StarIcon";
 import useMediaHook from "@/hooks/useMediaHook";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { getMyReviews } from "@/lib/api/api-review";
-import { ko } from "date-fns/locale";
+import { ko, enUS, ja } from "date-fns/locale";
 import { format } from "date-fns";
+import type { Locale } from "date-fns";
 import { TranslateRegion } from "@/utills/TranslateFunction";
 import NoMyReview from "./NoMyReview";
 import Pagination from "@/components/Pagination";
 import { useQuery } from "@tanstack/react-query";
-import { MoveType } from "@/constant/moveTypes";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
-import { useLocale } from "next-intl";
-import { translateWithDeepL } from "../../../../../../utills/translateWithDeepL";
+import { batchTranslate } from "@/utills/batchTranslate";
+import type { ReviewListResponse, TranslatedMeta } from "@/types/reviewType";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
-
-type Address = {
-  region: string;
-  district: string;
+const dateFnsLocales: Record<string, Locale> = {
+  ko,
+  en: enUS,
+  ja
 };
-
-type ReviewItem = {
-  id: string;
-  content: string;
-  rating: number;
-  driver: {
-    nickname: string;
-    profileImage: string | null;
-    shortIntro: string;
-    averageRating: number;
-  };
-  request: {
-    moveDate: string;
-    moveType: MoveType;
-    fromAddress: Address;
-    toAddress: Address;
-    isDesignated: boolean;
-  };
-};
-type ReviewListResponse = {
-  reviews: ReviewItem[];
-  totalCount: number;
+const formatDate = (isoString: string, currentLocale: string) => {
+  const date = new Date(isoString);
+  return format(date, "yyyy. MM. dd (EEE)", {
+    locale: dateFnsLocales[currentLocale] || enUS
+  });
 };
 export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const t = useTranslations("Review");
   const [page, setPage] = useState(1); //임의로 추가
-  const SIZE_CLASSES = {
-    lg: ["lg:h-[338px] lg:w-[1120px] lg:p-10 lg:gap-5"],
-    sm: ["w-[327px] h-[410px] py-6 px-5"],
-    md: ["md:w-147 md:h-91 md:p-10"]
-  };
   const { isSm, isMd, isLg } = useMediaHook();
+
   //리액트쿼리로 리뷰 불러오기
   const { data, isLoading, isError } = useQuery<ReviewListResponse>({
     queryKey: ["reviews", page],
@@ -65,93 +42,49 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviews = data?.reviews ?? [];
-  //DeepL로 동적 다국어
 
+  //DeepL로 동적 다국어
   const locale = useLocale();
-  const [translatedMeta, setTranslatedMeta] = useState<
-    Record<
-      string,
-      {
-        content: string;
-        fromRegion: string;
-        toRegion: string;
-        fromDistrict: string;
-        toDistrict: string;
-        moveDate: string;
-        nickname: string;
-        shortIntro: string;
-      }
-    >
-  >({});
+  const [translatedMeta, setTranslatedMeta] = useState<Record<string, TranslatedMeta>>({});
+
   useEffect(() => {
     const translateAllMeta = async () => {
-      if (!reviews) return;
-
-      const updatedMeta: typeof translatedMeta = {};
+      const allTranslatedMeta: Record<string, TranslatedMeta> = {};
 
       for (const review of reviews) {
+        const { fromAddress, toAddress, moveDate } = review.request;
+        const { nickname, shortIntro } = review.driver;
+        const textMap = {
+          content: review.content,
+          fromRegion: fromAddress.region,
+          toRegion: toAddress.region,
+          fromDistrict: fromAddress.district,
+          toDistrict: toAddress.district,
+          moveDate: formatDate(moveDate, locale),
+          nickname,
+          shortIntro
+        };
+
         try {
-          const { fromAddress, toAddress, moveDate } = review.request;
-          const { nickname, shortIntro } = review.driver;
-
-          const translatedContent = await translateWithDeepL(review.content, locale.toUpperCase());
-          const translatedFrom = await translateWithDeepL(fromAddress.district, locale.toUpperCase());
-          const translatedTo = await translateWithDeepL(toAddress.district, locale.toUpperCase());
-
-          const translatedRegionFrom = await translateWithDeepL(toAddress.region, locale.toUpperCase());
-          const translatedRegionTo = await translateWithDeepL(toAddress.region, locale.toUpperCase());
-
-          const translatedDate = await translateWithDeepL(formatDate(moveDate), locale.toUpperCase());
-          const translatedNickname = await translateWithDeepL(nickname, locale.toUpperCase());
-          const translatedIntro = await translateWithDeepL(shortIntro, locale.toUpperCase());
-
-          updatedMeta[review.id] = {
-            content: translatedContent,
-            fromRegion: translatedRegionFrom,
-            toRegion: translatedRegionTo,
-            fromDistrict: translatedFrom,
-            toDistrict: translatedTo,
-            moveDate: translatedDate,
-            nickname: translatedNickname,
-            shortIntro: translatedIntro
-          };
-        } catch (e) {
-          console.warn("번역 실패, 원문 사용", e);
-          updatedMeta[review.id] = {
-            content: review.content,
-            fromRegion: review.request.fromAddress.region,
-            toRegion: review.request.toAddress.region,
-
-            fromDistrict: review.request.fromAddress.district,
-            toDistrict: review.request.toAddress.district,
-            moveDate: formatDate(review.request.moveDate),
-            nickname: review.driver.nickname,
-            shortIntro: review.driver.shortIntro
-          };
+          const translated = await batchTranslate(textMap, locale);
+          allTranslatedMeta[review.id] = translated;
+        } catch {
+          allTranslatedMeta[review.id] = textMap;
         }
-
-        // 한 건씩 완료될 때마다 적용
-        setTranslatedMeta((prev) => ({
-          ...prev,
-          [review.id]: updatedMeta[review.id]
-        }));
       }
+      setTranslatedMeta(allTranslatedMeta);
     };
 
     translateAllMeta();
   }, [reviews, locale]);
 
-  const formatDate = (isoString: string) => {
-    const date = new Date(isoString);
-    return format(date, "yyyy. MM. dd (EEE)");
-  };
   if (isLoading) {
-    return <LoadingLottie className="mt-10" text="내가 작성한 리뷰들을 불러오고 있어요!!" />;
+    return <LoadingLottie className="mt-30" text="내가 작성한 리뷰들을 불러오고 있어요!!" />;
   }
 
   if (isError || !reviews || reviews.length === 0) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <div className="mt-30 flex h-full items-center justify-center">
         <NoMyReview setSelectedIdx={setSelectedIdx} />
       </div>
     );
@@ -167,24 +100,33 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
           const moveDetails = [
             {
               label: "from",
-              content: `${translatedMeta[review.id]?.fromRegion || fromAddress.region} ${translatedMeta[review.id]?.fromDistrict || fromAddress.district}`
+              content: `${
+                locale === "ko"
+                  ? TranslateRegion(fromAddress.region)
+                  : translatedMeta[review.id]?.fromRegion || "loading..."
+              } ${translatedMeta[review.id]?.fromDistrict || "loading..."}`
             },
             {
               label: "to",
-              content: `${translatedMeta[review.id]?.toRegion || fromAddress.region} ${translatedMeta[review.id]?.toDistrict || toAddress.district}`
+              content: `${
+                locale === "ko"
+                  ? TranslateRegion(toAddress.region)
+                  : translatedMeta[review.id]?.toRegion || "loading..."
+              } ${translatedMeta[review.id]?.toDistrict || "loading..."}`
             },
             {
               label: "date",
-              content: formatDate(review.request.moveDate)
+              content: formatDate(review.request.moveDate, locale)
             }
           ];
+
           return (
             <div
               key={review.id}
               className={clsx(
-                ...SIZE_CLASSES.lg,
-                ...SIZE_CLASSES.md,
-                ...SIZE_CLASSES.sm,
+                "lg:h-[338px] lg:w-[1120px] lg:gap-5 lg:p-10",
+                "h-[410px] w-[327px] px-5 py-6",
+                "md:h-91 md:w-147 md:p-10",
                 "border-line-100 mx-auto flex flex-col gap-4 self-stretch rounded-[20px] border-[0.5px] bg-gray-50 md:gap-5"
               )}
             >
@@ -200,7 +142,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                   {isLg && (
                     <Image
                       className="order-2 rounded-[12px]"
-                      src={review.driver.profileImage ?? DriverImg}
+                      src={review.driver.profileImage ?? "/assets/images/img_profile.svg"}
                       alt="driverImg"
                       width={100}
                       height={100}
@@ -209,7 +151,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                   {isMd && !isLg && (
                     <Image
                       className="rounded-[12px] md:order-1"
-                      src={review.driver.profileImage ?? DriverImg}
+                      src={review.driver.profileImage ?? "/assets/images/img_profile.svg"}
                       alt="driverImg"
                       width={80}
                       height={80}
@@ -218,7 +160,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                   {isSm && !isMd && (
                     <Image
                       className="order-2 rounded-[12px]"
-                      src={review.driver.profileImage ?? DriverImg}
+                      src={review.driver.profileImage ?? "/assets/images/img_profile.svg"}
                       alt="driverImg"
                       width={50}
                       height={50}
@@ -228,7 +170,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                   <div className="order-1 md:order-2 lg:pt-[10px]">
                     <div>
                       <div className={clsx(isMd && "flex gap-[6px]", isSm && !isMd && "flex flex-col gap-[4px]")}>
-                        <Image src={DriverIcon} width={16} height={18} alt="driver_icon" />
+                        <Image src="/assets/icons/ic_driver.svg" width={16} height={18} alt="driver_icon" />
                         <p className="text-black-300 font-[Pretendard] text-[16px] leading-[26px] font-bold md:text-[18px]">
                           {translatedMeta[review.id]?.nickname || nickname} {t("driver.title")}
                         </p>
@@ -261,7 +203,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
               <div className={clsx("flex flex-col gap-3")}>
                 <StarIcon rating={rating} width={100} height={20} />
                 <p className="text-black-400 min-w-[287px] font-[Pretendard] text-[16px] leading-[26px] font-medium md:text-[18px]">
-                  {translatedMeta[review.id]?.content || content}{" "}
+                  {translatedMeta[review.id]?.content || content}
                 </p>
               </div>
               {isSm && !isMd && (
