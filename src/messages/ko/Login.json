@@ -1,0 +1,17 @@
+{
+  "signupCompleted": "회원가입이 완료되었습니다!",
+  "areYouDriver": "기사님이신가요?",
+  "areYouCustomer": "일반 유저라면?",
+  "forOnlyDrivers": "기사님 전용 페이지",
+  "forOnlyCustomer": "일반 유저 전용 페이지",
+  "email": "이메일",
+  "emailPlaceholder": "이메일을 입력해 주세요",
+  "isNotEmailValid": "유효하지 않은 이메일 형식입니다.",
+  "pwd": "비밀번호",
+  "pwdPlaceholder": "비밀번호를 입력해 주세요",
+  "isNotPasswordValid": "비밀번호는 최소 8자 이상이며 영문, 숫자, 특수문자를 포함해야 합니다.",
+  "login": "로그인",
+  "areYouMember": "아직 무빙 회원이 아니신가요?",
+  "signupWithEmail": "이메일로 회원가입하기",
+  "signupWithSNS": "SNS 계정으로 간편 가입하기"
+}
