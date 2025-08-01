@@ -90,12 +90,12 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
       {isOpen && (
         <div className="text-black-400 border-line-200 absolute top-8 -right-25 z-50 flex w-38 -translate-x-1/3 flex-col rounded-2xl border bg-gray-50 pt-4 pb-1 shadow-gray-300 lg:top-10 lg:w-62 lg:-translate-x-24 2xl:translate-x-5">
           <button className="h-10 items-center pl-4 text-left text-base font-bold lg:h-13 lg:pl-6 lg:text-lg">
-            {/* // `${detailedUser?.name ?? "이름없음"} ${user?.userType === "CUSTOMER" ? "고객님" : "기사님"}`  */}
+            {/* // `${detailedUser?.name ?? t("noUser")} ${user?.userType === "CUSTOMER" ? t("customer") : t("driver")}` */}
 
             {isLoading ? (
               <div className="h-5 w-24 animate-pulse rounded bg-gray-300"></div>
             ) : (
-              `${detailedUser?.name ?? t("noUser")} ${user?.userType === "CUSTOMER" ? t("customer") : t("driver")}`
+              `${detailedUser?.name ?? "이름없음"} ${user?.userType === "CUSTOMER" ? "고객님" : "기사님"}`
             )}
           </button>
           {profileMenu[userType as UserType]?.map(({ label, path }, idx) => (
