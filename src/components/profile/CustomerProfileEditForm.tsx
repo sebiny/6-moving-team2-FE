@@ -8,6 +8,8 @@ import Button from "@/components/Button";
 import TextField from "@/components/input/TextField";
 import SelectRegion from "./SelectRegion";
 import SelectService from "./SelectService";
+import { useTranslations } from "next-intl";
+import { ToastModal } from "../common-modal/ToastModal";
 
 interface CustomerProfileEditFormProps {
   initialData?: any;
@@ -17,6 +19,7 @@ const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\
 
 export default function CustomerProfileEditForm({ initialData }: CustomerProfileEditFormProps) {
   const router = useRouter();
+  const t = useTranslations("Profile");
 
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
@@ -34,6 +37,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [newPasswordError, setNewPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null); // 새 비밀번호 확인에러 상태 추가
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
 
@@ -54,11 +58,17 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
   // newPassword가 바뀔 때마다 유효성 검사
   useEffect(() => {
     if (newPassword && !PASSWORD_REGEX.test(newPassword)) {
-      setNewPasswordError("비밀번호는 8자 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.");
+      setNewPasswordError(t("error.password.invalid"));
     } else {
       setNewPasswordError(null);
     }
-  }, [newPassword]);
+    // 비밀번호 확인 불일치 시 에러 처리 추가
+    if (confirmPassword && newPassword !== confirmPassword) {
+      setConfirmPasswordError(t("error.password.confirm"));
+    } else {
+      setConfirmPasswordError(null);
+    }
+  }, [newPassword, confirmPassword]);
 
   const uploadImageFile = async (file: File): Promise<string> => {
     const formData = new FormData();
@@ -70,7 +80,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
     });
 
     if (response?.imageUrl) return response.imageUrl;
-    throw new Error("이미지 업로드 실패");
+    throw new Error(t("error.upload"));
   };
 
   const handleImageChange = async (file: File | null, previewUrl: string | null) => {
@@ -82,7 +92,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
         const uploadedUrl = await uploadImageFile(file);
         setProfileImagePreview(uploadedUrl);
       } catch (error: any) {
-        setImageError(error.message || "이미지 업로드 실패");
+        setImageError(error.message || t("error.upload"));
         setProfileImageFile(null);
         setProfileImagePreview(null);
       } finally {
@@ -115,12 +125,12 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
     // 새 비밀번호가 있으면 유효성 및 확인 검사
     if (newPassword) {
       if (!PASSWORD_REGEX.test(newPassword)) {
-        alert("새 비밀번호는 8자 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.");
+        // alert(t("error.password.invalid")); // alert 주석 처리 후 필드 아래 에러메세지로 보이도록 수정했습니다.
         setIsSubmitting(false);
         return;
       }
       if (newPassword !== confirmPassword) {
-        alert("새 비밀번호와 확인이 일치하지 않습니다.");
+        // alert(t("error.password.confirm"));
         setIsSubmitting(false);
         return;
       }
@@ -150,10 +160,10 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
         authUtils.setAccessToken(response.accessToken);
       }
 
-      alert("프로필 수정 완료!");
+      ToastModal(t("success.edit"));
       router.push("/");
     } catch (error: any) {
-      alert(error?.message || "프로필 제출 중 오류 발생");
+      ToastModal(error?.message || t("error.edit"));
     } finally {
       setIsSubmitting(false);
     }
@@ -166,7 +176,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
     >
       {/* 상단 제목 */}
       <div className="flex flex-col gap-8">
-        <h1 className="text-[32px] font-semibold">프로필 수정</h1>
+        <h1 className="text-[32px] font-semibold">{t("editTitle")}</h1>
       </div>
 
       {/* 좌우 레이아웃 */}
@@ -175,28 +185,28 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
         <div className="flex w-full flex-col lg:max-w-[500px]">
           {/* 이름 */}
           <div className="mb-5 flex flex-col pt-5">
-            <label className="mb-5 text-xl font-semibold">이름</label>
+            <label className="mb-5 text-xl font-semibold">{t("name")}</label>
             <TextField value={name} onChange={setName} required mdHeight="64" />
           </div>
 
           {/* 이메일 */}
           <div className="mb-5 flex flex-col pt-5">
-            <label className="mb-5 text-xl font-semibold">이메일</label>
+            <label className="mb-5 text-xl font-semibold">{t("email")}</label>
             <TextField value={email} onChange={setEmail} disabled mdHeight="54" />
           </div>
 
           {/* 전화번호 */}
           <div className="mb-5 flex flex-col pt-5">
-            <label className="mb-5 text-xl font-semibold">전화번호</label>
+            <label className="mb-5 text-xl font-semibold">{t("phone")}</label>
             <TextField value={phone} onChange={setPhone} required mdHeight="54" />
           </div>
           <div className="border-line-100 my-2.5 border-t" />
 
           {/* 현재 비밀번호 */}
           <div className="mb-5 flex flex-col pt-5">
-            <label className="mb-5 text-xl font-semibold">현재 비밀번호</label>
+            <label className="mb-5 text-xl font-semibold">{t("currentPassword")}</label>
             <TextField
-              placeholder="현재 비밀번호를 입력해주세요"
+              placeholder={t("placeholder.currentPassword")}
               value={currentPassword}
               onChange={setCurrentPassword}
               type="password"
@@ -207,9 +217,9 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
 
           {/* 새 비밀번호 */}
           <div className="mb-5 flex flex-col pt-5">
-            <label className="mb-5 text-xl font-semibold">새 비밀번호</label>
+            <label className="mb-5 text-xl font-semibold">{t("newPassword")}</label>
             <TextField
-              placeholder="새 비밀번호를 입력해주세요"
+              placeholder={t("placeholder.newPassword")}
               value={newPassword}
               onChange={setNewPassword}
               type="password"
@@ -220,14 +230,15 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
 
           {/* 새 비밀번호 확인 */}
           <div className="mb-5 flex flex-col pt-5">
-            <label className="mb-5 text-xl font-semibold">새 비밀번호 확인</label>
+            <label className="mb-5 text-xl font-semibold">{t("confirmPassword")}</label>
             <TextField
-              placeholder="새 비밀번호를 다시 입력해주세요"
+              placeholder={t("placeholder.confirmPassword")}
               value={confirmPassword}
               onChange={setConfirmPassword}
               type="password"
               mdHeight="54"
             />
+            {confirmPasswordError && <p className="mt-1 text-sm text-red-500">{confirmPasswordError}</p>}
           </div>
         </div>
 
@@ -236,7 +247,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
           {/* 프로필 이미지 */}
           <div className="flex h-[196px] flex-col gap-2">
             <label htmlFor="profileImage" className="text-xl font-semibold">
-              프로필 이미지
+              {t("profileImage")}
             </label>
             <ImageUploader
               id="profileImage"
@@ -255,16 +266,16 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
 
           {/* 이용 서비스 */}
           <div className="flex flex-col gap-5">
-            <label className="text-xl font-semibold">이용 서비스</label>
-            <p className="text-sm text-gray-400">* 견적 요청 시 이용 서비스를 선택할 수 있어요.</p>
+            <label className="text-xl font-semibold">{t("serviceTitle")}</label>
+            <p className="text-sm text-gray-400">{t("serviceEditDescription")}</p>
             <SelectService services={selectedMoveTypes} setServices={setSelectedMoveTypes} />
           </div>
           <div className="border-line-100 my-2.5 border-t" />
 
           {/* 내가 사는 지역 */}
           <div className="flex flex-col gap-5">
-            <label className="text-xl font-semibold">내가 사는 지역</label>
-            <p className="text-sm text-gray-400">* 견적 요청 시 지역을 설정 할 수 있어요.</p>
+            <label className="text-xl font-semibold">{t("regionTitle")}</label>
+            <p className="text-sm text-gray-400">{t("regionEditDescription")}</p>
             <SelectRegion setCurrentArea={setCurrentArea} currentArea={currentArea} type="customer" />
           </div>
         </div>
@@ -274,14 +285,14 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
       <div className="mt-6 flex justify-end">
         <div className="flex w-full flex-col gap-4 md:gap-[20px] lg:w-[500px] lg:flex-row">
           <Button
-            text="취소"
+            text={t("cancel")}
             type="gray"
             buttonType="button" // ← 폼 제출 막기 위해
             className="h-15 w-full rounded-2xl bg-gray-200 text-lg font-semibold text-gray-700 md:w-full"
             onClick={() => router.back()}
           />
           <Button
-            text="수정하기"
+            text={t("editSubmit")}
             type="orange"
             className="h-15 w-full rounded-2xl text-lg font-semibold md:w-full"
             isDisabled={isSubmitting || isUploading}
