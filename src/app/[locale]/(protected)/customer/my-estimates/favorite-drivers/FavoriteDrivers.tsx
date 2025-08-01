@@ -8,9 +8,14 @@ import { useTranslations } from "next-intl";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DriverType } from "@/types/driverType";
 import { favoriteService } from "@/lib/api/api-favorite";
+import { ToastModal } from "@/components/common-modal/ToastModal";
+import AlertModal from "@/components/common-modal/AlertModal";
+import { useRouter } from "next/navigation";
+import Button from "@/components/Button";
 
 export default function FavoriteDrivers() {
   const t = useTranslations("Gnb");
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const { data = [], isLoading } = useQuery<DriverType[]>({
@@ -19,6 +24,9 @@ export default function FavoriteDrivers() {
   });
 
   const [checkedList, setCheckedList] = useState<boolean[]>([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [onConfirmDelete, setOnConfirmDelete] = useState<(() => void) | null>(null);
 
   useEffect(() => {
     setCheckedList(data.map(() => false));
@@ -50,26 +58,29 @@ export default function FavoriteDrivers() {
     }
   });
 
-  const handleDeleteSelected = async () => {
-    const confirmed = confirm("정말 삭제하시겠습니까?");
-    if (!confirmed) return;
-
+  const handleDeleteSelected = () => {
     const selectedDrivers = data.filter((_, index) => checkedList[index]);
     const selectedIds = selectedDrivers.map((driver) => driver.id);
 
     if (selectedIds.length === 0) {
-      alert("삭제할 기사님을 선택해주세요.");
+      setAlertMessage("삭제할 기사님을 선택해주세요.");
+      setOnConfirmDelete(() => null); // 확인 시 별도 동작 없음
+      setShowAlert(true);
       return;
     }
 
-    try {
-      await Promise.all(selectedIds.map((id) => deleteFavoriteMutation.mutateAsync(id)));
-
-      alert("삭제되었습니다.");
-    } catch (error) {
-      console.error("삭제 중 오류 발생:", error);
-      alert("삭제 중 오류가 발생했습니다.");
-    }
+    setAlertMessage("정말 삭제하시겠습니까?");
+    setOnConfirmDelete(() => async () => {
+      try {
+        await Promise.all(selectedIds.map((id) => deleteFavoriteMutation.mutateAsync(id)));
+        ToastModal("삭제되었습니다.");
+      } catch (error) {
+        ToastModal("삭제 중 오류가 발생했습니다.");
+      } finally {
+        setShowAlert(false);
+      }
+    });
+    setShowAlert(true);
   };
 
   return (
@@ -81,32 +92,60 @@ export default function FavoriteDrivers() {
 
       {/* 실제 내용 */}
       <div className="mt-13 flex flex-1 flex-col gap-6 px-7 py-10 md:px-15 lg:mt-15 lg:px-100 lg:py-15">
-        <div className="flex justify-between">
-          <div className="flex">
-            <CustomCheckbox checked={isAllChecked} onChange={toggleAll} shape="square" />
-            <div className="mt-1.5">
-              {t("chooseAll")} ({checkedList.filter(Boolean).length}/{checkedList.length})
-            </div>
-          </div>
-          <div className="mt-1.5 mr-2.5 cursor-pointer" onClick={handleDeleteSelected}>
-            {t("deleteItem")}
-          </div>
-        </div>
-
         {isLoading ? (
           <div>로딩 중...</div>
-        ) : (
-          data.map((driver, index) => (
-            <DriverFindCard
-              key={driver.id}
-              driver={driver}
-              isFavoritePage={true}
-              checked={checkedList[index]}
-              onCheckChange={(val) => handleChange(index, val)}
+        ) : data.length === 0 ? (
+          // 데이터 없을 경우
+          <div className="mt-50 flex flex-col items-center justify-center gap-6">
+            <img
+              src="/assets/images/img_empty_review.svg"
+              alt="찜한 기사님 없음"
+              width={250}
+              height={250}
+              className="object-contain"
             />
-          ))
+            <p className="text-lg font-medium text-gray-600">찜한 기사님이 없어요!</p>
+            <div className="w-60">
+              <Button type="orange" text="기사님 찜하러 가기" onClick={() => router.push("/drivers")} />
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="flex justify-between">
+              <div className="flex">
+                <CustomCheckbox checked={isAllChecked} onChange={toggleAll} shape="square" />
+                <div className="mt-1.5">
+                  {t("chooseAll")} ({checkedList.filter(Boolean).length}/{checkedList.length})
+                </div>
+              </div>
+              <div className="mt-1.5 mr-2.5 cursor-pointer" onClick={handleDeleteSelected}>
+                {t("deleteItem")}
+              </div>
+            </div>
+
+            {data.map((driver, index) => (
+              <DriverFindCard
+                key={driver.id}
+                driver={driver}
+                isFavoritePage={true}
+                checked={checkedList[index]}
+                onCheckChange={(val) => handleChange(index, val)}
+              />
+            ))}
+          </>
         )}
       </div>
+
+      {/* AlertModal */}
+      {showAlert && (
+        <AlertModal
+          type={onConfirmDelete ? "handleClick" : "confirm"}
+          message={alertMessage}
+          buttonText={onConfirmDelete ? "삭제" : "확인"}
+          onClose={() => setShowAlert(false)}
+          onConfirm={onConfirmDelete || (() => setShowAlert(false))}
+        />
+      )}
     </div>
   );
 }

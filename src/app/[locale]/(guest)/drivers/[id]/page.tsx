@@ -23,11 +23,19 @@ function DriverDetailPage() {
   const driverId = id as string;
   const [favorite, setFavorite] = useState<boolean>(false);
 
+  const driverUrl = `https://www.moving-2.click/drivers/${driverId}`;
+
   const { data: driver, isPending } = useQuery<DriverType | null>({
     queryKey: ["driver", driverId, user],
     queryFn: () =>
       user ? driverService.getDriverDetailCookie(driverId) : driverService.getDriverDetailDefault(driverId)
   });
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+    }
+  }, []);
 
   useEffect(() => {
     if (driver?.isFavorite !== undefined) {
@@ -45,6 +53,26 @@ function DriverDetailPage() {
 
   if (!driver) return <div>기사님 정보를 불러올 수 없습니다</div>;
 
+  const handleKakaoShare = () => {
+    if (typeof window !== "undefined" && window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: "feed",
+        content: {
+          title: `${driver.nickname} 기사님`,
+          description: "무빙에서 이 기사님을 추천합니다!",
+          imageUrl: driver.profileImage ?? "/assets/images/img_profile.svg",
+          link: { mobileWebUrl: driverUrl, webUrl: driverUrl }
+        },
+        buttons: [
+          {
+            title: "기사님 보기",
+            link: { mobileWebUrl: driverUrl, webUrl: driverUrl }
+          }
+        ]
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col items-center">
       <OrangeBackground />
@@ -54,7 +82,7 @@ function DriverDetailPage() {
           <Service services={driver.moveType} serviceAreas={driver.serviceAreas} />
           <div className="mb-8 lg:hidden">
             <div className="border-line-100 border-b"></div>
-            <ShareDriver text={t("driverPage.wannaRecommend?")} />
+            <ShareDriver text={t("driverPage.wannaRecommend?")} onKakaoShare={handleKakaoShare} />
             <div className="border-line-100 mt-8 border-b"></div>
           </div>
           <DriverReviews driver={driver} />
@@ -66,7 +94,7 @@ function DriverDetailPage() {
             setFavorite={setFavorite}
             isDesignated={driver.isDesignated ?? false}
           />
-          <ShareDriver text={t("driverPage.wannaRecommend?")} />
+          <ShareDriver text={t("driverPage.wannaRecommend?")} onKakaoShare={handleKakaoShare} />
         </div>
       </div>
       <BottomNav favorite={favorite} setFavorite={setFavorite} isDesignated={driver.isDesignated ?? false} />
