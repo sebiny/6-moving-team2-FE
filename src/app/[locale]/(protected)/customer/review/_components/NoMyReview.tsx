@@ -14,7 +14,7 @@ export default function NoMyReview({ setSelectedIdx }: NoMyReviewProps) {
       <div className="flex flex-col items-center justify-center">
         <Image src={Empty} width={260} height={260} alt="empty_image" />
         <p className="text-[24px] leading-[32px] text-gray-400">{tC("noMyReview")}</p>
-        <Button type="orange" text="리뷰 작성하러 가기" onClick={() => setSelectedIdx("1")} />
+        <Button type="orange" text={tC("GotoWrite")} onClick={() => setSelectedIdx("1")} />
       </div>
     </div>
   );

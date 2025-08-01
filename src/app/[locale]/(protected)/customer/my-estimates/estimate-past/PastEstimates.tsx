@@ -10,19 +10,19 @@ import { SinglePastEstimateType } from "@/types/estimateType";
 import { getMoveTypeLabel } from "@/utills/moveUtils";
 import { formatStreetAddress } from "@/utills/addressUtils";
 import dayjs from "dayjs";
+import LoadingLottie from "@/components/lottie/LoadingLottie";
 
 export default function PastEstimates() {
   const t = useTranslations("MyEstimates");
+  const tC = useTranslations("Common");
   const { data, isLoading } = usePastEstimates();
   const [selectedService, setSelectedService] = useState(t("total"));
 
   if (isLoading) {
     return (
-      <main className="md:bg-background-200 mt-11 bg-white md:mt-22 lg:mt-35">
-        <div className="flex justify-center py-20">
-          <span className="text-gray-400">로딩 중...</span>
-        </div>
-      </main>
+      <>
+        <LoadingLottie className="mt-30" />
+      </>
     );
   }
 
@@ -32,9 +32,9 @@ export default function PastEstimates() {
         <div className="col-span-full flex flex-col items-center justify-center gap-2 py-20">
           <img src="/assets/images/img_empty_review.svg" alt="견적 없음" width={250} height={250} />
           <p className="text-center text-lg font-normal text-neutral-400">
-            아직 받은 견적이 없어요
+            {tC("noRequest")}
             <br />
-            견적을 확정해 주세요!
+            {tC("confirmReq")}
           </p>
         </div>
       </main>

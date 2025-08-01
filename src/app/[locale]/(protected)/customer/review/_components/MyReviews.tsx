@@ -49,6 +49,8 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const [translatedMeta, setTranslatedMeta] = useState<Record<string, TranslatedMeta>>({});
 
   useEffect(() => {
+    if (!reviews || reviews.length === 0) return;
+
     const translateAllMeta = async () => {
       const allTranslatedMeta: Record<string, TranslatedMeta> = {};
 
