@@ -12,7 +12,7 @@ function DriverReview({ review }: DriverReviewType) {
     <div className="flex flex-col gap-6 py-6">
       <div>
         <div className="flex gap-[14px]">
-          <div className="">{review.id}</div>
+          <div className="">{review.email?.slice(0, 3)}****</div>
           <div className="border-line-200 w-[1px] border-l"></div>
           <div className="text-gray-300">{format(new Date(review.createdAt), "yyyy-MM-dd")}</div>
         </div>

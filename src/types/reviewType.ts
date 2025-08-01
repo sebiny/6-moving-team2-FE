@@ -4,6 +4,7 @@ export interface ReviewType {
   rating: number;
   content: string;
   createdAt: Date;
+  email: string;
 }
 
 import { MoveType } from "@/constant/moveTypes";
