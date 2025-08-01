@@ -28,9 +28,11 @@
   "error": {
     "create": "Failed to create profile.",
     "edit": "Failed to update profile.",
-    "upload": "Failed to upload the image. Please try again.",
-    "upload.general": "An error occurred during image upload.",
-    "upload.noUrl": "No image URL received after upload.",
+    "upload": {
+      "fail": "Image upload failed. Please try again.",
+      "general": "An error occurred during image upload.",
+      "noUrl": "Image upload succeeded but no URL was returned."
+    },
     "service": "Please select at least one service.",
     "region": "Please select your current region.",
     "password": {
