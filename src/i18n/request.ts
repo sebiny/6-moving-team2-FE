@@ -19,8 +19,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
     //기사
     ReceivedReq: (await import(`../messages/${locale}/ReceivedReq.json`)).default,
     DriverMypage: (await import(`../messages/${locale}/DriverMypage.json`)).default,
-    MyEstimate: (await import(`../messages/${locale}/MyEstimate.json`)).default
+    MyEstimate: (await import(`../messages/${locale}/MyEstimate.json`)).default,
     // 필요시 계속 추가 가능
+    Common: (await import(`../messages/${locale}/Common.json`)).default
   };
   return {
     locale,

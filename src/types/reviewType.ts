@@ -33,6 +33,25 @@ export type ReviewItem = {
   };
 };
 
+export type ReviewableItem = {
+  id: string;
+  moveType: MoveType;
+  moveDate: string;
+  fromAddress: Address;
+  toAddress: Address;
+  estimates: {
+    id: string;
+    price: number;
+    isDesignated: boolean;
+    driver: {
+      id: string;
+      nickname: string;
+      shortIntro: string;
+      profileImage: string | null;
+    };
+  }[];
+};
+
 export type ReviewListResponse = {
   reviews: ReviewItem[];
   totalCount: number;

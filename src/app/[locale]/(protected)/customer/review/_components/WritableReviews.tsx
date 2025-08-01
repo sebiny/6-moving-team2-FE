@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
-import DriverImg from "/public/assets/images/img_profile.svg";
+import React, { useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-import DriverIcon from "/public/assets/icons/ic_driver.svg";
 import useMediaHook from "@/hooks/useMediaHook";
 import ReviewsInner from "./ReviewsInner";
 import Button from "@/components/Button";
@@ -13,47 +11,21 @@ import { getWritableReviews } from "@/lib/api/api-review";
 import NoReview from "./NoReview";
 import Pagination from "@/components/Pagination";
 import { useQuery } from "@tanstack/react-query";
-import { MoveType } from "@/constant/moveTypes";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import { ReviewableItem } from "@/types/reviewType";
 
 interface ReviewsProps {
   setIsModal: (value: boolean) => void;
 }
-type Address = {
-  region: string;
-  district: string;
-};
-type ReviewableItem = {
-  id: string;
-  moveType: MoveType;
-  moveDate: string;
-  fromAddress: Address;
-  toAddress: Address;
-  estimates: {
-    id: string;
-    price: number;
-    isDesignated: boolean;
-    driver: {
-      id: string;
-      nickname: string;
-      shortIntro: string;
-      profileImage: string | null;
-    };
-  }[];
-};
-
 type ReviewListResponse = {
   reviewableEstimates: ReviewableItem[];
   totalCount: number;
 };
 export default function Reviews({ setIsModal }: ReviewsProps) {
-  const [page, setPage] = useState<number>(1);
   const t = useTranslations("Review");
-  const SIZE_CLASSES = {
-    base: ["lg:h-[242px] lg:w-280 lg:px-10 lg:py-8 lg:gap-6"],
-    sm: ["h-[410px] w-[327px] py-6 px-5"],
-    md: ["md:h-[316px] md:w-[600px] md:p-8"]
-  };
+  const tC = useTranslations("Common");
+  const [page, setPage] = useState<number>(1);
+
   const { isSm, isMd, isLg } = useMediaHook();
 
   const { data, isLoading, isError } = useQuery<ReviewListResponse>({
@@ -62,10 +34,9 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];
-  //console.log("지정견적 있을까용?? ", reviewables[0].estimates[0].isDesignated);
 
   if (isLoading) {
-    return <LoadingLottie className="mt-30" text="작성 가능한 리뷰들을 불러오고 있어요!!" />;
+    return <LoadingLottie className="mt-30" text={tC("writableLoading")} />;
   }
 
   if (isError || !reviewables || reviewables.length === 0) {
@@ -82,9 +53,9 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
           <div
             key={reviewable.id}
             className={clsx(
-              ...SIZE_CLASSES.base,
-              ...SIZE_CLASSES.md,
-              ...SIZE_CLASSES.sm,
+              "lg:h-[242px] lg:w-280 lg:gap-6 lg:px-10 lg:py-8",
+              "h-[410px] w-[327px] px-5 py-6",
+              "md:h-[316px] md:w-[600px] md:p-8",
               "border-line-100 mx-auto flex flex-col self-stretch rounded-[20px] border-[0.5px] bg-gray-50"
             )}
           >
@@ -99,7 +70,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                 {isLg && (
                   <Image
                     className="order-2 rounded-[12px]"
-                    src={reviewable.estimates[0].driver.profileImage ?? DriverImg}
+                    src={reviewable.estimates[0].driver.profileImage ?? "/assets/images/img_profile.svg"}
                     alt="driverImg"
                     width={100}
                     height={100}
@@ -108,7 +79,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                 {isMd && !isLg && (
                   <Image
                     className="rounded-[12px] md:order-1"
-                    src={reviewable.estimates[0].driver.profileImage ?? DriverImg}
+                    src={reviewable.estimates[0].driver.profileImage ?? "/assets/images/img_profile.svg"}
                     alt="driverImg"
                     width={80}
                     height={80}
@@ -117,7 +88,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                 {isSm && !isMd && (
                   <Image
                     className="order-2 rounded-[12px]"
-                    src={reviewable.estimates[0].driver.profileImage ?? DriverImg}
+                    src={reviewable.estimates[0].driver.profileImage ?? "/assets/images/img_profile.svg"}
                     alt="driverImg"
                     width={64}
                     height={64}
@@ -126,7 +97,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
 
                 <div className={clsx("order-1 md:order-2 lg:pt-[10px]", isSm && !isMd && "w-50")}>
                   <div className={clsx(isSm && !isMd && "flex-col", "flex gap-[6px]")}>
-                    <Image src={DriverIcon} width={16} height={18} alt="driver_icon" />
+                    <Image src="/assets/icons/ic_driver.svg" width={16} height={18} alt="driver_icon" />
                     <p className="text-black-300 font-[Pretendard] text-[16px] leading-[26px] font-bold md:text-[18px]">
                       {reviewable.estimates[0].driver.nickname} {t("driver.title")}
                     </p>
