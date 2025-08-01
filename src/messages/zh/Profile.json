@@ -1,0 +1,47 @@
+{
+  "title": "注册个人资料",
+  "subtitle": "请输入更多信息以完成注册。",
+  "profileImage": "个人头像",
+  "uploading": "图片上传中...",
+  "loading": "加载中...",
+  "serviceTitle": "使用服务",
+  "serviceDescription": "* 可选择多个服务，随时可以修改！",
+  "regionTitle": "我所在的地区",
+  "regionDescription": "* 地区信息可随时修改！",
+  "submit": "开始使用",
+  "editTitle": "修改个人资料",
+  "name": "姓名",
+  "email": "电子邮件",
+  "phone": "电话号码",
+  "currentPassword": "当前密码",
+  "newPassword": "新密码",
+  "confirmPassword": "确认新密码",
+  "serviceEditDescription": "* 申请报价时可选择服务类型。",
+  "regionEditDescription": "* 申请报价时可设置所在地区。",
+  "cancel": "取消",
+  "editSubmit": "修改",
+  "placeholder": {
+    "currentPassword": "请输入当前密码",
+    "newPassword": "请输入新密码",
+    "confirmPassword": "请再次输入新密码"
+  },
+  "error": {
+    "create": "个人资料创建失败。",
+    "edit": "更新个人资料失败。",
+    "upload": {
+      "fail": "图片上传失败。请重试。",
+      "general": "上传图片时发生错误。",
+      "noUrl": "图片上传成功，但未返回链接。"
+    },
+    "service": "请至少选择一个服务类型。",
+    "region": "请选择您所在的地区。",
+    "password": {
+      "invalid": "密码需至少8位，包含字母、数字和特殊字符。",
+      "confirm": "新密码与确认密码不一致。"
+    }
+  },
+  "success": {
+    "create": "个人资料创建成功！",
+    "edit": "个人资料修改成功！"
+  }
+}

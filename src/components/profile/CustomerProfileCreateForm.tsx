@@ -7,9 +7,12 @@ import ImageUploader from "@/components/profile/ImageUploader";
 import SelectRegion from "./SelectRegion";
 import SelectService from "./SelectService";
 import Button from "../Button";
+import { useTranslations } from "next-intl";
+import { ToastModal } from "../common-modal/ToastModal";
 
 export default function CustomerProfileCreateForm() {
   const router = useRouter();
+  const t = useTranslations("Profile");
 
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
@@ -20,6 +23,7 @@ export default function CustomerProfileCreateForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
+  const isFormValid = selectedMoveTypes.length > 0 && currentArea !== "";
 
   const handleImageError = (error: string | null) => {
     setImageError(error);
@@ -40,9 +44,9 @@ export default function CustomerProfileCreateForm() {
       if (response && response.imageUrl) {
         return response.imageUrl;
       }
-      throw new Error("이미지 업로드 후 URL을 받지 못했습니다.");
-    } catch (error) {
-      throw new Error("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
+      throw new Error(t("error.upload.noUrl"));
+    } catch {
+      throw new Error(t("subtitle"));
     }
   }
 
@@ -56,7 +60,7 @@ export default function CustomerProfileCreateForm() {
         const uploadedUrl = await uploadImageFile(file);
         setProfileImagePreview(uploadedUrl);
       } catch (error: any) {
-        setImageError(error.message || "이미지 업로드 중 오류가 발생했습니다.");
+        setImageError(error.message || t("error.upload.general"));
         setProfileImagePreview(null);
         setProfileImageFile(null);
       } finally {
@@ -72,14 +76,9 @@ export default function CustomerProfileCreateForm() {
     setIsSubmitting(true);
     setImageError(null);
 
-    if (selectedMoveTypes.length === 0) {
-      alert("요청 서비스를 하나 이상 선택해주세요.");
-      setIsSubmitting(false);
-      return;
-    }
-    if (!currentArea) {
-      alert("현재 지역을 선택해주세요.");
-      setIsSubmitting(false);
+    // 서비스, 지역 선택하지 않았을 때 버튼 비활성화되도록
+    // 서비스/지역 미선택시 뜨는 alert 알림 제거하고, 버튼 비활성화되도록 만들었습니다.
+    if (!isFormValid) {
       return;
     }
 
@@ -99,10 +98,10 @@ export default function CustomerProfileCreateForm() {
         authUtils.setAccessToken(response.accessToken);
       }
 
-      alert("프로필 생성 완료!");
+      ToastModal(t("success.create"));
       router.push("/");
     } catch (error: any) {
-      alert(error.message || "프로필 생성에 실패했습니다.");
+      ToastModal(error.message || t("error.create"));
     } finally {
       setIsSubmitting(false);
     }
@@ -111,16 +110,14 @@ export default function CustomerProfileCreateForm() {
   return (
     <form className="w-[327px] max-w-160 space-y-4 p-6 lg:w-full" onSubmit={handleSubmit}>
       <div>
-        <h2 className="text-lg font-bold lg:text-[32px]">프로필 등록</h2>
-        <p className="text-black-100 my-4 text-xs lg:my-7 lg:text-[16px]">
-          추가 정보를 입력하여 회원가입을 완료해주세요.
-        </p>
+        <h2 className="text-lg font-bold lg:text-[32px]">{t("title")}</h2>
+        <p className="text-black-100 my-4 text-xs lg:my-7 lg:text-[16px]">{t("subtitle")}</p>
         <div className="border-line-100 border-b"></div>
       </div>
 
       <ImageUploader
         id="profileImage"
-        label="프로필 이미지"
+        label={t("profileImage")}
         maxSizeMB={5}
         onImageChange={handleImageChange}
         previewUrl={profileImagePreview}
@@ -130,30 +127,29 @@ export default function CustomerProfileCreateForm() {
         allowRemove={true}
         onImageError={handleImageError}
       />
-      {isUploading && <p className="text-sm text-gray-500">이미지 업로드 중...</p>}
+      {isUploading && <p className="text-sm text-gray-500">{t("uploading")}</p>}
 
       <div className="border-line-100 border-b"></div>
 
       <div>
-        <p className="text-black-300 font-semibold lg:text-xl">이용 서비스</p>
-        <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">
-          * 이용 서비스는 중복 선택 가능하며, 언제든 수정 가능해요!
-        </p>
+        <p className="text-black-300 font-semibold lg:text-xl">{t("serviceTitle")}</p>
+        <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">{t("serviceDescription")}</p>
+
         <SelectService services={selectedMoveTypes} setServices={setSelectedMoveTypes} />
       </div>
 
       <div className="border-line-100 border-b"></div>
 
       <div>
-        <p className="text-black-300 font-semibold lg:text-xl">내가 사는 지역</p>
-        <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">* 내가 사는 지역은 언제든 수정 가능해요!</p>
+        <p className="text-black-300 font-semibold lg:text-xl">{t("regionTitle")}</p>
+        <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">{t("regionDescription")}</p>
         <SelectRegion setCurrentArea={setCurrentArea} currentArea={currentArea} type="customer" />
       </div>
 
       <Button
         type="orange"
-        text={isSubmitting ? "로딩 중..." : "시작하기"}
-        isDisabled={isSubmitting || isUploading}
+        text={isSubmitting ? t("loading") : t("submit")}
+        isDisabled={isSubmitting || isUploading || !isFormValid}
         className="mt-15 w-full rounded bg-blue-600 py-2 text-white"
       />
     </form>

@@ -1,0 +1,47 @@
+{
+  "title": "Profile Registration",
+  "subtitle": "Please provide additional information to complete your registration.",
+  "profileImage": "Profile Image",
+  "uploading": "Uploading image...",
+  "loading": "Loading...",
+  "serviceTitle": "Service Type",
+  "serviceDescription": "* You can select multiple services and modify them anytime!",
+  "regionTitle": "Your Region",
+  "regionDescription": "* You can update your region anytime!",
+  "submit": "Get Started",
+  "editTitle": "Edit Profile",
+  "name": "Name",
+  "email": "Email",
+  "phone": "Phone Number",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "confirmPassword": "Confirm New Password",
+  "serviceEditDescription": "* You can select services when requesting an estimate.",
+  "regionEditDescription": "* You can set the region when requesting an estimate.",
+  "cancel": "Cancel",
+  "editSubmit": "Edit",
+  "placeholder": {
+    "currentPassword": "Enter your current password",
+    "newPassword": "Enter a new password",
+    "confirmPassword": "Re-enter the new password"
+  },
+  "error": {
+    "create": "Failed to create profile.",
+    "edit": "Failed to update profile.",
+    "upload": {
+      "fail": "Image upload failed. Please try again.",
+      "general": "An error occurred during image upload.",
+      "noUrl": "Image upload succeeded but no URL was returned."
+    },
+    "service": "Please select at least one service.",
+    "region": "Please select your current region.",
+    "password": {
+      "invalid": "Password must be at least 8 characters and include letters, numbers, and special characters.",
+      "confirm": "New password and confirmation do not match."
+    }
+  },
+  "success": {
+    "create": "Profile created successfully!",
+    "edit": "Profile updated successfully!"
+  }
+}

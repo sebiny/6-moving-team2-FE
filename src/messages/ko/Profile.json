@@ -1,0 +1,47 @@
+{
+  "title": "프로필 등록",
+  "subtitle": "추가 정보를 입력하여 회원가입을 완료해주세요.",
+  "profileImage": "프로필 이미지",
+  "uploading": "이미지 업로드 중...",
+  "loading": "로딩 중...",
+  "serviceTitle": "이용 서비스",
+  "serviceDescription": "* 이용 서비스는 중복 선택 가능하며, 언제든 수정 가능해요!",
+  "regionTitle": "내가 사는 지역",
+  "regionDescription": "* 내가 사는 지역은 언제든 수정 가능해요!",
+  "submit": "시작하기",
+  "editTitle": "프로필 수정",
+  "name": "이름",
+  "email": "이메일",
+  "phone": "전화번호",
+  "currentPassword": "현재 비밀번호",
+  "newPassword": "새 비밀번호",
+  "confirmPassword": "새 비밀번호 확인",
+  "serviceEditDescription": "* 견적 요청 시 이용 서비스를 선택할 수 있어요.",
+  "regionEditDescription": "* 견적 요청 시 지역을 설정 할 수 있어요.",
+  "cancel": "취소",
+  "editSubmit": "수정하기",
+  "placeholder": {
+    "currentPassword": "현재 비밀번호를 입력해주세요",
+    "newPassword": "새 비밀번호를 입력해주세요",
+    "confirmPassword": "새 비밀번호를 다시 입력해주세요"
+  },
+  "error": {
+    "create": "프로필 생성에 실패했습니다.",
+    "edit": "프로필 수정에 실패했습니다.",
+    "upload": {
+      "fail": "이미지 업로드에 실패했습니다. 다시 시도해주세요.",
+      "general": "이미지 업로드 중 오류가 발생했습니다.",
+      "noUrl": "이미지 업로드 후 URL을 받지 못했습니다."
+    },
+    "service": "요청 서비스를 하나 이상 선택해주세요.",
+    "region": "현재 지역을 선택해주세요.",
+    "password": {
+      "invalid": "비밀번호는 8자 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.",
+      "confirm": "새 비밀번호와 확인이 일치하지 않습니다."
+    }
+  },
+  "success": {
+    "create": "프로필 생성 완료!",
+    "edit": "프로필 수정 완료!"
+  }
+}
