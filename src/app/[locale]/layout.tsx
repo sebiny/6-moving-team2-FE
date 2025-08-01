@@ -44,10 +44,8 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <head>
-        <Script src="https://developers.kakao.com/sdk/js/kakao.min.js" strategy="beforeInteractive" />
-      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col`}>
+        <Script src="https://developers.kakao.com/sdk/js/kakao.min.js" strategy="beforeInteractive" />
         <NextIntlClientProvider>
           <Providers>
             <ConditionalTransitionWrapper>
