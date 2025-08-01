@@ -14,7 +14,7 @@ export const authUtils = {
       try {
         const tokenData = JSON.parse(atob(accessToken.split(".")[1]));
         const expiresIn = tokenData.exp - Math.floor(Date.now() / 1000);
-        document.cookie = `accessToken=${accessToken}; path=/; max-age=${expiresIn}; SameSite=lax; Secure`;
+        document.cookie = `accessToken=${accessToken}; path=/; max-age=${expiresIn}; SameSite=lax; Secure; domain=.moving-2.click`;
       } catch (e) {}
     }
   },
@@ -35,8 +35,14 @@ export const authUtils = {
   clearAccessToken: (): void => {
     if (typeof window !== "undefined") {
       try {
-        document.cookie = "accessToken=; path=/; max-age=0; SameSite=lax; Secure";
-      } catch (e) {}
+        // domain 없이 설정된 쿠키 삭제
+        document.cookie = "accessToken=; path=/; max-age=0; SameSite=Lax; Secure";
+
+        // domain=.moving-2.click 로 설정된 쿠키도 삭제
+        document.cookie = "accessToken=; path=/; max-age=0; SameSite=Lax; Secure; domain=.moving-2.click";
+      } catch (e) {
+        console.error("accessToken 쿠키 삭제 중 오류:", e);
+      }
     }
   },
 
