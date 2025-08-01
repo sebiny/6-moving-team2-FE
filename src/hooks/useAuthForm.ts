@@ -11,7 +11,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PHONE_REGEX = /^010\d{8}$/;
 const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
 
-export function useLoginForm() {
+export function useLoginForm(userType: UserType) {
   const router = useRouter();
   const { user, login } = useAuth();
   const [email, setEmail] = useState("");
@@ -27,12 +27,12 @@ export function useLoginForm() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(email, password);
+      await login(email, password, userType);
       // 로그인 성공하면 useEffect에서 user 상태 확인 후 라우팅 처리
     } catch (error: any) {
       console.error("Login failed:", error);
       const message = parseBackendError(error.status, error.message);
-      alert(message);
+      ToastModal(message);
     }
   };
 

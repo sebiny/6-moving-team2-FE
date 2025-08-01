@@ -44,15 +44,32 @@ export async function middleware(request: NextRequest) {
   const pathname = rawPathname.replace(localeRegex, ""); // locale prefix 제거
 
   const accessToken = request.cookies.get("accessToken")?.value;
+  const refreshToken = request.cookies.get("refreshToken")?.value;
+
+  if (pathname.startsWith("/auth/refresh")) {
+    return response;
+  }
 
   let isAuthenticated = false;
   let payload: JwtPayload | null = null;
 
   if (accessToken) {
-    const parsedPayload = parseJwtPayload(accessToken);
-    if (parsedPayload && parsedPayload.exp * 1000 > Date.now()) {
+    payload = parseJwtPayload(accessToken);
+    if (payload && payload.exp * 1000 > Date.now()) {
       isAuthenticated = true;
-      payload = parsedPayload;
+    } else {
+      payload = null; // 액세스 토큰이 유효하지 않으면 payload를 null로 설정합니다.
+    }
+  }
+
+  // 액세스 토큰으로 인증되지 않았고 리프레시 토큰이 있는 경우, 리프레시 토큰으로 확인합니다.
+  // 일단 통과 후 통과 된 페이지에서 cookieFetch 호출하면서 액세스 토큰 자동 갱신
+  if (!isAuthenticated && refreshToken) {
+    payload = parseJwtPayload(refreshToken);
+    if (payload && payload.exp * 1000 > Date.now()) {
+      isAuthenticated = true;
+    } else {
+      payload = null; // 리프레시 토큰도 유효하지 않으면 payload를 null로 설정합니다.
     }
   }
 

@@ -4,12 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLoginForm } from "@/hooks/useAuthForm";
 import TextField from "@/components/input/TextField";
+import { UserType } from "@/types/UserType";
 import { useEffect } from "react";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 
 export default function LoginDriver() {
-  const { email, setEmail, password, setPassword, onSubmit, isEmailValid, isPasswordValid, isFormValid } =
-    useLoginForm();
+  const { email, setEmail, password, setPassword, onSubmit, isEmailValid, isPasswordValid, isFormValid } = useLoginForm(
+    UserType.DRIVER
+  );
 
   useEffect(() => {
     const signupSuccess = localStorage.getItem("signupSuccess");

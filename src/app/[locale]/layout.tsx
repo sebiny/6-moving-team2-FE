@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import ConditionalTransitionWrapper from "@/components/container/ConditionalTransitionWrapper";
 import { cssTransition, ToastContainer } from "react-toastify";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col`}>
+        <Script src="https://developers.kakao.com/sdk/js/kakao.min.js" strategy="beforeInteractive" />
         <NextIntlClientProvider>
           <Providers>
             <ConditionalTransitionWrapper>
@@ -54,7 +56,7 @@ export default async function RootLayout({
                   position="top-center"
                   theme="light"
                   closeButton={false}
-                  style={{ zIndex: 9999 }}
+                  style={{ zIndex: 9999, left: "50%", transform: "translateX(-50%)" }}
                   toastClassName="!bg-transparent !shadow-none !backdrop-blur-md rounded-xl"
                 />
               </div>
