@@ -4,18 +4,24 @@ export function useTransitionRouter() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const pushWithTransition = (href: string): ViewTransition | undefined => {
-    if (href === pathname) return;
+  const pushWithTransition = (path: string): ViewTransition | undefined => {
+    if (path === pathname) return;
+    if (path === pathname) {
+      console.log("같은 경로라서 리턴");
+      return;
+    }
 
     const doc = document as any;
     if (!doc.startViewTransition) {
-      router.push(href);
+      console.log("View Transition 미지원, 기본 router.push 사용");
+      router.push(path);
       return;
     }
 
     // startViewTransition은 ViewTransition 객체를 반환합니다.
     return doc.startViewTransition(() => {
-      router.push(href);
+      console.log("router.push 실행:", path);
+      router.push(path);
     });
   };
 

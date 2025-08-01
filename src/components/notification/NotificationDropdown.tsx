@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import { EventSourcePolyfill } from "event-source-polyfill";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import iconNotification from "/public/assets/icons/ic_alarm.svg";
 import ImgXBtn from "/public/assets/icons/ic_X.svg";
 import { fetchNotifications, markNotificationAsReadAPI } from "@/lib/api/api-notification";
 import { useAuth } from "@/providers/AuthProvider";
 import { authUtils } from "@/lib/FetchClient";
 import { useTranslations } from "next-intl";
+import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import NotificationItem from "./_components/NotificationItem";
 
@@ -28,14 +29,77 @@ export interface NotificationData {
   isRead: boolean;
 }
 
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5분
+      refetchOnWindowFocus: false
+    }
+  }
+});
+
 export default function Notification({ ref, onClick, className, isOpen }: NotificationProps) {
-  const [notifications, setNotifications] = useState<NotificationData[]>([]);
   const { user, isLoading } = useAuth();
-  const hasUnread = notifications.some((n) => !n.isRead);
+  const queryClient = useQueryClient();
+
   const t = useTranslations("Gnb");
 
   // '읽음 상태' 스냅샷을 위한 새로운 state 추가
   const [initialReadIds, setInitialReadIds] = useState<Set<string>>(new Set());
+
+  // 알림 목록 조회
+  const { data: notifications = [], isLoading: isNotificationsLoading } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: fetchNotifications,
+    enabled: !isLoading && !!user,
+    select: (data) => {
+      if (data && Array.isArray(data)) {
+        return data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      }
+      return [];
+    },
+    refetchOnWindowFocus: true,
+    refetchInterval: 30000,
+    staleTime: 2 * 60 * 1000
+  });
+
+  // 읽음 처리 뮤테이션
+  const { mutateAsync: markAsRead } = useMutation({
+    mutationFn: markNotificationAsReadAPI,
+    onMutate: async (notificationId: string) => {
+      await queryClient.cancelQueries({ queryKey: ["notifications"] });
+
+      const previousNotifications = queryClient.getQueryData(["notification"]);
+
+      queryClient.setQueryData(["notifications"], (old: NotificationData[] | undefined) => {
+        if (!old) return [];
+        return old.map((n) => (n.id === notificationId ? { ...n, isRead: true } : n));
+      });
+      return { previousNotifications };
+    },
+    onError: (err, notificationId, context) => {
+      if (context?.previousNotifications) {
+        queryClient.setQueryData(["notifications"], context.previousNotifications);
+      }
+      console.error("알림 읽음 처리 실패:", err);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    }
+  });
+
+  const hasUnread = notifications.some((n) => !n.isRead);
+
+  // SSE로 새 알림 추가
+  const addNewNotification = useCallback(
+    (newNotification: NotificationData) => {
+      queryClient.setQueryData(["notifications"], (old: NotificationData[] | undefined) => {
+        if (!old) return [newNotification];
+        return [newNotification, ...old];
+      });
+    },
+    [queryClient]
+  );
 
   useEffect(() => {
     // 로딩 중이거나 로그인 상태가 아니면 아무 작업도 하지 않고 종료
@@ -43,29 +107,14 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
       if (!user) {
         //   setNotifications([]);
       }
-      return; // 이 return은 아무것도 반환하지 않으므로(void) 올바른 사용법입니다.
+      return;
     }
   });
 
   useEffect(() => {
     if (isLoading || !user) {
-      setNotifications([]);
       return;
     }
-
-    // 기존 알림 불러오기
-    fetchNotifications()
-      .then((data) => {
-        if (data && Array.isArray(data)) {
-          setNotifications(data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
-        } else {
-          setNotifications([]);
-        }
-      })
-      .catch((error) => {
-        console.error("알림을 불러오는 중 에러 발생:", error);
-        setNotifications([]);
-      });
 
     const token = authUtils.getAccessToken();
     if (!token) return;
@@ -106,19 +155,19 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
         eventSource.addEventListener("message", (event: MessageEvent) => {
           try {
             const data = JSON.parse(event.data);
-            setNotifications((prev) => [
-              { id: data.id, message: data.message, createdAt: data.createdAt, isRead: false },
-              ...prev
-            ]);
+
+            addNewNotification({
+              id: data.id,
+              message: data.translated || data.message || "",
+              createdAt: data.createdAt,
+              isRead: false
+            });
           } catch (parseError) {
             console.error("SSE 메시지 파싱 오류:", parseError);
           }
         });
 
-        // 특정 이벤트 타입 처리 (ping 등)
-        eventSource.addEventListener("ping", (event) => {
-          // ping 메시지는 단순히 연결 유지용이므로 특별한 처리 불필요
-        });
+        eventSource.addEventListener("ping", (event) => {});
 
         eventSource.addEventListener("error", (err: Event) => {
           console.error("SSE 에러 상세:", {
@@ -177,31 +226,26 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
         clearTimeout(reconnectTimer);
       }
     };
-  }, [isLoading, user]);
+  }, [isLoading, user, addNewNotification]);
 
-  // 💡 2. 드롭다운이 열릴 때만 스냅샷을 생성하는 useEffect 추가
+  // 드롭다운 열릴 때 스냅샷 생성
   useEffect(() => {
-    // isOpen이 true가 되는 순간, 즉 드롭다운이 열릴 때만 실행
     if (isOpen) {
       const alreadyReadIds = new Set(notifications.filter((n) => n.isRead).map((n) => n.id));
       setInitialReadIds(alreadyReadIds);
     }
-    // `notifications`는 의존성 배열에서 의도적으로 제외합니다.
-    // 드롭다운이 열려있는 동안 알림이 읽음 처리되어도 스냅샷이 갱신되지 않도록 하기 위함입니다.
-  }, [isOpen]);
+  }, [isOpen, notifications]);
 
-  const handleMarkAsRead = async (notificationId: string) => {
-    setNotifications((prev) => prev.map((n) => (n.id === notificationId ? { ...n, isRead: true } : n)));
-
-    try {
-      await markNotificationAsReadAPI(notificationId);
-    } catch (error) {
-      console.error("알림 읽음 처리 API 실패:", error);
-
-      alert("오류가 발생하여 알림을 읽음 처리하지 못했습니다.");
-      setNotifications((prev) => prev.map((n) => (n.id === notificationId ? { ...n, isRead: false } : n)));
-    }
-  };
+  const handleMarkAsRead = useCallback(
+    async (notificationId: string) => {
+      try {
+        await markAsRead(notificationId);
+      } catch (error) {
+        console.error("알림 읽음 처리 오류:", error);
+      }
+    },
+    [markAsRead]
+  );
 
   return (
     <div className={`${className} relative z-50 flex`} ref={ref}>
@@ -235,7 +279,7 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
                   key={item.id}
                   item={item}
                   onVisible={handleMarkAsRead}
-                  isInitiallyRead={initialReadIds.has(item.id)} // 현재 ID가 스냅샷에 있는지 확인
+                  isInitiallyRead={initialReadIds.has(item.id)}
                 />
               ))
             )}

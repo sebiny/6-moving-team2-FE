@@ -4,8 +4,10 @@ import Image from "next/image";
 import TextField from "@/components/input/TextField";
 import { useSignupForm } from "@/hooks/useAuthForm";
 import { UserType } from "@/types/UserType";
+import { useTranslations } from "next-intl";
 
 export default function SignupDriver() {
+  const t = useTranslations("Signup");
   const {
     name,
     setName,
@@ -43,13 +45,13 @@ export default function SignupDriver() {
 
           <div className="flex w-full items-center justify-center gap-[2px] md:h-[32px] md:w-fit md:self-center">
             <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-900 md:text-xl md:leading-8 md:font-normal">
-              일반 유저라면?
+              {t("areYouCustomer")}
             </span>
             <Link
               href="/signup/customer"
               className="text-xs leading-[20px] font-semibold text-orange-400 underline md:text-xl md:leading-[20px]"
             >
-              일반 유저 전용 페이지
+              {t("forOnlyCustomer")}
             </Link>
           </div>
         </div>
@@ -62,16 +64,16 @@ export default function SignupDriver() {
                   htmlFor="name"
                   className="md:text-black-400 text-sm leading-6 font-normal text-gray-600 md:text-xl md:leading-8"
                 >
-                  이름
+                  {t("name")}
                 </label>
                 <TextField
                   id="name"
                   type="text"
-                  placeholder="성함을 입력해 주세요"
+                  placeholder={t("namePlaceholder")}
                   value={name}
                   onChange={setName}
                   className="w-full"
-                  error={name.length > 0 && !isNameValid ? "이름은 2~5자의 한글만 사용 가능합니다." : ""}
+                  error={name.length > 0 && !isNameValid ? t("isNameValid") : ""}
                   mdHeight="54"
                 />
               </div>
@@ -81,16 +83,16 @@ export default function SignupDriver() {
                   htmlFor="email"
                   className="md:text-black-400 text-sm leading-6 font-normal text-gray-600 md:text-xl md:leading-8"
                 >
-                  이메일
+                  {t("email")}
                 </label>
                 <TextField
                   id="email"
                   type="text"
-                  placeholder="이메일을 입력해 주세요"
+                  placeholder={t("emailPlaceholder")}
                   value={email}
                   onChange={setEmail}
                   className="w-full"
-                  error={email.length > 0 && !isEmailValid ? "유효하지 않은 이메일 형식입니다." : ""}
+                  error={email.length > 0 && !isEmailValid ? t("isNotEmailValid") : ""}
                   mdHeight="54"
                 />
               </div>
@@ -100,18 +102,16 @@ export default function SignupDriver() {
                   htmlFor="phone"
                   className="md:text-black-400 text-sm leading-6 font-normal text-gray-600 md:text-xl md:leading-8"
                 >
-                  전화번호
+                  {t("phone")}
                 </label>
                 <TextField
                   id="phone"
                   type="text"
-                  placeholder="숫자만 입력해주세요"
+                  placeholder={t("phonePlaceholder")}
                   value={phone}
                   onChange={setPhone}
                   className="w-full"
-                  error={
-                    phone.length > 0 && !isPhoneValid ? "유효하지 않은 전화번호 형식입니다. (예: 01012345678)" : ""
-                  }
+                  error={phone.length > 0 && !isPhoneValid ? t("isPhoneValid") : ""}
                   mdHeight="54"
                 />
               </div>
@@ -121,20 +121,16 @@ export default function SignupDriver() {
                   htmlFor="password"
                   className="md:text-black-400 text-sm leading-6 font-normal text-gray-600 md:text-xl md:leading-8"
                 >
-                  비밀번호
+                  {t("pwd")}
                 </label>
                 <TextField
                   id="password"
                   type="password"
-                  placeholder="비밀번호를 입력해 주세요"
+                  placeholder={t("pwdPlaceholder")}
                   value={password}
                   onChange={setPassword}
                   className="w-full"
-                  error={
-                    password.length > 0 && !isPasswordValid
-                      ? "비밀번호는 최소 8자 이상이며 영문, 숫자, 특수문자를 포함해야 합니다."
-                      : ""
-                  }
+                  error={password.length > 0 && !isPasswordValid ? t("isNotPasswordValid") : ""}
                   mdHeight="54"
                 />
               </div>
@@ -144,20 +140,16 @@ export default function SignupDriver() {
                   htmlFor="passwordConfirmation"
                   className="md:text-black-400 text-sm leading-6 font-normal text-gray-600 md:text-xl md:leading-8"
                 >
-                  비밀번호 확인
+                  {t("pwdConfirm")}
                 </label>
                 <TextField
                   id="passwordConfirmation"
                   type="password"
-                  placeholder="비밀번호를 다시 한번 입력해 주세요"
+                  placeholder={t("pwdConfirmPlaceholder")}
                   value={passwordConfirmation}
                   onChange={setPasswordConfirmation}
                   className="w-full"
-                  error={
-                    passwordConfirmation.length > 0 && !isPasswordConfirmationValid
-                      ? "비밀번호가 일치하지 않습니다."
-                      : ""
-                  }
+                  error={passwordConfirmation.length > 0 && !isPasswordConfirmationValid ? t("isPwdConfirmValid") : ""}
                   mdHeight="54"
                 />
               </div>
@@ -170,26 +162,26 @@ export default function SignupDriver() {
                 isFormValid ? "bg-orange-400 text-white" : "bg-gray-100 text-gray-50"
               }`}
             >
-              시작하기
+              {t("submit")}
             </button>
           </form>
 
           <div className="flex w-full items-center justify-center md:w-fit md:gap-2 md:self-center">
             <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-500 md:text-xl md:leading-8">
-              이미 무빙 회원이신가요?
+              {t("areYouMember")}
             </span>
             <Link
               href="/login/driver"
               className="ml-1 text-xs leading-[20px] font-semibold text-orange-400 underline md:ml-0 md:text-xl md:leading-[20px]"
             >
-              로그인
+              {t("login")}
             </Link>
           </div>
         </div>
 
-        <div className="flex h-[96px] w-[210px] flex-col items-center justify-center gap-[24px] self-center md:h-fit md:w-[280px] md:gap-[32px]">
+        <div className="flex h-[96px] w-[210px] flex-col items-center justify-center gap-[24px] self-center md:h-fit md:w-[290px] md:gap-[32px]">
           <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-500 md:text-xl md:leading-8">
-            SNS 계정으로 간편 가입하기
+            {t("signupWithSNS")}
           </span>
           <div className="flex h-[54px] w-full items-center justify-between md:h-[72px] md:w-fit md:justify-center md:gap-[32px]">
             <a
@@ -198,7 +190,7 @@ export default function SignupDriver() {
             >
               <Image
                 src="/assets/icons/ic_google.svg"
-                alt="Google 로그인"
+                alt={`Google ${t("login")}`}
                 width={54}
                 height={54}
                 className="md:h-[72px] md:w-[72px]"
@@ -210,7 +202,7 @@ export default function SignupDriver() {
             >
               <Image
                 src="/assets/icons/ic_kakao.svg"
-                alt="Kakao 로그인"
+                alt={`Kakao ${t("login")}`}
                 width={54}
                 height={54}
                 className="md:h-[72px] md:w-[72px]"
@@ -222,7 +214,7 @@ export default function SignupDriver() {
             >
               <Image
                 src="/assets/icons/ic_naver.svg"
-                alt="Naver 로그인"
+                alt={`Naver ${t("login")}`}
                 width={54}
                 height={54}
                 className="md:h-[72px] md:w-[72px]"
@@ -233,7 +225,7 @@ export default function SignupDriver() {
 
         <Image
           src="/assets/images/img_login_driver_avatar.png"
-          alt="로그인 아바타"
+          alt="LoginAvatar"
           width={240}
           height={246}
           className="absolute -right-[90px] -bottom-[60px] z-0 hidden md:block lg:hidden"
@@ -241,7 +233,7 @@ export default function SignupDriver() {
 
         <Image
           src="/assets/images/img_login_driver_avatar.png"
-          alt="로그인 아바타"
+          alt="LoginAvatar"
           width={382.03}
           height={392}
           className="absolute -right-80 -bottom-[50px] z-0 hidden lg:block"
