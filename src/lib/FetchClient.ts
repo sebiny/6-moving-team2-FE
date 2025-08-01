@@ -14,7 +14,7 @@ export const authUtils = {
       try {
         const tokenData = JSON.parse(atob(accessToken.split(".")[1]));
         const expiresIn = tokenData.exp - Math.floor(Date.now() / 1000);
-        document.cookie = `accessToken=${accessToken}; path=/; max-age=${expiresIn}; SameSite=Strict`;
+        document.cookie = `accessToken=${accessToken}; path=/; max-age=${expiresIn}; SameSite=lax; Secure`;
       } catch (e) {}
     }
   },
@@ -35,7 +35,7 @@ export const authUtils = {
   clearAccessToken: (): void => {
     if (typeof window !== "undefined") {
       try {
-        document.cookie = "accessToken=; path=/; max-age=0; SameSite=Strict";
+        document.cookie = "accessToken=; path=/; max-age=0; SameSite=lax; Secure";
       } catch (e) {}
     }
   },
