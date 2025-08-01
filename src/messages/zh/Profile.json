@@ -28,9 +28,11 @@
   "error": {
     "create": "个人资料创建失败。",
     "edit": "更新个人资料失败。",
-    "upload": "图片上传失败。请重试。",
-    "upload.general": "上传图片时发生错误。",
-    "upload.noUrl": "上传完成后未收到图片 URL。",
+    "upload": {
+      "fail": "图片上传失败。请重试。",
+      "general": "上传图片时发生错误。",
+      "noUrl": "图片上传成功，但未返回链接。"
+    },
     "service": "请至少选择一个服务类型。",
     "region": "请选择您所在的地区。",
     "password": {

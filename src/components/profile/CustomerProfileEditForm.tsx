@@ -80,7 +80,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
     });
 
     if (response?.imageUrl) return response.imageUrl;
-    throw new Error(t("error.upload"));
+    throw new Error(t("error.upload.fail"));
   };
 
   const handleImageChange = async (file: File | null, previewUrl: string | null) => {
@@ -92,7 +92,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
         const uploadedUrl = await uploadImageFile(file);
         setProfileImagePreview(uploadedUrl);
       } catch (error: any) {
-        setImageError(error.message || t("error.upload"));
+        setImageError(error.message || t("error.upload.fail"));
         setProfileImageFile(null);
         setProfileImagePreview(null);
       } finally {
