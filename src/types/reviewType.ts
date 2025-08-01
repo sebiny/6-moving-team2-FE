@@ -4,4 +4,5 @@ export interface ReviewType {
   rating: number;
   content: string;
   createdAt: Date;
+  email: string;
 }

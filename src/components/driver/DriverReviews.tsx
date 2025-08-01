@@ -17,7 +17,7 @@ interface ReviewsType {
 
 function DriverReviews({ driver }: ReviewsType) {
   const [page, setPage] = useState<number>(1);
-  const t = useTranslations("FindDriver");
+  const t = useTranslations("FindDriver.driverPage");
   const {
     data: reviews,
     isPending,
@@ -36,7 +36,7 @@ function DriverReviews({ driver }: ReviewsType) {
   const result = ReviewRatio(reviews!);
   return (
     <div className="mb-50">
-      <div className="text-black-400 text-xl font-semibold">{t("driverPage.review")}</div>
+      <div className="text-black-400 text-xl font-semibold">{t("review")}</div>
       {isPending || isFetching ? (
         <div className="mt-8 space-y-4">
           {[...Array(3)].map((_, i) => (
@@ -77,13 +77,13 @@ function DriverReviews({ driver }: ReviewsType) {
             ))}
           </div>
           <div className="mt-10 flex justify-center">
-            <Pagination currentPage={page} setCurrentPage={setPage} />
+            <Pagination currentPage={page} setCurrentPage={setPage} totalReviews={driver.reviewCount} />
           </div>
         </div>
       ) : (
         <div className="mt-8 flex flex-col items-center">
-          <p className="font-semibold">{t("driverPage.noReviews")}</p>
-          <p className="text-sm text-gray-400">{t("driverPage.noReviewsDesc")}</p>
+          <p className="font-semibold">{t("noReviews")}</p>
+          <p className="text-sm text-gray-400">{t("noReviewsDesc")}</p>
         </div>
       )}
     </div>
