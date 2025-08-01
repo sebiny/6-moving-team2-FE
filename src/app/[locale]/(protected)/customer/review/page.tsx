@@ -10,7 +10,6 @@ function Page() {
     <div>
       <Header type="review" selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} />
       <Main selectedIdx={selectedIdx} setSelectedIdx={setSelectedIdx} />
-      <Translator />
     </div>
   );
 }
