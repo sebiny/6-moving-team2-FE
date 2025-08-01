@@ -25,7 +25,8 @@
     "star": "점",
     "requestQuote": "지정 견적 요청하기",
     "requestingQuote": "지정 견적 요청 중...",
-    "requestQuoteComplete": "지정 견적 요청 완료"
+    "requestQuoteComplete": "지정 견적 요청 완료",
+    "reviewFetchFailed": "리뷰 데이터를 불러오지 못했습니다."
   },
   "requestQuote": {
     "title": "기사님에게",
