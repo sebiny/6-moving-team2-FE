@@ -32,6 +32,12 @@ function DriverDetailPage() {
   });
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
     if (driver?.isFavorite !== undefined) {
       setFavorite(driver.isFavorite);
     }
@@ -48,10 +54,7 @@ function DriverDetailPage() {
   if (!driver) return <div>기사님 정보를 불러올 수 없습니다</div>;
 
   const handleKakaoShare = () => {
-    if (window.Kakao) {
-      if (!window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
-      }
+    if (typeof window !== "undefined" && window.Kakao) {
       window.Kakao.Link.sendDefault({
         objectType: "feed",
         content: {
