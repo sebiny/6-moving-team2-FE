@@ -15,6 +15,7 @@ import { useParams } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { useTranslations } from "next-intl";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import { useKakaoShare } from "@/hooks/useKakaoShare";
 
 function DriverDetailPage() {
   const t = useTranslations("FindDriver");
@@ -24,18 +25,13 @@ function DriverDetailPage() {
   const [favorite, setFavorite] = useState<boolean>(false);
 
   const driverUrl = `https://www.moving-2.click/drivers/${driverId}`;
+  const shareToKakao = useKakaoShare();
 
   const { data: driver, isPending } = useQuery<DriverType | null>({
     queryKey: ["driver", driverId, user],
     queryFn: () =>
       user ? driverService.getDriverDetailCookie(driverId) : driverService.getDriverDetailDefault(driverId)
   });
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
-    }
-  }, []);
 
   useEffect(() => {
     if (driver?.isFavorite !== undefined) {
@@ -54,23 +50,18 @@ function DriverDetailPage() {
   if (!driver) return <div>기사님 정보를 불러올 수 없습니다</div>;
 
   const handleKakaoShare = () => {
-    if (typeof window !== "undefined" && window.Kakao) {
-      window.Kakao.Link.sendDefault({
-        objectType: "feed",
-        content: {
-          title: `${driver.nickname} 기사님`,
-          description: "무빙에서 이 기사님을 추천합니다!",
-          imageUrl: driver.profileImage ?? "/assets/images/img_profile.svg",
+    shareToKakao({
+      title: `${driver.nickname} 기사님`,
+      description: "무빙에서 이 기사님을 추천합니다!",
+      imageUrl: driver.profileImage ?? "/assets/images/img_profile.svg",
+      link: { mobileWebUrl: driverUrl, webUrl: driverUrl },
+      buttons: [
+        {
+          title: "기사님 보기",
           link: { mobileWebUrl: driverUrl, webUrl: driverUrl }
-        },
-        buttons: [
-          {
-            title: "기사님 보기",
-            link: { mobileWebUrl: driverUrl, webUrl: driverUrl }
-          }
-        ]
-      });
-    }
+        }
+      ]
+    });
   };
 
   return (

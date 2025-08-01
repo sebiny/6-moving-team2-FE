@@ -15,6 +15,7 @@ import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
 import { useEffect, useState } from "react";
 import AlertModal from "@/components/common-modal/AlertModal";
 import { useTranslations } from "next-intl";
+import { useKakaoShare } from "@/hooks/useKakaoShare";
 
 export default function PendingDetailPage() {
   const t = useTranslations("MyEstimates");
@@ -29,13 +30,8 @@ export default function PendingDetailPage() {
 
   const [showModal, setShowModal] = useState(false);
 
+  const shareToKakao = useKakaoShare();
   const estimateUrl = `https://www.moving-2.click/customer/my-estimates/estimate-pending/${id}`;
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
-    }
-  }, []);
 
   if (!data) {
     return <div className="mt-90 flex justify-center text-center">견적 데이터를 불러오는 중입니다...</div>;
@@ -57,31 +53,26 @@ export default function PendingDetailPage() {
   };
 
   const handleKakaoShare = () => {
-    if (typeof window !== "undefined" && window.Kakao) {
-      window.Kakao.Link.sendDefault({
-        objectType: "feed",
-        content: {
-          title: `견적서 - ${driver.name} 기사님`,
-          description: `가격: ${price.toLocaleString()}원\n이사 날짜: ${dayjs(moveDate).format(
-            "YYYY년 MM월 DD일"
-          )}\n출발: ${formatStreetAddress(fromAddress)}\n도착: ${formatStreetAddress(toAddress)}`,
-          imageUrl: driver.profileImage ?? "/assets/images/img_profile.svg",
+    shareToKakao({
+      title: `견적서 - ${driver.name} 기사님`,
+      description: `가격: ${price.toLocaleString()}원\n이사 날짜: ${dayjs(moveDate).format(
+        "YYYY년 MM월 DD일"
+      )}\n출발: ${formatStreetAddress(fromAddress)}\n도착: ${formatStreetAddress(toAddress)}`,
+      imageUrl: driver.profileImage ?? "/assets/images/img_profile.svg",
+      link: {
+        mobileWebUrl: estimateUrl,
+        webUrl: estimateUrl
+      },
+      buttons: [
+        {
+          title: "견적서 보기",
           link: {
             mobileWebUrl: estimateUrl,
             webUrl: estimateUrl
           }
-        },
-        buttons: [
-          {
-            title: "견적서 보기",
-            link: {
-              mobileWebUrl: estimateUrl,
-              webUrl: estimateUrl
-            }
-          }
-        ]
-      });
-    }
+        }
+      ]
+    });
   };
 
   return (
