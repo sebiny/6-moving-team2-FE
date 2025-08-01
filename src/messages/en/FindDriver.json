@@ -24,7 +24,8 @@
     "star": "Stars",
     "requestQuote": "Request a Quote",
     "requestingQuote": "Requesting a Quote",
-    "requestQuoteComplete": "Complete Quote"
+    "requestQuoteComplete": "Complete Quote",
+    "reviewFetchFailed": "Failed to load review data."
   },
   "requestQuote": {
     "title": "To the Driver",

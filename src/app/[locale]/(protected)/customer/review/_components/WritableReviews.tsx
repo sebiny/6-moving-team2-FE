@@ -65,12 +65,12 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
   //console.log("지정견적 있을까용?? ", reviewables[0].estimates[0].isDesignated);
 
   if (isLoading) {
-    return <LoadingLottie className="mt-10" text="작성 가능한 리뷰들을 불러오고 있어요!!" />;
+    return <LoadingLottie className="mt-30" text="작성 가능한 리뷰들을 불러오고 있어요!!" />;
   }
 
   if (isError || !reviewables || reviewables.length === 0) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <div className="mt-30 flex h-full items-center justify-center">
         <NoReview />
       </div>
     );
