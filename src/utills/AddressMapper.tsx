@@ -33,8 +33,8 @@ export function formatAddress(data: {
 
   return {
     postalCode: data.postalcode,
-    street: data.buildingName ? `${data.roadAddress} (${data.buildingName})` : data.roadAddress,
-    detail: "",
+    street: data.roadAddress,
+    detail: data.buildingName || "",
     region: regionMap[regionKo] || "SEOUL",
     district
   };

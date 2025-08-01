@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko"; // 한국어 로케일 파일 불러옴
+import "dayjs/locale/zh-cn"; // 중국어 간체
+import "dayjs/locale/zh-tw"; // 중국어 번체
 /*동적으로 불러와야함
 // import { useLocale } from "next-intl";
 
@@ -66,8 +68,23 @@ export const generateCalendarDates = (target: dayjs.Dayjs): CalendarDate[] => {
  */
 
 // notification에서 사용
-export function formatTimeFromNow(dateInput: string | Date): string {
-  // dayjs 객체를 생성하고 .fromNow() 메서드를 호출합니다.
+export function formatTimeFromNow(dateInput: string | Date, locale?: string): string {
+  // 로케일 설정
+  if (locale) {
+    const localeMap: { [key: string]: string } = {
+      ko: "ko",
+      KO: "ko",
+      zh: "zh-cn",
+      ZH: "zh-cn",
+      "zh-CN": "zh-cn",
+      "zh-TW": "zh-tw",
+      en: "en",
+      EN: "en"
+    };
+
+    const dayjsLocale = localeMap[locale] || "en";
+    dayjs.locale(dayjsLocale);
+  }
   return dayjs(dateInput).fromNow();
 }
 
