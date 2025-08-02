@@ -14,6 +14,7 @@ interface Props {
 
 export default function ReviewModal({ setIsModal }: Props) {
   const t = useTranslations("Review");
+  const tm = useTranslations("ToastModal.review");
   const [isValid, setIsValid] = useState(false);
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
@@ -28,9 +29,9 @@ export default function ReviewModal({ setIsModal }: Props) {
         rating,
         content
       });
-      ToastModal("리뷰가 등록되었습니다.");
+      ToastModal(tm("reviewRegistered"));
     } catch (error) {
-      ToastModal("리뷰 등록에 실패했습니다.");
+      ToastModal(tm("failedToRegisterReview"));
     }
   };
 

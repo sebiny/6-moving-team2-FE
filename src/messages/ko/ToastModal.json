@@ -1,0 +1,23 @@
+{
+  "shareDriver": {
+    "isCopyLinkTrue": "링크가 복사되었어요",
+    "isCopyLinkFalse": "링크 복사에 실패했어요"
+  },
+  "receivedRequest": {
+    "sentEstimate": "견적이 성공적으로 전송되었습니다.",
+    "alreadySentEstimate": "이미 이 요청에 대해 견적을 보내셨습니다.",
+    "failedToSendEstimate": "견적 전송에 실패했습니다.",
+    "estimateRejected": "견적 요청이 반려되었습니다.",
+    "alreadyRejectedEstimate": "이미 반려한 견적 요청입니다.",
+    "failedToRejectEstimate": "견적 요청 반려에 실패했습니다.",
+    "noRequestReceived": "아직 받은 요청이 없어요!"
+  },
+  "review": {
+    "reviewRegistered": "리뷰가 등록되었습니다.",
+    "failedToRegisterReview": "리뷰 등록에 실패했습니다."
+  },
+  "favoriteDrivers": {
+    "deletedSuccessfully": "삭제되었습니다",
+    "failedToDelete": "삭제 중 오류가 발생했습니다."
+  }
+}

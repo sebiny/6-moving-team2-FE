@@ -42,6 +42,7 @@ export default function ReceivedRequestsPage() {
   const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
 
   const t = useTranslations("ReceivedReq");
+  const tm = useTranslations("ToastModal.receivedRequest");
 
   // React Query로 데이터 가져오기
   const {
@@ -139,7 +140,7 @@ export default function ReceivedRequestsPage() {
         price,
         message: comment
       });
-      ToastModal("견적이 성공적으로 전송되었습니다.");
+      ToastModal(tm("sentEstimate"));
       handleCloseModal();
       // React Query로 데이터 새로고침
       queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
@@ -148,9 +149,9 @@ export default function ReceivedRequestsPage() {
 
       // 409 Conflict 에러인 경우 (이미 견적을 보낸 경우)
       if (err instanceof Error && err.message.includes("이미 견적을 보냈습니다")) {
-        ToastModal("이미 이 요청에 대해 견적을 보내셨습니다.");
+        ToastModal(tm("alreadySentEstimate"));
       } else {
-        ToastModal("견적 전송에 실패했습니다.");
+        ToastModal(tm("failedToSendEstimate"));
       }
     }
   };
@@ -173,7 +174,7 @@ export default function ReceivedRequestsPage() {
       await driverService.rejectEstimateRequest(estimateRequestId, {
         reason
       });
-      ToastModal("견적 요청이 반려되었습니다.");
+      ToastModal(tm("estimateRejected"));
       handleCloseRejectModal();
       // React Query로 데이터 새로고침
       queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
@@ -182,9 +183,9 @@ export default function ReceivedRequestsPage() {
 
       // 견적이 존재하지 않는 경우
       if (err instanceof Error && err.message.includes("이미 반려한 견적 요청입니다")) {
-        ToastModal("이미 반려한 견적 요청입니다.");
+        ToastModal(tm("alreadyRejectedEstimate"));
       } else {
-        ToastModal("견적 요청 반려에 실패했습니다.");
+        ToastModal(tm("failedToRejectEstimate"));
       }
     }
   };
@@ -220,7 +221,7 @@ export default function ReceivedRequestsPage() {
                 className="absolute top-0 left-0 h-full w-full object-contain opacity-50"
               />
             </div>
-            <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">아직 받은 요청이 없어요!</p>
+            <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tm("noRequestReceived")}</p>
           </div>
         </div>
       );
