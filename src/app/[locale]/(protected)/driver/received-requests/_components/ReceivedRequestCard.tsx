@@ -1,10 +1,13 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import Image from "next/image";
 import Button from "@/components/Button";
 import EstimateButton from "@/components/button/EstimateButton";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { translateWithDeepL } from "@/utills/translateWithDeepL";
 
 interface ReceivedRequestCardProps {
   request: Request;
@@ -13,7 +16,22 @@ interface ReceivedRequestCardProps {
 }
 
 export default function ReceivedRequestCard({ request, onSendEstimate, onRejectEstimate }: ReceivedRequestCardProps) {
+  const [translatedCreatedAt, setTranslatedCreatedAt] = useState<string | null>(null);
+  const locale = useLocale();
   const t = useTranslations("ReceivedReq");
+
+  (useEffect(() => {
+    const translate = async () => {
+      try {
+        const translated = await translateWithDeepL(request.createdAt, locale.toUpperCase());
+        setTranslatedCreatedAt(translated);
+      } catch {
+        setTranslatedCreatedAt(request.createdAt); //fallback
+      }
+    };
+    translate();
+  }),
+    [request.createdAt, locale]);
 
   return (
     <div className="inline-flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.20)] outline outline-offset-[-0.5px] outline-zinc-100 md:w-full md:gap-8 md:px-10 md:py-8">
@@ -24,7 +42,7 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
             <ChipRectangle moveType={request.moveType} size="sm" />
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
-          <div className="text-sm text-zinc-500">{request.createdAt}</div>
+          <div className="text-sm text-zinc-500">{translatedCreatedAt}</div>
         </div>
         {/* 고객명 */}
         <div className="flex w-full flex-col gap-3">
