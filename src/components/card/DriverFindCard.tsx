@@ -4,9 +4,10 @@ import LikeIcon from "@/components/icon/LikeIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { DriverType } from "@/types/driverType";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomCheckbox from "../button/CustomCheckbox";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 interface DriverFindCardType {
   driver: DriverType;
@@ -17,6 +18,8 @@ interface DriverFindCardType {
 
 function DriverFindCard({ driver, isFavoritePage = false, checked = false, onCheckChange }: DriverFindCardType) {
   const t = useTranslations("FindDriver.driverFindCard");
+  const locale = useLocale();
+  const [translatedIntro, setTranslatedIntro] = useState({ short: "", detail: "" });
   const router = useRouter();
 
   const handleClick = () => {
@@ -24,6 +27,36 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
     router.push(`/drivers/${driver.id}`);
   };
 
+  useEffect(() => {
+    const translateTexts = async () => {
+      if (!driver?.shortIntro && !driver.detailIntro) return;
+      // 한국어면 번역 생략
+      if (locale === "ko") {
+        setTranslatedIntro({
+          short: driver.shortIntro ?? "",
+          detail: driver.detailIntro ?? ""
+        });
+        return;
+      }
+      try {
+        const result = await batchTranslate(
+          {
+            short: driver.shortIntro ?? "",
+            detail: driver.detailIntro ?? ""
+          },
+          locale
+        );
+        setTranslatedIntro({
+          short: result.short,
+          detail: result.detail
+        });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+
+    translateTexts();
+  }, [driver, locale]);
   return (
     <div className="border-line-100 relative rounded-2xl border bg-white p-5 shadow-sm" onClick={handleClick}>
       {/* 체크박스 (우측 상단) */}
@@ -56,8 +89,8 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
           className="hidden object-cover md:block"
         />
         <div className="w-full">
-          <p className="text-black-300 text-xl font-semibold">{driver.shortIntro}</p>
-          <p className="mt-2 text-sm text-gray-500">{driver.detailIntro}</p>
+          <p className="text-black-300 text-xl font-semibold">{translatedIntro.short}</p>
+          <p className="mt-2 text-sm text-gray-500">{translatedIntro.detail}</p>
           <div className="border-line-100 mt-4 border-b md:hidden"></div>
           <div className="relative mt-5">
             <div className="flex gap-2">

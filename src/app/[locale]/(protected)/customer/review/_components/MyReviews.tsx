@@ -39,7 +39,8 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   //리액트쿼리로 리뷰 불러오기
   const { data, isLoading, isError } = useQuery<ReviewListResponse>({
     queryKey: ["reviews", page],
-    queryFn: () => getMyReviews(page)
+    queryFn: () => getMyReviews(page),
+    staleTime: 1000 * 60 * 5
   });
   const totalCount = data?.totalCount ?? 0;
   const reviews = data?.reviews ?? [];

@@ -8,6 +8,7 @@ import Button from "@/components/Button";
 import EstimateButton from "@/components/button/EstimateButton";
 import { useLocale, useTranslations } from "next-intl";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 interface ReceivedRequestCardProps {
   request: Request;
@@ -19,6 +20,39 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
   const [translatedCreatedAt, setTranslatedCreatedAt] = useState<string | null>(null);
   const locale = useLocale();
   const t = useTranslations("ReceivedReq");
+  const [translatedInfo, setTransaltedInfo] = useState({ from: "", to: "", date: "" });
+
+  useEffect(() => {
+    const translatedTexts = async () => {
+      if (!request) return;
+      if (locale === "ko") {
+        setTransaltedInfo({
+          from: request.fromAddress,
+          to: request.toAddress,
+          date: request.moveDate
+        });
+        return;
+      }
+      try {
+        const result = await batchTranslate(
+          {
+            from: request.fromAddress ?? "",
+            to: request.toAddress ?? "",
+            date: request.moveDate ?? ""
+          },
+          locale
+        );
+        setTransaltedInfo({
+          from: result.from,
+          to: result.to,
+          date: result.date
+        });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+    translatedTexts();
+  }, [request, locale]);
 
   (useEffect(() => {
     const translate = async () => {
@@ -58,7 +92,7 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
             <div className="flex flex-col">
               <div className="text-sm text-zinc-500">{t("from")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {request.fromAddress}
+                {translatedInfo.from}
               </div>
             </div>
             <div className="relative h-5 w-4 flex-shrink-0">
@@ -67,13 +101,13 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
             <div className="flex flex-col">
               <div className="text-sm text-zinc-500">{t("to")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {request.toAddress}
+                {translatedInfo.to}
               </div>
             </div>
           </div>
           <div className="flex flex-col">
             <div className="text-sm text-zinc-500">{t("moveDate")}</div>
-            <div className="text-base font-semibold text-neutral-900">{request.moveDate}</div>
+            <div className="text-base font-semibold text-neutral-900">{translatedInfo.date}</div>
           </div>
         </div>
       </div>

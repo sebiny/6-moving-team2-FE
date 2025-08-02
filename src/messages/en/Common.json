@@ -3,6 +3,9 @@
   "customer": "customer",
   "loading": "Loading...",
 
+  "won": "won",
+  "noCost": "No estimate cost",
+
   "writableLoading": "Loading the reviews you can write...",
   "noReview": "No reviews to write.",
   "myReviewLoading": "Loading your written reviews...",
@@ -14,9 +17,25 @@
   "noRequest": "You haven't received any quotes yet.",
   "confirmReq": "Please confirm the quote!",
 
+  "noSentReq": "No sent requests yet!",
+  "noReject": "No rejected requests yet!",
+  "failedReq": "Failed to load estimate.",
+  "failedRejReq": "Failed to load rejected estimate.",
+
   "driverIsChecking": "Drivers are checking you Request!",
   "quoteWillSoon": "Your quote will arrive soon!",
 
   "pendingCardMsg": "The quote has been confirmed!",
-  "pendingCardBtn": "View your confirmed quotes"
+  "pendingCardBtn": "View your confirmed quotes",
+
+  "noLiked": "No liked drivers yet!",
+  "GotoLike": "Go like a driver",
+
+  "delete": "Delete",
+  "confirm": "Confirm",
+
+  "selectToDelete": "Please select drivers to delete.",
+  "confirmDelete": "Are you sure you want to delete?",
+  "deleted": "Deleted successfully.",
+  "deleteError": "An error occurred while deleting."
 }

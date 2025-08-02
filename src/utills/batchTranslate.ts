@@ -5,6 +5,7 @@ export async function batchTranslate<T extends Record<string, string>>(texts: T,
     Object.entries(texts).map(async ([key, value]) => {
       try {
         const translated = await translateWithDeepL(value, locale.toUpperCase());
+        //DeepL API가 target_lang 파라미터에 대문자 언어 코드를 요구
         return [key, translated];
       } catch (e) {
         console.warn(`번역 실패: ${key}`, e);
