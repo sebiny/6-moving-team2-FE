@@ -42,7 +42,7 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
   const { user, isLoading } = useAuth();
   const queryClient = useQueryClient();
 
-  const t = useTranslations("Gnb");
+  const t = useTranslations("Notification");
 
   // '읽음 상태' 스냅샷을 위한 새로운 state 추가
   const [initialReadIds, setInitialReadIds] = useState<Set<string>>(new Set());
@@ -249,13 +249,27 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
 
   return (
     <div className={`${className} relative z-50 flex`} ref={ref}>
-      <button onClick={onClick} className="relative cursor-pointer">
+      <button
+        onClick={onClick}
+        className="relative cursor-pointer"
+        aria-label={hasUnread ? t("hasUnread") : t("notification")}
+        aria-expanded={isOpen}
+        aria-haspopup="dialog"
+        aria-describedby={hasUnread ? "notification-badge" : undefined}
+      >
         <div className="flax-col relative flex">
-          <Image src={iconNotification} alt="알림" height={24} width={24} className="opacity-50" />
+          <Image src={iconNotification} alt="알림" height={24} width={24} className="opacity-50" aria-hidden="true" />
           {hasUnread && (
-            <span className="absolute top-0.5 right-0.5 flex size-2 cursor-pointer">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-300 opacity-75"></span>
-              <span className="relative inline-flex size-2 rounded-full bg-orange-400"></span>
+            <span
+              id="notification-badge"
+              className="absolute top-0.5 right-0.5 flex size-2 cursor-pointer"
+              aria-label={t("hasUnreadList")}
+              role="status"
+            >
+              <span className="absolute top-[0.5px] right-[1px] flex size-2 cursor-pointer">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-300 opacity-75"></span>
+                <span className="relative inline-flex size-2 rounded-full bg-orange-400"></span>
+              </span>
             </span>
           )}
         </div>
@@ -263,16 +277,25 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
 
       {/* 알림 레이어 */}
       {isOpen && (
-        <section className="border-line-200 absolute top-8 z-99 flex h-78 w-78 -translate-x-48 flex-col rounded-3xl border bg-gray-50 p-4 shadow-gray-300 lg:top-10 2xl:-translate-x-1/10">
+        <section
+          className="border-line-200 absolute top-8 z-99 flex h-78 w-78 -translate-x-48 flex-col rounded-3xl border bg-gray-50 p-4 shadow-gray-300 lg:top-10 2xl:-translate-x-1/10"
+          aria-labelledby="notification-title"
+          aria-modal="false"
+          aria-live="polite"
+        >
           <header className="flex items-center justify-between px-3 py-[10px]">
-            <span className="text-black-300 text-base font-bold">{t("notification")}</span>
-            <button className="cursor-pointer" onClick={onClick}>
-              <Image src={ImgXBtn} alt="닫는버튼" width={24} height={24} />
+            <span className="text-black-300 text-base font-bold" id="notification-title">
+              {t("notification")}
+            </span>
+            <button className="cursor-pointer" onClick={onClick} aria-label={t("closeNotificationLayer")}>
+              <Image src={ImgXBtn} alt={t("buttonClose")} width={24} height={24} />
             </button>
           </header>
-          <ul className="overflow-y-auto scroll-smooth">
+          <ul className="overflow-y-auto scroll-smooth" role="list" aria-label={t("notificationList")}>
             {notifications.length === 0 ? (
-              <li className="p-4 text-center text-gray-400">알림이 없습니다.</li>
+              <li className="p-4 text-center text-gray-400" role="status" aria-live="polite">
+                t("hasNotUnread")
+              </li>
             ) : (
               notifications.map((item) => (
                 <NotificationItem
@@ -280,6 +303,8 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
                   item={item}
                   onVisible={handleMarkAsRead}
                   isInitiallyRead={initialReadIds.has(item.id)}
+                  role="listitem"
+                  aria-describedby={`notification-${item.id}`}
                 />
               ))
             )}
