@@ -30,7 +30,7 @@ export default function PendingEstimates() {
     if (!estimateRequest) return;
 
     const translate = async () => {
-      // 견적 요청 건 데이터 연결 후 번역
+      // 견적 요청 건 데이터 매핑 후 번역 요청
       const textMap = {
         label: getMoveTypeLabel(estimateRequest.moveType),
         requestDate: dayjs(estimateRequest.requestDate).format("YYYY년 M월 D일"),

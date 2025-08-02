@@ -7,6 +7,7 @@ import parse from "html-react-parser";
 import { useLocale } from "next-intl";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
 import { NotificationItemSkeleton } from "./NotificationItemSkeleton";
+import { NotifyEventType } from "@tanstack/react-query";
 
 interface NotificationItemProps {
   item: NotificationData;
@@ -14,12 +15,14 @@ interface NotificationItemProps {
   isInitiallyRead: boolean;
   role?: string; // ARIA role prop 추가
   "aria-describedby"?: string; // aria 속성도 함께 정의
+  type?: NotifyEventType;
 }
 
 export default function NotificationItem({
   item,
   onVisible,
   isInitiallyRead,
+  type,
   role = "listitem",
   "aria-describedby": ariaDescribedBy
 }: NotificationItemProps) {
@@ -80,12 +83,34 @@ export default function NotificationItem({
 
       setIsTranslating(true);
 
-      const updatedMeta: typeof translatedMeta = {};
-
       try {
-        const { message } = item;
+        let { message } = item;
+        let translatedMessage: any;
 
-        const translatedMessage = await translateWithDeepL(message, locale.toUpperCase());
+        // WELCOME 타입인 경우 특별 처리
+        if (item.type?.toString() === "WELCOME") {
+          // <span> 태그와 그 내용을 임시로 플레이스홀더로 교체
+          const spanRegex = /<span[^>]*>(.*?)<\/span>/g;
+          const spanMatches: string[] = [];
+
+          // span 태그들을 찾아서 저장하고 플레이스홀더로 교체
+          const messageForTranslation = message.replace(spanRegex, (match) => {
+            const index = spanMatches.length;
+            spanMatches.push(match);
+            return `__SPAN_PLACEHOLDER_${index}__`;
+          });
+
+          // span이 제거된 텍스트만 번역
+          translatedMessage = await translateWithDeepL(messageForTranslation, locale.toUpperCase());
+
+          // 번역된 텍스트에 원래 span 태그들을 다시 삽입
+          spanMatches.forEach((spanContent, index) => {
+            translatedMessage = translatedMessage.replace(`__SPAN_PLACEHOLDER_${index}__`, spanContent);
+          });
+        } else {
+          // 일반 알림은 전체 번역
+          translatedMessage = await translateWithDeepL(message, locale.toUpperCase());
+        }
 
         // 번역 결과를 state에 저장
         setTranslatedMeta((prev) => ({

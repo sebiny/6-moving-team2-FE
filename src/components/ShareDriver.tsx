@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { ToastModal } from "./common-modal/ToastModal";
+import { useTranslations } from "next-intl";
 
 interface ShareDriverType {
   text: string;
@@ -11,12 +12,13 @@ interface ShareDriverType {
 }
 
 function ShareDriver({ text, onKakaoShare }: ShareDriverType) {
+  const tm = useTranslations("ToastModal");
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      ToastModal("링크가 복사되었어요");
+      ToastModal(tm("shareDriver.isCopyLinkTrue"));
     } catch (err) {
-      ToastModal("링크 복사에 실패했어요");
+      ToastModal(tm("shareDriver.isCopyLinkFalse"));
     }
   };
 
