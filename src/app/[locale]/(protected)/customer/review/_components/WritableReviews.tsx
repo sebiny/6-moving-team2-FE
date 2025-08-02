@@ -30,7 +30,8 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
 
   const { data, isLoading, isError } = useQuery<ReviewListResponse>({
     queryKey: ["reviewable", page],
-    queryFn: () => getWritableReviews(page)
+    queryFn: () => getWritableReviews(page),
+    staleTime: 1000 * 60 * 5
   });
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];

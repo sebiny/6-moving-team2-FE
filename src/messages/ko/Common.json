@@ -3,6 +3,9 @@
   "customer": "고객님",
   "loading": "불러오는 중입니다...",
 
+  "won": "원",
+  "noCost": "견적 금액 없음",
+
   "writableLoading": "작성 가능한 리뷰들을 불러오고 있어요!!",
   "noReview": "작성 가능한 리뷰가 없어요!",
   "myReviewLoading": "내가 작성한 리뷰들을 불러오고 있어요!!",
@@ -14,9 +17,25 @@
   "noRequest": "아직 받은 견적이 없어요",
   "confirmReq": "견적을 확정해 주세요!",
 
+  "noSentReq": "아직 보낸 견적이 없어요!",
+  "noReject": "아직 거절된 견적이 없어요!",
+  "failedReq": "견적 조회에 실패했습니다.",
+  "failedRejReq": "거절된 견적 조회에 실패했습니다.",
+
   "driverIsChecking": "기사님들이 열심히 확인 중이에요",
   "quoteWillSoon": "곧 견적이 도착할 거예요!",
 
   "pendingCardMsg": "견적이 확정되었습니다!",
-  "pendingCardBtn": "받았던 견적 보러가기"
+  "pendingCardBtn": "받았던 견적 보러가기",
+
+  "noLiked": "찜한 기사님이 없어요!",
+  "GotoLike": "기사님 찜하러 가기",
+
+  "delete": "삭제",
+  "confirm": "확인",
+
+  "selectToDelete": "삭제할 기사님을 선택해주세요.",
+  "confirmDelete": "정말 삭제하시겠습니까?",
+  "deleted": "삭제되었습니다.",
+  "deleteError": "삭제 중 오류가 발생했습니다."
 }

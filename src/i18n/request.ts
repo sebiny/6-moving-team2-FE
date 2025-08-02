@@ -24,7 +24,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
     DriverMypage: (await import(`../messages/${locale}/DriverMypage.json`)).default,
     MyEstimate: (await import(`../messages/${locale}/MyEstimate.json`)).default,
 
-    // 로그인, 회원가입
     Login: (await import(`../messages/${locale}/Login.json`)).default,
     Signup: (await import(`../messages/${locale}/Signup.json`)).default,
 
