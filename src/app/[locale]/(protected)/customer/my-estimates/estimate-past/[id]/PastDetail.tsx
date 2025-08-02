@@ -36,11 +36,11 @@ export default function PastDetailPage() {
 
   const handleKakaoShare = () => {
     shareToKakao({
-      title: `견적서 - ${driver.name} 기사님`,
-      description: `가격: ${price.toLocaleString()}원\n이사 날짜: ${dayjs(moveDate).format(
-        "YYYY년 MM월 DD일"
-      )}\n출발: ${formatStreetAddress(fromAddress)}\n도착: ${formatStreetAddress(toAddress)}`,
-      imageUrl: driver.profileImage ?? "/assets/images/img_profile.svg",
+      title: `${driver.name} 기사님의 견적서`,
+      description: `가격: ${price.toLocaleString()}원`,
+      imageUrl: driver.profileImage
+        ? `https://www.moving-2.click${driver.profileImage}`
+        : "https://www.moving-2.click/assets/images/img_profile.svg",
       link: {
         mobileWebUrl: estimateUrl,
         webUrl: estimateUrl
