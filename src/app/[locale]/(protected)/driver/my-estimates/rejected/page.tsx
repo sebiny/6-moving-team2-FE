@@ -8,10 +8,12 @@ import RejectedCardList from "./_components/RejectedCardList";
 import { driverService } from "@/lib/api/api-driver";
 import { mapBackendRejectedRequestToFrontend } from "@/utills/RequestMapper";
 import { BackendRequest } from "@/types/request";
+import { useTranslations } from "next-intl";
 
 export default function RejectedEstimatesPage() {
   const router = useRouter();
   const pathname = usePathname();
+  const tC = useTranslations("Common");
 
   // 현재 URL에 따라 selectedIdx 초기값 설정
   const currentTab = pathname.split("/").pop(); // 'sent' or 'rejected'
@@ -39,15 +41,11 @@ export default function RejectedEstimatesPage() {
   ).map(mapBackendRejectedRequestToFrontend);
 
   const renderContent = () => {
-    if (isPending) return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">로딩 중...</p>;
-    if (error)
-      return (
-        <p className="text-center text-base font-normal text-red-400 lg:text-xl">거절된 견적 조회에 실패했습니다.</p>
-      );
+    if (isPending)
+      return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("loading")}</p>;
+    if (error) return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{tC("failedRejReq")}</p>;
     if (estimates.length === 0)
-      return (
-        <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">아직 거절된 견적이 없어요!</p>
-      );
+      return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("noReject")}</p>;
     return <RejectedCardList requests={estimates} />;
   };
 

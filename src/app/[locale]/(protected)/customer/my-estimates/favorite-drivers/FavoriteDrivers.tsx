@@ -15,6 +15,7 @@ import Button from "@/components/Button";
 
 export default function FavoriteDrivers() {
   const t = useTranslations("Gnb");
+  const tC = useTranslations("Common");
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -63,19 +64,19 @@ export default function FavoriteDrivers() {
     const selectedIds = selectedDrivers.map((driver) => driver.id);
 
     if (selectedIds.length === 0) {
-      setAlertMessage("삭제할 기사님을 선택해주세요.");
+      setAlertMessage(tC("selectToDelete"));
       setOnConfirmDelete(() => null); // 확인 시 별도 동작 없음
       setShowAlert(true);
       return;
     }
 
-    setAlertMessage("정말 삭제하시겠습니까?");
+    setAlertMessage(tC("confirmDelete"));
     setOnConfirmDelete(() => async () => {
       try {
         await Promise.all(selectedIds.map((id) => deleteFavoriteMutation.mutateAsync(id)));
-        ToastModal("삭제되었습니다.");
+        ToastModal(tC("deleted"));
       } catch (error) {
-        ToastModal("삭제 중 오류가 발생했습니다.");
+        ToastModal(tC("deleteError"));
       } finally {
         setShowAlert(false);
       }
@@ -104,9 +105,9 @@ export default function FavoriteDrivers() {
               height={250}
               className="object-contain"
             />
-            <p className="text-lg font-medium text-gray-600">찜한 기사님이 없어요!</p>
+            <p className="text-lg font-medium text-gray-600">{tC("noLiked")}</p>
             <div className="w-60">
-              <Button type="orange" text="기사님 찜하러 가기" onClick={() => router.push("/drivers")} />
+              <Button type="orange" text={tC("GotoLike")} onClick={() => router.push("/drivers")} />
             </div>
           </div>
         ) : (
@@ -141,7 +142,7 @@ export default function FavoriteDrivers() {
         <AlertModal
           type={onConfirmDelete ? "handleClick" : "confirm"}
           message={alertMessage}
-          buttonText={onConfirmDelete ? "삭제" : "확인"}
+          buttonText={onConfirmDelete ? tC("delete") : tC("confirm")}
           onClose={() => setShowAlert(false)}
           onConfirm={onConfirmDelete || (() => setShowAlert(false))}
         />

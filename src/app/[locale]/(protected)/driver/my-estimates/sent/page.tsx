@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
@@ -9,11 +9,16 @@ import { driverService } from "@/lib/api/api-driver";
 import { DriverEstimateType } from "@/types/estimateType";
 import { MoveType } from "@/constant/moveTypes";
 import { formatDate, formatTimeAgo, formatAddress } from "@/utills/RequestMapper";
+import { useLocale, useTranslations } from "next-intl";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 export default function SentEstimatesPage() {
   const router = useRouter();
-  const pathname = usePathname();
+  const locale = useLocale();
+  const [translatedTexts, setTranslatedTexts] = useState<Record<string, string>>({});
 
+  const pathname = usePathname();
+  const tC = useTranslations();
   // 현재 URL에 따라 selectedIdx 초기값 설정
   const currentTab = pathname.split("/").pop(); // 'sent' or 'rejected'
   const [selectedIdx, setSelectedIdx] = useState(currentTab ?? "sent");
@@ -33,28 +38,56 @@ export default function SentEstimatesPage() {
     setSelectedIdx(idx);
     router.push(`/driver/my-estimates/${idx}`);
   };
+  //동적번역 요청
+  useEffect(() => {
+    if (!backendEstimates || backendEstimates.length === 0) return;
+
+    const translateTexts = async () => {
+      const textsToTranslate: Record<string, string> = {};
+      //estimates로 저장되는거라 키값이 따로 필요함
+      backendEstimates.forEach((estimate, idx) => {
+        const prefix = `estimate_${idx}`;
+        textsToTranslate[`${prefix}_from`] = formatAddress(estimate.estimateRequest.fromAddress);
+        textsToTranslate[`${prefix}_to`] = formatAddress(estimate.estimateRequest.toAddress);
+        textsToTranslate[`${prefix}_date`] = formatDate(estimate.estimateRequest.moveDate);
+      });
+
+      try {
+        const result = await batchTranslate(textsToTranslate, locale);
+        setTranslatedTexts(result);
+      } catch (e) {
+        console.warn("번역 실패", e);
+        setTranslatedTexts(textsToTranslate); // fallback
+      }
+    };
+
+    translateTexts();
+  }, [backendEstimates, locale]);
 
   // 백엔드 데이터를 프론트엔드 형식으로 변환
-  const estimates = (backendEstimates || []).map((estimate: DriverEstimateType) => ({
-    id: estimate.id,
-    moveType: estimate.estimateRequest.moveType as MoveType,
-    isDesignated: estimate.isDesignated,
-    isCompleted: estimate.isCompleted,
-    customerName: estimate.customerName,
-    fromAddress: formatAddress(estimate.estimateRequest.fromAddress),
-    toAddress: formatAddress(estimate.estimateRequest.toAddress),
-    moveDate: formatDate(estimate.estimateRequest.moveDate),
-    estimateAmount: estimate.price ? `${estimate.price.toLocaleString()}원` : "견적 금액 없음",
-    status: estimate.status === "PROPOSED" ? "pending" : estimate.status === "ACCEPTED" ? "confirmed" : "rejected",
-    createdAt: formatTimeAgo(estimate.createdAt)
-  }));
+  const estimates = (backendEstimates || []).map((estimate: DriverEstimateType, idx) => {
+    const prefix = `estimate_${idx}`;
+    return {
+      id: estimate.id,
+      moveType: estimate.estimateRequest.moveType as MoveType,
+      isDesignated: estimate.isDesignated,
+      isCompleted: estimate.isCompleted,
+      customerName: estimate.customerName,
+      fromAddress: translatedTexts[`${prefix}_from`] || formatAddress(estimate.estimateRequest.fromAddress),
+      toAddress: translatedTexts[`${prefix}_to`] || formatAddress(estimate.estimateRequest.toAddress),
+      moveDate: translatedTexts[`${prefix}_date`] || formatDate(estimate.estimateRequest.moveDate),
+      estimateAmount: estimate.price ? `${estimate.price.toLocaleString()} ${tC("won")}` : tC("noCost"),
+      status: estimate.status === "PROPOSED" ? "pending" : estimate.status === "ACCEPTED" ? "confirmed" : "rejected",
+      createdAt: formatTimeAgo(estimate.createdAt)
+    };
+  });
 
   const renderContent = () => {
-    if (isPending) return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">로딩 중...</p>;
-    if (error)
-      return <p className="text-center text-base font-normal text-red-400 lg:text-xl">견적 조회에 실패했습니다.</p>;
+    if (isPending)
+      return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("loading")}</p>;
+    if (error) return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{}</p>;
     if (estimates.length === 0)
-      return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">아직 보낸 견적이 없어요!</p>;
+      return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("noSentReq")}</p>;
     return <EstimateCardList requests={estimates} />;
   };
 
