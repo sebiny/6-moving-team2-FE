@@ -75,11 +75,8 @@ export default function EstimateDetailPage() {
 
   const handleKakaoShare = () => {
     shareToKakao({
-      title: `보낸 견적서 - ${customerName}님`,
-      description: `가격: ${price?.toLocaleString()}원\n이사 날짜: ${formatDateTime(
-        moveDate
-      )}\n출발: ${fromAddress.street}\n도착: ${toAddress.street}`,
-      imageUrl: "/assets/images/img_profile.svg",
+      title: `${customerName} 고객님 견적서`,
+      description: `가격: ${price?.toLocaleString()}원`,
       link: {
         mobileWebUrl: estimateUrl,
         webUrl: estimateUrl
