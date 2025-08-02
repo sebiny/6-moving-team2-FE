@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
 import { CompletedEstimateCardType } from "@/types/estimateType";
@@ -7,7 +7,8 @@ import Image from "next/image";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 interface CompletedEstimateCardProps {
   request: CompletedEstimateCardType;
@@ -16,7 +17,41 @@ interface CompletedEstimateCardProps {
 export default function CompletedEstimateCard({ request }: CompletedEstimateCardProps) {
   const router = useRouter();
   const t = useTranslations("MyEstimate");
+  const locale = useLocale();
+  const [translatedInfo, setTransaltedInfo] = useState({ from: "", to: "", date: "" });
   const moveTypeKey: MoveType = moveTypeFromKorean[request.moveType] ?? "SMALL";
+
+  useEffect(() => {
+    const translatedTexts = async () => {
+      if (!request) return;
+      if (locale === "ko") {
+        setTransaltedInfo({
+          from: request.fromAddress,
+          to: request.toAddress,
+          date: request.moveDate
+        });
+        return;
+      }
+      try {
+        const result = await batchTranslate(
+          {
+            from: request.fromAddress ?? "",
+            to: request.toAddress ?? "",
+            date: request.moveDate ?? ""
+          },
+          locale
+        );
+        setTransaltedInfo({
+          from: result.from,
+          to: result.to,
+          date: result.date
+        });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+    translatedTexts();
+  }, [request, locale]);
 
   return (
     <div className="relative inline-flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.20)] outline-[0.5px] outline-offset-[-0.5px] outline-zinc-100 md:w-[588px] md:gap-8 md:px-10 md:py-8">
@@ -43,7 +78,7 @@ export default function CompletedEstimateCard({ request }: CompletedEstimateCard
             <div className="flex flex-col">
               <div className="text-sm font-normal text-zinc-500">{t("to")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {request.fromAddress}
+                {translatedInfo.from}
               </div>
             </div>
             <div className="relative h-5 w-4 flex-shrink-0">
@@ -52,13 +87,13 @@ export default function CompletedEstimateCard({ request }: CompletedEstimateCard
             <div className="flex flex-col">
               <div className="text-sm font-normal text-zinc-500">{t("from")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {request.toAddress}
+                {translatedInfo.to}
               </div>
             </div>
           </div>
           <div className="flex flex-col">
             <div className="text-sm font-normal text-zinc-500">{t("date")}</div>
-            <div className="text-base font-semibold text-neutral-900">{request.moveDate}</div>
+            <div className="text-base font-semibold text-neutral-900">{translatedInfo.date}</div>
           </div>
         </div>
       </div>

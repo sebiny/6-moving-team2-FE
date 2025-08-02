@@ -3,10 +3,11 @@ import useMediaHook from "@/hooks/useMediaHook";
 import ReviewCost from "./ReviewCost";
 import clsx from "clsx";
 import Button from "@/components/Button";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { TranslateRegion } from "@/utills/TranslateFunction";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 interface ReviewsProps {
   setIsModal: (value: boolean) => void;
@@ -14,8 +15,8 @@ interface ReviewsProps {
     id: string;
     moveType: string;
     moveDate: string;
-    fromAddress: Address;
-    toAddress: Address;
+    fromAddress: { region: string; district: string };
+    toAddress: { region: string; district: string };
     estimates: {
       id: string;
       price: number;
@@ -27,38 +28,85 @@ interface ReviewsProps {
     }[];
   };
 }
-type Address = {
-  region: string;
-  district: string;
-};
 
 export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
+  const { isSm, isMd, isLg } = useMediaHook();
   const t = useTranslations("Review");
-  const { isMd, isLg } = useMediaHook();
+  const locale = useLocale();
+  const [translatedInfo, setTransaltedInfo] = useState({ fromD: "", fromR: "", toD: "", toR: "", date: "" });
   const cost = review.estimates[0].price;
+
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
     return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
   };
+  useEffect(() => {
+    const translatedTexts = async () => {
+      if (!review) return;
+      if (locale === "ko") {
+        setTransaltedInfo({
+          fromD: review.fromAddress.district,
+          fromR: review.fromAddress.region,
+          toD: review.toAddress.district,
+          toR: review.toAddress.region,
+          date: formatDate(review.moveDate)
+        });
+        return;
+      }
+      try {
+        const result = await batchTranslate(
+          {
+            fromD: review.fromAddress.district ?? "",
+            fromR: review.fromAddress.region ?? "",
+            toD: review.toAddress.district ?? "",
+            toR: review.toAddress.region ?? "",
+            date: formatDate(review.moveDate) ?? ""
+          },
+          locale
+        );
+        setTransaltedInfo({
+          fromD: result.fromD,
+          fromR: result.fromR,
+          toD: result.toD,
+          toR: result.toR,
+          date: result.date
+        });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+    translatedTexts();
+    console.log(translatedInfo);
+  }, [review, locale]);
   const moveDetails = [
     {
       label: "from",
-      content: `${TranslateRegion(review.fromAddress.region)} ${review.fromAddress.district}`
+      content:
+        locale === "ko"
+          ? `${TranslateRegion(review.fromAddress.region)} ${review.fromAddress.district}`
+          : `${translatedInfo.fromR} ${translatedInfo.fromD}`
     },
     {
       label: "to",
-      content: `${TranslateRegion(review.fromAddress.region)} ${review.toAddress.district}`
+      content:
+        locale === "ko"
+          ? `${TranslateRegion(review.toAddress.region)} ${review.toAddress.district}`
+          : `${translatedInfo.toR} ${translatedInfo.toD}`
     },
     {
       label: "date",
-      content: formatDate(review.moveDate)
+      content: locale === "ko" ? formatDate(review.moveDate) : translatedInfo.date
     }
   ];
-
   return (
     <div className="flex h-[54px] max-w-[1040px] justify-between md:mt-6 lg:mt-0">
       <div className="flex md:gap-22 lg:gap-0">
-        <div className="flex-wrap gap-5 sm:mt-3 sm:flex md:mt-0">
+        <div
+          className={clsx("flex-wrap sm:mt-3 sm:flex md:mt-0", isMd && "gap-3", isLg && "gap-5", {
+            "gap-1": locale === "en",
+            "gap-5": locale === "ko" || locale === "zh"
+          })}
+        >
           {moveDetails.map(({ label, content }, index) => (
             <div
               key={label}
@@ -73,7 +121,7 @@ export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
               <p className="text-black-500 text-[13px] leading-[22px] md:text-[16px] md:leading-[26px]">{content}</p>
             </div>
           ))}
-          {isMd && !isLg && <ReviewCost className="ml-6" cost={cost} />}
+          {isMd && !isLg && <ReviewCost cost={cost} />}
         </div>
       </div>
       {isLg && (

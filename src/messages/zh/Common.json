@@ -5,6 +5,10 @@
 
   "won": "韩元",
   "noCost": "暂无报价费用",
+  "GoToRecReq": "报价已确认！",
+  "reqConfirmed": "查看收到的报价",
+
+  "rejectedMessage": "此请求已被驳回",
 
   "writableLoading": "正在加载您可以撰写的评价！",
   "noReview": "当前没有可写的评价！",

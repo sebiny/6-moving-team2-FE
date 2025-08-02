@@ -20,7 +20,7 @@ import { useKakaoShare } from "@/hooks/useKakaoShare";
 export default function PendingDetailPage() {
   const t = useTranslations("MyEstimates");
   const t1 = useTranslations("MyEstimate");
-
+  const tC = useTranslations("Common");
   const { id } = useParams();
   const { data } = useEstimateDetail(id as string);
 
@@ -160,8 +160,8 @@ export default function PendingDetailPage() {
       {showModal && (
         <AlertModal
           type="handleClick"
-          message="견적이 확정되었습니다!"
-          buttonText="받았던 견적 보러가기"
+          message={tC("reqConfirmed")}
+          buttonText={tC("GoToRecReq")}
           onClose={() => setShowModal(false)}
           onConfirm={() => router.push("/customer/my-estimates?tab=past")}
         />

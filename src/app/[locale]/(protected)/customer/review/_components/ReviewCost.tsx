@@ -1,4 +1,3 @@
-import { getWritableReviews } from "@/lib/api/api-review";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import React, { use, useEffect, useState } from "react";
