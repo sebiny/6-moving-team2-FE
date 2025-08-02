@@ -28,7 +28,10 @@ export default getRequestConfig(async ({ requestLocale }) => {
     Signup: (await import(`../messages/${locale}/Signup.json`)).default,
 
     //프로필
-    Profile: (await import(`../messages/${locale}/Profile.json`)).default
+    Profile: (await import(`../messages/${locale}/Profile.json`)).default,
+
+    //알림
+    Notification: (await import(`../messages/${locale}/Notification.json`)).default
   };
   return {
     locale,

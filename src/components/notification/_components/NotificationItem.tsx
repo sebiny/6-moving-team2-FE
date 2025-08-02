@@ -12,9 +12,17 @@ interface NotificationItemProps {
   item: NotificationData;
   onVisible: (id: string) => void; // 화면에 보였을 때 호출될 함수
   isInitiallyRead: boolean;
+  role?: string; // ARIA role prop 추가
+  "aria-describedby"?: string; // aria 속성도 함께 정의
 }
 
-export default function NotificationItem({ item, onVisible, isInitiallyRead }: NotificationItemProps) {
+export default function NotificationItem({
+  item,
+  onVisible,
+  isInitiallyRead,
+  role = "listitem",
+  "aria-describedby": ariaDescribedBy
+}: NotificationItemProps) {
   const itemRef = useRef<HTMLLIElement>(null);
 
   const locale = useLocale();
@@ -115,6 +123,8 @@ export default function NotificationItem({ item, onVisible, isInitiallyRead }: N
   return (
     <li
       ref={itemRef}
+      role={role}
+      aria-describedby={ariaDescribedBy}
       className={`border-line-200 text-black-400 flex flex-col gap-[2px] border-b p-3 text-sm font-medium transition-colors`}
     >
       <p>{parse(displayMessage)}</p>

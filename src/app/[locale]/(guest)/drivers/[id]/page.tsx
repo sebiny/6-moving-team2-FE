@@ -53,11 +53,13 @@ function DriverDetailPage() {
     shareToKakao({
       title: `${driver.nickname} 기사님`,
       description: "무빙에서 이 기사님을 추천합니다!",
-      imageUrl: driver.profileImage ?? "/assets/images/img_profile.svg",
+      imageUrl: driver.profileImage
+        ? `https://www.moving-2.click${driver.profileImage}`
+        : "https://www.moving-2.click/assets/images/img_profile.svg",
       link: { mobileWebUrl: driverUrl, webUrl: driverUrl },
       buttons: [
         {
-          title: "기사님 보기",
+          title: "기사님 보러가기",
           link: { mobileWebUrl: driverUrl, webUrl: driverUrl }
         }
       ]
