@@ -16,6 +16,8 @@ import Button from "@/components/Button";
 export default function FavoriteDrivers() {
   const t = useTranslations("Gnb");
   const tC = useTranslations("Common");
+  const tm = useTranslations("ToastModal.favoriteDrivers");
+
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -77,6 +79,8 @@ export default function FavoriteDrivers() {
         ToastModal(tC("deleted"));
       } catch (error) {
         ToastModal(tC("deleteError"));
+      } catch (error) {
+        ToastModal(tm("failedToDelete"));
       } finally {
         setShowAlert(false);
       }
@@ -94,7 +98,7 @@ export default function FavoriteDrivers() {
       {/* 실제 내용 */}
       <div className="mt-13 flex flex-1 flex-col gap-6 px-7 py-10 md:px-15 lg:mt-15 lg:px-100 lg:py-15">
         {isLoading ? (
-          <div>로딩 중...</div>
+          <div>{tC("loading")}</div>
         ) : data.length === 0 ? (
           // 데이터 없을 경우
           <div className="mt-50 flex flex-col items-center justify-center gap-6">

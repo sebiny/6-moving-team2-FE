@@ -31,7 +31,10 @@ export default getRequestConfig(async ({ requestLocale }) => {
     Profile: (await import(`../messages/${locale}/Profile.json`)).default,
 
     //알림
-    Notification: (await import(`../messages/${locale}/Notification.json`)).default
+    Notification: (await import(`../messages/${locale}/Notification.json`)).default,
+
+    //ToastModal
+    ToastModal: (await import(`../messages/${locale}/ToastModal.json`)).default
   };
   return {
     locale,
