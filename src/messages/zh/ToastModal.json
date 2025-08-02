@@ -1,0 +1,23 @@
+{
+  "shareDriver": {
+    "isCopyLinkTrue": "链接已复制",
+    "isCopyLinkFalse": "复制链接失败"
+  },
+  "receivedRequest": {
+    "sentEstimate": "报价发送成功。",
+    "alreadySentEstimate": "您已经为此请求发送过报价。",
+    "failedToSendEstimate": "发送报价失败。",
+    "estimateRejected": "报价请求已被拒绝。",
+    "alreadyRejectedEstimate": "此报价请求已被拒绝。",
+    "failedToRejectEstimate": "拒绝报价请求失败。",
+    "noRequestReceived": "还没有收到任何请求！"
+  },
+  "review": {
+    "reviewRegistered": "评价已注册。",
+    "failedToRegisterReview": "评价注册失败。"
+  },
+  "favoriteDrivers": {
+    "deletedSuccessfully": "删除成功。",
+    "failedToDelete": "删除过程中发生错误。"
+  }
+}

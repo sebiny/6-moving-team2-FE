@@ -1,8 +1,8 @@
 {
   "areYouDriver": "Are you a driver?",
   "forOnlyDrivers": "For Drivers Only",
-  "areYouCustomer": "Are you a regular user?",
-  "forOnlyCustomer": "For Regular Users Only",
+  "areYouCustomer": "Are you a customer user?",
+  "forOnlyCustomer": "For Customer Users Only",
   "name": "Name",
   "namePlaceholder": "Please enter your name",
   "isNameValid": "Name must be 2-5 Korean characters only.",

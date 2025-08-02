@@ -1,0 +1,23 @@
+{
+  "shareDriver": {
+    "isCopyLinkTrue": "Link copied successfully",
+    "isCopyLinkFalse": "Failed to copy link"
+  },
+  "receivedRequest": {
+    "sentEstimate": "Estimate sent successfully.",
+    "alreadySentEstimate": "You have already sent an estimate for this request.",
+    "failedToSendEstimate": "Failed to send estimate.",
+    "estimateRejected": "Estimate request has been rejected.",
+    "alreadyRejectedEstimate": "This estimate request has already been rejected.",
+    "failedToRejectEstimate": "Failed to reject estimate request.",
+    "noRequestReceived": "No requests received yet!"
+  },
+  "review": {
+    "reviewRegistered": "Review has been registered.",
+    "failedToRegisterReview": "Failed to register review."
+  },
+  "favoriteDrivers": {
+    "deletedSuccessfully": "Deleted successfully.",
+    "failedToDelete": "An error occurred during deletion."
+  }
+}

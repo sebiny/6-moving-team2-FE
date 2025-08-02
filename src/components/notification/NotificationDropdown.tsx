@@ -9,7 +9,7 @@ import { fetchNotifications, markNotificationAsReadAPI } from "@/lib/api/api-not
 import { useAuth } from "@/providers/AuthProvider";
 import { authUtils } from "@/lib/FetchClient";
 import { useTranslations } from "next-intl";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { NotifyEventType, QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import NotificationItem from "./_components/NotificationItem";
 
@@ -27,6 +27,7 @@ export interface NotificationData {
   message: string;
   createdAt: string;
   isRead: boolean;
+  type?: NotifyEventType | undefined;
 }
 
 export const queryClient = new QueryClient({
@@ -160,7 +161,8 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
               id: data.id,
               message: data.translated || data.message || "",
               createdAt: data.createdAt,
-              isRead: false
+              isRead: false,
+              type: data.type
             });
           } catch (parseError) {
             console.error("SSE 메시지 파싱 오류:", parseError);
@@ -303,6 +305,7 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
                   item={item}
                   onVisible={handleMarkAsRead}
                   isInitiallyRead={initialReadIds.has(item.id)}
+                  type={item.type}
                   role="listitem"
                   aria-describedby={`notification-${item.id}`}
                 />

@@ -15,6 +15,7 @@ import Button from "@/components/Button";
 
 export default function FavoriteDrivers() {
   const t = useTranslations("Gnb");
+  const tm = useTranslations("ToastModal.favoriteDrivers");
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -73,9 +74,9 @@ export default function FavoriteDrivers() {
     setOnConfirmDelete(() => async () => {
       try {
         await Promise.all(selectedIds.map((id) => deleteFavoriteMutation.mutateAsync(id)));
-        ToastModal("삭제되었습니다.");
+        ToastModal(tm("deletedSuccessfully"));
       } catch (error) {
-        ToastModal("삭제 중 오류가 발생했습니다.");
+        ToastModal(tm("failedToDelete"));
       } finally {
         setShowAlert(false);
       }

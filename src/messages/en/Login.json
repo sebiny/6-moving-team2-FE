@@ -1,9 +1,9 @@
 {
   "signupCompleted": "Sign up completed!",
   "areYouDriver": "Are you a driver?",
-  "areYouCustomer": "Are you a regular user?",
+  "areYouCustomer": "Are you a customer user?",
   "forOnlyDrivers": "Driver-only page",
-  "forOnlyCustomer": "Regular user-only page",
+  "forOnlyCustomer": "Customer user-only page",
   "email": "Email",
   "emailPlaceholder": "Please enter your email",
   "isNotEmailValid": "Invalid email format.",
