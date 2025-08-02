@@ -32,6 +32,7 @@ const formatDate = (isoString: string, currentLocale: string) => {
 };
 export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const t = useTranslations("Review");
+  const tC = useTranslations("Common");
   const [page, setPage] = useState(1); //임의로 추가
   const { isSm, isMd, isLg } = useMediaHook();
 
@@ -48,6 +49,8 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const [translatedMeta, setTranslatedMeta] = useState<Record<string, TranslatedMeta>>({});
 
   useEffect(() => {
+    if (!reviews || reviews.length === 0) return;
+
     const translateAllMeta = async () => {
       const allTranslatedMeta: Record<string, TranslatedMeta> = {};
 
@@ -79,7 +82,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   }, [reviews, locale]);
 
   if (isLoading) {
-    return <LoadingLottie className="mt-30" text="내가 작성한 리뷰들을 불러오고 있어요!!" />;
+    return <LoadingLottie className="mt-30" text={tC("myReviewLoading")} />;
   }
 
   if (isError || !reviews || reviews.length === 0) {

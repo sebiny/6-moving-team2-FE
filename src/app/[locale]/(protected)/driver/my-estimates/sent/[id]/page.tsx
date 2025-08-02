@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import PageHeader from "@/components/common/PageHeader";
@@ -13,11 +13,15 @@ import { driverService } from "@/lib/api/api-driver";
 import { DriverEstimateDetailType } from "@/types/estimateType";
 import { formatDate, formatDateTime } from "@/utills/dateUtils";
 import { MoveType, moveTypeLabelMap } from "@/constant/moveTypes";
+import { useKakaoShare } from "@/hooks/useKakaoShare";
 
 export default function EstimateDetailPage() {
   const t = useTranslations("MyEstimate");
   const params = useParams();
   const estimateId = params.id as string;
+
+  const estimateUrl = `https://www.moving-2.click/driver/my-estimates/sent/${estimateId}`;
+  const shareToKakao = useKakaoShare();
 
   const {
     data: estimateDetail,
@@ -69,6 +73,26 @@ export default function EstimateDetailPage() {
 
   const customerName = customer.authUser.name || "고객명 없음";
 
+  const handleKakaoShare = () => {
+    shareToKakao({
+      title: `${customerName} 고객님 견적서`,
+      description: `가격: ${price?.toLocaleString()}원`,
+      link: {
+        mobileWebUrl: estimateUrl,
+        webUrl: estimateUrl
+      },
+      buttons: [
+        {
+          title: "견적서 보기",
+          link: {
+            mobileWebUrl: estimateUrl,
+            webUrl: estimateUrl
+          }
+        }
+      ]
+    });
+  };
+
   return (
     <>
       <PageHeader title={t("estDetail")} />
@@ -97,7 +121,7 @@ export default function EstimateDetailPage() {
 
         {/* 오른쪽 - 공유 버튼 (lg에서만 보임) */}
         <div className="hidden lg:flex lg:w-[30%] lg:items-start lg:justify-end">
-          <ShareDriver text={t("shareEstimate")} />
+          <ShareDriver text={t("shareEstimate")} onKakaoShare={handleKakaoShare} />
         </div>
       </div>
 
@@ -108,7 +132,7 @@ export default function EstimateDetailPage() {
       </div>
 
       <div className="items-left mb-10 flex flex-col px-5 md:flex-row md:px-18 lg:hidden">
-        <ShareDriver text={t("wannaRecommend?")} />
+        <ShareDriver text={t("wannaRecommend?")} onKakaoShare={handleKakaoShare} />
       </div>
     </>
   );

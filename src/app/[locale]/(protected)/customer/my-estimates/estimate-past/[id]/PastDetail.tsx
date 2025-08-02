@@ -13,11 +13,16 @@ import dayjs from "dayjs";
 import { getMoveTypeLabel } from "@/utills/moveUtils";
 import { formatStreetAddress } from "@/utills/addressUtils";
 import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
+import { useEffect } from "react";
+import { useKakaoShare } from "@/hooks/useKakaoShare";
 
 export default function PastDetailPage() {
   const t = useTranslations("MyEstimates");
   const { id } = useParams();
   const { data } = useEstimateDetail(id as string);
+  const shareToKakao = useKakaoShare();
+
+  const estimateUrl = `https://www.moving-2.click/customer/my-estimates/estimate-past/${id}`;
 
   if (!data) {
     return <div className="mt-20 text-center">견적 데이터를 불러오는 중입니다...</div>;
@@ -28,6 +33,29 @@ export default function PastDetailPage() {
 
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
+
+  const handleKakaoShare = () => {
+    shareToKakao({
+      title: `${driver.name} 기사님의 견적서`,
+      description: `가격: ${price.toLocaleString()}원`,
+      imageUrl: driver.profileImage
+        ? `https://www.moving-2.click${driver.profileImage}`
+        : "https://www.moving-2.click/assets/images/img_profile.svg",
+      link: {
+        mobileWebUrl: estimateUrl,
+        webUrl: estimateUrl
+      },
+      buttons: [
+        {
+          title: "견적서 보기",
+          link: {
+            mobileWebUrl: estimateUrl,
+            webUrl: estimateUrl
+          }
+        }
+      ]
+    });
+  };
 
   return (
     <>
@@ -86,7 +114,7 @@ export default function PastDetailPage() {
 
           <div className="my-6 border-t border-gray-100 lg:hidden" />
 
-          <ShareDriver text={t("shareEstimate")} />
+          <ShareDriver text={t("shareEstimate")} onKakaoShare={handleKakaoShare} />
         </div>
       </div>
     </>

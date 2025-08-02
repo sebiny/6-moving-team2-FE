@@ -7,16 +7,18 @@ import TextField from "@/components/input/TextField";
 import { UserType } from "@/types/UserType";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 export default function LoginCustomer() {
   const { email, setEmail, password, setPassword, onSubmit, isEmailValid, isPasswordValid, isFormValid } = useLoginForm(
     UserType.CUSTOMER
   );
+  const t = useTranslations("Login");
 
   useEffect(() => {
     const signupSuccess = localStorage.getItem("signupSuccess");
     if (signupSuccess === "true") {
-      ToastModal("회원가입이 완료되었습니다!");
+      ToastModal(t("signupCompleted"));
       localStorage.removeItem("signupSuccess");
     }
   }, []);
@@ -28,7 +30,7 @@ export default function LoginCustomer() {
           <div className="flex h-[84px] w-full items-center justify-center md:h-[100px]">
             <Image
               src="/assets/icons/ic_logo_text.svg"
-              alt="무빙 로고"
+              alt="MovingLogo"
               width={85.36}
               height={44.11}
               priority
@@ -38,14 +40,14 @@ export default function LoginCustomer() {
 
           <div className="flex w-full items-center justify-center gap-[2px] md:h-[32px] md:w-fit md:self-center">
             <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-900 md:text-xl md:leading-8 md:font-normal">
-              기사님이신가요?
+              {t("areYouDriver")}
             </span>
 
             <Link
               href="/login/driver"
               className="text-xs leading-[20px] font-semibold text-orange-400 underline md:text-xl md:leading-[20px]"
             >
-              기사님 전용 페이지
+              {t("forOnlyDrivers")}
             </Link>
           </div>
         </div>
@@ -58,16 +60,16 @@ export default function LoginCustomer() {
                   htmlFor="email"
                   className="md:text-black-400 text-sm leading-6 font-normal text-gray-600 md:text-xl md:leading-8"
                 >
-                  이메일
+                  {t("email")}
                 </label>
                 <TextField
                   type="text"
-                  placeholder="이메일을 입력해 주세요"
+                  placeholder={t("emailPlaceholder")}
                   value={email}
                   onChange={setEmail}
                   className="w-full"
                   mdHeight="54"
-                  error={email.length > 0 && !isEmailValid ? "유효하지 않은 이메일 형식입니다." : ""}
+                  error={email.length > 0 && !isEmailValid ? t("isNotEmailValid") : ""}
                 />
               </div>
 
@@ -76,19 +78,15 @@ export default function LoginCustomer() {
                   htmlFor="password"
                   className="md:text-black-400 text-sm leading-6 font-normal text-gray-600 md:text-xl md:leading-8"
                 >
-                  비밀번호
+                  {t("pwd")}
                 </label>
                 <TextField
                   type="password"
-                  placeholder="비밀번호를 입력해 주세요"
+                  placeholder={t("pwdPlaceholder")}
                   value={password}
                   onChange={setPassword}
                   className="w-full"
-                  error={
-                    password.length > 0 && !isPasswordValid
-                      ? "비밀번호는 최소 8자 이상이며 영문, 숫자, 특수문자를 포함해야 합니다."
-                      : ""
-                  }
+                  error={password.length > 0 && !isPasswordValid ? t("isNotPasswordValid") : ""}
                   mdHeight="54"
                 />
               </div>
@@ -98,26 +96,26 @@ export default function LoginCustomer() {
               disabled={!isFormValid}
               className={`h-[54px] w-full rounded-xl px-5 py-4 text-base leading-[26px] font-semibold transition-colors md:h-[60px] md:rounded-[16px] md:text-[18px] ${isFormValid ? "bg-orange-400 text-white" : "bg-gray-100 text-gray-50"} `}
             >
-              로그인
+              {t("login")}
             </button>
           </form>
 
           <div className="flex w-full items-center justify-center md:w-fit md:gap-2 md:self-center">
             <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-500 md:text-xl md:leading-8">
-              아직 무빙 회원이 아니신가요?
+              {t("areYouMember")}
             </span>
             <Link
               href="/signup/customer"
               className="ml-1 text-xs leading-[20px] font-semibold text-orange-400 underline md:ml-0 md:text-xl md:leading-[20px]"
             >
-              이메일로 회원가입하기
+              {t("signupWithEmail")}
             </Link>
           </div>
         </div>
 
         <div className="flex h-[96px] w-[210px] flex-col items-center justify-center gap-[24px] self-center md:h-fit md:w-[280px] md:gap-[32px]">
           <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-500 md:text-xl md:leading-8">
-            SNS 계정으로 간편 가입하기
+            {t("signupWithSNS")}
           </span>
 
           <div className="flex h-[54px] w-full items-center justify-between md:h-[72px] md:w-fit md:justify-center md:gap-[32px]">
@@ -127,7 +125,7 @@ export default function LoginCustomer() {
             >
               <Image
                 src="/assets/icons/ic_google.svg"
-                alt="Google 로그인"
+                alt={`Google ${t("login")}`}
                 width={54}
                 height={54}
                 className="md:h-[72px] md:w-[72px]"
@@ -139,7 +137,7 @@ export default function LoginCustomer() {
             >
               <Image
                 src="/assets/icons/ic_kakao.svg"
-                alt="Kakao 로그인"
+                alt={`Kakao ${t("login")}`}
                 width={54}
                 height={54}
                 className="md:h-[72px] md:w-[72px]"
@@ -151,7 +149,7 @@ export default function LoginCustomer() {
             >
               <Image
                 src="/assets/icons/ic_naver.svg"
-                alt="Naver 로그인"
+                alt={`Naver ${t("login")}`}
                 width={54}
                 height={54}
                 className="md:h-[72px] md:w-[72px]"
@@ -162,7 +160,7 @@ export default function LoginCustomer() {
 
         <Image
           src="/assets/images/img_login_customer_avatar.png"
-          alt="로그인 아바타"
+          alt="LoginAvartar"
           width={240}
           height={246}
           className="absolute -right-[90px] -bottom-[60px] z-0 hidden md:block lg:hidden"
@@ -170,7 +168,7 @@ export default function LoginCustomer() {
 
         <Image
           src="/assets/images/img_login_customer_avatar.png"
-          alt="로그인 아바타"
+          alt="LoginAvartar"
           width={382.03}
           height={392}
           className="absolute -right-80 -bottom-[50px] z-0 hidden lg:block"

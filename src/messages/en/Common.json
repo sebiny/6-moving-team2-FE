@@ -1,0 +1,22 @@
+{
+  "driver": "driver",
+  "customer": "customer",
+  "loading": "Loading...",
+
+  "writableLoading": "Loading the reviews you can write...",
+  "noReview": "No reviews to write.",
+  "myReviewLoading": "Loading your written reviews...",
+  "noMyReview": "You haven't written any reviews yet!",
+  "GotoWrite": "Write a Review",
+
+  "RequestYet?": "Haven't requested a quote yet?",
+  "RequestFirst": "Please submit a quote request first!",
+  "noRequest": "You haven't received any quotes yet.",
+  "confirmReq": "Please confirm the quote!",
+
+  "driverIsChecking": "Drivers are checking you Request!",
+  "quoteWillSoon": "Your quote will arrive soon!",
+
+  "pendingCardMsg": "The quote has been confirmed!",
+  "pendingCardBtn": "View your confirmed quotes"
+}
