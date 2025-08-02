@@ -79,8 +79,6 @@ export default function FavoriteDrivers() {
         ToastModal(tC("deleted"));
       } catch (error) {
         ToastModal(tC("deleteError"));
-      } catch (error) {
-        ToastModal(tm("failedToDelete"));
       } finally {
         setShowAlert(false);
       }
