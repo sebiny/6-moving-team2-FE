@@ -18,7 +18,7 @@ export default function SentEstimatesPage() {
   const [translatedTexts, setTranslatedTexts] = useState<Record<string, string>>({});
 
   const pathname = usePathname();
-  const tC = useTranslations();
+  const tC = useTranslations("Common");
   // 현재 URL에 따라 selectedIdx 초기값 설정
   const currentTab = pathname.split("/").pop(); // 'sent' or 'rejected'
   const [selectedIdx, setSelectedIdx] = useState(currentTab ?? "sent");
@@ -76,6 +76,7 @@ export default function SentEstimatesPage() {
       fromAddress: translatedTexts[`${prefix}_from`] || formatAddress(estimate.estimateRequest.fromAddress),
       toAddress: translatedTexts[`${prefix}_to`] || formatAddress(estimate.estimateRequest.toAddress),
       moveDate: translatedTexts[`${prefix}_date`] || formatDate(estimate.estimateRequest.moveDate),
+
       estimateAmount: estimate.price ? `${estimate.price.toLocaleString()} ${tC("won")}` : tC("noCost"),
       status: estimate.status === "PROPOSED" ? "pending" : estimate.status === "ACCEPTED" ? "confirmed" : "rejected",
       createdAt: formatTimeAgo(estimate.createdAt)
@@ -85,7 +86,7 @@ export default function SentEstimatesPage() {
   const renderContent = () => {
     if (isPending)
       return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("loading")}</p>;
-    if (error) return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{}</p>;
+    if (error) return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{tC("failedReq")}</p>;
     if (estimates.length === 0)
       return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("noSentReq")}</p>;
     return <EstimateCardList requests={estimates} />;
