@@ -1,0 +1,9 @@
+{
+  "hasUnread": "읽지 않은 알림이 있습니다",
+  "hasNotUnread": "알림이 없습니다",
+  "notification": "알림",
+  "buttonClose": "닫는버튼",
+  "closeNotificationLayer": "알림 패널 닫기",
+  "notificationList": "알림 목록",
+  "hasUnreadList": "읽지 않은 알림"
+}
