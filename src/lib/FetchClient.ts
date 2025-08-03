@@ -5,6 +5,7 @@
 //  import { useAuth } from "@/providers/AuthProvider"; 이후에
 //  const { user, isLoading } = useAuth(); 하고 if (user) 면 로그인 상태 if (!user)면 로그아웃 상태
 import { parseBackendError } from "../utills/ErrorParser";
+import { getCookieDomain } from "../utills/getCookieDomain";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -14,8 +15,17 @@ export const authUtils = {
       try {
         const tokenData = JSON.parse(atob(accessToken.split(".")[1]));
         const expiresIn = tokenData.exp - Math.floor(Date.now() / 1000);
-        document.cookie = `accessToken=${accessToken}; path=/; max-age=${expiresIn}; SameSite=lax; Secure; domain=.moving-2.click`;
-      } catch (e) {}
+        const cookieParts = [`accessToken=${accessToken}`, "path=/", `max-age=${expiresIn}`, "SameSite=lax"];
+
+        const domain = getCookieDomain();
+        if (domain) {
+          cookieParts.push(`domain=${domain}`);
+        }
+
+        document.cookie = cookieParts.join("; ");
+      } catch (e) {
+        console.error("accessToken 쿠키 설정 중 오류:", e);
+      }
     }
   },
 
