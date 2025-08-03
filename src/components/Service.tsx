@@ -9,7 +9,7 @@ interface ServiceType {
   serviceAreas: ServiceAreaType[];
 }
 
-function Service({ services, serviceAreas }: ServiceType) {
+function Service({ services = [], serviceAreas = [] }: ServiceType) {
   const t = useTranslations("FindDriver");
   return (
     <div className="mb-8 lg:mb-20">

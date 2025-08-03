@@ -6,7 +6,7 @@ import { parseBackendError } from "@/utills/ErrorParser";
 import { UserType } from "@/types/UserType";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 
-const NAME_REGEX = /^[가-힣]{2,5}$/;
+const NAME_REGEX = /^[가-힣a-zA-Z]{2,5}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PHONE_REGEX = /^010\d{8}$/;
 const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
