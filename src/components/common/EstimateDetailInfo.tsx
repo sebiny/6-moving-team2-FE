@@ -1,7 +1,8 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import React from "react";
+import { batchTranslate } from "@/utills/batchTranslate";
+import { useLocale, useTranslations } from "next-intl";
+import React, { useEffect, useState } from "react";
 
 interface EstimateInfoProps {
   requestDate: string;
@@ -13,12 +14,49 @@ interface EstimateInfoProps {
 
 export default function EstimateDetailInfo({ requestDate, serviceType, moveDate, from, to }: EstimateInfoProps) {
   const t = useTranslations("MyEstimate");
+  const locale = useLocale();
+  const [translatedInfo, setTranslatedInfo] = useState({ req: "", ser: "", date: "", from: "", to: "" });
+  useEffect(() => {
+    const translatedData = async () => {
+      if (!requestDate || !serviceType || !moveDate || !from || !to) return;
+
+      if (locale === "ko") {
+        setTranslatedInfo({
+          req: requestDate,
+          ser: serviceType,
+          date: moveDate,
+          from,
+          to
+        });
+        return;
+      }
+
+      try {
+        const result = await batchTranslate(
+          {
+            req: requestDate,
+            ser: serviceType,
+            date: moveDate,
+            from,
+            to
+          },
+          locale
+        );
+        setTranslatedInfo({ req: result.req, ser: result.ser, date: result.date, from: result.from, to: result.to });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+
+    translatedData(); // ✅ 함수 실행
+  }, [requestDate, serviceType, moveDate, from, to, locale]);
+
   const infoList = [
-    { label: t("requestDate"), value: requestDate },
-    { label: t("service"), value: serviceType },
-    { label: t("useDate"), value: moveDate },
-    { label: t("from"), value: from },
-    { label: t("to"), value: to }
+    { label: t("requestDate"), value: translatedInfo.req },
+    { label: t("service"), value: translatedInfo.ser },
+    { label: t("useDate"), value: translatedInfo.date },
+    { label: t("from"), value: translatedInfo.from },
+    { label: t("to"), value: translatedInfo.to }
   ];
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 import ChipRectangle from "@/components/chip/ChipRectangle";
@@ -6,13 +6,14 @@ import useMediaHook from "@/hooks/useMediaHook";
 import ReviewsInner from "./ReviewsInner";
 import Button from "@/components/Button";
 import ReviewCost from "./ReviewCost";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { getWritableReviews } from "@/lib/api/api-review";
 import NoReview from "./NoReview";
 import Pagination from "@/components/Pagination";
 import { useQuery } from "@tanstack/react-query";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { ReviewableItem } from "@/types/reviewType";
+import { translateWithDeepL } from "@/utills/translateWithDeepL";
 
 interface ReviewsProps {
   setIsModal: (value: boolean) => void;
@@ -23,11 +24,12 @@ type ReviewListResponse = {
 };
 export default function Reviews({ setIsModal }: ReviewsProps) {
   const t = useTranslations("Review");
+  const locale = useLocale();
   const tC = useTranslations("Common");
   const [page, setPage] = useState<number>(1);
+  const [translatedIntros, setTranslatedIntros] = useState<Record<string, string>>({});
 
   const { isSm, isMd, isLg } = useMediaHook();
-
   const { data, isLoading, isError } = useQuery<ReviewListResponse>({
     queryKey: ["reviewable", page],
     queryFn: () => getWritableReviews(page),
@@ -35,6 +37,32 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];
+
+  useEffect(() => {
+    // To only get one data;;
+    const translateAllIntros = async () => {
+      if (!reviewables.length || locale === "ko") return;
+
+      const translations: Record<string, string> = {};
+
+      for (const item of reviewables) {
+        const shortIntro = item.estimates[0].driver.shortIntro;
+        if (!shortIntro) continue;
+
+        try {
+          const translated = await translateWithDeepL(shortIntro, locale.toUpperCase());
+          translations[item.id] = translated;
+        } catch (e) {
+          console.warn(`번역 실패 (ID: ${item.id})`, e);
+          translations[item.id] = shortIntro; // fallback
+        }
+      }
+
+      setTranslatedIntros(translations);
+    };
+
+    translateAllIntros();
+  }, [reviewables, locale]);
 
   if (isLoading) {
     return <LoadingLottie className="mt-30" text={tC("writableLoading")} />;
@@ -56,7 +84,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
             className={clsx(
               "lg:h-[242px] lg:w-280 lg:gap-6 lg:px-10 lg:py-8",
               "h-[410px] w-[327px] px-5 py-6",
-              "md:h-[316px] md:w-[600px] md:p-8",
+              "md:h-[316px] md:w-auto md:p-8",
               "border-line-100 mx-auto flex flex-col self-stretch rounded-[20px] border-[0.5px] bg-gray-50"
             )}
           >
@@ -104,7 +132,9 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                     </p>
                   </div>
                   <p className="line-clamp-1 self-stretch overflow-hidden font-[Pretendard] text-[12px] leading-[24px] font-normal text-ellipsis text-gray-500 md:text-[14px]">
-                    {reviewable.estimates[0].driver.shortIntro}
+                    {locale === "ko"
+                      ? reviewable.estimates[0].driver.shortIntro
+                      : (translatedIntros[reviewable.id] ?? "Loading...")}
                   </p>
                   {isMd && <ChipRectangle moveType={reviewable.moveType} size={isLg ? "md" : "sm"} className="mt-2" />}
                   {reviewable.estimates[0].isDesignated && (

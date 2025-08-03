@@ -1,7 +1,8 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import React, { use } from "react";
+import { batchTranslate } from "@/utills/batchTranslate";
+import { useLocale, useTranslations } from "next-intl";
+import React, { useEffect, useState } from "react";
 
 interface EstimateDetailProps {
   moveType: string;
@@ -13,6 +14,46 @@ interface EstimateDetailProps {
 
 export default function EstimateDetail({ moveType, startAddress, endAddress, date, createdDate }: EstimateDetailProps) {
   const t = useTranslations("MyEstimates");
+  const locale = useLocale();
+  const [translatedInfo, setTranslatedInfo] = useState({ from: "", to: "", date: "", created: "", move: "" });
+  useEffect(() => {
+    const translatedTexts = async () => {
+      if (!moveType || !startAddress || !endAddress || !date || !createdDate) return;
+      if (locale === "ko") {
+        setTranslatedInfo({
+          from: endAddress,
+          to: startAddress,
+          date: date,
+          created: createdDate,
+          move: moveType
+        });
+        return;
+      }
+      try {
+        const result = await batchTranslate(
+          {
+            from: endAddress ?? "",
+            to: startAddress ?? "",
+            date: date ?? "",
+            created: createdDate ?? "",
+            move: moveType ?? ""
+          },
+          locale
+        );
+        setTranslatedInfo({
+          from: result.from,
+          to: result.to,
+          date: result.date,
+          move: result.move,
+          created: result.created
+        });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+    translatedTexts();
+  }, [locale]);
+  // 라벨 목록 구성
   return (
     <div className="w-full rounded-xl bg-white md:pb-7">
       {/* 상단: 제목 + 생성일 */}
@@ -25,31 +66,31 @@ export default function EstimateDetail({ moveType, startAddress, endAddress, dat
       <div className="space-y-3 text-sm md:text-base">
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">{t("moveType")}</span>
-          <span className="font-semibold">{moveType}</span>
+          <span className="font-semibold">{translatedInfo.move}</span>
         </div>
 
         <hr className="border-t border-gray-100 lg:hidden" />
 
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">{t("from")}</span>
-          <span className="max-w-[60%] truncate font-semibold">{startAddress}</span>
+          <span className="max-w-[60%] truncate font-semibold">{translatedInfo.from}</span>
         </div>
 
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">{t("to")}</span>
-          <span className="max-w-[60%] truncate font-semibold">{endAddress}</span>
+          <span className="max-w-[60%] truncate font-semibold">{translatedInfo.to}</span>
         </div>
 
         <hr className="border-t border-gray-100 lg:hidden" />
 
         <div className="flex justify-between">
           <span className="font-bold text-orange-400">{t("date")}</span>
-          <span className="font-semibold">{date}</span>
+          <span className="font-semibold">{translatedInfo.date}</span>
         </div>
       </div>
 
       {/* 하단 날짜 (sm 전용) */}
-      <p className="mt-5 text-right text-sm text-gray-400 md:hidden">{createdDate}</p>
+      <p className="mt-5 text-right text-sm text-gray-400 md:hidden">{translatedInfo.created}</p>
     </div>
   );
 }

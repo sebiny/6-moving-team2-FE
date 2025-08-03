@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
@@ -7,7 +7,8 @@ import { ESTIMATE_STATUS, ESTIMATE_TEXT } from "@/constant/constant";
 import Image from "next/image";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import CompletedEstimateCard from "./CompletedEstimateCard";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 interface CustomerEstimateCardProps {
   request: CompletedEstimateCardType;
@@ -15,8 +16,41 @@ interface CustomerEstimateCardProps {
 
 export default function CustomerEstimateCard({ request }: CustomerEstimateCardProps) {
   const t = useTranslations("MyEstimate");
+  const locale = useLocale();
+  const [translatedInfo, setTransaltedInfo] = useState({ from: "", to: "", date: "" });
   const router = useRouter();
   const moveTypeKey: MoveType = moveTypeFromKorean[request.moveType] ?? "SMALL";
+  useEffect(() => {
+    const translatedTexts = async () => {
+      if (!request) return;
+      if (locale === "ko") {
+        setTransaltedInfo({
+          from: request.fromAddress,
+          to: request.toAddress,
+          date: request.moveDate
+        });
+        return;
+      }
+      try {
+        const result = await batchTranslate(
+          {
+            from: request.fromAddress ?? "",
+            to: request.toAddress ?? "",
+            date: request.moveDate ?? ""
+          },
+          locale
+        );
+        setTransaltedInfo({
+          from: result.from,
+          to: result.to,
+          date: result.date
+        });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+    translatedTexts();
+  }, [request, locale]);
 
   return (
     <div
@@ -46,7 +80,7 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
             <div className="flex flex-col">
               <div className="text-sm font-normal text-zinc-500">{t("to")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {request.fromAddress}
+                {translatedInfo.from}
               </div>
             </div>
             <div className="relative h-5 w-4 flex-shrink-0">
@@ -55,13 +89,13 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
             <div className="flex flex-col">
               <div className="text-sm font-normal text-zinc-500">{t("from")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {request.toAddress}
+                {translatedInfo.to}
               </div>
             </div>
           </div>
           <div className="flex flex-col">
             <div className="text-sm font-normal text-zinc-500">{t("date")}</div>
-            <div className="text-base font-semibold text-neutral-900">{request.moveDate}</div>
+            <div className="text-base font-semibold text-neutral-900">{translatedInfo.date}</div>
           </div>
         </div>
       </div>

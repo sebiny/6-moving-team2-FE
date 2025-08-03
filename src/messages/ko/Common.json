@@ -5,6 +5,10 @@
 
   "won": "원",
   "noCost": "견적 금액 없음",
+  "GoToRecReq": "견적이 확정되었습니다!",
+  "reqConfirmed": "받았던 견적 보러가기",
+
+  "rejectedMessage": "반려된 요청이에요",
 
   "writableLoading": "작성 가능한 리뷰들을 불러오고 있어요!!",
   "noReview": "작성 가능한 리뷰가 없어요!",

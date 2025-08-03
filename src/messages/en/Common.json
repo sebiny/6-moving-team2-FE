@@ -5,6 +5,10 @@
 
   "won": "won",
   "noCost": "No estimate cost",
+  "reqConfirmed": "The estimate has been confirmed!",
+  "GoToRecReq": "Go to check your received estimates",
+
+  "rejectedMessage": "This request has been rejected",
 
   "writableLoading": "Loading the reviews you can write...",
   "noReview": "No reviews to write.",
