@@ -14,14 +14,15 @@ import { DriverEstimateDetailType } from "@/types/estimateType";
 import { formatDate, formatDateTime } from "@/utills/dateUtils";
 import { MoveType, moveTypeLabelMap } from "@/constant/moveTypes";
 import { useKakaoShare } from "@/hooks/useKakaoShare";
+import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
 
 export default function EstimateDetailPage() {
   const t = useTranslations("MyEstimate");
   const params = useParams();
   const estimateId = params.id as string;
 
-  const estimateUrl = `https://www.moving-2.click/driver/my-estimates/sent/${estimateId}`;
   const shareToKakao = useKakaoShare();
+  const { mutate: createShareLink } = useCreateShareLink();
 
   const {
     data: estimateDetail,
@@ -74,22 +75,42 @@ export default function EstimateDetailPage() {
   const customerName = customer.authUser.name || "고객명 없음";
 
   const handleKakaoShare = () => {
-    shareToKakao({
-      title: `${customerName} 고객님 견적서`,
-      description: `가격: ${price?.toLocaleString()}원`,
-      link: {
-        mobileWebUrl: estimateUrl,
-        webUrl: estimateUrl
-      },
-      buttons: [
-        {
-          title: "견적서 보기",
-          link: {
-            mobileWebUrl: estimateUrl,
-            webUrl: estimateUrl
-          }
+    createShareLink(estimateId, {
+      onSuccess: (response) => {
+        const shareUrl = response?.shareUrl;
+        if (!shareUrl) {
+          alert("공유 URL을 생성하지 못했습니다.");
+          return;
         }
-      ]
+
+        shareToKakao({
+          title: `${customerName} 고객님 견적서`,
+          description: `가격: ${price?.toLocaleString()}원`,
+          imageUrl: "/assets/images/img_profile.svg",
+          link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+          buttons: [{ title: "견적서 보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }]
+        });
+      },
+      onError: (error: any) => {
+        alert("공유 링크 생성 실패: " + error.message);
+      }
+    });
+  };
+
+  const handleFacebookShare = () => {
+    createShareLink(estimateId, {
+      onSuccess: (response) => {
+        const shareUrl = response?.shareUrl;
+        if (!shareUrl) {
+          alert("공유 URL을 생성하지 못했습니다.");
+          return;
+        }
+        const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+        window.open(facebookShareUrl, "_blank", "width=600,height=400");
+      },
+      onError: (error: any) => {
+        alert("Facebook 공유 링크 생성 실패: " + error.message);
+      }
     });
   };
 
@@ -121,7 +142,11 @@ export default function EstimateDetailPage() {
 
         {/* 오른쪽 - 공유 버튼 (lg에서만 보임) */}
         <div className="hidden lg:flex lg:w-[30%] lg:items-start lg:justify-end">
-          <ShareDriver text={t("shareEstimate")} onKakaoShare={handleKakaoShare} />
+          <ShareDriver
+            text={t("shareEstimate")}
+            onKakaoShare={handleKakaoShare}
+            onFacebookShare={handleFacebookShare}
+          />
         </div>
       </div>
 
@@ -132,7 +157,11 @@ export default function EstimateDetailPage() {
       </div>
 
       <div className="items-left mb-10 flex flex-col px-5 md:flex-row md:px-18 lg:hidden">
-        <ShareDriver text={t("wannaRecommend?")} onKakaoShare={handleKakaoShare} />
+        <ShareDriver
+          text={t("wannaRecommend?")}
+          onKakaoShare={handleKakaoShare}
+          onFacebookShare={handleFacebookShare}
+        />
       </div>
     </>
   );
