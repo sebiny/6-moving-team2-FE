@@ -1,0 +1,20 @@
+{
+  "edit": "Edit Basic Information",
+  "name": "Name",
+  "email": "Email",
+  "phone": "Phone Number",
+  "pw": "Current Password",
+  "newPw": "New Password",
+  "checkNewPw": "Confirm New Password",
+  "editBt": "Update",
+  "cancel": "Cancel",
+
+  "editProfile": "Edit Profile",
+  "profileImage": "Profile Image",
+  "nickname": "Nickname",
+  "career": "Career",
+  "introOneLine": "One-line Introduction",
+  "description": "Detailed Description",
+  "services": "Services Provided",
+  "serviceArea": "Service Coverage Area"
+}

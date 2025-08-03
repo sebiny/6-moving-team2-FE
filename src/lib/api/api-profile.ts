@@ -3,9 +3,9 @@ import { cookieFetch } from "../FetchClient";
 interface PatchDataType {
   name: string;
   phone: string;
-  currentPassword: string;
-  newPassword: string;
-  passwordConfirmation: string;
+  currentPassword?: string;
+  newPassword?: string;
+  passwordConfirmation?: string;
 }
 
 export const profileService = {

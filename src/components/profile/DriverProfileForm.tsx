@@ -10,6 +10,7 @@ import TextField from "@/components/input/TextField";
 import InputText from "@/components/InputText";
 import SelectService from "@/components/profile/SelectService"; // 고객 컴포넌트 import
 import SelectRegion from "@/components/profile/SelectRegion"; // 고객 컴포넌트 import
+import { useTranslations } from "next-intl";
 
 interface DriverProfileFormProps {
   isEditMode: boolean;
@@ -18,7 +19,7 @@ interface DriverProfileFormProps {
 
 export default function DriverProfileForm({ isEditMode, initialData }: DriverProfileFormProps) {
   const router = useRouter();
-
+  const t = useTranslations("DriverProfileEdit");
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -143,19 +144,21 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
     >
       {/* Header */}
       <div className="flex flex-col gap-8">
-        <h1 className="text-[32px] font-semibold">기사님 프로필 {isEditMode ? "수정" : "등록"}</h1>
-        {!isEditMode && <p className="text-black-200 text-xl">추가 정보를 입력하여 회원가입을 완료해주세요.</p>}
+        <h1 className="text-[32px] font-semibold">
+          {t("header")} {isEditMode ? t("edit") : t("register")}
+        </h1>
+        {!isEditMode && <p className="text-black-200 text-xl">{t("registerGuide")}</p>}
       </div>
 
       <div className="bg-line-100 h-px" />
 
-      {/* 왼쪽/오른쪽 콘텐츠 래퍼 (gap-6 있음) */}
+      {/* Content */}
       <div className="flex flex-col justify-between gap-6 lg:flex-row">
-        {/* 왼쪽 */}
+        {/* Left */}
         <div className="flex w-full flex-col gap-8">
           <div className="flex h-[196px] flex-col gap-2">
             <label htmlFor="profileImage" className="text-xl font-semibold">
-              프로필 이미지
+              {t("profileImage")}
             </label>
             <ImageUploader
               label=""
@@ -170,96 +173,84 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
               allowRemove
             />
           </div>
-          <div className="bg-line-100 h-px" />
 
+          <div className="bg-line-100 h-px" />
           <div className="flex flex-col gap-2">
             <label className="text-xl font-semibold">
-              별명 <span className="text-red-500">*</span>
+              {t("nickname")} <span className="text-red-500">*</span>
             </label>
-            <TextField
-              value={nickname}
-              onChange={setNickname}
-              placeholder="사이트에 노출될 별명을 입력해 주세요"
-              required
-            />
-            {!isNicknameValid && nickname.length > 0 && <p className="text-base text-rose-500">별명을 입력해주세요.</p>}
-          </div>
-          <div className="bg-line-100 h-px" />
-
-          {/* 경력 */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xl font-semibold">
-              경력 <span className="text-red-500">*</span>
-            </label>
-            <TextField value={career} onChange={setCareer} placeholder="기사님의 경력을 입력해 주세요" required />
-            {!isCareerValid && career.length > 0 && <p className="text-base text-rose-500">숫자만 입력해주세요.</p>}
+            <TextField value={nickname} onChange={setNickname} placeholder={t("nicknamePlaceholder")} required />
+            {!isNicknameValid && nickname.length > 0 && <p className="text-base text-rose-500">{t("nicknameError")}</p>}
           </div>
 
           <div className="bg-line-100 h-px" />
-
-          {/* 한 줄 소개 */}
           <div className="flex flex-col gap-2">
             <label className="text-xl font-semibold">
-              한 줄 소개 <span className="text-red-500">*</span>
+              {t("career")} <span className="text-red-500">*</span>
             </label>
-            <TextField value={shortIntro} onChange={setShortIntro} placeholder="한 줄 소개를 입력해 주세요" required />
-            {!isIntroValid && shortIntro.length > 0 && (
-              <p className="text-base text-rose-500">8자 이상 입력해주세요.</p>
-            )}
+            <TextField value={career} onChange={setCareer} placeholder={t("careerPlaceholder")} required />
+            {!isCareerValid && career.length > 0 && <p className="text-base text-rose-500">{t("careerError")}</p>}
+          </div>
+
+          <div className="bg-line-100 h-px" />
+          <div className="flex flex-col gap-2">
+            <label className="text-xl font-semibold">
+              {t("introOneLine")} <span className="text-red-500">*</span>
+            </label>
+            <TextField value={shortIntro} onChange={setShortIntro} placeholder={t("introPlaceholder")} required />
+            {!isIntroValid && shortIntro.length > 0 && <p className="text-base text-rose-500">{t("introError")}</p>}
           </div>
         </div>
 
         <div className="bg-line-100 my-6 h-px" />
 
-        {/* 오른쪽 */}
+        {/* Right */}
         <div className="flex w-full flex-col gap-8">
           <div className="flex flex-col gap-2">
             <label className="text-xl font-semibold">
-              상세 설명 <span className="text-red-500">*</span>
+              {t("description")} <span className="text-red-500">*</span>
             </label>
             <InputText value={detailIntro} onChange={setDetailIntro} setInputValid={() => {}} />
             {!isDescriptionValid && detailIntro.length > 0 && (
-              <p className="text-base text-rose-500">10자 이상 입력해주세요.</p>
+              <p className="text-base text-rose-500">{t("descriptionError")}</p>
             )}
           </div>
-          <div className="bg-line-100 h-px" />
 
+          <div className="bg-line-100 h-px" />
           <div className="flex flex-col gap-2">
             <label className="text-xl font-semibold">
-              제공 서비스 <span className="text-red-500">*</span>
+              {t("services")} <span className="text-red-500">*</span>
             </label>
-            {!isServicesValid && <p className="text-base text-rose-500">* 1개 이상 선택해주세요.</p>}
-
+            {!isServicesValid && <p className="text-base text-rose-500">{t("servicesError")}</p>}
             <SelectService services={selectedMoveTypes} setServices={setSelectedMoveTypes} />
           </div>
-          <div className="bg-line-100 h-px" />
 
+          <div className="bg-line-100 h-px" />
           <div className="flex flex-col gap-2">
             <label className="text-xl font-semibold">
-              서비스 가능 지역 <span className="text-red-500">*</span>
+              {t("serviceArea")} <span className="text-red-500">*</span>
             </label>
-            {!isRegionsValid && <p className="text-base text-rose-500">* 1개 이상 선택해주세요.</p>}
-
+            {!isRegionsValid && <p className="text-base text-rose-500">{t("regionError")}</p>}
             <SelectRegion currentAreas={selectedRegions} setCurrentAreas={setSelectedRegions} type="driver" />
           </div>
         </div>
       </div>
 
-      {/* 버튼 영역 - gap 영향을 받지 않도록 부모 밖으로 분리 */}
+      {/* 버튼 */}
       <div className="mt-6 flex justify-end">
         {isEditMode ? (
           <div className="flex w-full flex-col gap-4 md:gap-[20px] lg:w-[500px] lg:flex-row">
             <Button
-              text="취소"
+              text={t("cancel")}
               type="gray"
-              buttonType="button" //  폼 제출 안 됨
-              className="h-15 w-full rounded-2xl bg-gray-200 text-lg font-semibold text-gray-700 md:w-full" // md:w-[full] → md:w-full로 수정
+              buttonType="button"
+              className="h-15 w-full rounded-2xl bg-gray-200 text-lg font-semibold text-gray-700 md:w-full"
               onClick={() => {
                 router.push("/driver/my-page");
               }}
             />
             <Button
-              text={isSubmitting ? "제출 중..." : "수정하기"}
+              text={isSubmitting ? t("submitting") : t("edit")}
               type="orange"
               className="h-15 w-full rounded-2xl text-lg font-semibold md:w-[full]"
               isDisabled={!isFormValid || isSubmitting || isUploading}
@@ -268,7 +259,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
         ) : (
           <div className="flex w-full justify-end">
             <Button
-              text={isSubmitting ? "제출 중..." : "시작하기"}
+              text={isSubmitting ? t("submitting") : t("start")}
               type="orange"
               className="h-15 w-[500px] rounded-2xl text-lg font-semibold"
               isDisabled={!isFormValid || isSubmitting || isUploading}

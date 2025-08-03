@@ -29,7 +29,7 @@ function DriverSimpleInfo({ career, averageRating, reviewCount, work, type }: Dr
           {type === "detail" && (
             <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={20} height={20} className="block" />
           )}
-          <p className={`${textColor} text-xl font-bold`}>{averageRating.toFixed(1)}</p>
+          <p className={`${textColor} text-xl font-bold`}>{(averageRating ?? 0).toFixed(1)}</p>
           {type === "detail" && <p className="text-gray-300">({reviewCount})</p>}
         </div>
       </div>

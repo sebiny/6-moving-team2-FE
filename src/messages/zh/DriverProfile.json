@@ -1,0 +1,20 @@
+{
+  "edit": "编辑基本信息",
+  "name": "姓名",
+  "email": "电子邮件",
+  "phone": "电话号码",
+  "pw": "当前密码",
+  "newPw": "新密码",
+  "checkNewPw": "确认新密码",
+  "editBt": "修改",
+  "cancel": "取消",
+
+  "editProfile": "编辑个人资料",
+  "profileImage": "个人头像",
+  "nickname": "昵称",
+  "career": "工作经历",
+  "introOneLine": "一句话介绍",
+  "description": "详细描述",
+  "services": "提供的服务",
+  "serviceArea": "服务范围"
+}
