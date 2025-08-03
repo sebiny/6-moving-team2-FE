@@ -5,17 +5,20 @@ import LikeIcon from "@/components/icon/LikeIcon";
 import OrangeBackground from "@/components/OrangeBackground";
 import Service from "@/components/Service";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import EditButtons from "./_components/EditButtons";
 import { useAuth } from "@/providers/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import { DriverType } from "@/types/driverType";
 import { driverService } from "@/lib/api/api-driver";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 function DriverMyPage() {
   const t = useTranslations("DriverMypage");
+  const locale = useLocale();
+  const [translatedInfo, setTranslatedInfo] = useState({ short: "", detail: "" });
   const { user } = useAuth();
   const driverId = user?.driverId as string;
 
@@ -23,6 +26,25 @@ function DriverMyPage() {
     queryKey: ["driver", driverId],
     queryFn: () => driverService.getDriverDetailCookie(driverId)
   });
+  useEffect(() => {
+    const translatedTexts = async () => {
+      if (!driver) return;
+      try {
+        const result = await batchTranslate(
+          {
+            short: driver.shortIntro ?? "",
+            detail: driver.detailIntro ?? ""
+          },
+          locale
+        );
+        setTranslatedInfo({ short: result.short, detail: result.detail });
+      } catch (e) {
+        console.warn("번역 실패");
+      }
+    };
+    translatedTexts();
+  }, [driver, locale]);
+
   if (isPending)
     return (
       <div className="flex flex-col items-center">
@@ -55,8 +77,8 @@ function DriverMyPage() {
               </div>
             </div>
             <div className="mt-4">
-              <p className="text-lg font-semibold">{driver.shortIntro}</p>
-              <p className="mt-3 text-gray-500">{driver.detailIntro}</p>
+              <p className="text-lg font-semibold">{translatedInfo.short}</p>
+              <p className="mt-3 text-gray-500">{translatedInfo.detail}</p>
             </div>
           </div>
           <EditButtons />

@@ -1,0 +1,20 @@
+{
+  "edit": "기본정보 수정",
+  "name": "이름",
+  "email": "이메일",
+  "phone": "전화번호",
+  "pw": "현재 비밀번호",
+  "newPw": "새 비밀번호",
+  "checkNewPw": "새 비밀 번호 확인",
+  "editBt": "수정하기",
+  "cancel": "취소",
+
+  "editProfile": "프로필 수정",
+  "profileImage": "프로필 이미지",
+  "nickname": "별명",
+  "career": "경력",
+  "introOneLine": "한 줄 소개",
+  "description": "상세 설명",
+  "services": "제공 서비스",
+  "serviceArea": "서비스 가능 지역"
+}

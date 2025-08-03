@@ -6,10 +6,12 @@ import { authService } from "@/lib/api/api-auth";
 import { profileService } from "@/lib/api/api-profile";
 import { useAuth, User } from "@/providers/AuthProvider";
 import { UserType } from "@/types/UserType";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 function MyPageEditPage() {
+  const t = useTranslations("DriverProfile");
   const router = useRouter();
   const { user } = useAuth();
   const {
@@ -87,12 +89,12 @@ function MyPageEditPage() {
   return (
     <div className="flex justify-center">
       <div className="mt-[26px] w-[327px] max-w-[1120px] lg:mt-20 lg:w-full">
-        <h1 className="text-lg font-bold lg:text-[32px] lg:font-semibold">기본정보 수정</h1>
+        <h1 className="text-lg font-bold lg:text-[32px] lg:font-semibold">{t("edit")}</h1>
         <div className="border-line-100 mt-4 mb-5 border-b lg:my-10"></div>
         <div className="lg:flex lg:justify-center lg:gap-30">
           <div className="flex w-full flex-col gap-5">
             <div>
-              <div className="text-black-300 mb-4 font-semibold lg:text-xl">이름</div>
+              <div className="text-black-300 mb-4 font-semibold lg:text-xl">{"name"}</div>
               <TextField
                 value={name}
                 onChange={setName}
@@ -101,11 +103,11 @@ function MyPageEditPage() {
             </div>
             <div className="border-line-100 border-b"></div>
             <div>
-              <div className="text-black-300 mb-4 font-semibold lg:text-xl">이메일</div>
+              <div className="text-black-300 mb-4 font-semibold lg:text-xl">{t("email")}</div>
               <TextField value={email} />
             </div>
             <div>
-              <div className="text-black-300 mb-4 font-semibold lg:text-xl">전화번호</div>
+              <div className="text-black-300 mb-4 font-semibold lg:text-xl">{t("phone")}</div>
               <TextField
                 value={phone}
                 onChange={setPhone}
@@ -116,7 +118,7 @@ function MyPageEditPage() {
           <div className="border-line-100 my-5 border-b lg:hidden"></div>
           <div className="flex w-full flex-col gap-5">
             <div>
-              <div className="text-black-300 mb-4 font-semibold lg:text-xl">현재 비밀번호</div>
+              <div className="text-black-300 mb-4 font-semibold lg:text-xl">{t("pw")}</div>
               <TextField
                 type="password"
                 placeholder="현재 비밀번호를 입력해주세요"
@@ -131,7 +133,7 @@ function MyPageEditPage() {
             </div>
             <div className="border-line-100 hidden border-b lg:block"></div>
             <div>
-              <div className="text-black-300 mb-4 font-semibold lg:text-xl">새 비밀번호</div>
+              <div className="text-black-300 mb-4 font-semibold lg:text-xl">{t("newPw")}</div>
               <TextField
                 type="password"
                 placeholder="새 비밀번호를 입력해주세요"
@@ -145,7 +147,7 @@ function MyPageEditPage() {
               />
             </div>
             <div>
-              <div className="text-black-300 mb-4 font-semibold lg:text-xl">새 비밀번호 확인</div>
+              <div className="text-black-300 mb-4 font-semibold lg:text-xl">{t("checkPw")}</div>
               <TextField
                 type="password"
                 placeholder="새 비밀번호를 다시 한번 입력해주세요"
@@ -157,8 +159,8 @@ function MyPageEditPage() {
               />
             </div>
             <div className="mt-4 flex flex-col gap-2 lg:mt-16 lg:flex-row-reverse">
-              <Button text="수정하기" type="orange" onClick={handleClickEdit} isDisabled={!isFormValid} />
-              <Button text="취소" type="white-gray" onClick={handleClickCancel} />
+              <Button text={t("edit")} type="orange" onClick={handleClickEdit} isDisabled={!isFormValid} />
+              <Button text={t("cancel")} type="white-gray" onClick={handleClickCancel} />
             </div>
           </div>
         </div>
