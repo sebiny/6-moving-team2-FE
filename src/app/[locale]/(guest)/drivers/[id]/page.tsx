@@ -49,6 +49,7 @@ function DriverDetailPage() {
 
   if (!driver) return <div>기사님 정보를 불러올 수 없습니다</div>;
 
+  // 카카오 공유
   const handleKakaoShare = () => {
     shareToKakao({
       title: `${driver.nickname} 기사님`,
@@ -66,6 +67,12 @@ function DriverDetailPage() {
     });
   };
 
+  // Facebook 공유
+  const handleFacebookShare = () => {
+    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(driverUrl)}`;
+    window.open(shareUrl, "_blank", "width=600,height=400");
+  };
+
   return (
     <div className="flex flex-col items-center">
       <OrangeBackground />
@@ -75,7 +82,11 @@ function DriverDetailPage() {
           <Service services={driver.moveType} serviceAreas={driver.serviceAreas} />
           <div className="mb-8 lg:hidden">
             <div className="border-line-100 border-b"></div>
-            <ShareDriver text={t("driverPage.wannaRecommend?")} onKakaoShare={handleKakaoShare} />
+            <ShareDriver
+              text={t("driverPage.wannaRecommend?")}
+              onKakaoShare={handleKakaoShare}
+              onFacebookShare={handleFacebookShare}
+            />
             <div className="border-line-100 mt-8 border-b"></div>
           </div>
           <DriverReviews driver={driver} />
@@ -87,7 +98,11 @@ function DriverDetailPage() {
             setFavorite={setFavorite}
             isDesignated={driver.isDesignated ?? false}
           />
-          <ShareDriver text={t("driverPage.wannaRecommend?")} onKakaoShare={handleKakaoShare} />
+          <ShareDriver
+            text={t("driverPage.wannaRecommend?")}
+            onKakaoShare={handleKakaoShare}
+            onFacebookShare={handleFacebookShare}
+          />
         </div>
       </div>
       <BottomNav favorite={favorite} setFavorite={setFavorite} isDesignated={driver.isDesignated ?? false} />
