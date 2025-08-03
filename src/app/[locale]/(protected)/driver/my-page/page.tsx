@@ -26,7 +26,6 @@ function DriverMyPage() {
     queryKey: ["driver", driverId],
     queryFn: () => driverService.getDriverDetailCookie(driverId)
   });
-
   useEffect(() => {
     const translatedTexts = async () => {
       if (!driver) return;
@@ -45,6 +44,7 @@ function DriverMyPage() {
     };
     translatedTexts();
   }, [driver, locale]);
+
   if (isPending)
     return (
       <div className="flex flex-col items-center">
