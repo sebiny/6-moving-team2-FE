@@ -1,17 +1,16 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { ToastModal } from "./common-modal/ToastModal";
 import { useTranslations } from "next-intl";
 
 interface ShareDriverType {
   text: string;
   onKakaoShare?: () => void;
-  // onFacebookShare: () => void;
+  onFacebookShare?: () => void;
 }
 
-function ShareDriver({ text, onKakaoShare }: ShareDriverType) {
+function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
   const tm = useTranslations("ToastModal");
   const handleCopyLink = async () => {
     try {
@@ -46,17 +45,18 @@ function ShareDriver({ text, onKakaoShare }: ShareDriverType) {
             />
           </div>
         </button>
-        <Link href="https://www.facebook.com/?locale=ko_KR">
-          <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-orange-400 lg:h-16 lg:w-16 lg:rounded-2xl">
-            <Image
-              src="/assets/icons/ic_share_facebook.svg"
-              alt="페이스북으로 공유하기"
-              width={28}
-              height={28}
-              className="w-6 lg:w-7"
-            />
-          </div>
-        </Link>
+        <div
+          className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-orange-400 lg:h-16 lg:w-16 lg:rounded-2xl"
+          onClick={onFacebookShare}
+        >
+          <Image
+            src="/assets/icons/ic_share_facebook.svg"
+            alt="페이스북으로 공유하기"
+            width={28}
+            height={28}
+            className="w-6 lg:w-7"
+          />
+        </div>
       </div>
     </div>
   );

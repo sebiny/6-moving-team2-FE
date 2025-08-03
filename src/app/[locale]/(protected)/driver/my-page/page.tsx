@@ -24,10 +24,8 @@ function DriverMyPage() {
 
   const { data: driver, isPending } = useQuery<DriverType | null>({
     queryKey: ["driver", driverId],
-    queryFn: () =>
-      user ? driverService.getDriverDetailCookie(driverId) : driverService.getDriverDetailDefault(driverId)
+    queryFn: () => driverService.getDriverDetailCookie(driverId)
   });
-
   useEffect(() => {
     const translatedTexts = async () => {
       if (!driver) return;
@@ -46,6 +44,7 @@ function DriverMyPage() {
     };
     translatedTexts();
   }, [driver, locale]);
+
   if (isPending)
     return (
       <div className="flex flex-col items-center">
@@ -54,6 +53,7 @@ function DriverMyPage() {
       </div>
     );
   if (!driver) return <div>{t("failedFetch")}</div>;
+
   return (
     <div className="flex flex-col items-center">
       <div className="flex h-[54px] w-full max-w-300 items-center px-7 md:px-24 lg:h-24 lg:px-2">
