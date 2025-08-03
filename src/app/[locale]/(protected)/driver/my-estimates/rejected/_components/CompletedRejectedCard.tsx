@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import Image from "next/image";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 interface CompletedRejectedCardProps {
   request: Request & { estimateAmount?: string; status?: string };
@@ -11,6 +12,40 @@ interface CompletedRejectedCardProps {
 
 export default function CompletedRejectedCard({ request }: CompletedRejectedCardProps) {
   const t = useTranslations("MyEstimate");
+  const tC = useTranslations("Common");
+  const locale = useLocale();
+  const [translatedInfo, setTransaltedInfo] = useState({ from: "", to: "", date: "" });
+  useEffect(() => {
+    const translatedTexts = async () => {
+      if (!request) return;
+      if (locale === "ko") {
+        setTransaltedInfo({
+          from: request.fromAddress,
+          to: request.toAddress,
+          date: request.moveDate
+        });
+        return;
+      }
+      try {
+        const result = await batchTranslate(
+          {
+            from: request.fromAddress ?? "",
+            to: request.toAddress ?? "",
+            date: request.moveDate ?? ""
+          },
+          locale
+        );
+        setTransaltedInfo({
+          from: result.from,
+          to: result.to,
+          date: result.date
+        });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+    translatedTexts();
+  }, [request, locale]);
 
   return (
     <div className="relative inline-flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.20)] outline-[0.5px] outline-offset-[-0.5px] outline-zinc-100 md:w-[588px] md:gap-8 md:px-10 md:py-8">
@@ -37,7 +72,7 @@ export default function CompletedRejectedCard({ request }: CompletedRejectedCard
             <div className="flex flex-col">
               <div className="text-sm font-normal text-zinc-500">{t("to")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {request.fromAddress}
+                {translatedInfo.to}
               </div>
             </div>
             <div className="relative h-5 w-4 flex-shrink-0">
@@ -46,20 +81,20 @@ export default function CompletedRejectedCard({ request }: CompletedRejectedCard
             <div className="flex flex-col">
               <div className="text-sm font-normal text-zinc-500">{t("from")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {request.toAddress}
+                {translatedInfo.from}
               </div>
             </div>
           </div>
           <div className="flex flex-col">
             <div className="text-sm font-normal text-zinc-500">{t("date")}</div>
-            <div className="text-base font-semibold text-neutral-900">{request.moveDate}</div>
+            <div className="text-base font-semibold text-neutral-900">{translatedInfo.date}</div>
           </div>
         </div>
       </div>
       {/* 반투명 오버레이 */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-[20px] bg-black/60">
         <div className="flex w-48 flex-col items-center gap-5">
-          <div className="text-lg font-semibold text-white">반려된 요청이에요</div>
+          <div className="text-lg font-semibold text-white">{tC("rejectedMessage")}</div>
         </div>
       </div>
     </div>

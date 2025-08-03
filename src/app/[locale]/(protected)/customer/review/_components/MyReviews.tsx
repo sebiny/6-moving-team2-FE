@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { batchTranslate } from "@/utills/batchTranslate";
 import type { ReviewListResponse, TranslatedMeta } from "@/types/reviewType";
+import { translateWithDeepL } from "@/utills/translateWithDeepL";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
@@ -52,7 +53,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   useEffect(() => {
     if (!reviews || reviews.length === 0) return;
 
-    const translateAllMeta = async () => {
+    const translateInfo = async () => {
       const allTranslatedMeta: Record<string, TranslatedMeta> = {};
 
       for (const review of reviews) {
@@ -79,7 +80,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
       setTranslatedMeta(allTranslatedMeta);
     };
 
-    translateAllMeta();
+    translateInfo();
   }, [reviews, locale]);
 
   if (isLoading) {
@@ -104,23 +105,21 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
           const moveDetails = [
             {
               label: "from",
-              content: `${
+              content:
                 locale === "ko"
-                  ? TranslateRegion(fromAddress.region)
-                  : translatedMeta[review.id]?.fromRegion || "loading..."
-              } ${translatedMeta[review.id]?.fromDistrict || "loading..."}`
+                  ? `${TranslateRegion(request.fromAddress.region)} ${request.fromAddress.district}`
+                  : `${translatedMeta[review.id]?.fromRegion || request.fromAddress.region} ${translatedMeta[review.id]?.fromDistrict || request.fromAddress.district}`
             },
             {
               label: "to",
-              content: `${
+              content:
                 locale === "ko"
-                  ? TranslateRegion(toAddress.region)
-                  : translatedMeta[review.id]?.toRegion || "loading..."
-              } ${translatedMeta[review.id]?.toDistrict || "loading..."}`
+                  ? `${TranslateRegion(request.toAddress.region)} ${request.toAddress.district}`
+                  : `${translatedMeta[review.id]?.toRegion || request.toAddress.region} ${translatedMeta[review.id]?.toDistrict || request.toAddress.district}`
             },
             {
               label: "date",
-              content: formatDate(review.request.moveDate, locale)
+              content: formatDate(request.moveDate, locale)
             }
           ];
 
@@ -213,7 +212,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
               {isSm && !isMd && (
                 <div className="mt-auto flex justify-end">
                   <p className="pr-2 text-[12px] leading-[18px] text-gray-300">{t("review.date")}</p>
-                  <p className="text-[12px] leading-[18px] text-gray-300">{moveDate}</p>
+                  <p className="text-[12px] leading-[18px] text-gray-300">{translatedMeta[review.id]?.moveDate}</p>
                 </div>
               )}
             </div>

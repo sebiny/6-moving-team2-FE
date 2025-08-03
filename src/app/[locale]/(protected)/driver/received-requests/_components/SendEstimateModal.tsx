@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Button from "@/components/Button";
 import XIcon from "../../../../../../../public/assets/icons/ic_X_gray.svg";
@@ -9,7 +9,8 @@ import arrow from "../../../../../../../public/assets/icons/ic_arrow.svg";
 import InputText from "@/components/InputText";
 import InputPrice, { removeCommas } from "./InputPrice";
 import useMediaHook from "@/hooks/useMediaHook";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 interface SendEstimateModalProps {
   open: boolean;
@@ -35,6 +36,8 @@ export default function SendEstimateModal({
   moveDate
 }: SendEstimateModalProps) {
   const t = useTranslations("ReceivedReq");
+  const locale = useLocale();
+  const [translatedInfo, setTranslatedInfo] = useState({ from: "", to: "", date: "" });
   const [price, setPrice] = useState("");
   const [comment, setComment] = useState("");
   const [commentValid, setCommentValid] = useState(false);
@@ -43,6 +46,33 @@ export default function SendEstimateModal({
   const { isLg, isSm } = useMediaHook();
   const textClass = "text-black-300 mb-3 lg:text-[18px] text-[16px] leading-[26px] font-semibold ";
 
+  useEffect(() => {
+    const translatedTexts = async () => {
+      if (!fromAddress || !toAddress || !moveDate) return;
+      if (locale === "ko") {
+        setTranslatedInfo({
+          from: fromAddress,
+          to: toAddress,
+          date: moveDate
+        });
+        return;
+      }
+      try {
+        const result = await batchTranslate(
+          {
+            from: fromAddress ?? "",
+            to: toAddress ?? "",
+            date: moveDate ?? ""
+          },
+          locale
+        );
+        setTranslatedInfo({ from: result.from, to: result.to, date: result.date });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+    translatedTexts();
+  }, [fromAddress, toAddress, moveDate, locale]);
   if (!open) return null;
 
   return (
@@ -81,14 +111,14 @@ export default function SendEstimateModal({
                   <div>
                     <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">{t("from")}</p>
                     <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">
-                      {fromAddress}
+                      {translatedInfo.from}
                     </p>
                   </div>
                   <Image src={arrow} height={23} alt="arrow" className="mx-3 w-3 lg:w-4" />
                   <div>
                     <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">{t("to")}</p>
                     <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">
-                      {toAddress}
+                      {translatedInfo.to}
                     </p>
                   </div>
                 </div>
@@ -96,7 +126,9 @@ export default function SendEstimateModal({
                   <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">
                     {t("moveDate")}
                   </p>
-                  <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">{moveDate}</p>
+                  <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">
+                    {translatedInfo.date}
+                  </p>
                 </div>
               </div>
             </div>

@@ -13,16 +13,15 @@ import dayjs from "dayjs";
 import { getMoveTypeLabel } from "@/utills/moveUtils";
 import { formatStreetAddress } from "@/utills/addressUtils";
 import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
-import { useEffect } from "react";
 import { useKakaoShare } from "@/hooks/useKakaoShare";
+import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
 
 export default function PastDetailPage() {
   const t = useTranslations("MyEstimates");
   const { id } = useParams();
   const { data } = useEstimateDetail(id as string);
   const shareToKakao = useKakaoShare();
-
-  const estimateUrl = `https://www.moving-2.click/customer/my-estimates/estimate-past/${id}`;
+  const { mutate: createShareLink } = useCreateShareLink();
 
   if (!data) {
     return <div className="mt-20 text-center">견적 데이터를 불러오는 중입니다...</div>;
@@ -35,25 +34,53 @@ export default function PastDetailPage() {
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
 
   const handleKakaoShare = () => {
-    shareToKakao({
-      title: `${driver.name} 기사님의 견적서`,
-      description: `가격: ${price.toLocaleString()}원`,
-      imageUrl: driver.profileImage
-        ? `https://www.moving-2.click${driver.profileImage}`
-        : "https://www.moving-2.click/assets/images/img_profile.svg",
-      link: {
-        mobileWebUrl: estimateUrl,
-        webUrl: estimateUrl
-      },
-      buttons: [
-        {
-          title: "견적서 보기",
-          link: {
-            mobileWebUrl: estimateUrl,
-            webUrl: estimateUrl
-          }
+    createShareLink(id as string, {
+      onSuccess: (response) => {
+        const shareUrl = response?.shareUrl;
+
+        if (!shareUrl) {
+          alert("공유 URL을 생성하지 못했습니다.");
+          return;
         }
-      ]
+
+        shareToKakao({
+          title: `${driver.name} 기사님의 견적서`,
+          description: `가격: ${price.toLocaleString()}원`,
+          imageUrl: driver.profileImage
+            ? `https://www.moving-2.click${driver.profileImage}`
+            : "https://www.moving-2.click/assets/images/img_profile.svg",
+          link: {
+            mobileWebUrl: shareUrl,
+            webUrl: shareUrl
+          },
+          buttons: [
+            {
+              title: "견적서 보기",
+              link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+            }
+          ]
+        });
+      },
+      onError: (error: any) => {
+        alert("공유 링크 생성 실패: " + error.message);
+      }
+    });
+  };
+
+  const handleFacebookShare = () => {
+    createShareLink(id as string, {
+      onSuccess: (response) => {
+        const shareUrl = response?.shareUrl;
+        if (!shareUrl) {
+          alert("공유 URL을 생성하지 못했습니다.");
+          return;
+        }
+        const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+        window.open(facebookShareUrl, "_blank", "width=600,height=400");
+      },
+      onError: (error: any) => {
+        alert("Facebook 공유 링크 생성 실패: " + error.message);
+      }
     });
   };
 
@@ -114,7 +141,11 @@ export default function PastDetailPage() {
 
           <div className="my-6 border-t border-gray-100 lg:hidden" />
 
-          <ShareDriver text={t("shareEstimate")} onKakaoShare={handleKakaoShare} />
+          <ShareDriver
+            text={t("shareEstimate")}
+            onKakaoShare={handleKakaoShare}
+            onFacebookShare={handleFacebookShare}
+          />
         </div>
       </div>
     </>

@@ -7,12 +7,13 @@ import arrow from "/public/assets/icons/ic_arrow.svg";
 import DriverImg from "/public/assets/images/img_profile.svg";
 import ReviewWrite from "./ReviewWrite";
 import useMediaHook from "@/hooks/useMediaHook";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { getWritableReviews } from "@/lib/api/api-review";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { TranslateRegion } from "@/utills/TranslateFunction";
 import { MoveType } from "@/constant/moveTypes";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 interface Props {
   setIsValid: (value: boolean) => void;
@@ -43,14 +44,17 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
   const { isSm, isLg } = useMediaHook();
   const [review, setReview] = useState<ReviewItem | null>(null);
   const t = useTranslations("Review");
-
+  const locale = useLocale();
+  const [translatedInfo, setTransaltedInfo] = useState({ fromD: "", fromR: "", toD: "", toR: "", date: "" });
+  const formatDate = (isoString: string) => {
+    const date = new Date(isoString);
+    return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
+  };
   useEffect(() => {
     async function fetchReviews() {
       try {
         const data = await getWritableReviews(); // page 파라미터 생략 가능
         const first = data?.reviewableEstimates?.[0]; // 첫 번째 리뷰만 선택
-        console.log("🔥 첫 번째 리뷰:", first);
-
         if (first) {
           setEstimateRequestId(first.id);
           setDriverId(first.estimates[0].driver.id);
@@ -63,21 +67,64 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
     fetchReviews();
   }, []);
 
+  useEffect(() => {
+    const translatedTexts = async () => {
+      if (!review) return;
+      if (locale === "ko") {
+        setTransaltedInfo({
+          fromD: review.fromAddress.district,
+          fromR: review.fromAddress.region,
+          toD: review.toAddress.district,
+          toR: review.toAddress.region,
+          date: formatDate(review.moveDate)
+        });
+        return;
+      }
+      try {
+        const result = await batchTranslate(
+          {
+            fromD: review.fromAddress.district ?? "",
+            fromR: review.fromAddress.region ?? "",
+            toD: review.toAddress.district ?? "",
+            toR: review.toAddress.region ?? "",
+            date: formatDate(review.moveDate) ?? ""
+          },
+          locale
+        );
+        setTransaltedInfo({
+          fromD: result.fromD,
+          fromR: result.fromR,
+          toD: result.toD,
+          toR: result.toR,
+          date: result.date
+        });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+    translatedTexts();
+    console.log(translatedInfo);
+  }, [review, locale]);
+
   const moveDetails = review
     ? [
         {
           label: "from",
-          content: `${TranslateRegion(review.fromAddress.region)} ${review.fromAddress.district}`,
-          isArrow: true
+          content:
+            locale === "ko"
+              ? `${TranslateRegion(review.fromAddress.region)} ${review.fromAddress.district}`
+              : `${translatedInfo.fromR} ${translatedInfo.fromD}`
         },
         {
           label: "to",
-          content: `${TranslateRegion(review.toAddress.region)} ${review.toAddress.district}`,
-          isArrow: false
+          content:
+            locale === "ko"
+              ? `${TranslateRegion(review.toAddress.region)} ${review.toAddress.district}`
+              : `${translatedInfo.toR} ${translatedInfo.toD}`
         },
         {
           label: "date",
-          content: format(new Date(review.moveDate), "yyyy년 MM월 dd일 (EEE)", { locale: ko }),
+          content: locale === "ko" ? formatDate(review.moveDate) : translatedInfo.date,
           isArrow: false
         }
       ]
@@ -110,7 +157,7 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
           <div className="border-line-100 flex border-b py-3 lg:py-4">
             {moveDetails.map(({ label, content, isArrow }, index) => (
               <div key={label} className={clsx("flex items-center", index === 2 && "ml-auto lg:ml-10")}>
-                <div>
+                <div className={clsx(label === "from" && "mr-[20px]")}>
                   <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">
                     {t(`moveDetails.${label}`)}
                   </p>

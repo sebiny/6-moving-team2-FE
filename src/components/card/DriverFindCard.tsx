@@ -29,7 +29,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
 
   useEffect(() => {
     const translateTexts = async () => {
-      if (!driver?.shortIntro && !driver.detailIntro) return;
+      if (!driver?.shortIntro || !driver.detailIntro) return;
       // 한국어면 번역 생략
       if (locale === "ko") {
         setTranslatedIntro({

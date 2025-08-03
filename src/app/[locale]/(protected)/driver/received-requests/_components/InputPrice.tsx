@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import React from "react";
 
 interface InputPriceProps {
@@ -29,6 +30,7 @@ export default function InputPrice({
   size = "md"
 }: InputPriceProps) {
   const isSm = size === "sm";
+  const tC = useTranslations("Common");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -76,7 +78,7 @@ export default function InputPrice({
           </div>
         )}
         {icon && !isSm && <div className="ml-2 flex h-6 w-6 items-center justify-center">{icon}</div>}
-        <span className={isSm ? "ml-2 text-base text-neutral-400" : "ml-2 text-lg text-neutral-400"}>원</span>
+        <span className={isSm ? "ml-2 text-base text-neutral-400" : "ml-2 text-lg text-neutral-400"}>{tC("won")}</span>
       </div>
     </div>
   );
