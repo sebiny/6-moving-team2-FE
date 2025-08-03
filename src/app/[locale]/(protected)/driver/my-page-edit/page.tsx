@@ -33,43 +33,43 @@ function MyPageEditPage() {
 
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const handleClickEdit = async () => {
-    const updatedUser = await profileService.updateBasicDriverProfile({
-      name,
-      phone,
-      currentPassword,
-      newPassword: password,
-      passwordConfirmation
-    });
+    if (password)
+      await profileService.updateBasicDriverProfile({
+        name,
+        phone,
+        currentPassword,
+        newPassword: password,
+        passwordConfirmation
+      });
+    else await profileService.updateBasicDriverProfile({ name, phone });
     router.push("/driver/my-page");
   };
 
   const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
   const isCurrentPasswordValid = useMemo(() => PASSWORD_REGEX.test(currentPassword), [currentPassword]);
-  const isFormValid = useMemo(
-    () =>
-      !!name &&
-      isNameValid &&
-      !!phone &&
-      isPhoneValid &&
+  const isFormValid = useMemo(() => {
+    const basicInfoValid = !!name && isNameValid && !!phone && isPhoneValid;
+    const passwordInfoValid =
       !!currentPassword &&
       isCurrentPasswordValid &&
       !!password &&
       isPasswordValid &&
       !!passwordConfirmation &&
-      isPasswordConfirmationValid,
-    [
-      name,
-      isNameValid,
-      phone,
-      isPhoneValid,
-      currentPassword,
-      isCurrentPasswordValid,
-      password,
-      isPasswordValid,
-      passwordConfirmation,
-      isPasswordConfirmationValid
-    ]
-  );
+      isPasswordConfirmationValid;
+    if (password) return basicInfoValid && passwordInfoValid;
+    return basicInfoValid;
+  }, [
+    name,
+    isNameValid,
+    phone,
+    isPhoneValid,
+    currentPassword,
+    isCurrentPasswordValid,
+    password,
+    isPasswordValid,
+    passwordConfirmation,
+    isPasswordConfirmationValid
+  ]);
 
   useEffect(() => {
     if (user) {
@@ -98,7 +98,7 @@ function MyPageEditPage() {
               <TextField
                 value={name}
                 onChange={setName}
-                error={name.length > 0 && !isNameValid ? "이름은 2~5자의 한글만 사용 가능합니다." : ""}
+                error={name.length > 0 && !isNameValid ? "이름은 2~5자의 한글 또는 영어만 사용 가능합니다." : ""}
               />
             </div>
             <div className="border-line-100 border-b"></div>

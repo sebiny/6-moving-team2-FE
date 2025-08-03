@@ -12,10 +12,11 @@ import dayjs from "dayjs";
 import { getMoveTypeLabel } from "@/utills/moveUtils";
 import { formatStreetAddress } from "@/utills/addressUtils";
 import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AlertModal from "@/components/common-modal/AlertModal";
 import { useTranslations } from "next-intl";
 import { useKakaoShare } from "@/hooks/useKakaoShare";
+import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
 
 export default function PendingDetailPage() {
   const t = useTranslations("MyEstimates");
@@ -27,11 +28,11 @@ export default function PendingDetailPage() {
   const router = useRouter();
 
   const { mutate: acceptEstimate } = useAcceptEstimate();
+  const { mutate: createShareLink } = useCreateShareLink();
 
   const [showModal, setShowModal] = useState(false);
 
   const shareToKakao = useKakaoShare();
-  const estimateUrl = `https://www.moving-2.click/customer/my-estimates/estimate-pending/${id}`;
 
   if (!data) {
     return <div className="mt-90 flex justify-center text-center">견적 데이터를 불러오는 중입니다...</div>;
@@ -52,26 +53,59 @@ export default function PendingDetailPage() {
     });
   };
 
+  // 카카오 공유
   const handleKakaoShare = () => {
-    shareToKakao({
-      title: `${driver.name} 기사님의 견적서`,
-      description: `가격: ${price.toLocaleString()}원`,
-      imageUrl: driver.profileImage
-        ? `https://www.moving-2.click${driver.profileImage}`
-        : "https://www.moving-2.click/assets/images/img_profile.svg",
-      link: {
-        mobileWebUrl: estimateUrl,
-        webUrl: estimateUrl
-      },
-      buttons: [
-        {
-          title: "견적서 보기",
-          link: {
-            mobileWebUrl: estimateUrl,
-            webUrl: estimateUrl
-          }
+    createShareLink(id as string, {
+      onSuccess: (response) => {
+        const shareUrl = response?.shareUrl;
+
+        if (!shareUrl) {
+          alert("공유 URL을 생성하지 못했습니다.");
+          return;
         }
-      ]
+
+        shareToKakao({
+          title: `${driver.name} 기사님의 견적서`,
+          description: `가격: ${price.toLocaleString()}원`,
+          imageUrl: driver.profileImage
+            ? `https://www.moving-2.click${driver.profileImage}`
+            : "https://www.moving-2.click/assets/images/img_profile.svg",
+          link: {
+            mobileWebUrl: shareUrl,
+            webUrl: shareUrl
+          },
+          buttons: [
+            {
+              title: "견적서 보기",
+              link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+            }
+          ]
+        });
+      },
+      onError: (error: any) => {
+        alert("공유 링크 생성 실패: " + error.message);
+      }
+    });
+  };
+
+  // 페이스북 공유
+  const handleFacebookShare = () => {
+    createShareLink(id as string, {
+      onSuccess: (response) => {
+        const shareUrl = response?.shareUrl;
+
+        if (!shareUrl) {
+          alert("공유 URL을 생성하지 못했습니다.");
+          return;
+        }
+
+        // Facebook 공유 창 열기
+        const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+        window.open(facebookShareUrl, "_blank", "width=600,height=400");
+      },
+      onError: (error: any) => {
+        alert("Facebook 공유 링크 생성 실패: " + error.message);
+      }
     });
   };
 
@@ -131,7 +165,11 @@ export default function PendingDetailPage() {
             {/* 기본 버전 */}
             <div className="flex flex-col gap-6 lg:hidden">
               <div className="my-3 border-t border-gray-100" />
-              <ShareDriver text={t("shareEstimate")} onKakaoShare={handleKakaoShare} />
+              <ShareDriver
+                text={t("shareEstimate")}
+                onKakaoShare={handleKakaoShare}
+                onFacebookShare={handleFacebookShare}
+              />
               <div className="mt-10">
                 <Button type="orange" text={t("acceptEstimate")} onClick={handleAcceptEstimate} />
               </div>
@@ -152,7 +190,11 @@ export default function PendingDetailPage() {
 
             <div className="my-3 border-t border-gray-100" />
 
-            <ShareDriver text={t("shareEstimate")} onKakaoShare={handleKakaoShare} />
+            <ShareDriver
+              text={t("shareEstimate")}
+              onKakaoShare={handleKakaoShare}
+              onFacebookShare={handleFacebookShare}
+            />
           </div>
         </div>
       </div>
