@@ -23,7 +23,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
     ReceivedReq: (await import(`../messages/${locale}/ReceivedReq.json`)).default,
     DriverMypage: (await import(`../messages/${locale}/DriverMypage.json`)).default,
     MyEstimate: (await import(`../messages/${locale}/MyEstimate.json`)).default,
-
+    DriverProfile: (await import(`../messages/${locale}/DriverProfile.json`)).default,
+    DriverProfileEdit: (await import(`../messages/${locale}/DriverProfileEdit.json`)).default,
     Login: (await import(`../messages/${locale}/Login.json`)).default,
     Signup: (await import(`../messages/${locale}/Signup.json`)).default,
 
