@@ -42,5 +42,9 @@
     },
     "button": "查看收到的估价"
   },
-  "searchResult": "搜索结果"
+  "searchResult": "搜索结果",
+  "loading": {
+    "page": "正在跳转到报价请求页面...",
+    "request": "正在发送报价请求..."
+  }
 }

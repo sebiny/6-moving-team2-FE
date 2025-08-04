@@ -102,7 +102,7 @@ export default function MobileEstimateForm() {
   };
 
   if (isRequesting) {
-    return <LoadingLottie text="견적 요청 진행중입니다." />;
+    return <LoadingLottie text={t("loading.request")} />;
   }
 
   return (

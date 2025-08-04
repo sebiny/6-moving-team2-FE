@@ -43,5 +43,6 @@
   "success": {
     "create": "Profile created successfully!",
     "edit": "Profile updated successfully!"
-  }
+  },
+  "loadingProfile": "Navigating to profile page..."
 }
