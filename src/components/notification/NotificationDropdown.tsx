@@ -296,7 +296,7 @@ export default function Notification({ ref, onClick, className, isOpen }: Notifi
           <ul className="overflow-y-auto scroll-smooth" role="list" aria-label={t("notificationList")}>
             {notifications.length === 0 ? (
               <li className="p-4 text-center text-gray-400" role="status" aria-live="polite">
-                t("hasNotUnread")
+                {t("hasNotUnread")}
               </li>
             ) : (
               notifications.map((item) => (
