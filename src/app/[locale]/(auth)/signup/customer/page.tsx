@@ -20,7 +20,7 @@ export default function SignupCustomer() {
     passwordConfirmation,
     setPasswordConfirmation,
     onSubmit,
-    isNameValid,
+    // isNameValid,
     isEmailValid,
     isPhoneValid,
     isPasswordValid,

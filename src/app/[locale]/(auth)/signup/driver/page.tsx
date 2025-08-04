@@ -20,7 +20,7 @@ export default function SignupDriver() {
     passwordConfirmation,
     setPasswordConfirmation,
     onSubmit,
-    isNameValid,
+    // isNameValid,
     isEmailValid,
     isPhoneValid,
     isPasswordValid,
