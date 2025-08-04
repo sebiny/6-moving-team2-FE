@@ -44,16 +44,19 @@ export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProp
   }));
 
   const SIZE_CLASSES = {
-    base: ["lg:px-90 lg:gap-8 lg:pt-4"],
-    sm: ["sm:gap-6 sm:px-6"],
-    md: ["md:gap-6 md:px-18"]
+    // base: [""],
+    // sm: ["sm: sm:px-6 sm:w-full"],
+    // md: ["md: md:px-18 md:w-full"]
+    base: ["lg:gap-8 lg:pt-4 "],
+    sm: ["sm:gap-6 "],
+    md: ["md:gap-6 "]
   };
 
   return (
-    <div>
+    <div className="border-line-100 flex items-center justify-center border-b-1 bg-gray-50 pb-0 shadow-[0px_2px_10px_rgba(248,248,248,0.10)]">
       <div
         className={clsx(
-          "border-line-100 flex items-start border-b-1 bg-gray-50 pb-0 shadow-[0px_2px_10px_rgba(248,248,248,0.10)]",
+          "flex w-full max-w-[var(--container-gnb)] min-w-[375px] flex-row items-start px-6 lg:pl-55 xl:pl-49",
           ...SIZE_CLASSES.base,
           ...SIZE_CLASSES.md,
           ...SIZE_CLASSES.sm
