@@ -47,7 +47,7 @@ function EstimateButton({
       onClick={onClick}
       onMouseEnter={() => showHoverEffect && setIsHovered(true)}
       onMouseLeave={() => showHoverEffect && setIsHovered(false)}
-      className={`flex cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold transition-all duration-200 md:py-[17px] md:text-lg ${color} ${className}`}
+      className={`flex h-[48px] cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold transition-all duration-200 md:h-[56px] md:py-[17px] md:text-lg ${color} ${className}`}
     >
       <p className="transition-opacity duration-200">
         {showHoverEffect && isHovered ? `${estimateCount}명의 기사님이 보냈습니다` : text}
