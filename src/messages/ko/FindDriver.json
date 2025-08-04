@@ -12,6 +12,7 @@
     "year": "년",
     "count": "건"
   },
+  "loadingDriverInfo": "기사님 정보를 불러오고 있어요!!",
   "driverPage": {
     "completed": "진행",
     "review": "리뷰",
@@ -33,6 +34,7 @@
     "subtitle": "지정 견적을 요청해보세요!",
     "like Driver": "찜하기",
     "dislike Driver": "찜 해제하기",
+    "driver": "기사님",
     "modal": {
       "title": "지정 견적 요청",
       "no": "진행 중인 지정 견적 요청이 없습니다.",

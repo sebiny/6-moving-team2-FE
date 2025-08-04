@@ -4,5 +4,6 @@
   "mypage": "My page",
   "overview": "Activity Overview",
   "editProfile": "Edit my profile",
-  "editBasic": "Edit bacic Info"
+  "editBasic": "Edit bacic Info",
+  "loadingDriverInfo": "Loading driver information!!"
 }

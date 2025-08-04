@@ -1,7 +1,9 @@
+"use client";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import LikeIcon from "@/components/icon/LikeIcon";
 import { DriverType } from "@/types/driverType";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
+import { batchTranslate } from "@/utills/batchTranslate";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -52,8 +54,7 @@ function LikedDriverInfo({ driver }: LikedDriverInfo) {
                 <div className="flex gap-1">
                   <p className="text-gray-300">{t("career")}</p>
                   <p>
-                    {driver.career}
-                    {t("year")}
+                    {driver.career} {t("year")}
                   </p>
                 </div>
                 <div className="border-line-200 h-[14px] w-[1px] border-l"></div>

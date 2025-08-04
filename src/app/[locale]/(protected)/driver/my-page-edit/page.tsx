@@ -25,7 +25,7 @@ function MyPageEditPage() {
     setPassword,
     passwordConfirmation,
     setPasswordConfirmation,
-    isNameValid,
+    // isNameValid,
     isPhoneValid,
     isPasswordValid,
     isPasswordConfirmationValid
@@ -48,7 +48,7 @@ function MyPageEditPage() {
   const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
   const isCurrentPasswordValid = useMemo(() => PASSWORD_REGEX.test(currentPassword), [currentPassword]);
   const isFormValid = useMemo(() => {
-    const basicInfoValid = !!name && isNameValid && !!phone && isPhoneValid;
+    const basicInfoValid = !!name && !!phone && isPhoneValid;
     const passwordInfoValid =
       !!currentPassword &&
       isCurrentPasswordValid &&
@@ -60,7 +60,7 @@ function MyPageEditPage() {
     return basicInfoValid;
   }, [
     name,
-    isNameValid,
+    // isNameValid,
     phone,
     isPhoneValid,
     currentPassword,
@@ -94,11 +94,11 @@ function MyPageEditPage() {
         <div className="lg:flex lg:justify-center lg:gap-30">
           <div className="flex w-full flex-col gap-5">
             <div>
-              <div className="text-black-300 mb-4 font-semibold lg:text-xl">{"name"}</div>
+              <div className="text-black-300 mb-4 font-semibold lg:text-xl">{t("name")}</div>
               <TextField
                 value={name}
                 onChange={setName}
-                error={name.length > 0 && !isNameValid ? "이름은 2~5자의 한글 또는 영어만 사용 가능합니다." : ""}
+                // error={name.length > 0 && !isNameValid ? "이름은 2~5자의 한글 또는 영어만 사용 가능합니다." : ""}
               />
             </div>
             <div className="border-line-100 border-b"></div>
@@ -111,7 +111,7 @@ function MyPageEditPage() {
               <TextField
                 value={phone}
                 onChange={setPhone}
-                error={phone.length > 0 && !isPhoneValid ? "유효하지 않은 전화번호 형식입니다. (예: 01012345678)" : ""}
+                error={phone.length > 0 && !isPhoneValid ? t("phoneValid") : ""}
               />
             </div>
           </div>
@@ -121,14 +121,10 @@ function MyPageEditPage() {
               <div className="text-black-300 mb-4 font-semibold lg:text-xl">{t("pw")}</div>
               <TextField
                 type="password"
-                placeholder="현재 비밀번호를 입력해주세요"
+                placeholder={t("currentPWPlaceholder")}
                 value={currentPassword}
                 onChange={setCurrentPassword}
-                error={
-                  currentPassword.length > 0 && !isCurrentPasswordValid
-                    ? "비밀번호는 최소 8자 이상이며 영문, 숫자, 특수문자를 포함해야 합니다."
-                    : ""
-                }
+                error={currentPassword.length > 0 && !isCurrentPasswordValid ? t("passwordValid") : ""}
               />
             </div>
             <div className="border-line-100 hidden border-b lg:block"></div>
@@ -136,26 +132,20 @@ function MyPageEditPage() {
               <div className="text-black-300 mb-4 font-semibold lg:text-xl">{t("newPw")}</div>
               <TextField
                 type="password"
-                placeholder="새 비밀번호를 입력해주세요"
+                placeholder={t("newPWPlaceholder")}
                 value={password}
                 onChange={setPassword}
-                error={
-                  password.length > 0 && !isPasswordValid
-                    ? "비밀번호는 최소 8자 이상이며 영문, 숫자, 특수문자를 포함해야 합니다."
-                    : ""
-                }
+                error={password.length > 0 && !isPasswordValid ? t("passwordValid") : ""}
               />
             </div>
             <div>
-              <div className="text-black-300 mb-4 font-semibold lg:text-xl">{t("checkPw")}</div>
+              <div className="text-black-300 mb-4 font-semibold lg:text-xl">{t("checkNewPw")}</div>
               <TextField
                 type="password"
-                placeholder="새 비밀번호를 다시 한번 입력해주세요"
+                placeholder={t("newPWConfirmPlaceholder")}
                 value={passwordConfirmation}
                 onChange={setPasswordConfirmation}
-                error={
-                  passwordConfirmation.length > 0 && !isPasswordConfirmationValid ? "비밀번호가 일치하지 않습니다." : ""
-                }
+                error={passwordConfirmation.length > 0 && !isPasswordConfirmationValid ? t("newPWConfirmValid") : ""}
               />
             </div>
             <div className="mt-4 flex flex-col gap-2 lg:mt-16 lg:flex-row-reverse">

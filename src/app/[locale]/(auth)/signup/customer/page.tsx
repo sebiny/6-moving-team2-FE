@@ -20,7 +20,7 @@ export default function SignupCustomer() {
     passwordConfirmation,
     setPasswordConfirmation,
     onSubmit,
-    isNameValid,
+    // isNameValid,
     isEmailValid,
     isPhoneValid,
     isPasswordValid,
@@ -74,7 +74,7 @@ export default function SignupCustomer() {
                   onChange={setName}
                   className="w-full"
                   mdHeight="54"
-                  error={name.length > 0 && !isNameValid ? t("isNameValid") : ""}
+                  // error={name.length > 0 && !isNameValid ? t("isNameValid") : ""}
                 />
               </div>
 

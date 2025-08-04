@@ -20,7 +20,7 @@ export interface DriverInfo {
 // 전체 Title 정보 타입 정의
 interface TitleProps {
   status?: "PROPOSED" | "AUTO_REJECTED" | "ACCEPTED";
-  labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
+  labels?: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[];
   driver: DriverInfo;
   message: string;
   estimatePrice?: number;
@@ -48,7 +48,7 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       {/* sm 전용 */}
       <div className="mb-2 flex items-center justify-between md:hidden">
         <div className="flex gap-2">
-          {labels.map((label) => (
+          {labels?.map((label) => (
             <ChipRectangle key={label} moveType={label} size="sm" />
           ))}
         </div>
@@ -60,7 +60,7 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
 
       {/* md 이상 */}
       <div className="mb-4 hidden flex-wrap gap-2 md:flex">
-        {labels.map((label) => (
+        {labels?.map((label) => (
           <ChipRectangle key={label} moveType={label} size="md" />
         ))}
       </div>

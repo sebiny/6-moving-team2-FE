@@ -47,7 +47,11 @@ function FavoriteButton({ favorite, setFavorite }: FavoriteButtonType) {
       onClick={handleClickFavorite}
     >
       <LikeIcon color="black" isFilled={isLg || favorite} />
-      {isLg && <p className="text-lg font-semibold">기사님 {favorite ? t("dislike Driver") : t("like Driver")}</p>}
+      {isLg && (
+        <p className="text-lg font-semibold">
+          {t("driver")} {favorite ? t("dislike Driver") : t("like Driver")}
+        </p>
+      )}
     </button>
   );
 }

@@ -8,7 +8,8 @@ import DaumPostcodeModal from "./DaumPostcodeModal";
 import { Address, DaumPostcodeAddress } from "@/types/Address";
 import { createAddress } from "@/lib/api/api-estimateRequest";
 import { formatAddress } from "@/utills/AddressMapper";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 interface AddressCardModalProps {
   title: string;
@@ -27,6 +28,7 @@ export default function AddressCardModal({
   selectedAddress
 }: AddressCardModalProps) {
   const t = useTranslations("EstimateReq");
+  const locale = useLocale();
   const [inputValue, setInputValue] = useState("");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showPostcode, setShowPostcode] = useState(false);
@@ -53,27 +55,52 @@ export default function AddressCardModal({
     setSelectedIndex((prev) => (prev === idx ? null : idx));
   };
 
-  const handleCompletePostcode = useCallback(async (addr: DaumPostcodeAddress) => {
-    const savedAddress = await createAddress(
-      formatAddress({
-        postalcode: addr.zonecode,
+  const handleCompletePostcode = useCallback(
+    async (addr: DaumPostcodeAddress) => {
+      const fullJibunAddress = addr.jibunAddress || "";
+
+      const savedAddress = await createAddress(
+        formatAddress({
+          postalcode: addr.zonecode,
+          roadAddress: addr.roadAddress,
+          jibunAddress: fullJibunAddress,
+          buildingName: addr.buildingName
+        })
+      );
+
+      let translated = { roadAddress: addr.roadAddress, jibunAddress: fullJibunAddress };
+
+      if (locale !== "ko") {
+        try {
+          translated = await batchTranslate(
+            {
+              roadAddress: addr.roadAddress,
+              jibunAddress: fullJibunAddress
+            },
+            locale
+          );
+        } catch (e) {
+          console.warn("주소 번역 실패", e);
+        }
+      }
+
+      const newAddress: Address = {
+        id: savedAddress.id,
+        postalCode: savedAddress.postalCode,
         roadAddress: addr.roadAddress,
-        jibunAddress: addr.jibunAddress,
-        buildingName: addr.buildingName
-      })
-    );
+        jibunAddress: fullJibunAddress,
+        translations: {
+          roadAddress: translated.roadAddress,
+          jibunAddress: translated.jibunAddress
+        }
+      };
 
-    const newAddress: Address = {
-      id: savedAddress.id,
-      postalCode: savedAddress.postalCode,
-      roadAddress: savedAddress.street,
-      jibunAddress: savedAddress.detail || addr.jibunAddress
-    };
-
-    setAddressList((prev) => [newAddress, ...prev]);
-    setSelectedIndex(0);
-    setShowPostcode(false);
-  }, []);
+      setAddressList((prev) => [newAddress, ...prev]);
+      setSelectedIndex(0);
+      setShowPostcode(false);
+    },
+    [locale]
+  );
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#141414]/40">
@@ -132,8 +159,10 @@ export default function AddressCardModal({
               <AddressResultCard
                 key={addr.id}
                 postalCode={addr.postalCode}
-                roadAddress={addr.roadAddress}
-                jibunAddress={addr.jibunAddress}
+                roadAddress={locale === "ko" ? addr.roadAddress : addr.translations?.roadAddress || addr.roadAddress}
+                jibunAddress={
+                  locale === "ko" ? addr.jibunAddress : addr.translations?.jibunAddress || addr.jibunAddress
+                }
                 selected={selectedIndex === idx}
                 onClick={() => handleSelectAddress(idx)}
               />

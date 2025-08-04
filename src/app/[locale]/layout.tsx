@@ -10,6 +10,7 @@ import { routing } from "@/i18n/routing";
 import ConditionalTransitionWrapper from "@/components/container/ConditionalTransitionWrapper";
 import { cssTransition, ToastContainer } from "react-toastify";
 import Script from "next/script";
+import WelcomeToastTrigger from "@/components/WelcomeToastTrigger";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,6 +62,7 @@ export default async function RootLayout({
                 />
               </div>
             </ConditionalTransitionWrapper>
+            <WelcomeToastTrigger />
           </Providers>
         </NextIntlClientProvider>
       </body>
