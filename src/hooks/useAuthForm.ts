@@ -11,7 +11,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PHONE_REGEX = /^010\d{8}$/;
 const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
 
-export function useLoginForm(userType: UserType) {
+export function useLoginForm(userType: UserType, t: (key: string) => string) {
   const router = useRouter();
   const { user, login } = useAuth();
   const [email, setEmail] = useState("");
@@ -29,8 +29,9 @@ export function useLoginForm(userType: UserType) {
     try {
       await login(email, password, userType);
       // 로그인 성공하면 useEffect에서 user 상태 확인 후 라우팅 처리
+      ToastModal(t("loginCompleted"));
     } catch (error: any) {
-      console.error("Login failed:", error);
+      console.error("로그인 실패:", error);
       const message = parseBackendError(error.status, error.message);
       ToastModal(message);
     }

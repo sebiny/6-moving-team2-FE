@@ -11,6 +11,7 @@ import InputText from "@/components/InputText";
 import SelectService from "@/components/profile/SelectService"; // 고객 컴포넌트 import
 import SelectRegion from "@/components/profile/SelectRegion"; // 고객 컴포넌트 import
 import { useTranslations } from "next-intl";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 interface DriverProfileFormProps {
   isEditMode: boolean;
@@ -127,11 +128,11 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
         authUtils.setAccessToken(response.accessToken);
       }
 
-      alert(`프로필 ${isEditMode ? "수정" : "등록"} 완료!`);
+      ToastModal(t(isEditMode ? "success.edit" : "success.create"));
       router.push("/");
     } catch (error: any) {
       console.error(error);
-      alert("프로필 제출 중 오류가 발생했습니다.");
+      ToastModal(t(isEditMode ? "error.edit" : "error.create"));
     } finally {
       setIsSubmitting(false);
     }

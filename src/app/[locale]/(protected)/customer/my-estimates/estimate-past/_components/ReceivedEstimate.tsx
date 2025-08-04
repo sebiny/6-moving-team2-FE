@@ -3,10 +3,12 @@
 import Image from "next/image";
 import EstimateStatus from "@/components/chip/EstimateStatus";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Estimate } from "@/types/estimateType";
 import { MoveType } from "@/constant/moveTypes";
 import ChipRectangle from "@/components/chip/ChipRectangle";
+import { useEffect, useState } from "react";
+import { translateWithDeepL } from "@/utills/translateWithDeepL";
 
 interface Props {
   data: Estimate;
@@ -17,7 +19,20 @@ export default function ReceivedEstimate({ data, moveType }: Props) {
   const t = useTranslations("MyEstimates");
   const router = useRouter();
   const { driver, comment, price, status, id, isDesignated } = data;
-
+  const locale = useLocale();
+  const [translatedMessage, setTranslatedMessage] = useState<string | null>(null);
+  (useEffect(() => {
+    const translate = async () => {
+      try {
+        const translated = await translateWithDeepL(comment, locale.toUpperCase());
+        setTranslatedMessage(translated);
+      } catch {
+        setTranslatedMessage(comment); //fallback
+      }
+    };
+    translate();
+  }),
+    [comment, locale]);
   // 라벨 목록 구성
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
@@ -35,7 +50,6 @@ export default function ReceivedEstimate({ data, moveType }: Props) {
           <ChipRectangle key={label} moveType={label} size="sm" />
         ))}
       </div>
-
       {/* md 이상 */}
       <div className="hidden gap-2 md:flex">
         {labels.map((label) => (
@@ -49,7 +63,7 @@ export default function ReceivedEstimate({ data, moveType }: Props) {
           onClick={ClickDetail}
           className="cursor-pointer text-base font-semibold text-gray-800 hover:text-orange-400 hover:underline lg:text-xl"
         >
-          {comment}
+          {translatedMessage}
         </p>
         <div className="hidden md:block">
           <EstimateStatus status={status} />
