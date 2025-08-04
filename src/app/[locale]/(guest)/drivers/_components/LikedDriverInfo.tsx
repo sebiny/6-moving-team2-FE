@@ -2,6 +2,7 @@
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import LikeIcon from "@/components/icon/LikeIcon";
 import { DriverType } from "@/types/driverType";
+import { translateWithDeepL } from "@/utills/translateWithDeepL";
 import { batchTranslate } from "@/utills/batchTranslate";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
@@ -14,31 +15,23 @@ interface LikedDriverInfo {
 function LikedDriverInfo({ driver }: LikedDriverInfo) {
   const t = useTranslations("FindDriver.driverFindCard");
   const locale = useLocale();
-  const [translatedIntro, setTranslatedIntro] = useState({ short: "" });
+  const [translatedIntro, setTranslatedIntro] = useState<string | null>(null);
 
   useEffect(() => {
-    const translateTexts = async () => {
-      if (!driver?.shortIntro) return;
-      // 한국어면 번역 생략
-      if (locale === "ko") {
-        setTranslatedIntro({ short: driver.shortIntro ?? "" });
-        return;
-      }
+    const translate = async () => {
       try {
-        const result = await batchTranslate({ short: driver.shortIntro ?? "" }, locale);
-        setTranslatedIntro({ short: result.short });
-      } catch (e) {
-        console.warn("번역 실패", e);
+        const translated = await translateWithDeepL(driver.shortIntro, locale.toUpperCase());
+        setTranslatedIntro(translated);
+      } catch {
+        setTranslatedIntro(driver.shortIntro);
       }
     };
-
-    translateTexts();
+    translate();
   }, [driver, locale]);
-
   return (
     <div className="border-line-100 rounded-2xl border px-7 py-6 shadow-sm">
       <ChipRectangle moveType="SMALL" size="sm" />
-      <p className="text-black-300 mt-3 text-xl font-semibold">{translatedIntro.short}</p>
+      <p className="text-black-300 mt-3 text-xl font-semibold">{translatedIntro}</p>
       <div className="flex gap-5">
         <Image src="/assets/images/img_profile.svg" alt="프로필 이미지" width={50} height={50} />
         <div>
