@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import ProfileForm from "@/components/profile/ProfileForm";
 import { authService } from "@/lib/api/api-auth";
 import { User } from "@/providers/AuthProvider";
+import { useTranslations } from "next-intl";
+import LoadingLottie from "@/components/lottie/LoadingLottie";
 
 export default function CustomerProfileEditPage() {
   const [initialData, setInitialData] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslations("Profile");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -26,7 +29,7 @@ export default function CustomerProfileEditPage() {
   }, []);
 
   if (loading) {
-    return <div>로딩 중...</div>;
+    return <LoadingLottie text={t("loadingProfile")} />;
   }
 
   if (error) {
