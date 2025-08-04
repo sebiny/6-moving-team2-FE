@@ -5,7 +5,7 @@ import { ToastModal } from "@/components/common-modal/ToastModal";
 
 export default function TestPage() {
   const handleShowToast = () => {
-    ToastModal("견적요청에 실패했습니다!");
+    ToastModal("견적요청에 실패했습니다!쿄쿄쿄쿄켜쿄쿄");
   };
 
   return (
