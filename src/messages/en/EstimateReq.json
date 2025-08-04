@@ -42,5 +42,9 @@
     },
     "button": "View Received Estimates"
   },
-  "searchResult": "Search Result"
+  "searchResult": "Search Result",
+  "loading": {
+    "page": "Navigating to estimate request page...",
+    "request": "Sending estimate request..."
+  }
 }

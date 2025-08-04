@@ -42,5 +42,9 @@
     },
     "button": "받은 견적 보러가기"
   },
-  "searchResult": "검색 결과"
+  "searchResult": "검색 결과",
+  "loading": {
+    "page": "견적 요청 페이지로 이동중입니다.",
+    "request": "견적 요청 진행중입니다."
+  }
 }
