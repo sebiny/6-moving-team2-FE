@@ -11,6 +11,7 @@
     "year": "年",
     "count": "个"
   },
+  "loadingDriverInfo": "正在加载司机信息！！",
   "driverPage": {
     "completed": "已完成",
     "review": "评论",

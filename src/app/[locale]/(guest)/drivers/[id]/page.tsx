@@ -43,11 +43,17 @@ function DriverDetailPage() {
     return (
       <div className="flex flex-col items-center">
         <OrangeBackground />
-        <LoadingLottie text="기사님 정보를 불러오고 있어요!!" />
+        <LoadingLottie text={t("loadingDriverInfo")} />
       </div>
     );
 
-  if (!driver) return <div>기사님 정보를 불러올 수 없습니다</div>;
+  if (!driver)
+    return (
+      <div className="flex flex-col items-center">
+        <OrangeBackground />
+        <div>{t("noDrivers")}</div>
+      </div>
+    );
 
   // 카카오 공유
   const handleKakaoShare = () => {

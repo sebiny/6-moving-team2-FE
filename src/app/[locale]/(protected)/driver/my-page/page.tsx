@@ -49,10 +49,16 @@ function DriverMyPage() {
     return (
       <div className="flex flex-col items-center">
         <OrangeBackground />
-        <LoadingLottie text="기사님 정보를 불러오고 있어요!!" />
+        <LoadingLottie text={t("loadingDriverInfo")} />
       </div>
     );
-  if (!driver) return <div>{t("failedFetch")}</div>;
+  if (!driver)
+    return (
+      <div className="flex flex-col items-center">
+        <OrangeBackground />
+        <div>{t("failedFetch")}</div>
+      </div>
+    );
 
   return (
     <div className="flex flex-col items-center">

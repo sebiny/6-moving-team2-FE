@@ -11,6 +11,7 @@
     "year": "Year",
     "count": "Count"
   },
+  "loadingDriverInfo": "Loading driver information!!",
   "driverPage": {
     "completed": "Completed",
     "review": "Review",
