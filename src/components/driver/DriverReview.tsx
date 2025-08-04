@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StarIcon from "../icon/StarIcon";
 import { format } from "date-fns";
 import { ReviewType } from "@/types/reviewType";
+import { translateWithDeepL } from "@/utills/translateWithDeepL";
+import { useLocale, useTranslations } from "next-intl";
 
 interface DriverReviewType {
   review: ReviewType;
 }
 
 function DriverReview({ review }: DriverReviewType) {
+  const locale = useLocale();
+  const [translatedReview, setTrnaslatedReview] = useState<string | null>(null);
+
+  (useEffect(() => {
+    const translate = async () => {
+      try {
+        const translated = await translateWithDeepL(review.content, locale.toUpperCase());
+        setTrnaslatedReview(translated);
+      } catch {
+        setTrnaslatedReview(review.content); //fallback
+      }
+    };
+    translate();
+  }),
+    [review, locale]);
   return (
     <div className="flex flex-col gap-6 py-6">
       <div>
@@ -20,7 +37,7 @@ function DriverReview({ review }: DriverReviewType) {
           <StarIcon rating={review.rating} width={100} />
         </div>
       </div>
-      <p>{review.content}</p>
+      <p>{translatedReview}</p>
     </div>
   );
 }

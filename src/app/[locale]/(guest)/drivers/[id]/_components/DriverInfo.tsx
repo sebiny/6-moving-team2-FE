@@ -2,7 +2,7 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import LikeIcon from "@/components/icon/LikeIcon";
 import { DriverType } from "@/types/driverType";
 import Image from "next/image";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DriverSimpleInfo from "@/components/driver/DriverSimpleInfo";
 import { useLocale, useTranslations } from "next-intl";
 import { batchTranslate } from "@/utills/batchTranslate";

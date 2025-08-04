@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import WritingIcon from "./icon/WritingIcon";
 
 interface ButtonType {
-  text: string;
+  text: string | ReactNode;
   type: "orange" | "gray" | "white-orange" | "white-gray" | "outline";
   image?: boolean;
   className?: string;
@@ -40,7 +40,7 @@ function Button({
       onClick={onClick}
       className={`flex h-[48px] cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold md:h-[56px] md:py-[17px] md:text-lg ${color} ${className}`}
     >
-      <p>{text}</p>
+      {text}
       {image && <WritingIcon color={type === "orange" ? "text-white" : "text-gray-300"} />}
     </button>
   );

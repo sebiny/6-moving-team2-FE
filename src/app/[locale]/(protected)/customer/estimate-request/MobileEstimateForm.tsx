@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createEstimateRequest } from "@/lib/api/api-estimateRequest";
 import MoveTypeCard from "./_components/card/MoveTypeCard";
@@ -9,9 +9,10 @@ import AddressCardModal from "./_components/modal/AddressCardModal";
 import Button from "@/components/Button";
 import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 export default function MobileEstimateForm() {
   const t = useTranslations("EstimateReq");
@@ -31,6 +32,38 @@ export default function MobileEstimateForm() {
   const [addressTo, setAddressTo] = useState<Address | null>(null);
   const [showModal, setShowModal] = useState<"from" | "to" | null>(null);
   const [isRequesting, setIsRequesting] = useState(false);
+
+  const locale = useLocale();
+  const [translatedAddressFrom, setTranslatedAddressFrom] = useState("");
+  const [translatedAddressTo, setTranslatedAddressTo] = useState("");
+
+  useEffect(() => {
+    if (!addressFrom || locale === "ko") {
+      setTranslatedAddressFrom(addressFrom ? AddressSummary(addressFrom.roadAddress) : "");
+      return;
+    }
+
+    const translate = async () => {
+      const result = await batchTranslate({ road: addressFrom.roadAddress }, locale);
+      setTranslatedAddressFrom(AddressSummary(result.road));
+    };
+
+    translate();
+  }, [addressFrom, locale]);
+
+  useEffect(() => {
+    if (!addressTo || locale === "ko") {
+      setTranslatedAddressTo(addressTo ? AddressSummary(addressTo.roadAddress) : "");
+      return;
+    }
+
+    const translate = async () => {
+      const result = await batchTranslate({ road: addressTo.roadAddress }, locale);
+      setTranslatedAddressTo(AddressSummary(result.road));
+    };
+
+    translate();
+  }, [addressTo, locale]);
 
   const isValidStep1 = !!moveType;
   const isValidStep2 = !!moveDate;
@@ -69,7 +102,7 @@ export default function MobileEstimateForm() {
   };
 
   if (isRequesting) {
-    return <LoadingLottie text="견적 요청 진행중입니다." />;
+    return <LoadingLottie text={t("loading.request")} />;
   }
 
   return (
@@ -165,9 +198,16 @@ export default function MobileEstimateForm() {
           {/* 주소 검색 버튼 */}
           <div className="flex w-[327px] flex-col gap-6">
             <div className="flex flex-col gap-3">
-              <p className="font-medium">{t("from")}</p>
               <Button
-                text={addressFrom ? AddressSummary(addressFrom.roadAddress) : t("fromChoose")}
+                text={
+                  addressFrom ? (
+                    <div className="scroll-hide max-w-full overflow-x-auto whitespace-nowrap">
+                      {translatedAddressFrom}
+                    </div>
+                  ) : (
+                    t("fromChoose")
+                  )
+                }
                 type="white-orange"
                 className="h-[54px] justify-start rounded-xl px-8 leading-[22px]"
                 onClick={() => setShowModal("from")}
@@ -176,7 +216,15 @@ export default function MobileEstimateForm() {
             <div className="flex flex-col gap-3 lg:w-full">
               <p className="font-medium">{t("to")}</p>
               <Button
-                text={addressTo ? AddressSummary(addressTo.roadAddress) : t("toChoose")}
+                text={
+                  addressTo ? (
+                    <div className="scroll-hide max-w-full overflow-x-auto whitespace-nowrap">
+                      {translatedAddressTo}
+                    </div>
+                  ) : (
+                    t("toChoose")
+                  )
+                }
                 type="white-orange"
                 className="h-[54px] justify-start rounded-xl px-8 leading-[22px]"
                 onClick={() => setShowModal("to")}

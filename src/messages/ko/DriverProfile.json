@@ -8,7 +8,6 @@
   "checkNewPw": "새 비밀 번호 확인",
   "editBt": "수정하기",
   "cancel": "취소",
-
   "editProfile": "프로필 수정",
   "profileImage": "프로필 이미지",
   "nickname": "별명",
@@ -16,5 +15,12 @@
   "introOneLine": "한 줄 소개",
   "description": "상세 설명",
   "services": "제공 서비스",
-  "serviceArea": "서비스 가능 지역"
+  "serviceArea": "서비스 가능 지역",
+  "currentPWPlaceholder": "현재 비밀번호를 입력해주세요",
+  "newPWPlaceholder": "새 비밀번호를 입력해주세요",
+  "passwordValid": "비밀번호는 최소 8자 이상이며 영문, 숫자, 특수문자를 포함해야 합니다.",
+  "newPWConfirmPlaceholder": "새 비밀번호를 다시 한번 입력해주세요",
+  "newPWConfirmValid": "비밀번호가 일치하지 않습니다.",
+  "nameValid": "이름은 2~5자의 한글 또는 영어만 사용 가능합니다.",
+  "phoneValid": "유효하지 않은 전화번호 형식입니다. (예: 01012345678)"
 }

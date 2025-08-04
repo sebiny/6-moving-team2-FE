@@ -16,5 +16,12 @@
   "introOneLine": "One-line Introduction",
   "description": "Detailed Description",
   "services": "Services Provided",
-  "serviceArea": "Service Coverage Area"
+  "serviceArea": "Service Coverage Area",
+  "currentPWPlaceholder": "Please enter your current password",
+  "newPWPlaceholder": "Please enter your new password",
+  "passwordValid": "Password must be at least 8 characters long and include letters, numbers, and special characters.",
+  "newPWConfirmPlaceholder": "Please re-enter your new password",
+  "newPWConfirmValid": "Passwords do not match.",
+  "nameValid": "Name must be 2 to 5 characters and contain only Korean or English letters.",
+  "phoneValid": "Invalid phone number format. (e.g., 01012345678)"
 }

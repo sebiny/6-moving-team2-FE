@@ -11,6 +11,7 @@
     "year": "Year",
     "count": "Count"
   },
+  "loadingDriverInfo": "Loading driver information!!",
   "driverPage": {
     "completed": "Completed",
     "review": "Review",
@@ -32,6 +33,7 @@
     "subtitle": "Request a Quote",
     "like Driver": "Like",
     "dislike Driver": "Dislike",
+    "driver": "Driver",
     "modal": {
       "title": "Request a Quote",
       "no": "No ongoing quote requests.",

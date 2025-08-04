@@ -4,6 +4,10 @@ export interface Address {
   postalCode: string;
   roadAddress: string;
   jibunAddress: string;
+  translations?: {
+    roadAddress?: string;
+    jibunAddress?: string;
+  };
 }
 
 export type RegionType =

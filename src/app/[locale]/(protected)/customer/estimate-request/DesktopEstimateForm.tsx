@@ -9,9 +9,10 @@ import AddressCardModal from "./_components/modal/AddressCardModal";
 import Button from "@/components/Button";
 import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 export default function DesktopEstimateForm() {
   const t = useTranslations("EstimateReq");
@@ -29,6 +30,38 @@ export default function DesktopEstimateForm() {
   const [addressTo, setAddressTo] = useState<Address | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRequesting, setIsRequesting] = useState(false);
+
+  const locale = useLocale();
+  const [translatedAddressFrom, setTranslatedAddressFrom] = useState("");
+  const [translatedAddressTo, setTranslatedAddressTo] = useState("");
+
+  useEffect(() => {
+    if (!addressFrom || locale === "ko") {
+      setTranslatedAddressFrom(addressFrom ? AddressSummary(addressFrom.roadAddress) : "");
+      return;
+    }
+
+    const translate = async () => {
+      const result = await batchTranslate({ road: addressFrom.roadAddress }, locale);
+      setTranslatedAddressFrom(AddressSummary(result.road));
+    };
+
+    translate();
+  }, [addressFrom, locale]);
+
+  useEffect(() => {
+    if (!addressTo || locale === "ko") {
+      setTranslatedAddressTo(addressTo ? AddressSummary(addressTo.roadAddress) : "");
+      return;
+    }
+
+    const translate = async () => {
+      const result = await batchTranslate({ road: addressTo.roadAddress }, locale);
+      setTranslatedAddressTo(AddressSummary(result.road));
+    };
+
+    translate();
+  }, [addressTo, locale]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -71,11 +104,11 @@ export default function DesktopEstimateForm() {
   };
 
   if (isLoading) {
-    return <LoadingLottie text="견적 요청 페이지로 이동중입니다." />;
+    return <LoadingLottie text={t("loading.page")} />;
   }
 
   if (isRequesting) {
-    return <LoadingLottie text="견적 요청 진행중입니다." />;
+    return <LoadingLottie text={t("loading.request")} />;
   }
 
   return (
@@ -116,19 +149,35 @@ export default function DesktopEstimateForm() {
               <div className="flex flex-col gap-3 lg:w-full">
                 <p className="font-medium">{t("from")}</p>
                 <Button
-                  text={addressFrom ? AddressSummary(addressFrom.roadAddress) : t("fromChoose")}
+                  text={
+                    addressFrom ? (
+                      <div className="scroll-hide max-w-full overflow-x-auto whitespace-nowrap">
+                        {translatedAddressFrom}
+                      </div>
+                    ) : (
+                      t("fromChoose")
+                    )
+                  }
                   type="white-orange"
                   onClick={() => setShowModal("from")}
-                  className="h-[54px] w-100 justify-start truncate overflow-hidden rounded-xl px-6 py-4 whitespace-nowrap lg:w-[252px]"
+                  className="h-[54px] w-100 justify-start rounded-xl px-6 py-4 lg:w-[252px]"
                 />
               </div>
               <div className="flex flex-col gap-3 lg:w-full">
                 <p className="font-medium">{t("to")}</p>
                 <Button
-                  text={addressTo ? AddressSummary(addressTo.roadAddress) : t("toChoose")}
+                  text={
+                    addressTo ? (
+                      <div className="scroll-hide max-w-full overflow-x-auto whitespace-nowrap">
+                        {translatedAddressTo}
+                      </div>
+                    ) : (
+                      t("toChoose")
+                    )
+                  }
                   type="white-orange"
                   onClick={() => setShowModal("to")}
-                  className="h-[54px] w-100 justify-start truncate overflow-hidden rounded-xl px-6 py-4 whitespace-nowrap lg:w-[252px]"
+                  className="h-[54px] w-100 justify-start rounded-xl px-6 py-4 lg:w-[252px]"
                 />
               </div>
             </div>

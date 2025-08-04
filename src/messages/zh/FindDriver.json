@@ -11,6 +11,7 @@
     "year": "年",
     "count": "个"
   },
+  "loadingDriverInfo": "正在加载司机信息！！",
   "driverPage": {
     "completed": "已完成",
     "review": "评论",
@@ -32,6 +33,7 @@
     "subtitle": "请求指定报价",
     "like Driver": "喜欢",
     "dislike Driver": "不喜欢",
+    "driver": "司机",
     "modal": {
       "title": "指定报价请求",
       "no": "没有进行中的指定报价请求。",
