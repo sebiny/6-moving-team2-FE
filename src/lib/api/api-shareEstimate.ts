@@ -3,9 +3,16 @@ import { cookieFetch, defaultFetch } from "../FetchClient";
 
 export const shareEstimateService = {
   // 공유 링크 생성 (로그인한 사용자가 자신의 견적서를 공유할 때)
-  createShareLink: async (estimateId: string): Promise<{ shareUrl: string } | null> => {
+  createShareLink: async (
+    estimateId: string,
+    sharedFrom: "CUSTOMER" | "DRIVER"
+  ): Promise<{ shareUrl: string } | null> => {
     return await cookieFetch(`/estimate/${estimateId}/share`, {
-      method: "POST"
+      method: "POST",
+      body: JSON.stringify({ sharedFrom }), // body에 타입 전달
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
   },
 
@@ -18,7 +25,8 @@ export const shareEstimateService = {
 // 공유 링크 생성 훅
 export const useCreateShareLink = () => {
   return useMutation({
-    mutationFn: (estimateId: string) => shareEstimateService.createShareLink(estimateId)
+    mutationFn: ({ estimateId, sharedFrom }: { estimateId: string; sharedFrom: "CUSTOMER" | "DRIVER" }) =>
+      shareEstimateService.createShareLink(estimateId, sharedFrom)
   });
 };
 

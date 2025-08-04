@@ -1,4 +1,4 @@
-// 견적서 공유용 페이지 (대기중인 & 받았던 견적 상세에서)
+// 견적서 공유용 페이지
 "use client";
 
 import OrangeBackground from "@/components/OrangeBackground";
@@ -17,7 +17,7 @@ export default function SharedEstimatePage() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["sharedEstimate", token],
-    queryFn: () => defaultFetch(`/share-estimate/shared/${token}`),
+    queryFn: () => defaultFetch(`/estimate/shared/${token}`),
     enabled: !!token
   });
 
@@ -30,42 +30,46 @@ export default function SharedEstimatePage() {
   }
 
   const { comment, price, estimateRequest, driver } = data;
-  const { requestDate, moveDate, moveType, fromAddress, toAddress } = estimateRequest;
+  const { requestDate, moveDate, moveType, fromAddress, toAddress, customer } = estimateRequest;
+
+  const isDriverShared = data.type === "DRIVER";
 
   return (
     <>
-      {/* 상단 배경 + 기사 프로필 */}
-      <div className="relative">
-        <OrangeBackground />
-        <div className="absolute top-[65px] left-5 md:top-[80px] md:left-17 lg:top-[135px] lg:left-[420px]">
-          <Image
-            src={driver.profileImage ?? "/assets/images/img_profile.svg"}
-            alt="기사님 프로필"
-            width={100}
-            height={100}
-            className="h-18 w-18 md:h-27 md:w-27 lg:h-37 lg:w-37"
-          />
-        </div>
-      </div>
-
-      {/* 본문 */}
+      <OrangeBackground />
       <div className="bg-white">
-        <div className="flex flex-col px-5 py-[60px] pt-10 md:px-17 md:pt-15 lg:grid lg:grid-cols-[1fr_300px] lg:gap-20 lg:px-100 lg:pt-[88px] lg:pb-[120px]">
-          {/* 왼쪽 콘텐츠 */}
+        <div className="flex flex-col px-5 py-[60px] pt-10 md:px-17 lg:grid lg:grid-cols-[1fr_300px] lg:gap-20 lg:px-100 lg:pt-[88px] lg:pb-[120px]">
           <div className="flex flex-col gap-10">
-            <Title
-              // status, labels 제거
-              driver={{
-                name: driver.authUser.name,
-                rating: driver.averageRating ?? 0.0,
-                reviewCount: driver.reviewsReceived?.length ?? 0,
-                experienceYear: driver.career,
-                confirmedCount: driver.work,
-                likes: driver.favorite?.length ?? 0
-              }}
-              message={comment}
-              estimatePrice={price}
-            />
+            {!isDriverShared ? (
+              // Pending/Past 공유 UI
+              <>
+                <Image
+                  src={driver.profileImage ?? "/assets/images/img_profile.svg"}
+                  alt="기사님 프로필"
+                  width={100}
+                  height={100}
+                  className="h-18 w-18 md:h-27 md:w-27 lg:h-37 lg:w-37"
+                />
+                <Title
+                  driver={{
+                    name: driver.authUser.name,
+                    rating: driver.averageRating ?? 0.0,
+                    reviewCount: driver.reviewsReceived?.length ?? 0,
+                    experienceYear: driver.career,
+                    confirmedCount: driver.work,
+                    likes: driver.favorite?.length ?? 0
+                  }}
+                  message={comment}
+                  estimatePrice={price}
+                />
+              </>
+            ) : (
+              // Driver 공유 UI
+              <>
+                <h1 className="text-xl font-semibold">{customer.authUser.name} 고객님</h1>
+                <p className="text-2xl font-bold">{price.toLocaleString()}원</p>
+              </>
+            )}
 
             <div className="border-t border-gray-100" />
 

@@ -3,7 +3,9 @@
 import Image from "next/image";
 import ChipRectangle from "./chip/ChipRectangle";
 import EstimateStatus from "./chip/EstimateStatus";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { translateWithDeepL } from "@/utills/translateWithDeepL";
 
 // 기사 정보 타입 정의
 export interface DriverInfo {
@@ -26,6 +28,21 @@ interface TitleProps {
 
 function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
   const t = useTranslations("MyEstimates");
+  const locale = useLocale();
+  const [translatedMessage, setTranslatedMessage] = useState<string | null>(null);
+  (useEffect(() => {
+    const translate = async () => {
+      try {
+        const translated = await translateWithDeepL(message, locale.toUpperCase());
+        setTranslatedMessage(translated);
+      } catch {
+        setTranslatedMessage(message); //fallback
+      }
+    };
+    translate();
+  }),
+    [message, locale]);
+
   return (
     <div className="w-full">
       {/* sm 전용 */}
@@ -39,7 +56,7 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
       </div>
 
       {/* sm 전용 */}
-      <div className="text-lg font-semibold text-gray-900 md:hidden">{message}</div>
+      <div className="text-lg font-semibold text-gray-900 md:hidden">{translatedMessage}</div>
 
       {/* md 이상 */}
       <div className="mb-4 hidden flex-wrap gap-2 md:flex">
@@ -50,7 +67,7 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
 
       {/* md 이상 */}
       <div className="hidden justify-between md:flex">
-        <p className="text-2xl font-semibold text-gray-900 md:max-w-[70%] lg:max-w-[100%]">{message}</p>
+        <p className="text-2xl font-semibold text-gray-900 md:max-w-[70%] lg:max-w-[100%]">{translatedMessage}</p>
         {status !== undefined && status !== "AUTO_REJECTED" && <EstimateStatus status={status} />}
       </div>
 
