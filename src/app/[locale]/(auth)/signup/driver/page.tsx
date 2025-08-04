@@ -20,7 +20,7 @@ export default function SignupDriver() {
     passwordConfirmation,
     setPasswordConfirmation,
     onSubmit,
-    isNameValid,
+    // isNameValid,
     isEmailValid,
     isPhoneValid,
     isPasswordValid,
@@ -73,7 +73,7 @@ export default function SignupDriver() {
                   value={name}
                   onChange={setName}
                   className="w-full"
-                  error={name.length > 0 && !isNameValid ? t("isNameValid") : ""}
+                  // error={name.length > 0 && !isNameValid ? t("isNameValid") : ""}
                   mdHeight="54"
                 />
               </div>

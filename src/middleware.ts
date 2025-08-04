@@ -58,18 +58,49 @@ export async function middleware(request: NextRequest) {
     if (payload && payload.exp * 1000 > Date.now()) {
       isAuthenticated = true;
     } else {
-      payload = null; // 액세스 토큰이 유효하지 않으면 payload를 null로 설정합니다.
+      // 액세스 토큰이 만료되었거나 유효하지 않습니다.
+      isAuthenticated = false;
+      payload = null;
     }
   }
 
-  // 액세스 토큰으로 인증되지 않았고 리프레시 토큰이 있는 경우, 리프레시 토큰으로 확인합니다.
-  // 일단 통과 후 통과 된 페이지에서 cookieFetch 호출하면서 액세스 토큰 자동 갱신
+  // 액세스 토큰으로 인증되지 않았고, 리프레시 토큰이 있는 경우 토큰 갱신을 시도합니다.
   if (!isAuthenticated && refreshToken) {
-    payload = parseJwtPayload(refreshToken);
-    if (payload && payload.exp * 1000 > Date.now()) {
-      isAuthenticated = true;
-    } else {
-      payload = null; // 리프레시 토큰도 유효하지 않으면 payload를 null로 설정합니다.
+    try {
+      const refreshResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/refresh-token`, {
+        method: "POST",
+        headers: {
+          // 브라우저의 쿠키를 서버사이드 fetch 요청에 전달합니다.
+          Cookie: request.headers.get("Cookie") || ""
+        }
+      });
+
+      if (refreshResponse.ok) {
+        const refreshData = await refreshResponse.json();
+        const newAccessToken = refreshData.accessToken;
+
+        if (newAccessToken) {
+          payload = parseJwtPayload(newAccessToken);
+          if (payload && payload.exp * 1000 > Date.now()) {
+            isAuthenticated = true;
+            // 응답에 새로운 액세스 토큰을 쿠키로 설정합니다.
+            const hostname = request.nextUrl.hostname;
+            const domain = hostname === "localhost" || hostname === "127.0.0.1" ? undefined : ".moving-2.click";
+
+            const expiresIn = payload.exp - Math.floor(Date.now() / 1000);
+            response.cookies.set("accessToken", newAccessToken, {
+              path: "/",
+              maxAge: expiresIn,
+              sameSite: "lax",
+              domain: domain
+            });
+          }
+        }
+      }
+    } catch (e) {
+      console.error("미들웨어 토큰 갱신 중 에러:", e);
+      isAuthenticated = false;
+      payload = null;
     }
   }
 
