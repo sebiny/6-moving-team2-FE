@@ -11,6 +11,7 @@ import Button from "../Button";
 import { useRouter } from "next/navigation";
 import { OpenLayer, useGnbHooks } from "@/hooks/useGnbHook";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 // Gnb에서 정의해야 하는 요소들
 // 화면 너비에 따라 UI가 바뀜
@@ -23,6 +24,7 @@ interface GnbProps {
 export default function Gnb() {
   const { user, isLoading, logout } = useAuth();
   const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
+  const t = useTranslations("Gnb");
 
   // user가 null이면 비로그인 상태
 
@@ -112,7 +114,7 @@ export default function Gnb() {
                 <div>
                   <Button
                     type="orange"
-                    text="로그인"
+                    text={t("login")}
                     className="h-12 w-30 rounded-lg"
                     onClick={() => router.push("/login/customer")}
                   />
