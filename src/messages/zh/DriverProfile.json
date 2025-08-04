@@ -16,5 +16,12 @@
   "introOneLine": "一句话介绍",
   "description": "详细描述",
   "services": "提供的服务",
-  "serviceArea": "服务范围"
+  "serviceArea": "服务范围",
+  "currentPWPlaceholder": "请输入当前密码",
+  "newPWPlaceholder": "请输入新密码",
+  "passwordValid": "密码必须至少包含8个字符，包括字母、数字和特殊字符。",
+  "newPWConfirmPlaceholder": "请再次输入新密码",
+  "newPWConfirmValid": "两次输入的密码不一致。",
+  "nameValid": "姓名必须为2到5个字符，仅限韩文或英文字符。",
+  "phoneValid": "无效的电话号码格式。（例如：01012345678）"
 }

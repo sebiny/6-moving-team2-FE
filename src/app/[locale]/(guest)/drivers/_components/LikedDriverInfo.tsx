@@ -1,18 +1,44 @@
+"use client";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import LikeIcon from "@/components/icon/LikeIcon";
 import { DriverType } from "@/types/driverType";
+import { batchTranslate } from "@/utills/batchTranslate";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface LikedDriverInfo {
   driver: DriverType;
 }
 
 function LikedDriverInfo({ driver }: LikedDriverInfo) {
+  const t = useTranslations("FindDriver.driverFindCard");
+  const locale = useLocale();
+  const [translatedIntro, setTranslatedIntro] = useState({ short: "" });
+
+  useEffect(() => {
+    const translateTexts = async () => {
+      if (!driver?.shortIntro) return;
+      // 한국어면 번역 생략
+      if (locale === "ko") {
+        setTranslatedIntro({ short: driver.shortIntro ?? "" });
+        return;
+      }
+      try {
+        const result = await batchTranslate({ short: driver.shortIntro ?? "" }, locale);
+        setTranslatedIntro({ short: result.short });
+      } catch (e) {
+        console.warn("번역 실패", e);
+      }
+    };
+
+    translateTexts();
+  }, [driver, locale]);
+
   return (
     <div className="border-line-100 rounded-2xl border px-7 py-6 shadow-sm">
       <ChipRectangle moveType="SMALL" size="sm" />
-      <p className="text-black-300 mt-3 text-xl font-semibold">{driver.shortIntro}</p>
+      <p className="text-black-300 mt-3 text-xl font-semibold">{translatedIntro.short}</p>
       <div className="flex gap-5">
         <Image src="/assets/images/img_profile.svg" alt="프로필 이미지" width={50} height={50} />
         <div>
@@ -20,7 +46,9 @@ function LikedDriverInfo({ driver }: LikedDriverInfo) {
             <div>
               <div className="flex gap-1">
                 <Image src="/assets/icons/ic_driver.svg" alt="기사님" width={20} height={23} />
-                <p className="font-semibold">{driver.nickname} 기사님</p>
+                <p className="font-semibold">
+                  {driver.nickname} {t("driver")}
+                </p>
                 <LikeIcon color="gray" isFilled={false} />
               </div>
               <div className="mt-1 flex gap-2">
@@ -31,13 +59,18 @@ function LikedDriverInfo({ driver }: LikedDriverInfo) {
                 </div>
                 <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
                 <div className="flex gap-1">
-                  <p className="text-gray-300">경력</p>
-                  <p>{driver.career}년</p>
+                  <p className="text-gray-300">{t("career")}</p>
+                  <p>
+                    {driver.career} {t("year")}
+                  </p>
                 </div>
                 <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
                 <div className="flex gap-1">
-                  <div>{driver.work}건</div>
-                  <p className="text-gray-300">확정</p>
+                  <div>
+                    {driver.work}
+                    {t("count")}
+                  </div>
+                  <p className="text-gray-300">{t("confirm")}</p>
                 </div>
               </div>
             </div>
