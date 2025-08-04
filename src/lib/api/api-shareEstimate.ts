@@ -25,7 +25,7 @@ export const shareEstimateService = {
 // 공유 링크 생성 훅
 export const useCreateShareLink = () => {
   return useMutation({
-    mutationFn: ({ estimateId, sharedFrom }: { estimateId: string; sharedFrom: "CUSTOMER" | "DRIVER" }) =>
+    mutationFn: ({ estimateId, sharedFrom }: { estimateId: string; sharedFrom: any }) =>
       shareEstimateService.createShareLink(estimateId, sharedFrom)
   });
 };
