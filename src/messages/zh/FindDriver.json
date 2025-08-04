@@ -33,6 +33,7 @@
     "subtitle": "请求指定报价",
     "like Driver": "喜欢",
     "dislike Driver": "不喜欢",
+    "driver": "司机",
     "modal": {
       "title": "指定报价请求",
       "no": "没有进行中的指定报价请求。",
