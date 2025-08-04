@@ -10,10 +10,11 @@ import { ToastModal } from "@/components/common-modal/ToastModal";
 import { useTranslations } from "next-intl";
 
 export default function LoginDriver() {
-  const { email, setEmail, password, setPassword, onSubmit, isEmailValid, isPasswordValid, isFormValid } = useLoginForm(
-    UserType.DRIVER
-  );
   const t = useTranslations("Login");
+  const { email, setEmail, password, setPassword, onSubmit, isEmailValid, isPasswordValid, isFormValid } = useLoginForm(
+    UserType.DRIVER,
+    t
+  );
 
   useEffect(() => {
     const signupSuccess = localStorage.getItem("signupSuccess");

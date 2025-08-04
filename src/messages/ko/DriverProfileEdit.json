@@ -21,5 +21,14 @@
   "regionError": "* 1개 이상 선택해주세요.",
   "cancel": "취소",
   "submitting": "제출 중...",
-  "start": "시작하기"
+  "start": "시작하기",
+
+  "success": {
+    "create": "프로필 생성 완료!",
+    "edit": "프로필 수정 완료!"
+  },
+  "error": {
+    "create": "프로필 생성에 실패했습니다.",
+    "edit": "프로필 수정에 실패했습니다."
+  }
 }
