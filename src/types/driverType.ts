@@ -19,4 +19,5 @@ export interface DriverType {
   moveType: MoveType[];
   isDesignated?: boolean;
   profileImage?: string;
+  ratingStats?: Record<1 | 2 | 3 | 4 | 5, number>;
 }
