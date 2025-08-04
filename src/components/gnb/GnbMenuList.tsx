@@ -66,7 +66,7 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
         >
           <span
             className={
-              label === "로그인"
+              label.includes(t("login"))
                 ? isLg || isLoggedIn
                   ? "hidden"
                   : "block"
