@@ -10,10 +10,11 @@ import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 
 export default function LoginCustomer() {
-  const { email, setEmail, password, setPassword, onSubmit, isEmailValid, isPasswordValid, isFormValid } = useLoginForm(
-    UserType.CUSTOMER
-  );
   const t = useTranslations("Login");
+  const { email, setEmail, password, setPassword, onSubmit, isEmailValid, isPasswordValid, isFormValid } = useLoginForm(
+    UserType.CUSTOMER,
+    t
+  );
 
   useEffect(() => {
     const signupSuccess = localStorage.getItem("signupSuccess");

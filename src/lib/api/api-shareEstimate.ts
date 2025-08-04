@@ -4,14 +4,14 @@ import { cookieFetch, defaultFetch } from "../FetchClient";
 export const shareEstimateService = {
   // 공유 링크 생성 (로그인한 사용자가 자신의 견적서를 공유할 때)
   createShareLink: async (estimateId: string): Promise<{ shareUrl: string } | null> => {
-    return await cookieFetch(`/share-estimate/${estimateId}/share`, {
+    return await cookieFetch(`/estimate/${estimateId}/share`, {
       method: "POST"
     });
   },
 
   // 공유 링크 접근 (비회원도 접근 가능)
   getSharedEstimate: async (token: string): Promise<any> => {
-    return await defaultFetch(`/share-estimate/shared/${token}`);
+    return await defaultFetch(`/estimate/shared/${token}`);
   }
 };
 
