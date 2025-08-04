@@ -4,7 +4,6 @@ import DriverReview from "./DriverReview";
 import StarIcon from "../icon/StarIcon";
 import Pagination from "../Pagination";
 import { DriverType } from "@/types/driverType";
-import { ReviewRatio } from "@/utills/ReviewRatio";
 import { useQuery } from "@tanstack/react-query";
 import { driverService } from "@/lib/api/api-driver";
 import { ReviewType } from "@/types/reviewType";
@@ -29,11 +28,11 @@ function DriverReviews({ driver }: ReviewsType) {
   if (!reviews) return <p>{t("reviewFetchFailed")}</p>;
 
   function StarBar(count: number) {
-    return (count / reviews!.length) * 100;
+    return (count / driver.reviewCount) * 100;
   }
 
-  const levels = [5, 4, 3, 2, 1];
-  const result = ReviewRatio(reviews!);
+  const levels = [5, 4, 3, 2, 1] as const;
+
   return (
     <div className="mb-50">
       <div className="text-black-400 text-xl font-semibold">{t("review")}</div>
@@ -51,7 +50,7 @@ function DriverReviews({ driver }: ReviewsType) {
               <div>
                 <StarIcon width={100} rating={driver.averageRating} />
                 <div>
-                  {reviews.length}
+                  {driver.reviewCount}
                   {t("reviewCount")}
                 </div>
               </div>
@@ -64,9 +63,12 @@ function DriverReviews({ driver }: ReviewsType) {
                     {t("star")}
                   </p>
                   <div className="bg-background-300 h-2 w-[180px] rounded">
-                    <div className="h-full rounded bg-[#FFC149]" style={{ width: `${StarBar(result[level - 1])}%` }} />
+                    <div
+                      className="h-full rounded bg-[#FFC149]"
+                      style={{ width: `${StarBar(driver.ratingStats?.[level] ?? 0)}%` }}
+                    />
                   </div>
-                  <p className="text-sm text-gray-300">{result[level - 1]}</p>
+                  <p className="text-sm text-gray-300">{driver.ratingStats?.[level] ?? 0}</p>
                 </div>
               ))}
             </div>
@@ -77,7 +79,7 @@ function DriverReviews({ driver }: ReviewsType) {
             ))}
           </div>
           <div className="mt-10 flex justify-center">
-            <Pagination currentPage={page} setCurrentPage={setPage} totalReviews={driver.reviewCount} />
+            <Pagination currentPage={page} setCurrentPage={setPage} totalReviews={driver.reviewCount} pageSize={5} />
           </div>
         </div>
       ) : (
