@@ -41,5 +41,6 @@
       "line2": "Please complete your ongoing move before making a new request."
     },
     "button": "View Received Estimates"
-  }
+  },
+  "searchResult": "Search Result"
 }
