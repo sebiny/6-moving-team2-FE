@@ -6,7 +6,7 @@ import { parseBackendError } from "@/utills/ErrorParser";
 import { UserType } from "@/types/UserType";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 
-const NAME_REGEX = /^[가-힣a-zA-Z]{2,5}$/;
+// const NAME_REGEX = /^[가-힣a-zA-Z]{2,5}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PHONE_REGEX = /^010\d{8}$/;
 const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
@@ -71,7 +71,7 @@ export function useSignupForm(userType: UserType) {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  const isNameValid = useMemo(() => NAME_REGEX.test(name), [name]);
+  // const isNameValid = useMemo(() => NAME_REGEX.test(name), [name]);
   const isEmailValid = useMemo(() => EMAIL_REGEX.test(email), [email]);
   const isPhoneValid = useMemo(() => PHONE_REGEX.test(phone), [phone]);
   const isPasswordValid = useMemo(() => PASSWORD_REGEX.test(password), [password]);
@@ -87,7 +87,7 @@ export function useSignupForm(userType: UserType) {
       !!phone &&
       !!password &&
       !!passwordConfirmation &&
-      isNameValid &&
+      // isNameValid &&
       isEmailValid &&
       isPhoneValid &&
       isPasswordValid &&
@@ -98,7 +98,7 @@ export function useSignupForm(userType: UserType) {
       phone,
       password,
       passwordConfirmation,
-      isNameValid,
+      // isNameValid,
       isEmailValid,
       isPhoneValid,
       isPasswordValid,
@@ -141,7 +141,7 @@ export function useSignupForm(userType: UserType) {
     passwordConfirmation,
     setPasswordConfirmation,
     onSubmit,
-    isNameValid,
+    // isNameValid,
     isEmailValid,
     isPhoneValid,
     isPasswordValid,

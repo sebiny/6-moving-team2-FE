@@ -25,7 +25,7 @@ function MyPageEditPage() {
     setPassword,
     passwordConfirmation,
     setPasswordConfirmation,
-    isNameValid,
+    // isNameValid,
     isPhoneValid,
     isPasswordValid,
     isPasswordConfirmationValid
@@ -48,7 +48,7 @@ function MyPageEditPage() {
   const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
   const isCurrentPasswordValid = useMemo(() => PASSWORD_REGEX.test(currentPassword), [currentPassword]);
   const isFormValid = useMemo(() => {
-    const basicInfoValid = !!name && isNameValid && !!phone && isPhoneValid;
+    const basicInfoValid = !!name && !!phone && isPhoneValid;
     const passwordInfoValid =
       !!currentPassword &&
       isCurrentPasswordValid &&
@@ -60,7 +60,7 @@ function MyPageEditPage() {
     return basicInfoValid;
   }, [
     name,
-    isNameValid,
+    // isNameValid,
     phone,
     isPhoneValid,
     currentPassword,
@@ -98,7 +98,7 @@ function MyPageEditPage() {
               <TextField
                 value={name}
                 onChange={setName}
-                error={name.length > 0 && !isNameValid ? "이름은 2~5자의 한글 또는 영어만 사용 가능합니다." : ""}
+                // error={name.length > 0 && !isNameValid ? "이름은 2~5자의 한글 또는 영어만 사용 가능합니다." : ""}
               />
             </div>
             <div className="border-line-100 border-b"></div>
