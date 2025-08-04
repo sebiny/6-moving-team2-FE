@@ -104,11 +104,11 @@ export default function DesktopEstimateForm() {
   };
 
   if (isLoading) {
-    return <LoadingLottie text="견적 요청 페이지로 이동중입니다." />;
+    return <LoadingLottie text={t("loading.page")} />;
   }
 
   if (isRequesting) {
-    return <LoadingLottie text="견적 요청 진행중입니다." />;
+    return <LoadingLottie text={t("loading.request")} />;
   }
 
   return (
