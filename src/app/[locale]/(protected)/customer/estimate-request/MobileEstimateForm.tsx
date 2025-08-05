@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createEstimateRequest } from "@/lib/api/api-estimateRequest";
 import MoveTypeCard from "./_components/card/MoveTypeCard";
 import MobileDatePicker from "./_components/datepicker/MobileDatePicker";
 import AddressCardModal from "./_components/modal/AddressCardModal";
 import Button from "@/components/Button";
-import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
 import { useLocale, useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
@@ -16,16 +15,18 @@ import { batchTranslate } from "@/utills/batchTranslate";
 
 export default function MobileEstimateForm() {
   const t = useTranslations("EstimateReq");
-  const moveTypes = [
-    { key: "SMALL", label: t("smallBox.text"), description: t("smallBox.subText") },
-    { key: "HOME", label: t("familyBox.text"), description: t("familyBox.subText") },
-    { key: "OFFICE", label: t("officeBox.text"), description: t("officeBox.subText") }
-  ] as const;
-
+  const locale = useLocale();
   const queryClient = useQueryClient();
-
-  const [step, setStep] = useState(1);
+  const moveTypes = useMemo(
+    () => [
+      { key: "SMALL", label: t("smallBox.text"), description: t("smallBox.subText") },
+      { key: "HOME", label: t("familyBox.text"), description: t("familyBox.subText") },
+      { key: "OFFICE", label: t("officeBox.text"), description: t("officeBox.subText") }
+    ],
+    [t]
+  );
   type MoveTypeKey = (typeof moveTypes)[number]["key"];
+  const [step, setStep] = useState(1);
   const [moveType, setMoveType] = useState<MoveTypeKey | null>(null);
   const [moveDate, setMoveDate] = useState<Date | null>(null);
   const [addressFrom, setAddressFrom] = useState<Address | null>(null);
@@ -33,44 +34,37 @@ export default function MobileEstimateForm() {
   const [showModal, setShowModal] = useState<"from" | "to" | null>(null);
   const [isRequesting, setIsRequesting] = useState(false);
 
-  const locale = useLocale();
   const [translatedAddressFrom, setTranslatedAddressFrom] = useState("");
   const [translatedAddressTo, setTranslatedAddressTo] = useState("");
 
+  // 주소 동적 번역
   useEffect(() => {
-    if (!addressFrom || locale === "ko") {
-      setTranslatedAddressFrom(addressFrom ? AddressSummary(addressFrom.roadAddress) : "");
-      return;
-    }
+    const translateAddress = async () => {
+      if (!addressFrom && !addressTo) return;
 
-    const translate = async () => {
-      const result = await batchTranslate({ road: addressFrom.roadAddress }, locale);
-      setTranslatedAddressFrom(AddressSummary(result.road));
+      if (locale !== "ko") {
+        if (addressFrom) {
+          const result = await batchTranslate({ road: addressFrom.roadAddress }, locale);
+          setTranslatedAddressFrom(result.road);
+        }
+        if (addressTo) {
+          const result = await batchTranslate({ road: addressTo.roadAddress }, locale);
+          setTranslatedAddressTo(result.road);
+        }
+      } else {
+        setTranslatedAddressFrom(addressFrom?.roadAddress ?? "");
+        setTranslatedAddressTo(addressTo?.roadAddress ?? "");
+      }
     };
 
-    translate();
-  }, [addressFrom, locale]);
-
-  useEffect(() => {
-    if (!addressTo || locale === "ko") {
-      setTranslatedAddressTo(addressTo ? AddressSummary(addressTo.roadAddress) : "");
-      return;
-    }
-
-    const translate = async () => {
-      const result = await batchTranslate({ road: addressTo.roadAddress }, locale);
-      setTranslatedAddressTo(AddressSummary(result.road));
-    };
-
-    translate();
-  }, [addressTo, locale]);
+    translateAddress();
+  }, [addressFrom, addressTo, locale]);
 
   const isValidStep1 = !!moveType;
   const isValidStep2 = !!moveDate;
   const isValidStep3 = !!addressFrom && !!addressTo;
 
-  const stepList = [1, 2, 3];
-
+  // 견적 요청 mutation
   const { mutateAsync: requestEstimate } = useMutation({
     mutationFn: createEstimateRequest,
     onSuccess: () => {
@@ -78,10 +72,7 @@ export default function MobileEstimateForm() {
     }
   });
 
-  const handleMoveTypeSelect = (key: MoveTypeKey) => {
-    setMoveType((prev) => (prev === key ? null : key));
-  };
-
+  // 견적 요청 처리 함수
   const handleRequest = async () => {
     if (!moveType || !moveDate || !addressFrom || !addressTo) return;
 
@@ -90,16 +81,33 @@ export default function MobileEstimateForm() {
       await requestEstimate({
         moveType: moveType,
         moveDate: moveDate.toISOString(),
-        fromAddressId: String(addressFrom.id),
-        toAddressId: String(addressTo.id)
+        fromAddressId: addressFrom.id,
+        toAddressId: addressTo.id
       });
       ToastModal(t("estimateReqSuccess"));
-    } catch {
-      ToastModal(t("estimateReqFailure"));
+    } catch (err: any) {
+      const messageKey = err?.response?.data?.message || err?.message || "estimateReqFailure";
+      ToastModal(t(messageKey));
     } finally {
       setIsRequesting(false);
     }
   };
+
+  // 단계 표시 인디케이터
+  const renderStepIndicator = () => (
+    <div className="mb-3 flex justify-center gap-2">
+      {[1, 2, 3].map((s) => (
+        <div
+          key={s}
+          className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold ${
+            step === s ? "bg-[var(--color-orange-400)] text-white" : "bg-background-200 text-gray-300"
+          }`}
+        >
+          {s}
+        </div>
+      ))}
+    </div>
+  );
 
   if (isRequesting) {
     return <LoadingLottie text={t("loading.request")} />;
@@ -107,19 +115,7 @@ export default function MobileEstimateForm() {
 
   return (
     <main className="mt-[90px] min-h-screen justify-center bg-white px-6">
-      {/* 단계 표시 */}
-      <div className="mb-3 flex justify-center gap-2">
-        {stepList.map((s) => (
-          <div
-            key={s}
-            className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold ${
-              step === s ? "bg-[var(--color-orange-400)] text-white" : "bg-background-200 text-gray-300"
-            }`}
-          >
-            {s}
-          </div>
-        ))}
-      </div>
+      {renderStepIndicator()}
 
       {/* 1. 이사 유형 선택 */}
       {step === 1 && (
@@ -138,7 +134,7 @@ export default function MobileEstimateForm() {
                   label={label}
                   description={description}
                   selected={moveType === key}
-                  onClick={() => handleMoveTypeSelect(key)}
+                  onClick={() => setMoveType((prev) => (prev === key ? null : key))}
                 />
               ))}
             </div>
@@ -198,12 +194,13 @@ export default function MobileEstimateForm() {
           {/* 주소 검색 버튼 */}
           <div className="flex w-[327px] flex-col gap-6">
             <div className="flex flex-col gap-3">
+              <p className="font-medium">{t("from")}</p>
               <Button
                 text={
                   addressFrom ? (
-                    <div className="scroll-hide max-w-full overflow-x-auto whitespace-nowrap">
+                    <span className="scroll-hide max-w-full overflow-x-auto whitespace-nowrap">
                       {translatedAddressFrom}
-                    </div>
+                    </span>
                   ) : (
                     t("fromChoose")
                   )
@@ -213,14 +210,14 @@ export default function MobileEstimateForm() {
                 onClick={() => setShowModal("from")}
               />
             </div>
-            <div className="flex flex-col gap-3 lg:w-full">
+            <div className="flex flex-col gap-3">
               <p className="font-medium">{t("to")}</p>
               <Button
                 text={
                   addressTo ? (
-                    <div className="scroll-hide max-w-full overflow-x-auto whitespace-nowrap">
+                    <span className="scroll-hide max-w-full overflow-x-auto whitespace-nowrap">
                       {translatedAddressTo}
-                    </div>
+                    </span>
                   ) : (
                     t("toChoose")
                   )

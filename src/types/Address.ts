@@ -1,6 +1,6 @@
 // 우편번호 서비스 UI용 주소 타입
 export interface Address {
-  id: number; //TODO: 추후 string으로 변경해야 함.
+  id: string;
   postalCode: string;
   roadAddress: string;
   jibunAddress: string;

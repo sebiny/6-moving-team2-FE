@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createEstimateRequest } from "@/lib/api/api-estimateRequest";
 import CalenderDropdown from "./_components/dropdown/CalenderDropdown";
 import MoveTypeCard from "./_components/card/MoveTypeCard";
 import AddressCardModal from "./_components/modal/AddressCardModal";
 import Button from "@/components/Button";
-import { AddressSummary } from "@/utills/AddressMapper";
 import { Address } from "@/types/Address";
 import { useLocale, useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
@@ -16,12 +15,16 @@ import { batchTranslate } from "@/utills/batchTranslate";
 
 export default function DesktopEstimateForm() {
   const t = useTranslations("EstimateReq");
-  const moveTypes = [
-    { key: "SMALL", label: t("smallBox.text"), description: t("smallBox.subText") },
-    { key: "HOME", label: t("familyBox.text"), description: t("familyBox.subText") },
-    { key: "OFFICE", label: t("officeBox.text"), description: t("officeBox.subText") }
-  ] as const;
+  const locale = useLocale();
   const queryClient = useQueryClient();
+  const moveTypes = useMemo(
+    () => [
+      { key: "SMALL", label: t("smallBox.text"), description: t("smallBox.subText") },
+      { key: "HOME", label: t("familyBox.text"), description: t("familyBox.subText") },
+      { key: "OFFICE", label: t("officeBox.text"), description: t("officeBox.subText") }
+    ],
+    [t]
+  );
   type MoveTypeKey = (typeof moveTypes)[number]["key"];
   const [selectedMoveType, setSelectedMoveType] = useState<MoveTypeKey | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -31,38 +34,33 @@ export default function DesktopEstimateForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRequesting, setIsRequesting] = useState(false);
 
-  const locale = useLocale();
   const [translatedAddressFrom, setTranslatedAddressFrom] = useState("");
   const [translatedAddressTo, setTranslatedAddressTo] = useState("");
 
+  // 주소 동적 번역
   useEffect(() => {
-    if (!addressFrom || locale === "ko") {
-      setTranslatedAddressFrom(addressFrom ? AddressSummary(addressFrom.roadAddress) : "");
-      return;
-    }
+    const translateAddress = async () => {
+      if (!addressFrom && !addressTo) return;
 
-    const translate = async () => {
-      const result = await batchTranslate({ road: addressFrom.roadAddress }, locale);
-      setTranslatedAddressFrom(AddressSummary(result.road));
+      if (locale !== "ko") {
+        if (addressFrom) {
+          const result = await batchTranslate({ road: addressFrom.roadAddress }, locale);
+          setTranslatedAddressFrom(result.road);
+        }
+        if (addressTo) {
+          const result = await batchTranslate({ road: addressTo.roadAddress }, locale);
+          setTranslatedAddressTo(result.road);
+        }
+      } else {
+        setTranslatedAddressFrom(addressFrom?.roadAddress ?? "");
+        setTranslatedAddressTo(addressTo?.roadAddress ?? "");
+      }
     };
 
-    translate();
-  }, [addressFrom, locale]);
+    translateAddress();
+  }, [addressFrom, addressTo, locale]);
 
-  useEffect(() => {
-    if (!addressTo || locale === "ko") {
-      setTranslatedAddressTo(addressTo ? AddressSummary(addressTo.roadAddress) : "");
-      return;
-    }
-
-    const translate = async () => {
-      const result = await batchTranslate({ road: addressTo.roadAddress }, locale);
-      setTranslatedAddressTo(AddressSummary(result.road));
-    };
-
-    translate();
-  }, [addressTo, locale]);
-
+  // Lottie 적용
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -71,12 +69,7 @@ export default function DesktopEstimateForm() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleMoveTypeSelect = (key: "SMALL" | "HOME" | "OFFICE") => {
-    setSelectedMoveType((prev) => (prev === key ? null : key));
-  };
-
-  const isFormValid = selectedMoveType !== null && selectedDate !== null && addressFrom !== null && addressTo !== null;
-
+  // 견적 요청 mutation
   const { mutateAsync: requestEstimate } = useMutation({
     mutationFn: createEstimateRequest,
     onSuccess: () => {
@@ -84,6 +77,7 @@ export default function DesktopEstimateForm() {
     }
   });
 
+  // 견적 요청 처리 함수
   const handleRequest = async () => {
     if (!selectedMoveType || !selectedDate || !addressFrom || !addressTo) return;
 
@@ -92,23 +86,22 @@ export default function DesktopEstimateForm() {
       await requestEstimate({
         moveType: selectedMoveType,
         moveDate: selectedDate.toISOString(),
-        fromAddressId: String(addressFrom.id),
-        toAddressId: String(addressTo.id)
+        fromAddressId: addressFrom.id,
+        toAddressId: addressTo.id
       });
       ToastModal(t("estimateReqSuccess"));
-    } catch {
-      ToastModal(t("estimateReqFailure"));
+    } catch (err: any) {
+      const messageKey = err?.response?.data?.message || err?.message || "estimateReqFailure";
+      ToastModal(t(messageKey));
     } finally {
       setIsRequesting(false);
     }
   };
 
-  if (isLoading) {
-    return <LoadingLottie text={t("loading.page")} />;
-  }
+  const isFormValid = selectedMoveType !== null && selectedDate !== null && addressFrom !== null && addressTo !== null;
 
-  if (isRequesting) {
-    return <LoadingLottie text={t("loading.request")} />;
+  if (isLoading || isRequesting) {
+    return <LoadingLottie text={t(isLoading ? "loading.page" : "loading.request")} />;
   }
 
   return (
@@ -132,7 +125,7 @@ export default function DesktopEstimateForm() {
                   label={label}
                   description={description}
                   selected={selectedMoveType === key}
-                  onClick={() => handleMoveTypeSelect(key)}
+                  onClick={() => setSelectedMoveType((prev) => (prev === key ? null : key))}
                 />
               ))}
             </div>
@@ -145,7 +138,7 @@ export default function DesktopEstimateForm() {
           {/* 이사 지역 */}
           <div className="flex justify-between lg:mb-[59px]">
             <label className="text-lg font-bold">{t("movingArea")}</label>
-            <div className="flex w-100 flex-col gap-[30px] lg:w-[520px] lg:flex-row lg:gap-4">
+            <div className="flex w-[400px] flex-col gap-[30px] lg:w-[520px] lg:flex-row lg:gap-4">
               <div className="flex flex-col gap-3 lg:w-full">
                 <p className="font-medium">{t("from")}</p>
                 <Button
@@ -160,7 +153,7 @@ export default function DesktopEstimateForm() {
                   }
                   type="white-orange"
                   onClick={() => setShowModal("from")}
-                  className="h-[54px] w-100 justify-start rounded-xl px-6 py-4 lg:w-[252px]"
+                  className="h-[54px] w-[400px] justify-start rounded-xl px-6 py-4 lg:w-[252px]"
                 />
               </div>
               <div className="flex flex-col gap-3 lg:w-full">
@@ -177,7 +170,7 @@ export default function DesktopEstimateForm() {
                   }
                   type="white-orange"
                   onClick={() => setShowModal("to")}
-                  className="h-[54px] w-100 justify-start rounded-xl px-6 py-4 lg:w-[252px]"
+                  className="h-[54px] w-[400px] justify-start rounded-xl px-6 py-4 lg:w-[252px]"
                 />
               </div>
             </div>
