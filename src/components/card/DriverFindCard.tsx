@@ -58,7 +58,10 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
     translateTexts();
   }, [driver, locale]);
   return (
-    <div className="border-line-100 relative rounded-2xl border bg-white p-5 shadow-sm" onClick={handleClick}>
+    <div
+      className="border-line-100 relative cursor-pointer rounded-2xl border bg-white p-5 shadow-sm"
+      onClick={handleClick}
+    >
       {/* 체크박스 (우측 상단) */}
       {isFavoritePage && (
         <div className="absolute top-4 right-4">
@@ -86,11 +89,11 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
           alt="프로필 이미지"
           width={134}
           height={134}
-          className="hidden object-cover md:block"
+          className="hidden h-[134px] w-[134px] rounded-2xl object-cover object-center md:block"
         />
         <div className="w-full">
-          <p className="text-black-300 text-xl font-semibold">{translatedIntro.short}</p>
-          <p className="mt-2 text-sm text-gray-500">{translatedIntro.detail}</p>
+          <p className="text-black-300 w-full truncate text-xl font-semibold">{translatedIntro.short}</p>
+          <p className="mt-2 w-full truncate text-sm text-gray-500">{translatedIntro.detail}</p>
           <div className="border-line-100 mt-4 border-b md:hidden"></div>
           <div className="relative mt-5">
             <div className="flex gap-2">
@@ -99,7 +102,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                 alt="프로필 이미지"
                 width={50}
                 height={50}
-                className="object-cover md:hidden"
+                className="h-[50px] w-[50px] rounded-xl object-cover object-center md:hidden"
               />
               <div className="w-full">
                 <div className="flex items-center justify-between">
@@ -124,8 +127,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
                   <div className="flex gap-1">
                     <p className="text-gray-300">{t("career")}</p>
                     <p>
-                      {driver.career}
-                      {t("year")}
+                      {driver.career} {t("year")}
                     </p>
                   </div>
                   <div className="border-line-200 h-[14px] w-[1px] border-l"></div>

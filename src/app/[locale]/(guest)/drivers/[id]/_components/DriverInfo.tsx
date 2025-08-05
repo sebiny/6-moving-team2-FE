@@ -52,7 +52,7 @@ function DriverInfo({ driver }: DriverInfoType) {
         alt="프로필"
         width={134}
         height={134}
-        className="absolute top-[-77px] w-16 md:top-[-120px] md:w-25 lg:top-[-150px] lg:w-[134px]"
+        className="absolute top-[-77px] h-16 w-16 rounded-2xl object-cover object-center md:top-[-120px] md:h-25 md:w-25 lg:top-[-150px] lg:h-[134px] lg:w-[134px]"
       />
       <div className="flex gap-3">
         {driver.moveType.map((service) => (

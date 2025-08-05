@@ -49,15 +49,15 @@ export default function PastEstimates() {
           {index !== 0 && <div className="h-1.5 w-full bg-zinc-100 md:hidden" />}
 
           {/* 견적 전체 카드 컨테이너 */}
-          <div className="px-6 py-10 md:mx-15 md:my-5 md:rounded-xl md:bg-white md:p-8 md:shadow-md lg:mx-100 lg:my-10 lg:flex lg:gap-13 lg:px-10 lg:py-13">
+          <div className="px-6 py-10 md:mx-15 md:my-5 md:rounded-xl md:bg-white md:p-8 md:shadow-md lg:mx-auto lg:my-10 lg:flex lg:max-w-[1200px] lg:gap-13 lg:px-10 lg:py-13">
             {/* 좌측 - 견적 정보 (lg 이상에서 좌측 고정 너비) */}
             <div className="lg:w-[280px] lg:flex-shrink-0">
               <EstimateDetail
                 moveType={getMoveTypeLabel(group.estimateRequest.moveType)}
                 startAddress={formatStreetAddress(group.estimateRequest.fromAddress)}
                 endAddress={formatStreetAddress(group.estimateRequest.toAddress)}
-                date={dayjs(group.estimateRequest.moveDate).format("YYYY년 MM월 DD일")}
-                createdDate={dayjs(group.estimateRequest.requestDate).format("YYYY년 MM월 DD일")}
+                date={dayjs(group.estimateRequest.moveDate).format("YYYY년 MM월 DD일(ddd)")}
+                createdDate={dayjs(group.estimateRequest.requestDate).format("YY. MM. DD.")}
               />
             </div>
 

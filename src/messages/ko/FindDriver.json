@@ -12,6 +12,10 @@
     "year": "년",
     "count": "건"
   },
+  "noEstimateRequest": "진행 중인 일반 견적 요청이 없습니다.",
+  "alreadyApprovedEstimateRequest": "이미 기사님이 확정된 요청에는 지정 요청을 할 수 없습니다.",
+  "alreadyDesignatedDriver": "이미 지정된 기사님입니다.",
+  "maxThreeDriver": "최대 3명의 기사님만 지정할 수 있습니다.",
   "loadingDriverInfo": "기사님 정보를 불러오고 있어요!!",
   "driverPage": {
     "completed": "진행",
@@ -35,6 +39,8 @@
     "like Driver": "찜하기",
     "dislike Driver": "찜 해제하기",
     "driver": "기사님",
+    "createFavorite": "기사님을 찜하였습니다.",
+    "deleteFavorite": "기사님을 찜 해제하였습니다.",
     "modal": {
       "title": "지정 견적 요청",
       "no": "진행 중인 지정 견적 요청이 없습니다.",
