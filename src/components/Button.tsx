@@ -6,7 +6,7 @@ interface ButtonType {
   type: "orange" | "gray" | "white-orange" | "white-gray" | "outline";
   image?: boolean;
   className?: string;
-  isLoginText: boolean;
+  isLoginText?: boolean;
   isDisabled?: boolean;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   buttonType?: "button" | "submit"; // 버튼 타입 추가
