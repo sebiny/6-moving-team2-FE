@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useLocale } from "use-intl";
 import Image from "next/image";
 import clsx from "clsx";
@@ -14,11 +14,16 @@ function CalenderDropdown({ date, onChange }: CalenderDropdownProps) {
 
   const locale = useLocale();
 
-  const formatted = (date ?? new Date()).toLocaleDateString(locale, {
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  });
+  const formatted = useMemo(() => {
+    const target = date ?? new Date();
+    return target.toLocaleDateString(locale, {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  }, [date, locale]);
+
+  const handleToggle = () => setOpen((prev) => !prev);
 
   const handleConfirm = () => {
     if (date) setOpen(false);
@@ -27,11 +32,12 @@ function CalenderDropdown({ date, onChange }: CalenderDropdownProps) {
   return (
     <div className="relative">
       <button
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={handleToggle}
         className={clsx(
-          "flex h-[50px] w-100 items-center justify-between rounded-xl border bg-white pr-3 pl-5 text-black",
+          "flex h-[50px] w-100 cursor-pointer items-center justify-between rounded-xl border bg-white pr-3 pl-5 text-black",
           date ? "border-[var(--color-orange-400)]" : "border-[var(--color-gray-100)]"
         )}
+        aria-label="날짜 선택"
       >
         <div className="flex items-center gap-2">
           <Image src="/assets/icons/ic_calendar.svg" alt="캘린더" width={24} height={24} />
@@ -40,7 +46,7 @@ function CalenderDropdown({ date, onChange }: CalenderDropdownProps) {
 
         <Image
           src={`/assets/icons/${open ? "ic_chevron_up" : "ic_chevron_down"}.svg`}
-          alt="화살표"
+          alt={open ? "위로 접기" : "아래로 펼치기"}
           width={36}
           height={36}
         />

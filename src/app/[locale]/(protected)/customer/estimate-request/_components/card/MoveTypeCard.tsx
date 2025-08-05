@@ -28,10 +28,8 @@ export default function MoveTypeCard({ label, description, selected, onClick }: 
       onClick={onClick}
       className={clsx(
         "relative flex flex-col rounded-2xl border-2 px-4 pt-5 pb-5 text-left transition-colors md:pb-4",
-        "h-[160px] w-[327px] md:h-[222px] md:w-50 lg:h-[222px] lg:w-[256px]",
-        selected
-          ? "border-[var(--color-orange-400)] bg-[var(--color-orange-100)]"
-          : "border-transparent bg-[var(--color-background-200)]"
+        "h-[160px] w-[327px] cursor-pointer md:h-[222px] md:w-50 lg:h-[222px] lg:w-[256px]",
+        selected ? "border-orange-400 bg-orange-100" : "bg-background-200 border-transparent"
       )}
     >
       <div className="flex h-full w-full flex-row justify-between md:flex-col">
@@ -41,12 +39,8 @@ export default function MoveTypeCard({ label, description, selected, onClick }: 
 
           {/* 텍스트 */}
           <div className="flex flex-col">
-            <p className={clsx("leading-6 font-semibold", selected ? "text-[var(--color-orange-400)]" : "text-black")}>
-              {label}
-            </p>
-            <p className={clsx("text-sm", selected ? "text-[var(--color-orange-400)]" : "text-gray-500")}>
-              {description}
-            </p>
+            <p className={clsx("leading-6 font-semibold", selected ? "text-orange-400" : "text-black")}>{label}</p>
+            <p className={clsx("text-sm", selected ? "text-orange-400" : "text-gray-500")}>{description}</p>
           </div>
         </div>
 

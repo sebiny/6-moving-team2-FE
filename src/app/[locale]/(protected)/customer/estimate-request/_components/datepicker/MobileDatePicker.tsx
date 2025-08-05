@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import clsx from "clsx";
 import Image from "next/image";
@@ -15,30 +15,34 @@ interface MobileDatePickerProps {
 export default function MobileDatePicker({ selectedDate, onSelectDate }: MobileDatePickerProps) {
   const t = useTranslations("Date");
   const locale = useLocale();
-  const today = dayjs();
-  const [current, setCurrent] = useState(dayjs());
+  const [current, setCurrent] = useState(() => dayjs());
+  const today = useMemo(() => dayjs(), []);
 
   useEffect(() => {
     setDayjsLocale(locale);
   }, [locale]);
 
-  const days = [t("day.sun"), t("day.mon"), t("day.tue"), t("day.wed"), t("day.thu"), t("day.fri"), t("day.sat")];
+  const days = useMemo(
+    () => [t("day.sun"), t("day.mon"), t("day.tue"), t("day.wed"), t("day.thu"), t("day.fri"), t("day.sat")],
+    [t]
+  );
 
-  const gridDates = generateCalendarDates(current);
+  const gridDates = useMemo(() => generateCalendarDates(current), [current]);
+  const selectedDayjs = selectedDate ? dayjs(selectedDate) : null;
 
-  const isSelected = (date: Date) => selectedDate && dayjs(date).isSame(dayjs(selectedDate), "date");
+  const isSelected = (date: Date) => selectedDayjs?.isSame(date, "date");
   const isPast = (date: Date) => dayjs(date).isBefore(today, "day");
 
   return (
     <div className="mx-auto w-[336px]">
       {/* 헤더 */}
       <div className="mb-8 flex items-center justify-center gap-3 text-xl leading-8 font-bold text-black">
-        <button onClick={() => setCurrent((prev) => prev.subtract(1, "month"))}>
-          <Image src="/assets/icons/ic_chevron_left.svg" width={24} height={24} alt="이전" />
+        <button onClick={() => setCurrent((prev) => prev.subtract(1, "month"))} aria-label={t("label.prevMonth")}>
+          <Image src="/assets/icons/ic_chevron_left.svg" width={24} height={24} alt={t("label.nextMonth")} />
         </button>
         <span>{current.format("YYYY. MM")}</span>
-        <button onClick={() => setCurrent((prev) => prev.add(1, "month"))}>
-          <Image src="/assets/icons/ic_chevron_right.svg" width={24} height={24} alt="다음" />
+        <button onClick={() => setCurrent((prev) => prev.add(1, "month"))} aria-label={t("label.nextMonth")}>
+          <Image src="/assets/icons/ic_chevron_right.svg" width={24} height={24} alt={t("label.nextMonth")} />
         </button>
       </div>
 
