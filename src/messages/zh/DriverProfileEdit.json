@@ -21,5 +21,14 @@
   "regionError": "* 请至少选择一个地区。",
   "cancel": "取消",
   "submitting": "提交中...",
-  "start": "开始"
+  "start": "开始",
+
+  "success": {
+    "create": "资料创建成功！",
+    "edit": "资料修改成功！"
+  },
+  "error": {
+    "create": "资料创建失败。",
+    "edit": "资料修改失败。"
+  }
 }
