@@ -21,5 +21,14 @@
   "regionError": "* Please select at least one region.",
   "cancel": "Cancel",
   "submitting": "Submitting...",
-  "start": "Start"
+  "start": "Start",
+
+  "success": {
+    "create": "Profile created successfully!",
+    "edit": "Profile updated successfully!"
+  },
+  "error": {
+    "create": "Failed to create profile.",
+    "edit": "Failed to update profile."
+  }
 }
