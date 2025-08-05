@@ -19,5 +19,7 @@
   "favoriteDrivers": {
     "deletedSuccessfully": "삭제되었습니다",
     "failedToDelete": "삭제 중 오류가 발생했습니다."
-  }
+  },
+  "estimateCountMsg": "명의 기사님이 보냈습니다",
+  "alreadySent": "이미 견적을 보냈습니다"
 }

@@ -19,5 +19,7 @@
   "favoriteDrivers": {
     "deletedSuccessfully": "删除成功。",
     "failedToDelete": "删除过程中发生错误。"
-  }
+  },
+  "estimateCountMsg": "位搬家师傅已发送报价",
+  "alreadySent": "您已发送报价"
 }
