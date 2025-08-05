@@ -11,6 +11,10 @@
     "year": "年",
     "count": "个"
   },
+  "noEstimateRequest": "当前没有正在进行的一般报价请求。",
+  "alreadyApprovedEstimateRequest": "已确定司机的请求无法再进行指定请求。",
+  "alreadyDesignatedDriver": "该司机已被指定。",
+  "maxThreeDriver": "最多只能指定3位司机。",
   "loadingDriverInfo": "正在加载司机信息！！",
   "driverPage": {
     "completed": "已完成",
@@ -34,6 +38,8 @@
     "like Driver": "喜欢",
     "dislike Driver": "不喜欢",
     "driver": "司机",
+    "createFavorite": "您已将司机添加到收藏夹。",
+    "deleteFavorite": "您已将司机从收藏夹中移除。",
     "modal": {
       "title": "指定报价请求",
       "no": "没有进行中的指定报价请求。",

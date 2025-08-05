@@ -7,10 +7,14 @@
   "driverFindCard": {
     "driver": "Driver",
     "career": "Career",
-    "confirm": "Confirm",
-    "year": "Year",
-    "count": "Count"
+    "confirm": "Done",
+    "year": "YR",
+    "count": ""
   },
+  "noEstimateRequest": "There is no ongoing general estimate request.",
+  "alreadyApprovedEstimateRequest": "You cannot make a designated request for a confirmed estimate.",
+  "alreadyDesignatedDriver": "This driver has already been designated.",
+  "maxThreeDriver": "You can designate up to 3 drivers only.",
   "loadingDriverInfo": "Loading driver information!!",
   "driverPage": {
     "completed": "Completed",
@@ -34,6 +38,8 @@
     "like Driver": "Like",
     "dislike Driver": "Dislike",
     "driver": "Driver",
+    "createFavorite": "You have added the driver to your favorites.",
+    "deleteFavorite": "You have removed the driver from your favorites.",
     "modal": {
       "title": "Request a Quote",
       "no": "No ongoing quote requests.",
