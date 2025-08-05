@@ -8,9 +8,10 @@ import Profile from "../dropdown/ProfileDropdown";
 import GnbMenuList from "./GnbMenuList";
 import { useAuth } from "@/providers/AuthProvider";
 import Button from "../Button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { OpenLayer, useGnbHooks } from "@/hooks/useGnbHook";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 // Gnb에서 정의해야 하는 요소들
 // 화면 너비에 따라 UI가 바뀜
@@ -23,14 +24,15 @@ interface GnbProps {
 export default function Gnb() {
   const { user, isLoading, logout } = useAuth();
   const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
-
+  const t = useTranslations("Gnb");
   // user가 null이면 비로그인 상태
 
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const gnbMobileMenuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
+  const pathname = usePathname();
+  const drivers = pathname.includes("/drivers");
   // 레이어가 열려있는 상태일 때, 레이어 DOM이 존재하며, 클릭한 위치가 레이어 밖이라면 닫힘
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -81,7 +83,9 @@ export default function Gnb() {
   };
 
   return (
-    <header className="border-line-100 fixed z-10 flex h-14 w-full items-center justify-center border-b-1 bg-white px-6 lg:h-22">
+    <header
+      className={`border-line-100 fixed z-10 flex h-14 w-full items-center justify-center bg-white px-6 lg:h-22 ${drivers ? `sm:border-b-0 md:border-b-0 lg:border-b` : `border-b-1`}`}
+    >
       <div className="flex w-full max-w-[var(--container-gnb)] items-center justify-between">
         <Logo />
         {isLg ? (
@@ -112,8 +116,9 @@ export default function Gnb() {
                 <div>
                   <Button
                     type="orange"
-                    text="로그인"
-                    className="h-12 w-30 rounded-lg"
+                    text={t("login")}
+                    isLoginText={true}
+                    className="w-30 rounded-md"
                     onClick={() => router.push("/login/customer")}
                   />
                 </div>

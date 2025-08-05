@@ -43,5 +43,6 @@
   "success": {
     "create": "프로필 생성 완료!",
     "edit": "프로필 수정 완료!"
-  }
+  },
+  "loadingProfile": "프로필 페이지로 이동중입니다."
 }

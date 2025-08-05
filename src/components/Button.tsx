@@ -1,11 +1,12 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import WritingIcon from "./icon/WritingIcon";
 
 interface ButtonType {
-  text: string;
+  text: string | ReactNode;
   type: "orange" | "gray" | "white-orange" | "white-gray" | "outline";
   image?: boolean;
   className?: string;
+  isLoginText?: boolean;
   isDisabled?: boolean;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   buttonType?: "button" | "submit"; // 버튼 타입 추가
@@ -15,6 +16,7 @@ function Button({
   text,
   type,
   image = false,
+  isLoginText = false,
   className = "w-full",
   isDisabled = false,
   onClick,
@@ -38,9 +40,11 @@ function Button({
       type={buttonType} //수정
       disabled={isDisabled}
       onClick={onClick}
-      className={`flex cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold md:py-[17px] md:text-lg ${color} ${className}`}
+      className={`flex h-[48px] cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold md:py-[17px] md:text-lg ${color} ${className} ${
+        isLoginText ? "md:h-[44px]" : "md:h-[56px]"
+      } ${color}`}
     >
-      <p>{text}</p>
+      {text}
       {image && <WritingIcon color={type === "orange" ? "text-white" : "text-gray-300"} />}
     </button>
   );

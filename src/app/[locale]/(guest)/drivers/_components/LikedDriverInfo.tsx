@@ -2,6 +2,7 @@
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import LikeIcon from "@/components/icon/LikeIcon";
 import { DriverType } from "@/types/driverType";
+import { translateWithDeepL } from "@/utills/translateWithDeepL";
 import { batchTranslate } from "@/utills/batchTranslate";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
@@ -16,24 +17,18 @@ function LikedDriverInfo({ driver }: LikedDriverInfo) {
   const t = useTranslations("FindDriver.driverFindCard");
   const router = useRouter();
   const locale = useLocale();
-  const [translatedIntro, setTranslatedIntro] = useState({ short: "" });
+  const [translatedIntro, setTranslatedIntro] = useState<string | null>(null);
 
   useEffect(() => {
-    const translateTexts = async () => {
-      if (!driver?.shortIntro) return;
-      if (locale === "ko") {
-        setTranslatedIntro({ short: driver.shortIntro ?? "" });
-        return;
-      }
+    const translate = async () => {
       try {
-        const result = await batchTranslate({ short: driver.shortIntro ?? "" }, locale);
-        setTranslatedIntro({ short: result.short });
-      } catch (e) {
-        console.warn("번역 실패", e);
+        const translated = await translateWithDeepL(driver.shortIntro, locale.toUpperCase());
+        setTranslatedIntro(translated);
+      } catch {
+        setTranslatedIntro(driver.shortIntro);
       }
     };
-
-    translateTexts();
+    translate();
   }, [driver, locale]);
 
   const handleClick = () => {
@@ -60,7 +55,7 @@ function LikedDriverInfo({ driver }: LikedDriverInfo) {
       </div>
 
       <p className="text-black-300 mt-3 w-full truncate font-semibold" aria-label="shortIntro">
-        {translatedIntro.short}
+        {translatedIntro}
       </p>
 
       <section className="mt-2 flex gap-5" aria-label="driverProfile">

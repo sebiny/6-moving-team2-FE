@@ -100,8 +100,6 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
         {reviews.map((review) => {
           const { content, rating, driver, request } = review;
           const { nickname, shortIntro } = driver;
-          const { fromAddress, toAddress } = request;
-          const moveDate = format(new Date(request.moveDate), "yyyy. MM. dd");
           const moveDetails = [
             {
               label: "from",
@@ -175,7 +173,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       <div className={clsx(isMd && "flex gap-[6px]", isSm && !isMd && "flex flex-col gap-[4px]")}>
                         <Image src="/assets/icons/ic_driver.svg" width={16} height={18} alt="driver_icon" />
                         <p className="text-black-300 font-[Pretendard] text-[16px] leading-[26px] font-bold md:text-[18px]">
-                          {translatedMeta[review.id]?.nickname || nickname} {t("driver.title")}
+                          {driver.nickname} {t("driver.title")}
                         </p>
                       </div>
                       {isMd && (

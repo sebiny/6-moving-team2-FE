@@ -47,7 +47,7 @@ function InputText({ setInputValid, value: externalValue, onChange: externalOnCh
         )}
       ></textarea>
       {isInvalid && (
-        <p className="pt-1 text-[16px] leading-[4px] font-semibold text-red-400">최소 10자 이상 입력해주세요</p>
+        <p className="pt-1 text-[16px] leading-[4px] font-semibold text-red-400">{t("modal.placeholder")}</p>
       )}
     </div>
   );
