@@ -116,7 +116,7 @@ export default function Gnb() {
                     type="orange"
                     text={t("login")}
                     isLoginText={true}
-                    className="w-31 rounded-md"
+                    className="w-30 rounded-md"
                     onClick={() => router.push("/login/customer")}
                   />
                 </div>
