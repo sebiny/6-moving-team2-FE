@@ -96,7 +96,7 @@ export default function LoginDriver() {
             <button
               type="submit"
               disabled={!isFormValid}
-              className={`h-[54px] w-full rounded-xl px-5 py-4 text-base leading-[26px] font-semibold transition-colors md:h-[60px] md:rounded-[16px] md:text-[18px] ${isFormValid ? "bg-orange-400 text-white" : "bg-gray-100 text-gray-50"} `}
+              className={`h-[54px] w-full cursor-pointer rounded-xl px-5 py-4 text-base leading-[26px] font-semibold transition-colors md:h-[60px] md:rounded-[16px] md:text-[18px] ${isFormValid ? "bg-orange-400 text-white" : "bg-gray-100 text-gray-50"} `}
             >
               {t("login")}
             </button>
