@@ -19,5 +19,7 @@
   "favoriteDrivers": {
     "deletedSuccessfully": "Deleted successfully.",
     "failedToDelete": "An error occurred during deletion."
-  }
+  },
+  "estimateCountMsg": "drivers have sent an estimate",
+  "alreadySent": "You have already sent an estimate"
 }
