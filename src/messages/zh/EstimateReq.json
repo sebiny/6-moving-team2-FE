@@ -46,5 +46,8 @@
   "loading": {
     "page": "正在跳转到报价请求页面...",
     "request": "正在发送报价请求..."
-  }
+  },
+  "sameAddressNotAllowed": "出发地和目的地不能相同。",
+  "moveDateInPast": "不能请求过去日期的搬家。",
+  "activeEstimateExists": "您已经有正在进行的搬家请求。"
 }
