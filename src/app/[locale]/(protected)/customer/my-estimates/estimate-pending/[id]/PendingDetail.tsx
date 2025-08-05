@@ -18,8 +18,11 @@ import { useKakaoShare } from "@/hooks/useKakaoShare";
 import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
 import PageHeader from "@/components/common/PageHeader";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import "dayjs/locale/ko";
 
 export default function PendingDetailPage() {
+  dayjs.locale("ko");
+
   const t = useTranslations("MyEstimates");
   const t1 = useTranslations("MyEstimate");
   const tC = useTranslations("Common");
