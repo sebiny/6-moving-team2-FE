@@ -22,16 +22,10 @@ export const removeCommas = (value: string): string => {
   return value.replace(/,/g, "");
 };
 
-export default function InputPrice({
-  value,
-  onChange,
-  placeholder = "견적가 입력",
-  icon,
-  size = "md"
-}: InputPriceProps) {
+export default function InputPrice({ value, onChange, placeholder, icon, size = "md" }: InputPriceProps) {
   const isSm = size === "sm";
   const tC = useTranslations("Common");
-
+  const t = useTranslations("ReceivedReq");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     // 쉼표 제거 후 숫자만 추출
@@ -70,7 +64,7 @@ export default function InputPrice({
           pattern="[0-9]*"
           value={value}
           onChange={handleChange}
-          placeholder={placeholder}
+          placeholder={placeholder || t("enter")}
         />
         {icon && isSm && (
           <div className="absolute top-1/2 right-4 flex h-6 w-6 -translate-y-1/2 items-center justify-center overflow-hidden">
