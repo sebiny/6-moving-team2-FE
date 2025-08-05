@@ -33,18 +33,19 @@ export default function DaumPostcodeModal({ onComplete, onClose, query }: Postco
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
       <div className="w-[608px] max-w-lg overflow-hidden rounded-2xl bg-white shadow-xl">
         {/* 상단 헤더 */}
-        <div className="flex items-center gap-2 border-gray-100 px-4 py-4">
+        <header className="flex items-center gap-2 border-gray-100 p-4">
           <button onClick={onClose}>
             <Image
               src="/assets/icons/ic_chevron_left_black.svg"
-              alt="닫기"
+              alt="뒤로가기"
               width={28}
               height={28}
+              loading="lazy"
               className="transition hover:opacity-70"
             />
           </button>
           <h2 className="text-lg font-bold text-gray-800">{t("searchResult")}</h2>
-        </div>
+        </header>
 
         {/* 다음 우편번호 검색창 */}
         <div className="p-1">
@@ -55,7 +56,6 @@ export default function DaumPostcodeModal({ onComplete, onClose, query }: Postco
             style={{
               width: "100%",
               height: "400px"
-              // border: "1px solid #E5E7EB"
             }}
           />
         </div>

@@ -109,7 +109,14 @@ export default function AddressCardModal({
         <div className="mb-[30px] flex items-center justify-between md:mb-10">
           <h2 className="text-lg font-bold md:text-2xl">{title}</h2>
           <button onClick={onClose}>
-            <Image src="/assets/icons/ic_X.svg" alt="닫기" width={24} height={24} className="md:h-9 md:w-9" />
+            <Image
+              src="/assets/icons/ic_X.svg"
+              alt="닫기"
+              width={24}
+              height={24}
+              loading="lazy"
+              className="md:h-9 md:w-9"
+            />
           </button>
         </div>
 
@@ -122,7 +129,12 @@ export default function AddressCardModal({
                 placeholder={t("placeholder")}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSearch();
+                  }
+                }}
                 className="placeholder:text-black-400 h-[24px] w-[132px] flex-1 bg-transparent text-sm text-black outline-none"
                 style={{ border: "none", caretColor: "black" }}
               />
@@ -134,6 +146,7 @@ export default function AddressCardModal({
                     width={24}
                     height={24}
                     alt="입력 지우기"
+                    loading="lazy"
                     className="md:h-9 md:w-9"
                   />
                 </button>
@@ -143,6 +156,7 @@ export default function AddressCardModal({
                     width={24}
                     height={24}
                     alt="검색"
+                    loading="lazy"
                     className="md:h-9 md:w-9"
                   />
                 </button>
