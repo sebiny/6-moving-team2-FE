@@ -55,7 +55,20 @@ export default function ReceivedRequestsPage() {
       let backendRequests;
 
       // 체크박스 상태에 따라 다른 API 호출
-      if (isDesignatedChecked) {
+      if (isDesignatedChecked && isAvailableRegionChecked) {
+        // 두 체크박스 모두 선택된 경우 - 지정된 요청과 서비스 가능 지역 요청 모두 가져오기
+        const [designatedRequests, availableRequests] = await Promise.all([
+          driverService.getDesignatedRequests(),
+          driverService.getAvailableRequests()
+        ]);
+
+        // 중복 제거를 위해 ID 기준으로 합치기
+        const allRequests = [...(designatedRequests || []), ...(availableRequests || [])];
+        const uniqueRequests = allRequests.filter(
+          (request, index, self) => index === self.findIndex((r) => r.id === request.id)
+        );
+        backendRequests = uniqueRequests;
+      } else if (isDesignatedChecked) {
         backendRequests = await driverService.getDesignatedRequests();
       } else if (isAvailableRegionChecked) {
         backendRequests = await driverService.getAvailableRequests();
@@ -120,7 +133,8 @@ export default function ReceivedRequestsPage() {
     });
 
     setFilteredRequests(filtered);
-  }, [searchKeyword, selectedMoveTypes, sort, requests.length]); // requests.length로 변경
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchKeyword, selectedMoveTypes, sort, requests.length]); // requests.length로 변경 - 성능 최적화
 
   const handleSendEstimate = (request: Request) => {
     setSelectedRequest(request);
@@ -199,10 +213,8 @@ export default function ReceivedRequestsPage() {
   const handleCheckboxChange = (type: "designated" | "available", checked: boolean) => {
     if (type === "designated") {
       setIsDesignatedChecked(checked);
-      if (checked) setIsAvailableRegionChecked(false);
     } else {
       setIsAvailableRegionChecked(checked);
-      if (checked) setIsDesignatedChecked(false);
     }
   };
 
