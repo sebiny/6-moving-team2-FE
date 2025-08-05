@@ -82,18 +82,19 @@ export default function SearchBar({
             {isActive && (
               <>
                 <button
-                  onClick={() => {
+                  onMouseDown={() => {
+                    if (onSearch) onSearch("");
                     if (onChange) onChange("");
                     else setInternalValue("");
                   }}
-                  className="ml-2"
+                  className="ml-2 cursor-pointer"
                 >
                   <span className="text-xl text-gray-400">×</span>
                 </button>
                 <button
                   type="button"
                   className={`relative flex items-center justify-center overflow-hidden ${styles.iconWrapper}`}
-                  onClick={handleSearchClick}
+                  onMouseDown={handleSearchClick}
                 >
                   <Image
                     src="/assets/icons/ic_search.svg"

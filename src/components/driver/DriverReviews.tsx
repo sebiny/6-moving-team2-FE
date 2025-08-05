@@ -58,7 +58,7 @@ function DriverReviews({ driver }: ReviewsType) {
             <div className="flex flex-col gap-1">
               {levels.map((level) => (
                 <div key={level} className="flex items-center gap-4">
-                  <p className="w-6">
+                  <p className="text-right">
                     {level}
                     {t("star")}
                   </p>

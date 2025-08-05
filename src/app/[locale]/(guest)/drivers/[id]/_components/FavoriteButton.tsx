@@ -1,4 +1,5 @@
 "use client";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 import LikeIcon from "@/components/icon/LikeIcon";
 import useMediaHook from "@/hooks/useMediaHook";
 import { favoriteService } from "@/lib/api/api-favorite";
@@ -32,8 +33,10 @@ function FavoriteButton({ favorite, setFavorite }: FavoriteButtonType) {
         setFavorite(context.prevFavorite);
       }
     },
-    onSuccess: () => {
+    onSuccess: (_, __, context) => {
       queryClient.invalidateQueries({ queryKey: ["driver", driverId] });
+      if (context?.prevFavorite === false) ToastModal(t("createFavorite"));
+      else ToastModal(t("deleteFavorite"));
     }
   });
   const handleClickFavorite = () => {
@@ -43,7 +46,7 @@ function FavoriteButton({ favorite, setFavorite }: FavoriteButtonType) {
   const t = useTranslations("FindDriver.requestQuote");
   return (
     <button
-      className="border-line-200 flex h-[54px] w-[54px] items-center justify-center gap-[10px] rounded-2xl border lg:h-16 lg:w-80"
+      className="border-line-200 flex h-[54px] w-[54px] cursor-pointer items-center justify-center gap-[10px] rounded-2xl border lg:h-16 lg:w-80"
       onClick={handleClickFavorite}
     >
       <LikeIcon color="black" isFilled={isLg || favorite} />
