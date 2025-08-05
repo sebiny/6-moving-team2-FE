@@ -10,6 +10,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { batchTranslate } from "@/utills/batchTranslate";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import "dayjs/locale/ko";
+
 type RequestData = {
   label: string;
   requestDate: string;
@@ -18,6 +20,8 @@ type RequestData = {
   date: string;
 };
 export default function PendingEstimates() {
+  dayjs.locale("ko");
+
   const { data, isLoading } = usePendingEstimates();
   const tC = useTranslations("Common");
   const locale = useLocale();
