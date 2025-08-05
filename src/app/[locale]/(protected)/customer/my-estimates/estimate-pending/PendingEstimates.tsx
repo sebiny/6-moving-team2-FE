@@ -36,7 +36,7 @@ export default function PendingEstimates() {
         requestDate: dayjs(estimateRequest.requestDate).format("YYYY년 M월 D일"),
         from: formatAddress(estimateRequest.fromAddress),
         to: formatAddress(estimateRequest.toAddress),
-        date: dayjs(estimateRequest.moveDate).format("YYYY년 MM월 DD일")
+        date: dayjs(estimateRequest.moveDate).format("YYYY년 MM월 DD일 (ddd)")
       };
       const result = await batchTranslate(textMap, locale);
       setTranslatedRequestData(result);
@@ -66,7 +66,7 @@ export default function PendingEstimates() {
       {/* 견적 요청이 있을 경우에만 헤더 렌더링 */}
       <EstimateSubHeader data={translatedRequestData} />
 
-      <div className="bg-background-200 grid grid-cols-1 gap-8 px-5 py-10 md:grid-cols-1 md:px-15 lg:grid-cols-2 lg:px-100 lg:py-20">
+      <div className="bg-background-200 grid grid-cols-1 gap-8 px-5 py-10 md:grid-cols-1 md:px-15 lg:mx-auto lg:max-w-[1400px] lg:grid-cols-2 lg:px-20 lg:py-20">
         {estimates.length === 0 ? (
           <div className="col-span-full flex flex-col items-center justify-center gap-2">
             <img src="/assets/images/img_moving_car1.svg" alt="견적 없음" width={250} height={250} />
