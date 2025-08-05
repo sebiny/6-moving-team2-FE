@@ -26,12 +26,14 @@ export default function ChangeImages() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative flex w-full lg:justify-end">
       <Image src={estimateVisualImg} alt="견적카드" />
-      <div className="absolute top-8 right-8 text-right text-xl font-bold text-gray-50 md:top-13 md:right-13 md:text-[32px] lg:top-38 lg:-translate-x-2/3 lg:text-left">
-        {t("imageTitle")}
-        <br />
-        {t("brImageTitle")}
+      <div className="absolute top-8 z-50 w-full pr-10 text-right text-xl font-bold text-gray-50 md:top-13 md:text-[32px] lg:top-54 lg:flex lg:w-1/2 lg:justify-start lg:pl-10 lg:text-[32px]">
+        <div className="lg:text-left">
+          {t("imageTitle")}
+          <br />
+          {t("brImageTitle")}
+        </div>
       </div>
     </div>
   );
