@@ -46,5 +46,8 @@
   "loading": {
     "page": "견적 요청 페이지로 이동중입니다.",
     "request": "견적 요청 진행중입니다."
-  }
+  },
+  "sameAddressNotAllowed": "출발지와 도착지는 서로 달라야 합니다.",
+  "moveDateInPast": "이전 날짜로 이사를 요청할 수 없습니다.",
+  "activeEstimateExists": "진행 중인 이사 견적이 있습니다."
 }
