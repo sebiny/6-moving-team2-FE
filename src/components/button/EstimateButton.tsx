@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import WritingIcon from "../icon/WritingIcon";
+import { useTranslations } from "next-intl";
 
 interface EstimateButtonProps {
   text: string;
@@ -39,7 +40,7 @@ function EstimateButton({
 
   // 견적 개수가 0이면 호버 효과 없음
   const showHoverEffect = estimateCount > 0;
-
+  const t = useTranslations("ToastModal");
   return (
     <button
       type={buttonType}
@@ -50,7 +51,7 @@ function EstimateButton({
       className={`flex h-[48px] cursor-pointer items-center justify-center gap-[6px] rounded-[16px] py-[14px] font-semibold transition-all duration-200 md:h-[56px] md:py-[17px] md:text-lg ${color} ${className}`}
     >
       <p className="transition-opacity duration-200">
-        {showHoverEffect && isHovered ? `${estimateCount}명의 기사님이 보냈습니다` : text}
+        {showHoverEffect && isHovered ? `${estimateCount} ${t("estimateCountMsg")}` : text}
       </p>
       {image && (!showHoverEffect || !isHovered) && (
         <WritingIcon color={type === "orange" ? "text-white" : "text-gray-300"} />

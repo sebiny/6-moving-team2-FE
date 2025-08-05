@@ -136,7 +136,7 @@ export default function SendEstimateModal({
             <div className="flex flex-col gap-7 lg:gap-8">
               <div>
                 <p className={textClass}>{t("enterCost")}</p>
-                <InputPrice placeholder="견적가 입력" size="md" value={price} onChange={setPrice} />
+                <InputPrice size="md" value={price} onChange={setPrice} />
               </div>
               <div>
                 <p className={textClass}>{t("enterComment")}</p>

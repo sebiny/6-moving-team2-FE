@@ -137,7 +137,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                       : (translatedIntros[reviewable.id] ?? "Loading...")}
                   </p>
                   {isMd && <ChipRectangle moveType={reviewable.moveType} size={isLg ? "md" : "sm"} className="mt-2" />}
-                  {reviewable.estimates[0].isDesignated && (
+                  {isMd && reviewable.estimates[0].isDesignated && (
                     <ChipRectangle moveType="REQUEST" size={isLg ? "md" : "sm"} className="mt-2 ml-2" />
                   )}
                 </div>

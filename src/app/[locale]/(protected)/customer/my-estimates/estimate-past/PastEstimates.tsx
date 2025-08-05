@@ -11,12 +11,15 @@ import { getMoveTypeLabel } from "@/utills/moveUtils";
 import { formatStreetAddress } from "@/utills/addressUtils";
 import dayjs from "dayjs";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import "dayjs/locale/ko";
 
 export default function PastEstimates() {
   const t = useTranslations("MyEstimates");
   const tC = useTranslations("Common");
   const { data, isLoading } = usePastEstimates();
   const [selectedService, setSelectedService] = useState(t("total"));
+
+  dayjs.locale("ko");
 
   if (isLoading) {
     return (

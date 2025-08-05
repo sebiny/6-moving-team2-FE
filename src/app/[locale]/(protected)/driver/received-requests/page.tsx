@@ -43,7 +43,7 @@ export default function ReceivedRequestsPage() {
 
   const t = useTranslations("ReceivedReq");
   const tm = useTranslations("ToastModal.receivedRequest");
-
+  const tToast = useTranslations("ToastModal");
   // React Query로 데이터 가져오기
   const {
     data: requests = [],
@@ -162,7 +162,7 @@ export default function ReceivedRequestsPage() {
       console.error("견적 전송 실패:", err);
 
       // 409 Conflict 에러인 경우 (이미 견적을 보낸 경우)
-      if (err instanceof Error && err.message.includes("이미 견적을 보냈습니다")) {
+      if (err instanceof Error && err.message.includes(tToast("alreadySent"))) {
         ToastModal(tm("alreadySentEstimate"));
       } else {
         ToastModal(tm("failedToSendEstimate"));

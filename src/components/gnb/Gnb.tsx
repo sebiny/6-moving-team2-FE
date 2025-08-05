@@ -22,6 +22,7 @@ interface GnbProps {
 }
 
 export default function Gnb() {
+  const t = useTranslations("Gnb");
   const { user, isLoading, logout } = useAuth();
   const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
   const t = useTranslations("Gnb");
