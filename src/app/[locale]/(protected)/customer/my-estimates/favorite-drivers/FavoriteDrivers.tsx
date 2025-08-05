@@ -1,7 +1,6 @@
 "use client";
 
 import DriverFindCard from "@/components/card/DriverFindCard";
-import SubHeader from "../_components/SubHeader";
 import { useEffect, useState } from "react";
 import CustomCheckbox from "@/components/button/CustomCheckbox";
 import { useTranslations } from "next-intl";
@@ -12,6 +11,8 @@ import { ToastModal } from "@/components/common-modal/ToastModal";
 import AlertModal from "@/components/common-modal/AlertModal";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
+import LoadingLottie from "@/components/lottie/LoadingLottie";
+import PageHeader from "@/components/common/PageHeader";
 
 export default function FavoriteDrivers() {
   const t = useTranslations("Gnb");
@@ -90,13 +91,15 @@ export default function FavoriteDrivers() {
     <div className="bg-background-200 flex min-h-screen flex-col">
       {/* 스티키 헤더 */}
       <div className="fixed z-9 w-full bg-white lg:top-22">
-        <SubHeader title={t("likedDrivers")} />
+        <PageHeader title={t("likedDrivers")} />
       </div>
 
       {/* 실제 내용 */}
-      <div className="mt-13 flex flex-1 flex-col gap-6 px-7 py-10 md:px-15 lg:mt-15 lg:px-100 lg:py-15">
+      <div className="mt-13 flex flex-1 flex-col gap-6 px-7 py-10 md:px-15 lg:container lg:mx-auto lg:mt-15 lg:px-20 lg:py-15 xl:px-90">
         {isLoading ? (
-          <div>{tC("loading")}</div>
+          <>
+            <LoadingLottie className="mt-30" />
+          </>
         ) : data.length === 0 ? (
           // 데이터 없을 경우
           <div className="mt-50 flex flex-col items-center justify-center gap-6">
@@ -121,7 +124,10 @@ export default function FavoriteDrivers() {
                   {t("chooseAll")} ({checkedList.filter(Boolean).length}/{checkedList.length})
                 </div>
               </div>
-              <div className="mt-1.5 mr-2.5 cursor-pointer" onClick={handleDeleteSelected}>
+              <div
+                className="mt-1.5 mr-2.5 cursor-pointer text-gray-600 hover:text-black"
+                onClick={handleDeleteSelected}
+              >
                 {t("deleteItem")}
               </div>
             </div>

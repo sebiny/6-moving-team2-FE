@@ -21,8 +21,8 @@ export default function EstimateDetail({ moveType, startAddress, endAddress, dat
       if (!moveType || !startAddress || !endAddress || !date || !createdDate) return;
       if (locale === "ko") {
         setTranslatedInfo({
-          from: endAddress,
-          to: startAddress,
+          from: startAddress,
+          to: endAddress,
           date: date,
           created: createdDate,
           move: moveType
@@ -32,8 +32,8 @@ export default function EstimateDetail({ moveType, startAddress, endAddress, dat
       try {
         const result = await batchTranslate(
           {
-            from: endAddress ?? "",
-            to: startAddress ?? "",
+            from: startAddress ?? "",
+            to: endAddress ?? "",
             date: date ?? "",
             created: createdDate ?? "",
             move: moveType ?? ""
@@ -59,7 +59,7 @@ export default function EstimateDetail({ moveType, startAddress, endAddress, dat
       {/* 상단: 제목 + 생성일 */}
       <div className="mb-6 flex flex-col items-center justify-between md:mb-8 md:flex-row">
         <h2 className="text-lg font-bold text-gray-900 md:text-xl">{t("estimateInfo")}</h2>
-        <p className="mt-2 hidden text-sm text-gray-400 md:mt-0 md:flex">{translatedInfo.created}</p>
+        <p className="mt-2 hidden text-sm whitespace-nowrap text-gray-400 md:mt-0 md:flex">{translatedInfo.created}</p>
       </div>
 
       {/* 본문 정보 */}
