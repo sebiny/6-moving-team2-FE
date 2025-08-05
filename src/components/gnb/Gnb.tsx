@@ -33,7 +33,7 @@ export default function Gnb() {
   const gnbMobileMenuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const drivers = pathname.includes("drivers");
+  const drivers = pathname.includes("/drivers");
   // 레이어가 열려있는 상태일 때, 레이어 DOM이 존재하며, 클릭한 위치가 레이어 밖이라면 닫힘
   const handleClickOutside = (event: MouseEvent) => {
     if (
