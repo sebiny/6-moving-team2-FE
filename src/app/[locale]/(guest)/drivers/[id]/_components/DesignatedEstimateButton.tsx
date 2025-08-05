@@ -25,7 +25,7 @@ function DesignatedEstimateButton({ isDesignated: initialIsDesignated }: Designa
     mutationFn: () => createDesignatedEstimateRequest({ driverId }),
     onSuccess: () => setIsDesignated(true),
     onError: (err) => {
-      openModal(<EstimateRequestModal onClose={closeModal} errorMsg={err.message} />);
+      openModal(<EstimateRequestModal onClose={closeModal} errorMsg={t(err.message)} />);
       //동적인 에러 메세지 처리
     }
   });
