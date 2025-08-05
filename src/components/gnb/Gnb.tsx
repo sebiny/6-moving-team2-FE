@@ -25,7 +25,6 @@ export default function Gnb() {
   const t = useTranslations("Gnb");
   const { user, isLoading, logout } = useAuth();
   const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
-  const t = useTranslations("Gnb");
   // user가 null이면 비로그인 상태
 
   const notificationRef = useRef<HTMLDivElement>(null);

@@ -20,6 +20,6 @@
     "deletedSuccessfully": "Deleted successfully.",
     "failedToDelete": "An error occurred during deletion."
   },
-  "estimateCountMsg": "drivers have sent an estimate",
+  "estimateCountMsg": "drivers sent estimates",
   "alreadySent": "You have already sent an estimate"
 }

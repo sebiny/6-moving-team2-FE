@@ -66,6 +66,7 @@ export default function SendEstimateModal({
           },
           locale
         );
+
         setTranslatedInfo({ from: result.from, to: result.to, date: result.date });
       } catch (e) {
         console.warn("번역 실패", e);
@@ -106,8 +107,8 @@ export default function SendEstimateModal({
                   </p>
                 </div>
               </div>
-              <div className="border-line-100 flex border-b py-3 lg:py-4">
-                <div className={clsx("flex items-center")}>
+              <div className="border-line-100 flex flex-row items-center gap-4 border-b py-3 md:flex-col md:items-start lg:flex-row lg:items-center lg:py-4">
+                <div className="flex flex-1 items-center">
                   <div>
                     <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">{t("from")}</p>
                     <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">
@@ -122,7 +123,7 @@ export default function SendEstimateModal({
                     </p>
                   </div>
                 </div>
-                <div className="ml-auto flex flex-col items-start justify-center lg:ml-10">
+                <div className="flex flex-col items-start justify-center md:ml-0">
                   <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">
                     {t("moveDate")}
                   </p>
