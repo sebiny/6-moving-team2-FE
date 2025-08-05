@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import LikedDriverInfo from "./LikedDriverInfo";
 import { useQuery } from "@tanstack/react-query";
@@ -13,29 +14,25 @@ function LikedDrivers() {
     queryKey: ["drivers"],
     queryFn: () => favoriteService.favoriteDrivers(1, 3)
   });
-  if (isPending)
-    return (
-      <div>
-        <p className="mb-4 text-xl font-semibold">{t("LikedDrivers")}</p>
-        <LikedDriverInfoSkeleton />
-      </div>
-    );
-  if (!drivers)
-    return (
-      <div>
-        <p className="mb-4 text-xl font-semibold">{t("LikedDrivers")}</p>
-        <p>{t("noDrivers")}</p>
-      </div>
-    );
+
   return (
-    <div>
-      <p className="mb-4 text-xl font-semibold">{t("LikedDrivers")}</p>
-      <div className="flex flex-col gap-4">
-        {drivers.map((driver) => (
-          <LikedDriverInfo key={driver.id} driver={driver} />
-        ))}
-      </div>
-    </div>
+    <aside className="mt-[290px] ml-[54px] hidden lg:block" aria-label={t("LikedDrivers")} role="complementary">
+      <h2 className="mb-4 text-xl font-semibold">{t("LikedDrivers")}</h2>
+
+      {isPending ? (
+        <LikedDriverInfoSkeleton />
+      ) : !drivers || drivers.length === 0 ? (
+        <p>{t("noDrivers")}</p>
+      ) : (
+        <ul className="flex flex-col gap-4">
+          {drivers.map((driver) => (
+            <li key={driver.id}>
+              <LikedDriverInfo driver={driver} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </aside>
   );
 }
 
