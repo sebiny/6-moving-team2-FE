@@ -33,6 +33,7 @@ export default function AddressCardModal({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showPostcode, setShowPostcode] = useState(false);
   const [addressList, setAddressList] = useState<Address[]>([]);
+  const [isTranslating, setIsTranslating] = useState(false);
 
   // 선택된 주소를 외부로 전달
   useEffect(() => {
@@ -68,42 +69,66 @@ export default function AddressCardModal({
         })
       );
 
-      let translated = { roadAddress: addr.roadAddress, jibunAddress: fullJibunAddress };
-
-      if (locale !== "ko") {
-        try {
-          translated = await batchTranslate(
-            {
-              roadAddress: addr.roadAddress,
-              jibunAddress: fullJibunAddress
-            },
-            locale
-          );
-        } catch (e) {
-          console.warn("주소 번역 실패", e);
-        }
-      }
-
       const newAddress: Address = {
         id: savedAddress.id,
         postalCode: savedAddress.postalCode,
         roadAddress: addr.roadAddress,
         jibunAddress: fullJibunAddress,
         translations: {
-          roadAddress: translated.roadAddress,
-          jibunAddress: translated.jibunAddress
+          roadAddress: addr.roadAddress,
+          jibunAddress: fullJibunAddress
         }
       };
 
       setAddressList((prev) => [newAddress, ...prev]);
       setSelectedIndex(0);
       setShowPostcode(false);
+
+      // 비동기로 번역 처리
+      if (locale !== "ko") {
+        setIsTranslating(true);
+        try {
+          const translated = await batchTranslate(
+            {
+              roadAddress: addr.roadAddress,
+              jibunAddress: fullJibunAddress
+            },
+            locale
+          );
+
+          setAddressList((prev) =>
+            prev.map((item, idx) =>
+              idx === 0
+                ? {
+                    ...item,
+                    translations: {
+                      roadAddress: translated.roadAddress,
+                      jibunAddress: translated.jibunAddress
+                    }
+                  }
+                : item
+            )
+          );
+        } catch (e) {
+          console.warn("주소 번역 실패", e);
+        } finally {
+          setIsTranslating(false);
+        }
+      }
     },
     [locale]
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#141414]/40">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#141414]/40"
+      onClick={(e) => {
+        if ((e.target as HTMLElement).id === "modal-background") {
+          onClose();
+        }
+      }}
+      id="modal-background"
+    >
       <div className="flex w-[292px] flex-col justify-between rounded-3xl bg-white px-4 py-6 shadow-xl md:w-[608px] md:rounded-4xl md:px-6 md:pt-8 md:pb-10">
         {/* 상단 헤더 */}
         <div className="mb-[30px] flex items-center justify-between md:mb-10">
@@ -173,9 +198,19 @@ export default function AddressCardModal({
               <AddressResultCard
                 key={addr.id}
                 postalCode={addr.postalCode}
-                roadAddress={locale === "ko" ? addr.roadAddress : addr.translations?.roadAddress || addr.roadAddress}
+                roadAddress={
+                  locale === "ko"
+                    ? addr.roadAddress
+                    : isTranslating
+                      ? t("translating")
+                      : addr.translations?.roadAddress || addr.roadAddress
+                }
                 jibunAddress={
-                  locale === "ko" ? addr.jibunAddress : addr.translations?.jibunAddress || addr.jibunAddress
+                  locale === "ko"
+                    ? addr.jibunAddress
+                    : isTranslating
+                      ? t("translating")
+                      : addr.translations?.jibunAddress || addr.jibunAddress
                 }
                 selected={selectedIndex === idx}
                 onClick={() => handleSelectAddress(idx)}
