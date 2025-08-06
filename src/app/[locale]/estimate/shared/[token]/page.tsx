@@ -52,7 +52,7 @@ export default function SharedEstimatePage() {
     <>
       <OrangeBackground />
       <div className="bg-white">
-        <div className="flex flex-col px-5 py-[30px] pt-10 md:px-17 lg:mx-auto lg:max-w-[1300px] lg:gap-20 lg:px-100 lg:pb-[120px]">
+        <div className="flex flex-col px-5 pt-5 md:px-17 lg:mx-auto lg:max-w-[1700px] lg:gap-20 lg:px-10 lg:pb-[120px]">
           <div className="flex flex-col gap-10">
             {!isDriverShared ? (
               <>
