@@ -7,6 +7,7 @@ interface CostType {
 }
 export default function ReviewCost({ className, cost }: CostType) {
   const t = useTranslations("Review");
+  const tC = useTranslations("Common");
   const SIZE_CLASSES = {
     base: ["font-[Pretendard] text-gray-500 font-medium"],
     sm: ["text-[14px] leading-[24px]"],
@@ -20,7 +21,10 @@ export default function ReviewCost({ className, cost }: CostType) {
   return (
     <div className={`flex items-end justify-between md:flex-col lg:pt-[41px] ${className}`}>
       <p className={clsx(...SIZE_CLASSES.base, ...SIZE_CLASSES.lg, ...SIZE_CLASSES.sm)}>{t("cost.title")}</p>
-      <p className={clsx(COST_CLASSES.base, ...COST_CLASSES.sm, ...COST_CLASSES.lg)}>{cost.toLocaleString()}원</p>
+      <p className={clsx(COST_CLASSES.base, ...COST_CLASSES.sm, ...COST_CLASSES.lg)}>
+        {cost.toLocaleString()}
+        {tC("won")}
+      </p>
     </div>
   );
 }
