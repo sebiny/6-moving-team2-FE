@@ -93,7 +93,7 @@ export default function EstimateDetailPage() {
             buttons: [{ title: "견적서 보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }]
           });
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
           alert("공유 링크 생성 실패: " + error.message);
         }
       }
@@ -113,7 +113,7 @@ export default function EstimateDetailPage() {
           const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
           window.open(facebookShareUrl, "_blank", "width=600,height=400");
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
           alert("Facebook 공유 링크 생성 실패: " + error.message);
         }
       }
@@ -125,7 +125,7 @@ export default function EstimateDetailPage() {
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       {/* 상단 정보 + 공유 */}
-      <div className="mt-8 flex w-full flex-col gap-5 px-5 md:gap-7 md:px-18 lg:flex-row lg:items-start lg:justify-between lg:px-90">
+      <div className="mt-8 flex w-full flex-col gap-5 px-5 md:gap-7 md:px-55 lg:mb-20 lg:flex-row lg:items-start lg:justify-between lg:px-80">
         <div className="w-full lg:w-[60%]">
           <EstimateHeaderSection
             moveType={moveType as MoveType}
@@ -158,11 +158,11 @@ export default function EstimateDetailPage() {
 
       {/* 모바일/태블릿용 구분선과 공유 버튼 */}
       {/* 오른쪽 - 공유 버튼 */}
-      <div className="mt-5 px-5 md:my-8 md:mt-8 md:px-18 lg:hidden">
+      <div className="mt-5 px-5 md:mt-7 md:px-55 lg:hidden">
         <div className="h-0 w-full outline outline-offset-[-0.5px] outline-zinc-100" />
       </div>
 
-      <div className="items-left mb-10 flex flex-col px-5 md:flex-row md:px-18 lg:hidden">
+      <div className="items-left mb-10 flex flex-col px-5 md:flex-row md:px-55 lg:hidden">
         <ShareDriver
           text={t("wannaRecommend?")}
           onKakaoShare={handleKakaoShare}
