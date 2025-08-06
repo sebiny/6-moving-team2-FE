@@ -5,8 +5,6 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { getMoveTypeLabel } from "@/utills/moveUtils";
-import { formatStreetAddress } from "@/utills/addressUtils";
 import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
 import { defaultFetch } from "@/lib/FetchClient";
 import Title from "@/components/Title";
@@ -15,6 +13,9 @@ import EstimateInfoSection from "@/app/[locale]/(protected)/driver/my-estimates/
 import { MoveType, moveTypeLabelMap } from "@/constant/moveTypes";
 import { formatDate, formatDateTime } from "@/utills/dateUtils";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import "dayjs/locale/ko";
+
+dayjs.locale("ko");
 
 export default function SharedEstimatePage() {
   const { token } = useParams();
@@ -51,7 +52,7 @@ export default function SharedEstimatePage() {
     <>
       <OrangeBackground />
       <div className="bg-white">
-        <div className="flex flex-col px-5 py-[60px] pt-10 md:px-17 lg:gap-20 lg:px-100 lg:pt-[20px] lg:pb-[120px]">
+        <div className="flex flex-col px-5 py-[30px] pt-10 md:px-17 lg:mx-auto lg:max-w-[1300px] lg:gap-20 lg:px-100 lg:pb-[120px]">
           <div className="flex flex-col gap-10">
             {!isDriverShared ? (
               <>
@@ -61,7 +62,7 @@ export default function SharedEstimatePage() {
                     alt="기사님 프로필"
                     width={100}
                     height={100}
-                    className="h-18 w-18 md:h-27 md:w-27 lg:h-37 lg:w-37"
+                    className="h-18 w-18 rounded-lg md:h-27 md:w-27 lg:h-37 lg:w-37"
                   />
                 </div>
                 <Title
@@ -79,13 +80,13 @@ export default function SharedEstimatePage() {
                 />
                 <div className="border-t border-gray-100" />
                 <EstimateDetailInfo
-                  requestDate={
-                    estimateRequest?.requestDate ? dayjs(estimateRequest.requestDate).format("YYYY년 MM월 DD일") : ""
+                  requestDate={estimateRequest?.createdAt ? formatDate(estimateRequest.createdAt) : ""}
+                  serviceType={
+                    moveTypeLabelMap[estimateRequest?.moveType as MoveType]?.label || estimateRequest?.moveType
                   }
-                  serviceType={getMoveTypeLabel(estimateRequest?.moveType)}
-                  moveDate={estimateRequest?.moveDate ? dayjs(estimateRequest.moveDate).format("YYYY년 MM월 DD일") : ""}
-                  from={estimateRequest?.fromAddress ? formatStreetAddress(estimateRequest.fromAddress) : ""}
-                  to={estimateRequest?.toAddress ? formatStreetAddress(estimateRequest.toAddress) : ""}
+                  moveDate={estimateRequest?.moveDate ? formatDateTime(estimateRequest.moveDate) : ""}
+                  from={estimateRequest?.fromAddress?.street ?? ""}
+                  to={estimateRequest?.toAddress?.street ?? ""}
                 />
               </>
             ) : (
