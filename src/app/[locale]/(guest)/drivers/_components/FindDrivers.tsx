@@ -14,6 +14,7 @@ import { useInView } from "react-intersection-observer";
 import { useAuth } from "@/providers/AuthProvider";
 import { useTranslations } from "next-intl";
 import DriverFindCardSkeleton from "@/components/card/DriverFindCardSkeleton";
+import useMediaHook from "@/hooks/useMediaHook";
 
 function FindDrivers() {
   const t = useTranslations("FindDriver");
@@ -26,6 +27,8 @@ function FindDrivers() {
   const [keywordInput, setKeywordInput] = useState(keyword);
   const { user } = useAuth();
   const { ref, inView } = useInView();
+  const { isLg } = useMediaHook();
+  const searchBarSize = isLg ? "md" : "sm";
 
   const updateQuery = (key: string, value: string) => {
     const params = new URLSearchParams(window.location.search);
@@ -65,7 +68,7 @@ function FindDrivers() {
   const drivers = data?.pages.flatMap((page) => page?.data ?? []) ?? [];
 
   return (
-    <main className="mb-20 flex justify-center" aria-label={t("findDriver")}>
+    <main className="mb-20 flex justify-center px-6 pt-[6px]" aria-label={t("findDriver")}>
       <section className="mx-6 w-full max-w-205" aria-labelledby="findDriverTitle">
         <h1 id="findDriverTitle" className="my-8 hidden text-3xl font-semibold lg:block">
           {t("findDriver")}
@@ -81,6 +84,7 @@ function FindDrivers() {
         >
           <SearchBar
             width="w-full"
+            size={searchBarSize}
             placeholder={t("textPlaceholder")}
             value={keywordInput}
             onChange={(val) => setKeywordInput(val)}
@@ -89,7 +93,10 @@ function FindDrivers() {
           />
         </form>
 
-        <section aria-label="filtersSectionLabel" className="my-[38px] flex justify-between">
+        <section
+          aria-label="filtersSectionLabel"
+          className="my-4 flex items-center justify-between md:mt-[26px] md:mb-10 lg:my-[38px]"
+        >
           <Filters
             region={region}
             setRegion={(val) => updateQuery("region", val)}

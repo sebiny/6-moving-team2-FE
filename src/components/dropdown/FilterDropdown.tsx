@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { TranslateRegion, TranslateService } from "@/utills/TranslateFunction";
+// import { TranslateRegion, TranslateService } from "@/utills/TranslateFunction";
 
 interface DropdownProps {
   label: string;
@@ -18,7 +18,7 @@ function FilterDropdown({
   selected,
   onSelect,
   isMultiColumn = false,
-  type = "service",
+  // type = "service",
   translator
 }: DropdownProps) {
   const [open, setOpen] = useState(false);
@@ -46,8 +46,8 @@ function FilterDropdown({
     };
   }, [open]);
 
-  const buttonClass = `flex items-center justify-between gap-[6px] rounded-xl px-[14px] py-2 
-    md:h-[50px] md:w-40 md:px-5 md:py-4
+  const buttonClass = `cursor-pointer flex items-center justify-between gap-[6px] rounded-xl px-[14px] py-2 
+    lg:h-[50px] lg:w-40 lg:px-5 lg:py-4
     ${
       isActive
         ? "border border-[var(--color-orange-400)] bg-[var(--color-orange-100)] text-[var(--color-orange-400)]"
@@ -55,19 +55,19 @@ function FilterDropdown({
     }`;
 
   const itemClass =
-    "px-[14px] py-[6px] text-sm leading-6 font-medium hover:bg-[var(--color-orange-100)] cursor-pointer md:px-5 md:py-5 md:text-base";
+    "px-[14px] py-[6px] text-sm leading-6 font-medium hover:bg-[var(--color-orange-100)] cursor-pointer lg:px-5 lg:py-5 lg:text-base";
 
   return (
     <div className="relative" ref={dropdownRef}>
       {/* 버튼 */}
       <button onClick={() => setOpen((prev) => !prev)} className={buttonClass}>
-        <span className="truncate text-sm font-medium md:text-base">{selected ? translator(selected) : label} </span>
+        <span className="truncate text-sm font-medium lg:text-base">{selected ? translator(selected) : label} </span>
         <Image
           src={`/assets/icons/${open ? "ic_chevron_up" : "ic_chevron_down"}.svg`}
           alt="화살표"
           width={36}
           height={36}
-          className="h-5 w-5 md:h-9 md:w-9"
+          className="h-5 w-5 lg:w-9"
         />
       </button>
 
@@ -75,7 +75,7 @@ function FilterDropdown({
       {/* TODO: 옵션 개수에 맞춰 유동적으로 메뉴 크기 조정하기, 스크롤바 꾸미기 */}
       {open && (
         <div
-          className={`absolute z-10 mt-3 rounded-lg border border-[var(--color-line-200)] bg-white shadow-md md:rounded-2xl ${isMultiColumn ? "grid h-[180px] w-[150px] grid-cols-2 overflow-y-auto md:h-[320px] md:w-[320px]" : "w-[106px] overflow-y-auto md:w-[160px]"}`}
+          className={`absolute z-10 mt-3 rounded-lg border border-[var(--color-line-200)] bg-white shadow-md lg:rounded-2xl ${isMultiColumn ? "grid h-[180px] w-[150px] grid-cols-2 overflow-y-auto lg:h-[320px] lg:w-[320px]" : "w-[106px] overflow-y-auto lg:w-[160px]"}`}
         >
           {isMultiColumn ? (
             options.map((item, idx) => (
