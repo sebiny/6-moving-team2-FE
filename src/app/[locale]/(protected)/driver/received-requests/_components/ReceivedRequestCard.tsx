@@ -54,7 +54,7 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
     translatedTexts();
   }, [request, locale]);
 
-  (useEffect(() => {
+  useEffect(() => {
     const translate = async () => {
       try {
         const translated = await translateWithDeepL(request.createdAt, locale.toUpperCase());
@@ -64,8 +64,7 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
       }
     };
     translate();
-  }),
-    [request.createdAt, locale]);
+  }, [request.createdAt, locale]);
 
   return (
     <div className="inline-flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.20)] outline outline-offset-[-0.5px] outline-zinc-100 md:w-full md:gap-8 md:px-10 md:py-8">
@@ -88,14 +87,18 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
         </div>
         {/* 출발/도착지 + 이사일 */}
         <div className="flex w-full flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div className="flex flex-1 items-end gap-3 md:flex-row md:items-center">
+          <div
+            className={`flex flex-1 items-end gap-3 ${
+              locale === "en" ? "flex-col items-start md:flex-row md:items-center" : "md:flex-row md:items-center"
+            }`}
+          >
             <div className="flex flex-col">
               <div className="text-sm text-zinc-500">{t("from")}</div>
               <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
                 {translatedInfo.from}
               </div>
             </div>
-            <div className="relative h-5 w-4 flex-shrink-0">
+            <div className={`relative h-5 w-4 flex-shrink-0 ${locale === "en" ? "hidden text-left md:block" : ""}`}>
               <Image src="/assets/icons/ic_arrow.svg" alt="화살표" fill className="object-center" />
             </div>
             <div className="flex flex-col">

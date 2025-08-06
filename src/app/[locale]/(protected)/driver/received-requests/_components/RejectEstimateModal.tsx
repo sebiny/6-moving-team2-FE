@@ -79,13 +79,10 @@ export default function RejectEstimateModal({
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 md:items-center">
       <div
         className={clsx(
-          "h-[678px] w-full rounded-t-[32px] bg-gray-50 px-6 py-8 shadow-[4px_4px_10px_rgba(169,169,169,0.2)]",
+          "h-auto w-full rounded-t-[32px] bg-gray-50 px-6 py-8 shadow-[4px_4px_10px_rgba(169,169,169,0.2)]",
           "sm:max-h-none",
           "md:w-[375px] md:items-center md:justify-center md:rounded-b-[32px]",
-          "lg:w-150 lg:p-8",
-          "flex flex-col", // flex column 구조
-          "max-h-[90vh]", // 최대 높이 제한
-          "h-auto" // 고정 높이 제거
+          "lg:h-194 lg:w-150 lg:p-8"
         )}
       >
         <div className="flex flex-col gap-[26px] lg:gap-10">
@@ -109,8 +106,8 @@ export default function RejectEstimateModal({
                   </p>
                 </div>
               </div>
-              <div className="border-line-100 flex border-b py-3 lg:py-4">
-                <div className={clsx("flex items-center")}>
+              <div className="border-line-100 flex flex-row items-center gap-4 border-b py-3 md:flex-col md:items-start lg:flex-row lg:items-center lg:py-4">
+                <div className="flex flex-1 items-center">
                   <div>
                     <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">{t("from")}</p>
                     <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">
@@ -125,7 +122,7 @@ export default function RejectEstimateModal({
                     </p>
                   </div>
                 </div>
-                <div className="ml-auto flex flex-col items-start justify-center lg:ml-10">
+                <div className="flex flex-col items-start justify-center md:ml-0">
                   <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">
                     {t("moveDate")}
                   </p>
