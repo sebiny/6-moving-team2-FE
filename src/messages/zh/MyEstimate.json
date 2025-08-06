@@ -15,5 +15,6 @@
   "requestDate": "报价请求日期",
   "service": "服务",
   "useDate": "使用日期",
-  "wannaRecommend?": "这位司机值得推荐给别人"
+  "wannaRecommend?": "这位司机值得推荐给别人",
+  "shareEstimate": "分享报价"
 }
