@@ -49,5 +49,6 @@
   },
   "sameAddressNotAllowed": "Departure and destination must be different.",
   "moveDateInPast": "You cannot request a move for a past date.",
-  "activeEstimateExists": "You already have an active moving request."
+  "activeEstimateExists": "You already have an active moving request.",
+  "translating": "Fetching the address..."
 }
