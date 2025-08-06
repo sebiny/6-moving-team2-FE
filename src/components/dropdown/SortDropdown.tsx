@@ -34,7 +34,10 @@ function SortDropdown({ sortings, sort, setSort, translator }: SortDropdownType)
 
   return (
     <div ref={dropdownRef} className="relative">
-      <div onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-[10px] px-2 py-[7px]">
+      <div
+        onClick={() => setIsModalOpen((prev) => !prev)}
+        className="flex cursor-pointer items-center justify-center gap-[10px] px-2 py-[10px] text-xs lg:text-sm"
+      >
         <div className={`${isModalOpen ? "text-gray-400" : "text-black-400"}`}>
           {/* {TranslateSorting(sort)} */}
           {translator(sort)}
@@ -46,12 +49,12 @@ function SortDropdown({ sortings, sort, setSort, translator }: SortDropdownType)
         )}
       </div>
       {isModalOpen && (
-        <div className="border-line-100 absolute top-10 left-0 z-20 w-full rounded-lg border bg-white">
+        <div className="border-line-100 absolute top-10 left-0 z-20 w-full cursor-pointer rounded-lg border bg-white">
           {sortings.map((sorting) => (
             <div
               key={sorting}
               onClick={() => handleClick(sorting)}
-              className="text-black-400 px-[10px] py-[7px] font-medium"
+              className="text-black-400 px-[10px] py-[6px] text-xs leading-normal font-medium lg:px-3 lg:py-2 lg:text-sm"
             >
               {/* {TranslateSorting(sorting)} */}
               {translator(sorting)}
