@@ -8,16 +8,17 @@ import OrangeBackground from "@/components/OrangeBackground";
 import ShareDriver from "@/components/ShareDriver";
 import EstimateHeaderSection from "./_components/EstimateHeaderSection";
 import EstimateInfoSection from "./_components/EstimateInfoSection";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { driverService } from "@/lib/api/api-driver";
 import { DriverEstimateDetailType } from "@/types/estimateType";
-import { formatDate, formatDateTime } from "@/utills/dateUtils";
+import { formatDate, formatDateTime, setDayjsLocale } from "@/utills/dateUtils";
 import { MoveType, moveTypeLabelMap } from "@/constant/moveTypes";
 import { useKakaoShare } from "@/hooks/useKakaoShare";
 import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
 
 export default function EstimateDetailPage() {
   const t = useTranslations("MyEstimate");
+  const locale = useLocale();
   const params = useParams();
   const estimateId = params.id as string;
 
@@ -52,7 +53,7 @@ export default function EstimateDetailPage() {
     <>
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
-      <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
+      <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-80">
         <div className="flex flex-col items-start gap-7">
           <div className="text-red-500">{message}</div>
         </div>
@@ -125,7 +126,7 @@ export default function EstimateDetailPage() {
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       {/* 상단 정보 + 공유 */}
-      <div className="mt-8 flex w-full flex-col gap-5 px-5 md:gap-7 md:px-55 lg:mb-20 lg:flex-row lg:items-start lg:justify-between lg:px-80">
+      <div className="mt-8 flex w-full flex-col gap-10 px-5 md:gap-7 md:px-55 lg:mb-20 lg:flex-row lg:items-start lg:justify-between">
         <div className="w-full lg:w-[60%]">
           <EstimateHeaderSection
             moveType={moveType as MoveType}
@@ -139,7 +140,10 @@ export default function EstimateDetailPage() {
             <EstimateInfoSection
               createdAt={formatDate(estimateRequest.createdAt)}
               moveTypeLabel={moveTypeLabelMap[moveType as MoveType]?.label || moveType}
-              moveDate={formatDateTime(moveDate)}
+              moveDate={(() => {
+                setDayjsLocale(locale);
+                return formatDateTime(moveDate);
+              })()}
               from={fromAddress.street}
               to={toAddress.street}
             />
