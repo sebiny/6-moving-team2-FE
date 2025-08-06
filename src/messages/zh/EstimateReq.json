@@ -49,5 +49,6 @@
   },
   "sameAddressNotAllowed": "出发地和目的地不能相同。",
   "moveDateInPast": "不能请求过去日期的搬家。",
-  "activeEstimateExists": "您已经有正在进行的搬家请求。"
+  "activeEstimateExists": "您已经有正在进行的搬家请求。",
+  "translating": "正在获取地址..."
 }

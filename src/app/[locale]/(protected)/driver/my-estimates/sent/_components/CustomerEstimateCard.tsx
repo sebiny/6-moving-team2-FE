@@ -4,11 +4,10 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
 import { CompletedEstimateCardType } from "@/types/estimateType";
 import { ESTIMATE_STATUS, ESTIMATE_TEXT } from "@/constant/constant";
-import Image from "next/image";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
-import CompletedEstimateCard from "./CompletedEstimateCard";
 import { useLocale, useTranslations } from "next-intl";
 import { batchTranslate } from "@/utills/batchTranslate";
+import AddressDateSection from "./AddressDateSection";
 
 interface CustomerEstimateCardProps {
   request: CompletedEstimateCardType;
@@ -75,29 +74,7 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
           <div className="h-px w-full bg-zinc-100" />
         </div>
         {/* 출발/도착지 + 이사일 */}
-        <div className="flex w-full flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div className="flex flex-1 items-end gap-3 md:flex-row md:items-center">
-            <div className="flex flex-col">
-              <div className="text-sm font-normal text-zinc-500">{t("to")}</div>
-              <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {translatedInfo.from}
-              </div>
-            </div>
-            <div className="relative h-5 w-4 flex-shrink-0">
-              <Image src="/assets/icons/ic_arrow.svg" alt="화살표" fill className="object-center" />
-            </div>
-            <div className="flex flex-col">
-              <div className="text-sm font-normal text-zinc-500">{t("from")}</div>
-              <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {translatedInfo.to}
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <div className="text-sm font-normal text-zinc-500">{t("date")}</div>
-            <div className="text-base font-semibold text-neutral-900">{translatedInfo.date}</div>
-          </div>
-        </div>
+        <AddressDateSection from={translatedInfo.from} to={translatedInfo.to} date={translatedInfo.date} />
       </div>
       {/* 하단 */}
       <div className="flex w-full items-end justify-between border-t border-neutral-200 pt-4">
@@ -106,12 +83,6 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
           {request.estimateAmount ? request.estimateAmount : ESTIMATE_TEXT.UNDEFINED}
         </div>
       </div>
-      {/* 오버레이 */}
-      {request.isCompleted && (
-        <div className="absolute inset-0 z-10">
-          <CompletedEstimateCard request={request} />
-        </div>
-      )}
     </div>
   );
 }

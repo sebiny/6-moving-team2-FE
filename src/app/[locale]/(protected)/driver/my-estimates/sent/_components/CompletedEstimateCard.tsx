@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
-import ChipRectangle from "@/components/chip/ChipRectangle";
-import { MoveType, moveTypeFromKorean } from "@/constant/moveTypes";
+import React from "react";
 import { CompletedEstimateCardType } from "@/types/estimateType";
-import { ESTIMATE_STATUS, ESTIMATE_TEXT } from "@/constant/constant";
-import Image from "next/image";
-import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
-import { batchTranslate } from "@/utills/batchTranslate";
+import { useTranslations } from "next-intl";
+import CustomerEstimateCard from "./CustomerEstimateCard";
 
 interface CompletedEstimateCardProps {
   request: CompletedEstimateCardType;
@@ -17,97 +12,14 @@ interface CompletedEstimateCardProps {
 export default function CompletedEstimateCard({ request }: CompletedEstimateCardProps) {
   const router = useRouter();
   const t = useTranslations("MyEstimate");
-  const locale = useLocale();
-  const [translatedInfo, setTransaltedInfo] = useState({ from: "", to: "", date: "" });
-  const moveTypeKey: MoveType = moveTypeFromKorean[request.moveType] ?? "SMALL";
-
-  useEffect(() => {
-    const translatedTexts = async () => {
-      if (!request) return;
-      if (locale === "ko") {
-        setTransaltedInfo({
-          from: request.fromAddress,
-          to: request.toAddress,
-          date: request.moveDate
-        });
-        return;
-      }
-      try {
-        const result = await batchTranslate(
-          {
-            from: request.fromAddress ?? "",
-            to: request.toAddress ?? "",
-            date: request.moveDate ?? ""
-          },
-          locale
-        );
-        setTransaltedInfo({
-          from: result.from,
-          to: result.to,
-          date: result.date
-        });
-      } catch (e) {
-        console.warn("번역 실패", e);
-      }
-    };
-    translatedTexts();
-  }, [request, locale]);
 
   return (
-    <div className="relative inline-flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.20)] outline-[0.5px] outline-offset-[-0.5px] outline-zinc-100 md:w-[588px] md:gap-8 md:px-10 md:py-8">
-      {/* 상단 */}
-      <div className="flex w-full flex-col gap-6">
-        <div className="flex h-8 items-center justify-between">
-          <div className="flex gap-2">
-            <ChipRectangle moveType={moveTypeKey} size="sm" />
-            {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
-          </div>
-          {request.status === ESTIMATE_STATUS.CONFIRMED && <ChipConfirmed />}
-        </div>
-        {/* 고객명 */}
-        <div className="flex w-full flex-col gap-3">
-          <div className="flex gap-2">
-            <span className="text-xl font-semibold text-zinc-800">{request.customerName}</span>
-            <span className="text-xl font-semibold text-zinc-800">{t("customer")}</span>
-          </div>
-          <div className="h-px w-full bg-zinc-100" />
-        </div>
-        {/* 출발/도착지 + 이사일 */}
-        <div className="flex w-full flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div className="flex flex-1 items-end gap-3 md:flex-row md:items-center">
-            <div className="flex flex-col">
-              <div className="text-sm font-normal text-zinc-500">{t("to")}</div>
-              <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {translatedInfo.from}
-              </div>
-            </div>
-            <div className="relative h-5 w-4 flex-shrink-0">
-              <Image src="/assets/icons/ic_arrow.svg" alt="화살표" fill className="object-center" />
-            </div>
-            <div className="flex flex-col">
-              <div className="text-sm font-normal text-zinc-500">{t("from")}</div>
-              <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {translatedInfo.to}
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <div className="text-sm font-normal text-zinc-500">{t("date")}</div>
-            <div className="text-base font-semibold text-neutral-900">{translatedInfo.date}</div>
-          </div>
-        </div>
-      </div>
-      {/* 하단 */}
-      <div className="flex w-full items-end justify-between border-t border-neutral-200 pt-4">
-        <div className="text-base font-medium text-neutral-800">{t("cost")}</div>
-        <div className="text-2xl font-bold text-neutral-800">
-          {request.estimateAmount ? request.estimateAmount : ESTIMATE_TEXT.UNDEFINED}
-        </div>
-      </div>
+    <div className="relative">
+      <CustomerEstimateCard request={request} />
       {/* 반투명 오버레이 */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-[20px] bg-black/60">
         <div className="flex w-48 flex-col items-center gap-5">
-          <div className="text-lg font-semibold text-white">{t("ThisIsCompleted")}</div>
+          <div className="text-center text-lg font-semibold text-white">{t("ThisIsCompleted")}</div>
           <Button
             text={t("viewDetails")}
             type="outline"

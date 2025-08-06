@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Request } from "@/types/request";
 import ChipRectangle from "@/components/chip/ChipRectangle";
-import Image from "next/image";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import { useLocale, useTranslations } from "next-intl";
 import { batchTranslate } from "@/utills/batchTranslate";
+import AddressDateSection from "../../sent/_components/AddressDateSection";
 
 interface CompletedRejectedCardProps {
   request: Request & { estimateAmount?: string; status?: string };
@@ -67,34 +67,12 @@ export default function CompletedRejectedCard({ request }: CompletedRejectedCard
           <div className="h-px w-full bg-zinc-100" />
         </div>
         {/* 출발/도착지 + 이사일 */}
-        <div className="flex w-full flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div className="flex flex-1 items-end gap-3 md:flex-row md:items-center">
-            <div className="flex flex-col">
-              <div className="text-sm font-normal text-zinc-500">{t("to")}</div>
-              <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {translatedInfo.to}
-              </div>
-            </div>
-            <div className="relative h-5 w-4 flex-shrink-0">
-              <Image src="/assets/icons/ic_arrow.svg" alt="화살표" fill className="object-center" />
-            </div>
-            <div className="flex flex-col">
-              <div className="text-sm font-normal text-zinc-500">{t("from")}</div>
-              <div className="truncate overflow-hidden text-base font-semibold whitespace-nowrap text-neutral-900">
-                {translatedInfo.from}
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <div className="text-sm font-normal text-zinc-500">{t("date")}</div>
-            <div className="text-base font-semibold text-neutral-900">{translatedInfo.date}</div>
-          </div>
-        </div>
+        <AddressDateSection from={translatedInfo.from} to={translatedInfo.to} date={translatedInfo.date} />
       </div>
       {/* 반투명 오버레이 */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-[20px] bg-black/60">
         <div className="flex w-48 flex-col items-center gap-5">
-          <div className="text-lg font-semibold text-white">{tC("rejectedMessage")}</div>
+          <div className="text-center text-lg font-semibold text-white">{tC("rejectedMessage")}</div>
         </div>
       </div>
     </div>

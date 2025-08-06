@@ -16,6 +16,7 @@ import { useKakaoShare } from "@/hooks/useKakaoShare";
 import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
 import PageHeader from "@/components/common/PageHeader";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
+import "dayjs/locale/ko";
 
 export default function PastDetailPage() {
   const t = useTranslations("MyEstimates");
@@ -23,6 +24,8 @@ export default function PastDetailPage() {
   const { data } = useEstimateDetail(id as string);
   const shareToKakao = useKakaoShare();
   const { mutate: createShareLink } = useCreateShareLink();
+
+  dayjs.locale("ko");
 
   if (!data) {
     return (
