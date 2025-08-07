@@ -29,7 +29,9 @@ export type ReviewItem = {
     moveType: MoveType;
     fromAddress: Address;
     toAddress: Address;
-    isDesignated: boolean;
+    estimates: {
+      isDesignated: boolean;
+    }[];
   };
 };
 

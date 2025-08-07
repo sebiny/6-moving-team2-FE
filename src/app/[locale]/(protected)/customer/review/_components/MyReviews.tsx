@@ -18,11 +18,6 @@ import type { ReviewListResponse, TranslatedMeta } from "@/types/reviewType";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
-const dateFnsLocales: Record<string, Locale> = {
-  ko,
-  en: enUS,
-  ja
-};
 export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const t = useTranslations("Review");
   const tC = useTranslations("Common");
@@ -41,7 +36,6 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviews = data?.reviews ?? [];
-
   //DeepL로 동적 다국어
   const locale = useLocale();
   const [translatedMeta, setTranslatedMeta] = useState<Record<string, TranslatedMeta>>({});
@@ -131,7 +125,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                 {isSm && !isMd && (
                   <div className="mb-3 flex gap-2">
                     <ChipRectangle moveType={request.moveType} size="sm" />
-                    {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
+                    {request.estimates[0].isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
                   </div>
                 )}
 
@@ -179,7 +173,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       )}
                     </div>
                     {isMd && <ChipRectangle moveType={request.moveType} size={isLg ? "md" : "sm"} className="mt-2" />}
-                    {isMd && request.isDesignated && (
+                    {isMd && request.estimates[0].isDesignated && (
                       <ChipRectangle moveType="REQUEST" size={isLg ? "md" : "sm"} className="mt-2 ml-2" />
                     )}
                   </div>
