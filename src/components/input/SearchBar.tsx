@@ -28,7 +28,7 @@ export default function SearchBar({
 
   // 사이즈별 스타일 분기
   const styles = {
-    container: size === "sm" ? "h-12 px-4 py-3.5 gap-1.5" : "h-16 px-6 py-3.5 gap-2",
+    container: size === "sm" ? "h-[54px] px-4 py-3.5 gap-1.5" : "h-16 px-6 py-3.5 gap-2",
     iconWrapper: size === "sm" ? "h-6 w-6" : "h-9 w-9",
     inputText: size === "sm" ? "text-sm leading-normal" : "text-lg leading-relaxed",
     iconSize: size === "sm" ? 20 : 24
