@@ -76,7 +76,6 @@ export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
       }
     };
     translatedTexts();
-    console.log(translatedInfo);
   }, [review, locale]);
   const moveDetails = [
     {

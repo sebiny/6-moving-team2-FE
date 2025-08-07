@@ -15,5 +15,6 @@
   "requestDate": "Estimate Request Date",
   "service": "Service",
   "useDate": "Date of Use",
-  "wannaRecommend?": "Wanna Recommend The Driver?"
+  "wannaRecommend?": "Wanna Recommend The Driver?",
+  "shareEstimate": "Share Estimate"
 }

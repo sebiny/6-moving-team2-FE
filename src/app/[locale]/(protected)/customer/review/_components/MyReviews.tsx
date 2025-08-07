@@ -7,8 +7,7 @@ import useMediaHook from "@/hooks/useMediaHook";
 import { useTranslations, useLocale } from "next-intl";
 import { getMyReviews } from "@/lib/api/api-review";
 import { ko, enUS, ja } from "date-fns/locale";
-import { format } from "date-fns";
-import type { Locale } from "date-fns";
+import { format, type Locale } from "date-fns";
 import { TranslateRegion } from "@/utills/TranslateFunction";
 import NoMyReview from "./NoMyReview";
 import Pagination from "@/components/Pagination";
@@ -16,27 +15,19 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { batchTranslate } from "@/utills/batchTranslate";
 import type { ReviewListResponse, TranslatedMeta } from "@/types/reviewType";
-import { translateWithDeepL } from "@/utills/translateWithDeepL";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
-const dateFnsLocales: Record<string, Locale> = {
-  ko,
-  en: enUS,
-  ja
-};
-const formatDate = (isoString: string, currentLocale: string) => {
-  const date = new Date(isoString);
-  return format(date, "yyyy. MM. dd (EEE)", {
-    locale: dateFnsLocales[currentLocale] || enUS
-  });
-};
 export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const t = useTranslations("Review");
   const tC = useTranslations("Common");
   const [page, setPage] = useState(1); //임의로 추가
   const { isSm, isMd, isLg } = useMediaHook();
 
+  const formatDate = (isoString: string) => {
+    const date = new Date(isoString);
+    return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
+  };
   //리액트쿼리로 리뷰 불러오기
   const { data, isLoading, isError } = useQuery<ReviewListResponse>({
     queryKey: ["reviews", page],
@@ -45,7 +36,6 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviews = data?.reviews ?? [];
-
   //DeepL로 동적 다국어
   const locale = useLocale();
   const [translatedMeta, setTranslatedMeta] = useState<Record<string, TranslatedMeta>>({});
@@ -65,7 +55,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
           toRegion: toAddress.region,
           fromDistrict: fromAddress.district,
           toDistrict: toAddress.district,
-          moveDate: formatDate(moveDate, locale),
+          moveDate: formatDate(moveDate),
           nickname,
           shortIntro
         };
@@ -99,7 +89,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
       <div className="flex flex-col items-center gap-5">
         {reviews.map((review) => {
           const { content, rating, driver, request } = review;
-          const { nickname, shortIntro } = driver;
+          const { shortIntro } = driver;
           const moveDetails = [
             {
               label: "from",
@@ -117,7 +107,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
             },
             {
               label: "date",
-              content: formatDate(request.moveDate, locale)
+              content: locale === "ko" ? formatDate(request.moveDate) : translatedMeta[review.id]?.moveDate
             }
           ];
 
@@ -135,7 +125,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                 {isSm && !isMd && (
                   <div className="mb-3 flex gap-2">
                     <ChipRectangle moveType={request.moveType} size="sm" />
-                    {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
+                    {request.estimates[0].isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
                   </div>
                 )}
 
@@ -183,7 +173,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       )}
                     </div>
                     {isMd && <ChipRectangle moveType={request.moveType} size={isLg ? "md" : "sm"} className="mt-2" />}
-                    {isMd && request.isDesignated && (
+                    {isMd && request.estimates[0].isDesignated && (
                       <ChipRectangle moveType="REQUEST" size={isLg ? "md" : "sm"} className="mt-2 ml-2" />
                     )}
                   </div>
@@ -196,7 +186,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       {t(`moveDetails.${label}`)}
                     </p>
                     <p className="text-black-500 text-[13px] leading-[22px] md:text-[16px] md:leading-[26px]">
-                      {index == 2 && isSm && !isMd ? content.slice(0, -3) : content}
+                      {index === 2 && isSm && !isMd && content ? content.slice(0, -3) : content || ""}
                     </p>
                   </div>
                 ))}
