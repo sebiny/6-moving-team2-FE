@@ -21,7 +21,7 @@ export default function ChangeImages() {
   let estimateVisualImg = ImgEstimateVisualDefault;
   if (windowWidth >= 1280) {
     estimateVisualImg = ImgEstimateVisualLg;
-  } else if (windowWidth >= 375) {
+  } else if (windowWidth >= 744) {
     estimateVisualImg = ImgEstimateVisualMd;
   }
 
