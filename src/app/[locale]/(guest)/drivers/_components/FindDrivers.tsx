@@ -69,7 +69,7 @@ function FindDrivers() {
 
   return (
     <main className="mb-20 flex justify-center px-6 pt-[6px]" aria-label={t("findDriver")}>
-      <section className="mx-6 w-full max-w-205" aria-labelledby="findDriverTitle">
+      <section className="w-full max-w-205" aria-labelledby="findDriverTitle">
         <h1 id="findDriverTitle" className="my-8 hidden text-3xl font-semibold lg:block">
           {t("findDriver")}
         </h1>
