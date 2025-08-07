@@ -9,6 +9,7 @@ import { MoveType } from "@/constant/moveTypes";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import { useEffect, useState } from "react";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
+import { favoriteService } from "@/lib/api/api-favorite";
 
 interface Props {
   data: Estimate;
@@ -39,6 +40,36 @@ export default function ReceivedEstimate({ data, moveType }: Props) {
 
   const ClickDetail = () => {
     router.push(`/customer/my-estimates/estimate-past/${id}`);
+  };
+
+  const [isFavorite, setIsFavorite] = useState<boolean>(driver.isFavorite ?? false);
+  const [favoriteCount, setFavoriteCount] = useState<number>(driver.favoriteCount ?? 0);
+  const [isToggling, setIsToggling] = useState(false);
+
+  useEffect(() => {
+    setIsFavorite(driver.isFavorite ?? false);
+    setFavoriteCount(driver.favoriteCount ?? 0);
+  }, [driver]);
+
+  const handleToggleFavorite = async () => {
+    if (isToggling) return; // 중복 요청 방지
+    setIsToggling(true);
+    try {
+      if (isFavorite) {
+        await favoriteService.deleteFavorite(driver.id);
+        setIsFavorite(false);
+        setFavoriteCount((prev) => prev - 1);
+      } else {
+        await favoriteService.createFavorite(driver.id);
+        setIsFavorite(true);
+        setFavoriteCount((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error("찜하기 실패", error);
+      alert("찜하기에 실패했습니다.");
+    } finally {
+      setIsToggling(false);
+    }
   };
 
   return (
@@ -90,10 +121,10 @@ export default function ReceivedEstimate({ data, moveType }: Props) {
               </span>
             </div>
 
-            <div className="flex items-center">
+            <button type="button" onClick={handleToggleFavorite} className="flex items-center" disabled={isToggling}>
               <Image src="/assets/icons/ic_like_empty.svg" alt="찜 아이콘" width={22} height={0} />
-              <span>{driver.favoriteCount}</span>
-            </div>
+              <span>{favoriteCount}</span>
+            </button>
           </div>
 
           {/* 별점 및 상세 정보 */}

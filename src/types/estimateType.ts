@@ -18,6 +18,8 @@ export type Estimate = {
   status: "PROPOSED" | "ACCEPTED" | "AUTO_REJECTED";
   isDesignated: boolean;
   driver: {
+    id: string;
+    isFavorite: boolean;
     profileImage: string | null;
     authUser: {
       id: string;
@@ -81,6 +83,8 @@ export type EstimateDetailType = {
   };
 
   driver: {
+    id: string;
+    isFavorite: boolean;
     profileImage: string;
     name: string;
     phone: string;

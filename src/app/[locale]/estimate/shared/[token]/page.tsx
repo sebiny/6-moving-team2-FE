@@ -50,8 +50,8 @@ export default function SharedEstimatePage() {
 
   return (
     <>
-      <OrangeBackground />
       <div className="bg-white">
+        <OrangeBackground />
         <div className="flex flex-col px-5 pt-5 md:px-17 lg:mx-auto lg:max-w-[1700px] lg:gap-20 lg:px-10 lg:pb-[120px]">
           <div className="flex flex-col gap-10">
             {!isDriverShared ? (
@@ -68,6 +68,8 @@ export default function SharedEstimatePage() {
                 <Title
                   labels={labels}
                   driver={{
+                    id: driver.id,
+                    isFavorite: driver.isFavorite,
                     name: driver?.authUser?.name ?? "이름 없음",
                     rating: driver?.averageRating ?? 0.0,
                     reviewCount: driver?.reviewsReceived?.length ?? 0,

@@ -1,6 +1,6 @@
 "use client";
 
-import Title from "@/components/Title";
+import Title, { DriverInfo } from "@/components/Title";
 import Button from "@/components/Button";
 import ShareDriver from "@/components/ShareDriver";
 import OrangeBackground from "@/components/OrangeBackground";
@@ -156,6 +156,8 @@ export default function PendingDetailPage() {
               status={status}
               labels={labels}
               driver={{
+                id: driver.id,
+                isFavorite: driver.isFavorite,
                 name: driver.name,
                 rating: driver.avgRating ?? 0.0,
                 reviewCount: driver.reviewCount,
