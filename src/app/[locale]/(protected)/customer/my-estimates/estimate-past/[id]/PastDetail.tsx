@@ -130,6 +130,8 @@ export default function PastDetailPage() {
               status={status}
               labels={labels}
               driver={{
+                id: driver.id,
+                isFavorite: driver.isFavorite,
                 name: driver.name,
                 rating: driver.avgRating ?? 0.0,
                 reviewCount: driver.reviewCount,

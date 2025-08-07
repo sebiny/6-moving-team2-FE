@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import AlertModal from "@/components/common-modal/AlertModal";
 import { useLocale, useTranslations } from "next-intl";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
+import { favoriteService } from "@/lib/api/api-favorite";
 
 interface Props {
   data: Estimate;
@@ -23,7 +24,7 @@ export default function PendingCard({ data, moveType }: Props) {
   const tC = useTranslations("Common");
   const locale = useLocale();
   const [translatedComment, setTranslatedComment] = useState<string | null>(null);
-  const { driver, comment, price, status, id, isDesignated } = data;
+  const { driver, price, status, id, isDesignated } = data;
   const router = useRouter();
   // 라벨 목록 구성
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
@@ -48,6 +49,36 @@ export default function PendingCard({ data, moveType }: Props) {
   };
 
   const [showModal, setShowModal] = useState(false);
+
+  const [isFavorite, setIsFavorite] = useState<boolean>(driver.isFavorite ?? false);
+  const [favoriteCount, setFavoriteCount] = useState<number>(driver.favoriteCount ?? 0);
+  const [isToggling, setIsToggling] = useState(false);
+
+  useEffect(() => {
+    setIsFavorite(driver.isFavorite ?? false);
+    setFavoriteCount(driver.favoriteCount ?? 0);
+  }, [driver]);
+
+  const handleToggleFavorite = async () => {
+    if (isToggling) return; // 중복 요청 방지
+    setIsToggling(true);
+    try {
+      if (isFavorite) {
+        await favoriteService.deleteFavorite(driver.id);
+        setIsFavorite(false);
+        setFavoriteCount((prev) => prev - 1);
+      } else {
+        await favoriteService.createFavorite(driver.id);
+        setIsFavorite(true);
+        setFavoriteCount((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error("찜하기 실패", error);
+      alert("찜하기에 실패했습니다.");
+    } finally {
+      setIsToggling(false);
+    }
+  };
 
   return (
     <div className="w-full space-y-4 rounded-2xl bg-white shadow-lg sm:p-5 md:px-8 md:py-6 lg:px-10 lg:py-8">
@@ -99,10 +130,15 @@ export default function PendingCard({ data, moveType }: Props) {
             </div>
 
             {/* 좋아요 */}
-            <div className="flex items-center text-base font-normal text-gray-500">
+            <button
+              type="button"
+              onClick={handleToggleFavorite}
+              className="flex items-center text-base font-normal text-gray-500"
+              disabled={isToggling}
+            >
               <Image src="/assets/icons/ic_like_red.svg" alt="찜" width={23} height={23} />
-              <span className="ml-1">{driver.favoriteCount}</span>
-            </div>
+              <span className="ml-1">{favoriteCount}</span>
+            </button>
           </div>
 
           {/* 평점/경력/확정 */}
