@@ -70,7 +70,13 @@ function DriverMyPage() {
         <div className="mt-[43px] flex w-full flex-col justify-between md:max-w-205 lg:max-w-300 lg:flex-row">
           <div className="max-w-205">
             <div className="flex">
-              <Image src="/assets/images/img_profile.svg" alt="프로필" width={80} height={85} />
+              <Image
+                src={driver.profileImage ?? "/assets/images/img_profile.svg"}
+                alt="프로필 이미지"
+                width={80}
+                height={85}
+                className="h-[64px] w-[60px] rounded-xl object-cover object-center md:h-[85px] md:w-[80px]"
+              />
               <div className="ml-3">
                 <div className="mt-5 flex">
                   <Image src="/assets/icons/ic_profileMark.svg" alt="프로필" width={25} height={25} />
