@@ -30,7 +30,7 @@ interface ReviewsProps {
 }
 
 export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
-  const { isMd, isLg } = useMediaHook();
+  const { isSm, isMd, isLg } = useMediaHook();
   const t = useTranslations("Review");
   const locale = useLocale();
   const [translatedInfo, setTransaltedInfo] = useState({ fromD: "", fromR: "", toD: "", toR: "", date: "" });
@@ -76,7 +76,6 @@ export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
       }
     };
     translatedTexts();
-    console.log(translatedInfo);
   }, [review, locale]);
   const moveDetails = [
     {

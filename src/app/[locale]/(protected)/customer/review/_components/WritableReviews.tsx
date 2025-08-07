@@ -37,28 +37,37 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];
+  console.log(reviewables[0]);
+  console.log(reviewables[1]);
+  console.log(reviewables[2]);
 
   useEffect(() => {
-    // To only get one data;;
+    //병렬 요청
     const translateAllIntros = async () => {
       if (!reviewables.length || locale === "ko") return;
 
-      const translations: Record<string, string> = {};
+      try {
+        const translationEntries = await Promise.all(
+          reviewables.map(async (item) => {
+            const shortIntro = item.estimates[0].driver.shortIntro;
+            if (!shortIntro) return [item.id, ""];
 
-      for (const item of reviewables) {
-        const shortIntro = item.estimates[0].driver.shortIntro;
-        if (!shortIntro) continue;
+            try {
+              const translated = await translateWithDeepL(shortIntro, locale.toUpperCase());
+              return [item.id, translated];
+            } catch (e) {
+              console.warn(`번역 실패 (ID: ${item.id})`, e);
+              return [item.id, shortIntro]; // fallback
+            }
+          })
+        );
 
-        try {
-          const translated = await translateWithDeepL(shortIntro, locale.toUpperCase());
-          translations[item.id] = translated;
-        } catch (e) {
-          console.warn(`번역 실패 (ID: ${item.id})`, e);
-          translations[item.id] = shortIntro; // fallback
-        }
+        // 배열을 객체로 변환하여 상태 저장
+        const translations = Object.fromEntries(translationEntries);
+        setTranslatedIntros(translations);
+      } catch (error) {
+        console.error("전체 번역 실패", error);
       }
-
-      setTranslatedIntros(translations);
     };
 
     translateAllIntros();
@@ -103,6 +112,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                     alt="driverImg"
                     width={100}
                     height={100}
+                    priority
                   />
                 )}
                 {isMd && !isLg && (
