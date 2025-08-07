@@ -21,7 +21,7 @@ function LikedDrivers() {
 
       {isPending ? (
         <LikedDriverInfoSkeleton />
-      ) : !drivers || drivers.length === 0 ? (
+      ) : !drivers ? (
         <p>{t("noDrivers")}</p>
       ) : (
         <ul className="flex flex-col gap-4">
