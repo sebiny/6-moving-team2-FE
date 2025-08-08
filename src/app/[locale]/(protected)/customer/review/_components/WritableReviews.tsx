@@ -37,10 +37,6 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];
-  console.log(reviewables[0]);
-  console.log(reviewables[1]);
-  console.log(reviewables[2]);
-
   useEffect(() => {
     //병렬 요청
     const translateAllIntros = async () => {
@@ -85,7 +81,10 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
     );
   }
   return (
-    <div>
+    <section aria-labelledby="review-section-heading">
+      <h2 id="review-section-heading" className="sr-only">
+        {t("myReviewableList")}
+      </h2>
       <div className="flex flex-col items-center gap-5">
         {reviewables.map((reviewable) => (
           <div
@@ -181,6 +180,6 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
           <Pagination currentPage={page} setCurrentPage={setPage} totalReviews={totalCount} />
         </div>
       </div>
-    </div>
+    </section>
   );
 }

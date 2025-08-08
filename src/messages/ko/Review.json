@@ -30,5 +30,7 @@
   },
   "button": {
     "createReview": "리뷰 작성하기"
-  }
+  },
+  "myReviewListTitle": "내 리뷰 목록",
+  "myReviewableList": "내가 작성할 수 있는 리뷰 목록"
 }
