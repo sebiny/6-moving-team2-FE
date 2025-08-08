@@ -8,6 +8,7 @@ import { createDesignatedEstimateRequest } from "@/lib/api/api-estimateRequest";
 import { useMutation } from "@tanstack/react-query";
 import { useModal } from "@/providers/ModalProvider";
 import { useTranslations } from "next-intl";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 interface DesignatedEstimateButtonType {
   isDesignated: boolean;
@@ -25,8 +26,17 @@ function DesignatedEstimateButton({ isDesignated: initialIsDesignated }: Designa
     mutationFn: () => createDesignatedEstimateRequest({ driverId }),
     onSuccess: () => setIsDesignated(true),
     onError: (err) => {
-      openModal(<EstimateRequestModal onClose={closeModal} errorMsg={t(err.message)} />);
-      //동적인 에러 메세지 처리
+      const errorKey = err.message;
+      const translated = t(errorKey);
+
+      // 특정 에러 메시지일 경우
+      if (errorKey === "maxThreeDriver") {
+        ToastModal(translated);
+        return;
+      }
+
+      // 그 외일 경우
+      openModal(<EstimateRequestModal onClose={closeModal} errorMsg={translated} />);
     }
   });
   const handleClickRequest = () => {
