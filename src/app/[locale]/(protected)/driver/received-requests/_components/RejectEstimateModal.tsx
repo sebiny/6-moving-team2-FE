@@ -82,7 +82,7 @@ export default function RejectEstimateModal({
           "h-auto w-full rounded-t-[32px] bg-gray-50 px-6 py-8 shadow-[4px_4px_10px_rgba(169,169,169,0.2)]",
           "sm:max-h-none",
           "md:w-[375px] md:items-center md:justify-center md:rounded-b-[32px]",
-          "lg:h-194 lg:w-150 lg:p-8"
+          "lg:w-150 lg:p-8"
         )}
       >
         <div className="flex flex-col gap-[26px] lg:gap-10">
