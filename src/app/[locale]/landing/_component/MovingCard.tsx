@@ -35,8 +35,8 @@ export default function MovingCard({ type }: { type: "small" | "family" | "offic
         unoptimized
       />
       <div className="mt-2 flex flex-col text-center sm:mt-4">
-        <span className="text-black-500 text-[10px] font-bold sm:text-base">{MOVING_TYPE[type].titleText}</span>
-        <span className="text-[8px] font-medium text-gray-500 sm:text-[10px]">{MOVING_TYPE[type].subText}</span>
+        <span className="text-black-500 text-[10px] font-bold md:text-base">{MOVING_TYPE[type].titleText}</span>
+        <span className="text-[8px] font-medium text-gray-500 md:text-[10px]">{MOVING_TYPE[type].subText}</span>
       </div>
     </div>
   );

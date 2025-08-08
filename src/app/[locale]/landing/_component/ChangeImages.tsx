@@ -43,6 +43,11 @@ export default function ChangeImages() {
     estimateVisualSrc = IMG_ESTIMATE.lg.src;
     estimateVisualWidth = IMG_ESTIMATE.lg.width;
     estimateVisualHeight = IMG_ESTIMATE.lg.height;
+  } else if (windowWidth >= 744) {
+    // 744를 먼저
+    estimateVisualSrc = IMG_ESTIMATE.lg.src; // 또는 md 이미지로 변경
+    estimateVisualWidth = IMG_ESTIMATE.lg.width;
+    estimateVisualHeight = IMG_ESTIMATE.lg.height;
   } else if (windowWidth >= 375) {
     estimateVisualSrc = IMG_ESTIMATE.md.src;
     estimateVisualWidth = IMG_ESTIMATE.md.width;
@@ -50,7 +55,7 @@ export default function ChangeImages() {
   }
 
   return (
-    <div className="relative flex w-full lg:justify-end">
+    <div className="relative flex max-h-[850px] w-full lg:justify-end">
       <Image
         src={estimateVisualSrc}
         width={estimateVisualWidth}

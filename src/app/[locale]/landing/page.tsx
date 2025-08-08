@@ -23,8 +23,8 @@ const estimateCardStyle = {
   default: "w-83 h-67 lg:w-108 lg:h-86 transition-all",
   "1stImg": "absolute duration-300 -top-42 left-8 lg:-top-100 lg:left-130",
   "2ndImg": "absolute duration-800 top-30 left-8 lg:-top-10 lg:left-130",
-  "3rdImg": "hidden absolute sm:inline -top-25 left-95 lg:-top-80 lg:left-240 duration-500",
-  "4thImg": "hidden absolute sm:inline top-47 left-95 lg:top-10 lg:left-240 duration-1000"
+  "3rdImg": "hidden absolute md:inline -top-25 left-95 lg:-top-80 lg:left-240 duration-500",
+  "4thImg": "hidden absolute md:inline top-47 left-95 lg:top-10 lg:left-240 duration-1000"
 };
 
 const estimateCard = [
@@ -106,7 +106,7 @@ export default function LandingPage() {
           <div className={`${translateStyle} text-center text-xl font-bold text-gray-50 duration-800 sm:text-[32px]`}>
             {t("title")}
           </div>
-          <div className={`${translateStyle} mt-3 text-center text-base text-gray-100 duration-1000 sm:text-lg/snug`}>
+          <div className={`${translateStyle} mt-3 text-center text-base text-gray-100 duration-1000 md:text-lg/snug`}>
             {t("detail")}
             <br /> {t("brDetail")}
           </div>
@@ -116,7 +116,7 @@ export default function LandingPage() {
         padding="px-0 md:px-8"
         className="mt-13 mb-20 flex flex-col md:mt-15 lg:mt-29 lg:mb-32 lg:max-w-[1400px] lg:flex-row lg:items-center lg:justify-between"
       >
-        <div className="text-black-400 ml-8 text-xl font-bold sm:text-[32px] md:ml-0">
+        <div className="text-black-400 ml-8 text-xl font-bold md:ml-0 md:text-[32px]">
           {t("typeTitle")}
           <br />
           {t("brTypeTitle")}
@@ -129,11 +129,11 @@ export default function LandingPage() {
           ))}
         </div>
       </Container>
-      <Container padding="p-0" className="flex max-w-[1400px] justify-center sm:mb-20 sm:p-4">
+      <Container padding="p-0" className="flex max-h-[850px] max-w-[1400px] justify-center sm:mb-20 sm:p-4">
         <ChangeImages />
       </Container>
       <Container padding="px-0 sm:px-8" className="flex justify-center md:max-w-[1400px]">
-        <div className="text-black-400 ml-8 w-full bg-bottom-right bg-no-repeat pt-10 pb-46 text-xl font-bold sm:ml-0 sm:bg-[url(/assets/images/img_landing_building.svg)] sm:pt-44 sm:text-[32px] lg:bg-bottom-left">
+        <div className="text-black-400 ml-8 w-full bg-bottom-right bg-no-repeat pt-10 pb-46 text-xl font-bold md:ml-0 md:bg-[url(/assets/images/img_landing_building.svg)] md:pt-44 md:text-[32px] lg:bg-bottom-left">
           {t("compareTitle")}
           <br />
           {t("brCompareTitle")}
@@ -158,7 +158,7 @@ export default function LandingPage() {
       <Container
         maxWidth="w-full"
         padding="0"
-        className="flex flex-col items-center gap-3 bg-orange-400 py-10 sm:gap-4 sm:py-20"
+        className="flex flex-col items-center gap-3 bg-orange-400 py-10 md:gap-4 md:py-20"
       >
         <Image
           src={IconApp}
