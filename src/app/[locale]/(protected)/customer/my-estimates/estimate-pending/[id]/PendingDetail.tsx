@@ -220,8 +220,8 @@ export default function PendingDetailPage() {
       {showModal && (
         <AlertModal
           type="handleClick"
-          message={tC("reqConfirmed")}
-          buttonText={tC("GoToRecReq")}
+          message={tC("GoToRecReq")}
+          buttonText={tC("reqConfirmed")}
           onClose={() => setShowModal(false)}
           onConfirm={() => router.push("/customer/my-estimates?tab=past")}
         />
