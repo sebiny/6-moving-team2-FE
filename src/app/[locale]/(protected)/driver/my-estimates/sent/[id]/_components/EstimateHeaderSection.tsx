@@ -1,4 +1,6 @@
 // components/estimate/EstimateHeaderSection.tsx
+"use client";
+
 import React from "react";
 import ChipRectangle from "@/components/chip/ChipRectangle";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";

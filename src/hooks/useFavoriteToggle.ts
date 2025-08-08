@@ -16,17 +16,15 @@ export const useFavoriteToggle = ({
         throw new Error("driverId가 없습니다. API를 호출할 수 없습니다.");
       }
 
+      const ok = (res: any) => res && (res.success === undefined || res.success !== false);
+
       if (isFavorite) {
         const res = await favoriteService.deleteFavorite(driverId);
-        if (!res || res.success === false) {
-          throw new Error(res?.message || "찜 해제 실패");
-        }
+        if (!ok(res)) throw new Error(res?.message || "찜 해제 실패");
         return false;
       } else {
         const res = await favoriteService.createFavorite(driverId);
-        if (!res || res.success === false) {
-          throw new Error(res?.message || "찜 등록 실패");
-        }
+        if (!ok(res)) throw new Error(res?.message || "찜 등록 실패");
         return true;
       }
     },

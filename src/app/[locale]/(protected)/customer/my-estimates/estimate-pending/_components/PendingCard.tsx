@@ -12,8 +12,8 @@ import { useEffect, useState } from "react";
 import AlertModal from "@/components/common-modal/AlertModal";
 import { useLocale, useTranslations } from "next-intl";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
-import { favoriteService } from "@/lib/api/api-favorite";
 import { useFavoriteToggle } from "@/hooks/useFavoriteToggle";
+import { favoriteService } from "@/lib/api/api-favorite";
 
 interface Props {
   data: Estimate;
@@ -49,26 +49,39 @@ export default function PendingCard({ data, moveType }: Props) {
 
   const [showModal, setShowModal] = useState(false);
 
-  const safeDriverId = driver?.authUser?.id ?? null;
+  const safeDriverId = driver?.id ?? null;
 
   const [isFavorite, setIsFavorite] = useState<boolean>(driver?.isFavorite ?? false);
   const [favoriteCount, setFavoriteCount] = useState<number>(driver?.favoriteCount ?? 0);
+  const [busy, setBusy] = useState(false);
 
-  const { mutate: toggleFavorite, isPending } = useFavoriteToggle({
-    driverId: safeDriverId || undefined,
-    initialIsFavorite: isFavorite,
-    onSuccess: (newIsFavorite) => {
-      setIsFavorite(newIsFavorite);
-      setFavoriteCount((prev) => prev + (newIsFavorite ? 1 : -1));
-    }
-  });
-
-  const handleToggleFavorite = () => {
+  const handleToggleFavorite = async (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    if (busy) return;
     if (!safeDriverId) {
       console.warn("❌ driverId가 없어 찜하기를 실행할 수 없습니다.");
       return;
     }
-    toggleFavorite(isFavorite);
+
+    setBusy(true);
+    try {
+      if (isFavorite) {
+        await favoriteService.deleteFavorite(safeDriverId);
+        setIsFavorite(false);
+        setFavoriteCount((prev) => Math.max(0, prev - 1));
+      } else {
+        await favoriteService.createFavorite(safeDriverId);
+        setIsFavorite(true);
+        setFavoriteCount((prev) => prev + 1);
+      }
+      // 필요 시 목록 invalidate:
+      // qc.invalidateQueries({ queryKey: ["pendingEstimates"] });
+    } catch (err) {
+      console.error("찜하기 실패:", err);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const ClickDetail = () => {
@@ -129,7 +142,9 @@ export default function PendingCard({ data, moveType }: Props) {
               type="button"
               onClick={handleToggleFavorite}
               className="flex items-center text-base font-normal text-gray-500"
-              disabled={isPending}
+              disabled={busy}
+              aria-pressed={isFavorite}
+              aria-label="찜하기"
             >
               <Image src="/assets/icons/ic_like_red.svg" alt="찜" width={23} height={23} />
               <span className="ml-1">{favoriteCount}</span>
