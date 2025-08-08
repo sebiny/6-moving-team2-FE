@@ -121,8 +121,18 @@ export default function ReceivedEstimate({ data, moveType }: Props) {
               </span>
             </div>
 
-            <button type="button" onClick={handleToggleFavorite} className="flex items-center" disabled={isToggling}>
-              <Image src="/assets/icons/ic_like_empty.svg" alt="찜 아이콘" width={22} height={0} />
+            <button
+              type="button"
+              onClick={handleToggleFavorite}
+              className="flex items-center gap-1"
+              disabled={isToggling}
+            >
+              <Image
+                src={isFavorite ? "/assets/icons/ic_like_black.svg" : "/assets/icons/ic_like_empty.svg"}
+                alt="찜 아이콘"
+                width={22}
+                height={22}
+              />
               <span>{favoriteCount}</span>
             </button>
           </div>
