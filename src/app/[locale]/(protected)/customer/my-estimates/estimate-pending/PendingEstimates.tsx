@@ -25,16 +25,22 @@ export default function PendingEstimates() {
   const { data, isLoading } = usePendingEstimates();
   const tC = useTranslations("Common");
   const locale = useLocale();
-  const [translatedRequestData, setTranslatedRequestData] = useState<RequestData | null>(null);
 
-  const estimates = data?.estimates ?? []; // 견적서를 바로 못받을 수 있으니 처음은 빈배열
+  const estimates = data?.estimates ?? [];
   const estimateRequest = data?.estimateRequest;
 
+  const [translatedRequestData, setTranslatedRequestData] = useState<RequestData | null>(null);
+
+  // 요청이 변할 때마다 번역 데이터 초기화
+  useEffect(() => {
+    setTranslatedRequestData(null);
+  }, [estimateRequest?.id, locale]);
+
+  // 번역 실행
   useEffect(() => {
     if (!estimateRequest) return;
 
     const translate = async () => {
-      // 견적 요청 건 데이터 매핑 후 번역 요청
       const textMap = {
         label: getMoveTypeLabel(estimateRequest.moveType),
         requestDate: dayjs(estimateRequest.requestDate).format("YYYY년 M월 D일"),
@@ -45,16 +51,20 @@ export default function PendingEstimates() {
       const result = await batchTranslate(textMap, locale);
       setTranslatedRequestData(result);
     };
+
     translate();
   }, [estimateRequest, locale]);
 
-  if (isLoading)
-    return (
-      <>
-        <LoadingLottie className="mt-30" />
-      </>
-    );
-  if (!translatedRequestData)
+  const hasRequest = !!estimateRequest;
+  const isTranslating = hasRequest && !translatedRequestData;
+
+  // 1) 서버 데이터 로딩 중이면 무조건 로딩
+  if (isLoading) {
+    return <LoadingLottie className="mt-30" />;
+  }
+
+  // 2) 요청 자체가 없으면 '요청 없음' UI
+  if (!hasRequest) {
     return (
       <div className="mt-45 flex flex-col items-center justify-center gap-2 lg:mt-75">
         <img src="/assets/images/img_empty_car.svg" alt="견적요청 없음" width={250} height={250} className="mr-7" />
@@ -65,10 +75,16 @@ export default function PendingEstimates() {
         </p>
       </div>
     );
+  }
+
+  // 3) 요청은 있지만 번역이 아직이면 계속 로딩 표시
+  if (isTranslating) {
+    return <LoadingLottie className="mt-30" />;
+  }
   return (
     <div className="mt-11 md:mt-13 lg:mt-21">
       {/* 견적 요청이 있을 경우에만 헤더 렌더링 */}
-      <EstimateSubHeader data={translatedRequestData} />
+      <EstimateSubHeader data={translatedRequestData!} />
 
       <div className="bg-background-200 grid grid-cols-1 gap-8 px-5 py-10 md:grid-cols-1 md:px-15 lg:mx-auto lg:max-w-[1400px] lg:grid-cols-2 lg:px-20 lg:py-20">
         {estimates.length === 0 ? (
