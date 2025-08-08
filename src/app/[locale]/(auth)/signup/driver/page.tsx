@@ -29,7 +29,7 @@ export default function SignupDriver() {
   } = useSignupForm(UserType.DRIVER);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0 md:pb-15 lg:pb-15">
+    <main className="flex min-h-screen items-center justify-center bg-white px-6 pt-[110px] md:bg-orange-400 md:p-0 md:pb-15 lg:pb-15">
       <div className="relative mt-[36px] flex w-full max-w-[327px] flex-col gap-[40px] md:mt-[40px] md:w-[640px] md:max-w-none md:gap-[48px] md:rounded-[40px] md:bg-gray-50 md:px-[40px] md:py-[68px] lg:mt-[48px] lg:w-[740px] lg:px-[50px] lg:py-[48px]">
         <div className="flex flex-col md:gap-[8px]">
           <div className="flex h-[84px] w-full items-center justify-center md:h-[100px]">
@@ -178,11 +178,16 @@ export default function SignupDriver() {
             </Link>
           </div>
         </div>
-
-        <div className="flex h-[96px] w-[210px] flex-col items-center justify-center gap-[24px] self-center md:h-fit md:w-[290px] md:gap-[32px]">
-          <span className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-500 md:text-xl md:leading-8">
+        <section
+          aria-labelledby="social-signup-heading"
+          className="flex h-[96px] w-[210px] flex-col items-center justify-center gap-[24px] self-center md:h-fit md:w-[290px] md:gap-[32px]"
+        >
+          <h2
+            id="social-signup-heading"
+            className="md:text-black-200 text-xs leading-[18px] font-normal text-gray-500 md:text-xl md:leading-8"
+          >
             {t("signupWithSNS")}
-          </span>
+          </h2>
           <div className="flex h-[54px] w-full items-center justify-between md:h-[72px] md:w-fit md:justify-center md:gap-[32px]">
             <a
               href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/social/google?userType=DRIVER`}
@@ -221,13 +226,14 @@ export default function SignupDriver() {
               />
             </a>
           </div>
-        </div>
+        </section>
 
         <Image
           src="/assets/images/img_login_driver_avatar.png"
           alt="LoginAvatar"
           width={240}
           height={246}
+          aria-hidden="true"
           className="absolute -right-[90px] -bottom-[60px] z-0 hidden md:block lg:hidden"
         />
 
@@ -236,9 +242,10 @@ export default function SignupDriver() {
           alt="LoginAvatar"
           width={382.03}
           height={392}
+          aria-hidden="true"
           className="absolute -right-80 -bottom-[50px] z-0 hidden lg:block"
         />
       </div>
-    </div>
+    </main>
   );
 }

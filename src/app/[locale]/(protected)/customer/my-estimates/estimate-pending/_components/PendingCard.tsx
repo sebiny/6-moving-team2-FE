@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import AlertModal from "@/components/common-modal/AlertModal";
 import { useLocale, useTranslations } from "next-intl";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
+import { useFavoriteToggle } from "@/hooks/useFavoriteToggle";
+import { favoriteService } from "@/lib/api/api-favorite";
 
 interface Props {
   data: Estimate;
@@ -22,14 +24,16 @@ export default function PendingCard({ data, moveType }: Props) {
   const t = useTranslations("MyEstimates");
   const tC = useTranslations("Common");
   const locale = useLocale();
-  const [translatedComment, setTranslatedComment] = useState<string | null>(null);
-  const { driver, comment, price, status, id, isDesignated } = data;
   const router = useRouter();
+
+  const { driver, price, status, id, isDesignated } = data;
+
   // 라벨 목록 구성
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
   const { mutate: acceptEstimate } = useAcceptEstimate();
 
+  const [translatedComment, setTranslatedComment] = useState<string | null>(null);
   (useEffect(() => {
     const translate = async () => {
       try {
@@ -43,11 +47,46 @@ export default function PendingCard({ data, moveType }: Props) {
   }),
     [data.comment, locale]);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const safeDriverId = driver?.id ?? null;
+
+  const [isFavorite, setIsFavorite] = useState<boolean>(driver?.isFavorite ?? false);
+  const [favoriteCount, setFavoriteCount] = useState<number>(driver?.favoriteCount ?? 0);
+  const [busy, setBusy] = useState(false);
+
+  const handleToggleFavorite = async (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    if (busy) return;
+    if (!safeDriverId) {
+      console.warn("❌ driverId가 없어 찜하기를 실행할 수 없습니다.");
+      return;
+    }
+
+    setBusy(true);
+    try {
+      if (isFavorite) {
+        await favoriteService.deleteFavorite(safeDriverId);
+        setIsFavorite(false);
+        setFavoriteCount((prev) => Math.max(0, prev - 1));
+      } else {
+        await favoriteService.createFavorite(safeDriverId);
+        setIsFavorite(true);
+        setFavoriteCount((prev) => prev + 1);
+      }
+      // 필요 시 목록 invalidate:
+      // qc.invalidateQueries({ queryKey: ["pendingEstimates"] });
+    } catch (err) {
+      console.error("찜하기 실패:", err);
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const ClickDetail = () => {
     router.push(`/customer/my-estimates/estimate-pending/${id}`);
   };
-
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="w-full space-y-4 rounded-2xl bg-white shadow-lg sm:p-5 md:px-8 md:py-6 lg:px-10 lg:py-8">
@@ -99,10 +138,17 @@ export default function PendingCard({ data, moveType }: Props) {
             </div>
 
             {/* 좋아요 */}
-            <div className="flex items-center text-base font-normal text-gray-500">
+            <button
+              type="button"
+              onClick={handleToggleFavorite}
+              className="flex items-center text-base font-normal text-gray-500"
+              disabled={busy}
+              aria-pressed={isFavorite}
+              aria-label="찜하기"
+            >
               <Image src="/assets/icons/ic_like_red.svg" alt="찜" width={23} height={23} />
-              <span className="ml-1">{driver.favoriteCount}</span>
-            </div>
+              <span className="ml-1">{favoriteCount}</span>
+            </button>
           </div>
 
           {/* 평점/경력/확정 */}

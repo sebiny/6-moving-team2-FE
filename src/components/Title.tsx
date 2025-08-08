@@ -6,9 +6,12 @@ import EstimateStatus from "./chip/EstimateStatus";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
+import { favoriteService } from "@/lib/api/api-favorite";
 
 // 기사 정보 타입 정의
 export interface DriverInfo {
+  id: string;
+  isFavorite: boolean;
   name: string;
   rating: number;
   reviewCount: number;
@@ -30,6 +33,10 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
   const t = useTranslations("MyEstimates");
   const locale = useLocale();
   const [translatedMessage, setTranslatedMessage] = useState<string | null>(null);
+  const [isFavorite, setIsFavorite] = useState<boolean>(driver.isFavorite ?? false);
+  const [likeCount, setLikeCount] = useState<number>(driver.likes ?? 0);
+  const [isToggling, setIsToggling] = useState(false);
+
   (useEffect(() => {
     const translate = async () => {
       try {
@@ -42,6 +49,27 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
     translate();
   }),
     [message, locale]);
+
+  const handleToggleFavorite = async () => {
+    if (isToggling) return;
+    setIsToggling(true);
+
+    try {
+      if (isFavorite) {
+        await favoriteService.deleteFavorite(driver.id);
+        setIsFavorite(false);
+        setLikeCount((prev) => prev - 1);
+      } else {
+        await favoriteService.createFavorite(driver.id);
+        setIsFavorite(true);
+        setLikeCount((prev) => prev + 1);
+      }
+    } catch (err) {
+      console.error("찜하기 오류", err);
+    } finally {
+      setIsToggling(false);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -83,8 +111,11 @@ function Title({ status, labels, driver, message, estimatePrice }: TitleProps) {
           </span>
         </div>
 
-        <div className="flex items-center gap-0.5 text-base text-gray-500">
-          <span>{driver.likes}</span>
+        <div
+          className="flex cursor-pointer items-center gap-0.5 text-base text-gray-500"
+          onClick={handleToggleFavorite}
+        >
+          <span>{likeCount}</span>
           <Image src="/assets/icons/ic_like_black.svg" alt="좋아요" width={22} height={22} />
         </div>
       </div>
