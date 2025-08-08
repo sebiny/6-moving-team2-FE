@@ -35,8 +35,11 @@ function InputText({ setInputValid, value: externalValue, onChange: externalOnCh
     <div className="flex flex-col gap-2">
       <textarea
         value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={() => setTouched(true)}
+        onChange={(e) => {
+          const newValue = e.target.value;
+          if (!touched) setTouched(true); //입력 시작하면 touched = true
+          setValue(newValue);
+        }}
         placeholder={t("modal.placeholder")}
         className={clsx(
           "border-line-200 h-40 w-full resize-none rounded-[16px] border bg-gray-50 px-4 py-[14px]",
