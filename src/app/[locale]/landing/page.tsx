@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import LandingPageLayout from "./layout";
 import Container from "@/components/container/PageContainer";
 import IconApp from "/public/assets/icons/ic_app.svg";
-import ImgEstimateCard from "/public/assets/images/img_landing_cardlist.svg";
+import ImgEstimateCard from "/public/assets/images/img_landing_cardlist.avif";
 import clsx from "clsx";
 import "../../globals.css";
 
@@ -13,8 +13,9 @@ import MovingCard from "./_component/MovingCard";
 import ChangeImages from "./_component/ChangeImages";
 import { useTranslations } from "next-intl";
 
-import bgSm from "/public/assets/images/img_landing_bg_sm.svg";
-import bgLg from "/public/assets/images/img_landing_bg.svg";
+import bgSm from "/public/assets/images/img_landing_bg_sm.avif";
+import bgMd from "/public/assets/images/img_landing_bg_md.avif";
+import bgLg from "/public/assets/images/img_landing_bg_lg.avif";
 
 const CARD_TYPE = ["small", "family", "office"] as const;
 
@@ -48,21 +49,50 @@ export default function LandingPage() {
   }, []);
   return (
     <LandingPageLayout>
-      <Container maxWidth="w-full" padding="0" className="relative min-h-[313px] bg-top bg-no-repeat sm:min-h-[405px]">
+      <Container maxWidth="w-full" padding="0" className="relative min-h-[313px] bg-top bg-no-repeat sm:max-h-[405px]">
         {/* 모바일 배경 이미지 */}
-        <div className="block sm:hidden">
-          <Image
+        <div
+          className="absolute inset-0 block sm:hidden"
+          style={{
+            backgroundImage: `url(${bgSm.src})`, // 크고 넓은 배경이미지
+            backgroundSize: "cover",
+            backgroundPosition: "top",
+            backgroundRepeat: "no-repeat",
+            zIndex: 1
+          }}
+        >
+          {/* <Image
             src={bgSm}
-            width={374}
-            height={405}
+            width={375}
+            height={313}
             alt="배경이미지"
             className="h-full min-h-[313px] w-full object-cover"
             priority
-          />
+          /> */}
         </div>
-        {/* PC (sm 이상) 배경은 div의 css로 */}
+        {/* 타블렛(sm 이상) 배경은 div의 css로 */}
         <div
-          className="absolute inset-0 hidden h-full w-full sm:block"
+          className="absolute inset-0 hidden max-h-[405px] sm:block md:hidden lg:hidden"
+          style={{
+            backgroundImage: `url(${bgMd.src})`, // 크고 넓은 배경이미지
+            backgroundSize: "cover",
+            backgroundPosition: "top",
+            backgroundRepeat: "no-repeat",
+            zIndex: 1
+          }}
+        >
+          {/* <Image
+            src={bgMd}
+            width={744}
+            height={405}
+            alt="배경이미지"
+            className="h-full min-h-[405px] w-full object-cover"
+            priority
+          /> */}
+        </div>
+        {/* 타블렛 (md 이상) 배경은 div의 css로 */}
+        <div
+          className="absolute inset-0 hidden max-h-[405px] w-full md:block xl:h-[405px]"
           style={{
             backgroundImage: `url(${bgLg.src})`, // 크고 넓은 배경이미지
             backgroundSize: "cover",
@@ -72,8 +102,8 @@ export default function LandingPage() {
           }}
         ></div>
         {/* 텍스트 영역: 항상 z-10로 이미지 위에 */}
-        <div className="absolute inset-0 top-30 z-2 flex flex-col items-center justify-center 2xl:top-52">
-          <div className={`${translateStyle} text-center text-xl font-bold text-gray-50 duration-800 md:text-[32px]`}>
+        <div className="3xl:top-80 absolute inset-0 top-30 z-2 flex flex-col items-center justify-center xl:top-52 2xl:top-70">
+          <div className={`${translateStyle} text-center text-xl font-bold text-gray-50 duration-800 sm:text-[32px]`}>
             {t("title")}
           </div>
           <div className={`${translateStyle} mt-3 text-center text-base text-gray-100 duration-1000 md:text-lg/snug`}>
@@ -99,7 +129,7 @@ export default function LandingPage() {
           ))}
         </div>
       </Container>
-      <Container padding="p-0" className="flex max-w-[1400px] justify-center sm:mb-20 sm:p-4">
+      <Container padding="p-0" className="flex max-h-[850px] max-w-[1400px] justify-center sm:mb-20 sm:p-4">
         <ChangeImages />
       </Container>
       <Container padding="px-0 sm:px-8" className="flex justify-center md:max-w-[1400px]">
@@ -117,7 +147,10 @@ export default function LandingPage() {
               key={idx}
               src={ImgEstimateCard}
               alt="견적카드"
+              width={332}
+              height={268}
               className={clsx(estimateCardStyle.default, translateStyle, estimateCard[idx])}
+              unoptimized
             />
           ))}
         </div>
@@ -133,6 +166,7 @@ export default function LandingPage() {
           width={56}
           height={57}
           className="transition-all duration-400 hover:-translate-y-1 sm:h-[140px] sm:w-[144px] sm:hover:-translate-y-2"
+          unoptimized
         />
         <div className="max-w-[120px] text-center text-base font-bold text-gray-50 sm:max-w-none sm:text-[28px]">
           {t("endTitle")}
