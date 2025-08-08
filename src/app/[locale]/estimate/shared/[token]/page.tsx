@@ -52,19 +52,26 @@ export default function SharedEstimatePage() {
     <>
       <div className="bg-white">
         <OrangeBackground />
-        <div className="flex flex-col px-5 pt-5 md:px-17 lg:mx-auto lg:max-w-[1700px] lg:gap-20 lg:px-10 lg:pb-[120px]">
+
+        {!isDriverShared && (
+          <div className="relative mx-auto max-w-[1550px]">
+            <div className="relative -mt-10 md:-mt-20">
+              <Image
+                src={driver?.profileImage ?? "/assets/images/img_profile.svg"}
+                alt="기사님 프로필"
+                width={100}
+                height={100}
+                className="h-18 w-18 rounded-lg md:h-27 md:w-27 lg:h-37 lg:w-37"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 본문 영역 */}
+        <div className="flex flex-col px-5 pt-10 md:px-17 lg:mx-auto lg:max-w-[1700px] lg:gap-20 lg:px-10 lg:pb-[120px]">
           <div className="flex flex-col gap-10">
             {!isDriverShared ? (
               <>
-                <div className="relative w-fit">
-                  <Image
-                    src={driver?.profileImage ?? "/assets/images/img_profile.svg"}
-                    alt="기사님 프로필"
-                    width={100}
-                    height={100}
-                    className="h-18 w-18 rounded-lg md:h-27 md:w-27 lg:h-37 lg:w-37"
-                  />
-                </div>
                 <Title
                   labels={labels}
                   driver={{
