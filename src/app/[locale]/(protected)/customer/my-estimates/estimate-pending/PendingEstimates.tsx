@@ -58,65 +58,63 @@ export default function PendingEstimates() {
   const hasRequest = !!estimateRequest;
   const isTranslating = hasRequest && !translatedRequestData;
 
-  // 1) 서버 데이터 로딩 중
+  // 1) 로딩
   if (isLoading) {
     return (
-      <main id="main-content" role="main" aria-busy="true" className="mt-30">
+      <section aria-busy="true">
         <LoadingLottie className="mt-30" aria-live="polite" role="status" />
-      </main>
+      </section>
     );
   }
 
   // 2) 요청 없음
   if (!hasRequest) {
     return (
-      <main id="main-content" role="main" className="mt-45 lg:mt-75">
-        <section aria-labelledby="no-request-title" className="flex flex-col items-center justify-center gap-2">
-          <h1 id="no-request-title" className="sr-only">
-            대기 중인 견적 요청이 없습니다
-          </h1>
+      <section aria-labelledby="no-request-title" className="mt-10 lg:mt-20">
+        <h1 id="no-request-title" className="sr-only">
+          대기 중인 견적 요청이 없습니다
+        </h1>
 
-          <figure aria-describedby="no-request-desc">
-            <img
-              src="/assets/images/img_empty_car.svg"
-              alt=""
-              width={250}
-              height={250}
-              className="mr-7"
-              aria-hidden="true"
-            />
-            <figcaption id="no-request-desc" className="text-center text-lg font-normal text-neutral-400">
-              {tC("RequestYet?")}
-              <br />
-              {tC("RequestFirst")}
-            </figcaption>
-          </figure>
-        </section>
-      </main>
+        <figure aria-describedby="no-request-desc" className="flex flex-col items-center justify-center gap-2">
+          <img
+            src="/assets/images/img_empty_car.svg"
+            alt=""
+            width={250}
+            height={250}
+            className="mr-7"
+            aria-hidden="true"
+          />
+          <figcaption id="no-request-desc" className="text-center text-lg font-normal text-neutral-400">
+            {tC("RequestYet?")}
+            <br />
+            {tC("RequestFirst")}
+          </figcaption>
+        </figure>
+      </section>
     );
   }
 
   // 3) 번역 중
   if (isTranslating) {
     return (
-      <main id="main-content" role="main" aria-busy="true" className="mt-30">
+      <section aria-busy="true">
         <LoadingLottie className="mt-30" aria-live="polite" role="status" />
-      </main>
+      </section>
     );
   }
 
   // 4) 정상 렌더
   return (
-    <main id="main-content" role="main" className="mt-11 md:mt-13 lg:mt-21">
-      {/* 페이지 헤더: 현재 활성 요청의 요약 */}
-      <header aria-labelledby="pending-estimates-heading" className="mb-4">
+    <section aria-labelledby="pending-estimates-heading">
+      {/* 페이지 헤더: 현재 활성 요청 요약 */}
+      <header aria-labelledby="pending-estimates-heading" className="-mt-2 md:-mt-3">
         <h1 id="pending-estimates-heading" className="sr-only">
           대기 중인 견적 리스트
         </h1>
         <EstimateSubHeader data={translatedRequestData!} />
       </header>
 
-      {/* 견적 카드 리스트 영역 */}
+      {/* 견적 카드 리스트 */}
       <section
         aria-labelledby="pending-list-heading"
         className="bg-background-200 px-5 py-10 md:px-15 lg:mx-auto lg:max-w-[1400px] lg:px-20 lg:py-20"
@@ -147,6 +145,6 @@ export default function PendingEstimates() {
           </ul>
         )}
       </section>
-    </main>
+    </section>
   );
 }
