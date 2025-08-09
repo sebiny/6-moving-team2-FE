@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import RequestCardList from "./_components/RequestCardList";
 import { Request } from "@/types/request";
@@ -19,6 +19,8 @@ import { mapBackendRequestToFrontend } from "@/utills/RequestMapper";
 import { useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 import { moveTypeLabelMap } from "@/constant/moveTypes";
+import { useDebounce } from "@/hooks/useDebounce";
+import RequestCardListSkeleton from "@/components/skeleton/RequestCardListSkeleton";
 
 const MOVE_TYPES = ["소형이사", "가정이사", "사무실이사"] as const;
 const SORT_OPTIONS = ["date", "request"];
@@ -31,19 +33,16 @@ export default function ReceivedRequestsPage() {
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [sort, setSort] = useState("request");
-
-  const handleSortChange = (newSort: string) => {
-    if (sort !== newSort) {
-      setSort(newSort);
-    }
-  };
-  const [filteredRequests, setFilteredRequests] = useState<Request[]>([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
+
+  // useDebounce 훅 사용
+  const debouncedSearchKeyword = useDebounce(searchKeyword, 300);
 
   const t = useTranslations("ReceivedReq");
   const tm = useTranslations("ToastModal.receivedRequest");
   const tToast = useTranslations("ToastModal");
+
   // React Query로 데이터 가져오기
   const {
     data: requests = [],
@@ -62,11 +61,9 @@ export default function ReceivedRequestsPage() {
           driverService.getAvailableRequests()
         ]);
 
-        // 중복 제거를 위해 ID 기준으로 합치기
+        // Map을 사용한 중복 제거 (O(n) 성능)
         const allRequests = [...(designatedRequests || []), ...(availableRequests || [])];
-        const uniqueRequests = allRequests.filter(
-          (request, index, self) => index === self.findIndex((r) => r.id === request.id)
-        );
+        const uniqueRequests = Array.from(new Map(allRequests.map((req) => [req.id, req])).values());
         backendRequests = uniqueRequests;
       } else if (isDesignatedChecked) {
         backendRequests = await driverService.getDesignatedRequests();
@@ -82,12 +79,35 @@ export default function ReceivedRequestsPage() {
     refetchOnWindowFocus: false // 창 포커스 시 재조회 비활성화
   });
 
-  // 검색, 이사 유형 필터링, 정렬
-  useEffect(() => {
-    // requests가 비어있으면 처리하지 않음
+  // useCallback으로 콜백 함수 최적화
+  const handleSortChange = useCallback(
+    (newSort: string) => {
+      if (sort !== newSort) {
+        setSort(newSort);
+      }
+    },
+    [sort]
+  );
+
+  const handleMoveTypeToggle = useCallback((moveType: string) => {
+    setSelectedMoveTypes((prev) =>
+      prev.includes(moveType) ? prev.filter((type) => type !== moveType) : [...prev, moveType]
+    );
+  }, []);
+
+  const handleCheckboxChange = useCallback((type: "designated" | "available", checked: boolean) => {
+    if (type === "designated") {
+      setIsDesignatedChecked(checked);
+    } else {
+      setIsAvailableRegionChecked(checked);
+    }
+  }, []);
+
+  // useMemo로 필터링 및 정렬 최적화
+  const filteredRequests = useMemo(() => {
+    // requests가 비어있으면 빈 배열 반환
     if (!requests || requests.length === 0) {
-      setFilteredRequests([]);
-      return;
+      return [];
     }
 
     let filtered = [...requests]; // 원본 배열 복사
@@ -100,10 +120,10 @@ export default function ReceivedRequestsPage() {
       });
     }
 
-    // 검색어 필터링
-    if (searchKeyword.trim()) {
+    // 검색어 필터링 (디바운스된 검색어 사용)
+    if (debouncedSearchKeyword.trim()) {
       filtered = filtered.filter((request) => {
-        const matches = request.customerName.toLowerCase().includes(searchKeyword.toLowerCase());
+        const matches = request.customerName.toLowerCase().includes(debouncedSearchKeyword.toLowerCase());
         return matches;
       });
     }
@@ -132,96 +152,93 @@ export default function ReceivedRequestsPage() {
       }
     });
 
-    setFilteredRequests(filtered);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchKeyword, selectedMoveTypes, sort, requests.length]); // requests.length로 변경 - 성능 최적화
+    return filtered;
+  }, [requests, debouncedSearchKeyword, selectedMoveTypes, sort]);
 
-  const handleSendEstimate = (request: Request) => {
+  const handleSendEstimate = useCallback((request: Request) => {
     setSelectedRequest(request);
     setModalOpen(true);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setModalOpen(false);
     setSelectedRequest(null);
-  };
+  }, []);
 
-  const handleSubmitEstimate = async (price: number, comment: string) => {
-    if (!selectedRequest) return;
+  const handleSubmitEstimate = useCallback(
+    async (price: number, comment: string) => {
+      if (!selectedRequest) return;
 
-    try {
-      await driverService.createEstimate(selectedRequest.id, {
-        price,
-        message: comment
-      });
-      ToastModal(tm("sentEstimate"));
-      handleCloseModal();
-      // React Query로 데이터 새로고침
-      queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
-    } catch (err: unknown) {
-      console.error("견적 전송 실패:", err);
+      try {
+        await driverService.createEstimate(selectedRequest.id, {
+          price,
+          message: comment
+        });
+        ToastModal(tm("sentEstimate"));
+        handleCloseModal();
+        // React Query로 데이터 새로고침
+        queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
+      } catch (err: unknown) {
+        console.error("견적 전송 실패:", err);
 
-      // 409 Conflict 에러인 경우 (이미 견적을 보낸 경우)
-      if (err instanceof Error && err.message.includes(tToast("alreadySent"))) {
-        ToastModal(tm("alreadySentEstimate"));
-      } else {
-        ToastModal(tm("failedToSendEstimate"));
+        // 409 Conflict 에러인 경우 (이미 견적을 보낸 경우)
+        if (err instanceof Error && err.message.includes(tToast("alreadySent"))) {
+          ToastModal(tm("alreadySentEstimate"));
+        } else {
+          ToastModal(tm("failedToSendEstimate"));
+        }
       }
-    }
-  };
+    },
+    [selectedRequest, handleCloseModal, queryClient, tm, tToast]
+  );
 
-  const handleRejectEstimate = (request: Request) => {
+  const handleRejectEstimate = useCallback((request: Request) => {
     setSelectedRequest(request);
     setRejectModalOpen(true);
     setModalOpen(false);
-  };
+  }, []);
 
-  const handleCloseRejectModal = () => {
+  const handleCloseRejectModal = useCallback(() => {
     setRejectModalOpen(false);
     setSelectedRequest(null);
-  };
+  }, []);
 
-  const handleSubmitReject = async (estimateRequestId: string, reason: string) => {
-    if (!selectedRequest) return;
+  const handleSubmitReject = useCallback(
+    async (estimateRequestId: string, reason: string) => {
+      if (!selectedRequest) return;
 
-    try {
-      await driverService.rejectEstimateRequest(estimateRequestId, {
-        reason
-      });
-      ToastModal(tm("estimateRejected"));
-      handleCloseRejectModal();
-      // React Query로 데이터 새로고침
-      queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
-    } catch (err: unknown) {
-      console.error("견적 요청 반려 실패:", err);
+      try {
+        await driverService.rejectEstimateRequest(estimateRequestId, {
+          reason
+        });
+        ToastModal(tm("estimateRejected"));
+        handleCloseRejectModal();
+        // React Query로 데이터 새로고침
+        queryClient.invalidateQueries({ queryKey: ["driver-requests"] });
+      } catch (err: unknown) {
+        console.error("견적 요청 반려 실패:", err);
 
-      // 견적이 존재하지 않는 경우
-      if (err instanceof Error && err.message.includes("이미 반려한 견적 요청입니다")) {
-        ToastModal(tm("alreadyRejectedEstimate"));
-      } else {
-        ToastModal(tm("failedToRejectEstimate"));
+        // 견적이 존재하지 않는 경우
+        if (err instanceof Error && err.message.includes("이미 반려한 견적 요청입니다")) {
+          ToastModal(tm("alreadyRejectedEstimate"));
+        } else {
+          ToastModal(tm("failedToRejectEstimate"));
+        }
       }
-    }
-  };
-
-  const handleMoveTypeToggle = (moveType: string) => {
-    setSelectedMoveTypes((prev) =>
-      prev.includes(moveType) ? prev.filter((type) => type !== moveType) : [...prev, moveType]
-    );
-  };
-
-  const handleCheckboxChange = (type: "designated" | "available", checked: boolean) => {
-    if (type === "designated") {
-      setIsDesignatedChecked(checked);
-    } else {
-      setIsAvailableRegionChecked(checked);
-    }
-  };
+    },
+    [selectedRequest, handleCloseRejectModal, queryClient, tm]
+  );
 
   const renderContent = () => {
-    if (isPending) return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">로딩 중...</p>;
-    if (error)
+    // Early return 패턴으로 가독성 향상
+    if (isPending) {
+      return <RequestCardListSkeleton />;
+    }
+
+    if (error) {
       return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{t("failedFetchReq")}</p>;
+    }
+
     if (filteredRequests.length === 0) {
       return (
         <div className="flex w-full flex-col items-center justify-center px-6 py-20">
@@ -238,6 +255,8 @@ export default function ReceivedRequestsPage() {
         </div>
       );
     }
+
+    // 정상적인 경우: 요청 목록 렌더링
     return (
       <RequestCardList
         requests={filteredRequests}
