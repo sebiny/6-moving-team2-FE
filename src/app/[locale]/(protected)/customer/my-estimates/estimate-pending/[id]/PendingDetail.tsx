@@ -1,6 +1,6 @@
 "use client";
 
-import Title, { DriverInfo } from "@/components/Title";
+import Title from "@/components/Title";
 import Button from "@/components/Button";
 import ShareDriver from "@/components/ShareDriver";
 import OrangeBackground from "@/components/OrangeBackground";
@@ -40,9 +40,9 @@ export default function PendingDetailPage() {
 
   if (!data) {
     return (
-      <>
-        <LoadingLottie className="mt-70" />
-      </>
+      <main id="main-content" role="main" className="mt-70">
+        <LoadingLottie className="mt-30" role="status" aria-live="polite" />
+      </main>
     );
   }
 
@@ -125,33 +125,39 @@ export default function PendingDetailPage() {
 
   return (
     <>
-      {/* 상단 서브 헤더 */}
-      <div className="sticky top-14 z-9 bg-white lg:top-22">
+      {/* 페이지 헤더(고정) */}
+      <header className="sticky top-14 z-9 bg-white lg:top-22" aria-label="페이지 헤더">
         <PageHeader title={t1("estDetail")} />
-      </div>
+      </header>
 
       {/* 상단 배경 + 프로필 */}
-      <div className="relative">
+      <section aria-labelledby="driver-profile-section" className="relative">
+        <h2 id="driver-profile-section" className="sr-only">
+          기사 프로필
+        </h2>
         <OrangeBackground />
         <div className="relative mx-auto max-w-[600px] md:max-w-[700px] lg:max-w-[1150px]">
           <div className="relative -mt-10 md:-mt-20">
             <Image
               src={driver.profileImage ?? "/assets/images/img_profile.svg"}
-              alt="기사님 프로필"
+              alt={`${driver.name} 기사님 프로필 사진`}
               width={100}
               height={100}
               className="h-18 w-18 rounded-lg md:h-27 md:w-27 lg:h-37 lg:w-37"
             />
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* 본문 */}
-      <div className="bg-white">
+      {/* 본문 레이아웃 */}
+      <main id="main-content" role="main" className="bg-white">
         <div className="flex flex-col px-5 py-[60px] pt-10 md:px-17 md:pt-15 lg:mx-auto lg:grid lg:max-w-[1300px] lg:grid-cols-[1fr_300px] lg:gap-20 lg:px-10 lg:pt-[50px] lg:pb-[120px]">
-          {/* 왼쪽 콘텐츠 열 */}
-          <div className="flex flex-col gap-10">
-            {/* Title 컴포넌트 */}
+          {/* 왼쪽 메인 콘텐츠 */}
+          <article className="flex flex-col gap-10" aria-labelledby="estimate-article-title">
+            <h1 id="estimate-article-title" className="sr-only">
+              {driver.name} 기사님의 견적 상세
+            </h1>
+
             <Title
               status={status}
               labels={labels}
@@ -169,33 +175,42 @@ export default function PendingDetailPage() {
               estimatePrice={price}
             />
 
-            <div className="border-t border-gray-100" />
+            <hr className="border-t border-gray-100" />
 
-            {/* 견적 정보 */}
-            <EstimateDetailInfo
-              requestDate={dayjs(requestDate).format("YY.MM.DD")}
-              serviceType={getMoveTypeLabel(moveType)}
-              moveDate={dayjs(moveDate).format("YYYY. MM. DD(ddd) A hh:mm")}
-              from={formatStreetAddress(fromAddress)}
-              to={formatStreetAddress(toAddress)}
-            />
+            <section aria-labelledby="estimate-info-heading">
+              <h2 id="estimate-info-heading" className="sr-only">
+                견적 정보
+              </h2>
+              <EstimateDetailInfo
+                requestDate={dayjs(requestDate).format("YY.MM.DD")}
+                serviceType={getMoveTypeLabel(moveType)}
+                moveDate={dayjs(moveDate).format("YYYY. MM. DD(ddd) A hh:mm")}
+                from={formatStreetAddress(fromAddress)}
+                to={formatStreetAddress(toAddress)}
+              />
+            </section>
 
-            {/* 기본 버전 */}
-            <div className="flex flex-col gap-6 lg:hidden">
-              <div className="my-3 border-t border-gray-100" />
+            {/* 모바일 공유/확정 */}
+            <section aria-label="공유 및 확정" className="flex flex-col gap-6 lg:hidden">
+              <hr className="my-3 border-t border-gray-100" />
               <ShareDriver
                 text={t("shareEstimate")}
                 onKakaoShare={handleKakaoShare}
                 onFacebookShare={handleFacebookShare}
               />
               <div className="mt-10">
-                <Button type="orange" text={t("acceptEstimate")} onClick={handleAcceptEstimate} />
+                <Button
+                  type="orange"
+                  text={t("acceptEstimate")}
+                  onClick={handleAcceptEstimate}
+                  aria-label="견적 확정하기"
+                />
               </div>
-            </div>
-          </div>
+            </section>
+          </article>
 
-          {/* 오른쪽 사이드 열 */}
-          <div className="mt-7 hidden lg:flex lg:flex-col lg:justify-center lg:gap-6">
+          {/* 우측 사이드 정보 */}
+          <aside className="mt-7 hidden lg:flex lg:flex-col lg:justify-center lg:gap-6" aria-label="가격 및 공유">
             <div>
               <p className="text-lg font-semibold text-neutral-400">{t("estimateCost")}</p>
               <p className="text-black-500 text-2xl font-bold">
@@ -204,18 +219,23 @@ export default function PendingDetailPage() {
               </p>
             </div>
 
-            <Button type="orange" text={t("acceptEstimate")} onClick={handleAcceptEstimate} />
+            <Button
+              type="orange"
+              text={t("acceptEstimate")}
+              onClick={handleAcceptEstimate}
+              aria-label="견적 확정하기"
+            />
 
-            <div className="my-3 border-t border-gray-100" />
+            <hr className="my-3 border-t border-gray-100" />
 
             <ShareDriver
               text={t("shareEstimate")}
               onKakaoShare={handleKakaoShare}
               onFacebookShare={handleFacebookShare}
             />
-          </div>
+          </aside>
         </div>
-      </div>
+      </main>
 
       {showModal && (
         <AlertModal

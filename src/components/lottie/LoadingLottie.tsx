@@ -9,12 +9,13 @@ type LoadingLottieProps = {
   className?: string;
   width?: number;
   height?: number;
-};
+} & React.HTMLAttributes<HTMLDivElement> &
+  React.AriaAttributes;
 
-export default function LoadingLottie({ text, className, width = 150, height = 150 }: LoadingLottieProps) {
+export default function LoadingLottie({ text, className, width = 150, height = 150, ...rest }: LoadingLottieProps) {
   const t = useTranslations("Common");
   return (
-    <div className={`flex flex-col items-center gap-5 pt-30 ${className}`}>
+    <div className={`flex flex-col items-center gap-5 pt-30 ${className}`} {...rest}>
       <Lottie loop animationData={loadingLottie} play style={{ width, height }} />
       <p className="font-Pretendard text-lg font-semibold text-gray-400">{text ?? t("loading")}</p>
     </div>
