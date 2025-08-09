@@ -32,17 +32,24 @@ export default function MobileDatePicker({ selectedDate, onSelectDate }: MobileD
 
   const isSelected = (date: Date) => selectedDayjs?.isSame(date, "date");
   const isPast = (date: Date) => dayjs(date).isBefore(today, "day");
+  const isToday = (date: Date) => dayjs(date).isSame(today, "date");
+
+  const dateLabel = (date: Date) => {
+    const dj = dayjs(date);
+    const weekday = days[dj.day()];
+    return `${dj.format("YYYY년 M월 D일")} ${weekday}`;
+  };
 
   return (
     <div className="mx-auto w-[336px]">
       {/* 헤더 */}
       <div className="mb-8 flex items-center justify-center gap-3 text-xl leading-8 font-bold text-black">
         <button onClick={() => setCurrent((prev) => prev.subtract(1, "month"))} aria-label={t("label.prevMonth")}>
-          <Image src="/assets/icons/ic_chevron_left.svg" width={24} height={24} alt={t("label.nextMonth")} />
+          <Image src="/assets/icons/ic_chevron_left.svg" width={24} height={24} alt="" aria-hidden="true" />
         </button>
-        <span>{current.format("YYYY. MM")}</span>
+        <span aria-live="polite">{current.format("YYYY. MM")}</span>
         <button onClick={() => setCurrent((prev) => prev.add(1, "month"))} aria-label={t("label.nextMonth")}>
-          <Image src="/assets/icons/ic_chevron_right.svg" width={24} height={24} alt={t("label.nextMonth")} />
+          <Image src="/assets/icons/ic_chevron_right.svg" width={24} height={24} alt="" aria-hidden="true" />
         </button>
       </div>
 
@@ -62,12 +69,18 @@ export default function MobileDatePicker({ selectedDate, onSelectDate }: MobileD
             const day = dayjs(date).date();
             const disabled = isPast(date);
             const selected = isSelected(date);
+            const todayFlag = isToday(date);
 
             return (
               <div key={idx} className="flex items-center justify-center">
                 <button
+                  type="button"
                   disabled={disabled}
                   onClick={() => onSelectDate(selected ? null : date)}
+                  aria-label={dateLabel(date)}
+                  aria-pressed={selected}
+                  aria-current={todayFlag ? "date" : undefined}
+                  aria-disabled={disabled}
                   className={clsx(
                     "h-12 w-12 rounded-xl text-center",
                     disabled && "cursor-default text-gray-100",
