@@ -33,6 +33,12 @@ function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
 
   const isSelected = (date: Date) => selectedDayjs?.isSame(date, "date");
   const isPast = (date: Date) => dayjs(date).isBefore(today, "day");
+  const isToday = (date: Date) => dayjs(date).isSame(today, "date");
+
+  const dateLabel = (date: Date) => {
+    const dj = dayjs(date);
+    return `${dj.format("YYYY년 M월 D일")} ${days[dj.day()]}`;
+  };
 
   return (
     <div className="border-line-200 flex h-full w-full flex-col justify-between rounded-2xl border bg-white px-[45.5px] py-8 shadow-md">
@@ -70,12 +76,18 @@ function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
           const day = dayjs(date).date();
           const disabled = isPast(date);
           const selected = isSelected(date);
+          const todayFlag = isToday(date);
 
           return (
             <div key={idx} className="p-1">
               <button
                 disabled={disabled}
                 onClick={() => onSelectDate(date)}
+                role="gridcell"
+                aria-label={dateLabel(date)}
+                aria-selected={selected}
+                aria-current={todayFlag ? "date" : undefined}
+                aria-disabled={disabled}
                 className={clsx("h-[38px] w-10 cursor-pointer rounded-xl text-sm font-medium", {
                   "cursor-default text-gray-300": disabled,
                   "text-gray-400": isOtherMonth && !disabled,
@@ -87,7 +99,7 @@ function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
               </button>
             </div>
           );
-        })}{" "}
+        })}
       </div>
 
       {/* 선택완료 버튼 */}
@@ -95,6 +107,8 @@ function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
         <button
           onClick={onConfirm}
           disabled={!selectedDate}
+          aria-disabled={!selectedDate}
+          aria-label={t("button.confirm")}
           className={clsx(
             "h-[54px] w-[279px] cursor-pointer rounded-xl py-3 text-base font-semibold text-white",
             selectedDate ? "bg-orange-400" : "bg-gray-100"
@@ -106,5 +120,4 @@ function DatePicker({ selectedDate, onSelectDate, onConfirm }: DateProps) {
     </div>
   );
 }
-
 export default DatePicker;

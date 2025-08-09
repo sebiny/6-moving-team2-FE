@@ -32,28 +32,38 @@ function CalenderDropdown({ date, onChange }: CalenderDropdownProps) {
   return (
     <div className="relative">
       <button
+        type="button"
         onClick={handleToggle}
         className={clsx(
           "flex h-[50px] w-100 cursor-pointer items-center justify-between rounded-xl border bg-white pr-3 pl-5 text-black",
           date ? "border-[var(--color-orange-400)]" : "border-[var(--color-gray-100)]"
         )}
-        aria-label="날짜 선택"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-controls="datepicker-popup"
+        aria-label={date ? `선택된 날짜: ${formatted}` : "날짜 선택"}
       >
-        <div className="flex items-center gap-2">
-          <Image src="/assets/icons/ic_calendar.svg" alt="캘린더" width={24} height={24} />
+        <span className="flex items-center gap-2">
+          <Image src="/assets/icons/ic_calendar.svg" alt="" aria-hidden="true" width={24} height={24} />
           <span className={clsx("font-medium", !date && "text-black-400")}>{formatted}</span>
-        </div>
+        </span>
 
         <Image
           src={`/assets/icons/${open ? "ic_chevron_up" : "ic_chevron_down"}.svg`}
-          alt={open ? "위로 접기" : "아래로 펼치기"}
+          alt={open ? "달력 접기" : "달력 펼치기"}
           width={36}
           height={36}
         />
       </button>
 
       {open && (
-        <div className="absolute top-[60px] z-10 w-100">
+        <div
+          id="datepicker-popup"
+          className="absolute top-[60px] z-10 w-100"
+          role="dialog"
+          aria-modal="false"
+          aria-label="날짜 선택 달력"
+        >
           <DatePicker selectedDate={date} onSelectDate={onChange} onConfirm={handleConfirm} />
         </div>
       )}
