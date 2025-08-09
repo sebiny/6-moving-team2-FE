@@ -46,6 +46,15 @@ export default function SendEstimateModal({
   const { isLg, isSm } = useMediaHook();
   const textClass = "text-black-300 mb-3 lg:text-[18px] text-[16px] leading-[26px] font-semibold ";
 
+  // 모달이 닫힐 때 상태 초기화
+  useEffect(() => {
+    if (!open) {
+      setPrice("");
+      setComment("");
+      setCommentValid(false);
+    }
+  }, [open]);
+
   useEffect(() => {
     const translatedTexts = async () => {
       if (!fromAddress || !toAddress || !moveDate) return;
@@ -76,8 +85,17 @@ export default function SendEstimateModal({
   }, [fromAddress, toAddress, moveDate, locale]);
   if (!open) return null;
 
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 md:items-center">
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 md:items-center"
+      onClick={handleBackdropClick}
+    >
       <div
         className={clsx(
           "h-auto w-full rounded-t-[32px] bg-gray-50 px-6 py-8 shadow-[4px_4px_10px_rgba(169,169,169,0.2)]",
