@@ -26,10 +26,20 @@ export default function SharedEstimatePage() {
     enabled: !!token
   });
 
-  if (isLoading) return <LoadingLottie className="mt-30" />;
+  if (isLoading) {
+    return (
+      <div role="status" aria-live="polite">
+        <LoadingLottie className="mt-30" />
+      </div>
+    );
+  }
 
   if (error || !data) {
-    return <div className="mt-20 text-center">견적을 불러올 수 없습니다.</div>;
+    return (
+      <main className="mt-20 text-center" role="status" aria-live="assertive">
+        견적을 불러올 수 없습니다.
+      </main>
+    );
   }
 
   const isDriverShared = data?.type === "DRIVER";
@@ -49,13 +59,14 @@ export default function SharedEstimatePage() {
       : [estimateRequest?.moveType];
 
   return (
-    <>
-      <div className="bg-white">
+    <div className="bg-white">
+      {/* 헤더 영역: 페이지 장식 배경 + (고객 공유 시) 프로필 */}
+      <header aria-label="견적서 공유 헤더" className="relative">
         <OrangeBackground />
-
         {!isDriverShared && (
           <div className="relative mx-auto max-w-[800px] md:max-w-[1000px] lg:max-w-[1550px]">
-            <div className="relative -mt-10 md:-mt-20">
+            {/* 장식/프로필: 정보 전달 목적이면 figure, 아니면 단순 이미지 */}
+            <figure className="relative -mt-10 md:-mt-20">
               <Image
                 src={driver?.profileImage ?? "/assets/images/img_profile.svg"}
                 alt="기사님 프로필"
@@ -63,64 +74,76 @@ export default function SharedEstimatePage() {
                 height={100}
                 className="h-18 w-18 rounded-lg md:h-27 md:w-27 lg:h-37 lg:w-37"
               />
-            </div>
+              {/* 캡션이 필요 없다면 생략 가능 */}
+              {/* <figcaption className="sr-only">{driver?.authUser?.name ?? "기사님"}</figcaption> */}
+            </figure>
           </div>
         )}
+      </header>
 
-        {/* 본문 영역 */}
-        <div className="flex flex-col px-5 pt-10 md:px-17 lg:mx-auto lg:max-w-[1700px] lg:gap-20 lg:px-10 lg:pb-[120px]">
-          <div className="flex flex-col gap-10">
-            {!isDriverShared ? (
-              <>
-                <Title
-                  labels={labels}
-                  driver={{
-                    id: driver.id,
-                    isFavorite: driver.isFavorite,
-                    name: driver?.authUser?.name ?? "이름 없음",
-                    rating: driver?.averageRating ?? 0.0,
-                    reviewCount: driver?.reviewsReceived?.length ?? 0,
-                    experienceYear: driver?.career ?? 0,
-                    confirmedCount: driver?.work ?? 0,
-                    likes: driver?.favorite?.length ?? 0
-                  }}
-                  message={comment}
-                  estimatePrice={price}
-                />
-                <div className="border-t border-gray-100" />
-                <EstimateDetailInfo
-                  requestDate={estimateRequest?.createdAt ? formatDate(estimateRequest.createdAt) : ""}
-                  serviceType={
-                    moveTypeLabelMap[estimateRequest?.moveType as MoveType]?.label || estimateRequest?.moveType
-                  }
-                  moveDate={estimateRequest?.moveDate ? formatDateTime(estimateRequest.moveDate) : ""}
-                  from={estimateRequest?.fromAddress?.street ?? ""}
-                  to={estimateRequest?.toAddress?.street ?? ""}
-                />
-              </>
-            ) : (
-              <>
-                <EstimateHeaderSection
-                  moveType={estimateRequest?.moveType as MoveType}
-                  isDesignated={false}
-                  status={status}
-                  customerName={customer?.authUser?.name ?? "고객명 없음"}
-                  price={price}
-                />
-                <EstimateInfoSection
-                  createdAt={estimateRequest?.createdAt ? formatDate(estimateRequest.createdAt) : ""}
-                  moveTypeLabel={
-                    moveTypeLabelMap[estimateRequest?.moveType as MoveType]?.label || estimateRequest?.moveType
-                  }
-                  moveDate={estimateRequest?.moveDate ? formatDateTime(estimateRequest.moveDate) : ""}
-                  from={estimateRequest?.fromAddress?.street ?? ""}
-                  to={estimateRequest?.toAddress?.street ?? ""}
-                />
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </>
+      {/* 본문 */}
+      <main
+        id="main-content"
+        className="flex flex-col px-5 pt-10 md:px-17 lg:mx-auto lg:max-w-[1700px] lg:gap-20 lg:px-10 lg:pb-[120px]"
+      >
+        <section aria-labelledby="estimate-section-title" className="flex flex-col gap-10">
+          <h1 id="estimate-section-title" className="sr-only">
+            공유된 견적 상세
+          </h1>
+
+          {!isDriverShared ? (
+            <>
+              <Title
+                labels={labels}
+                driver={{
+                  id: driver.id,
+                  isFavorite: driver.isFavorite,
+                  name: driver?.authUser?.name ?? "이름 없음",
+                  rating: driver?.averageRating ?? 0.0,
+                  reviewCount: driver?.reviewsReceived?.length ?? 0,
+                  experienceYear: driver?.career ?? 0,
+                  confirmedCount: driver?.work ?? 0,
+                  likes: driver?.favorite?.length ?? 0
+                }}
+                message={comment}
+                estimatePrice={price}
+              />
+
+              <hr className="border-t border-gray-100" aria-hidden="true" />
+
+              <EstimateDetailInfo
+                requestDate={estimateRequest?.createdAt ? formatDate(estimateRequest.createdAt) : ""}
+                serviceType={
+                  moveTypeLabelMap[estimateRequest?.moveType as MoveType]?.label || estimateRequest?.moveType
+                }
+                moveDate={estimateRequest?.moveDate ? formatDateTime(estimateRequest.moveDate) : ""}
+                from={estimateRequest?.fromAddress?.street ?? ""}
+                to={estimateRequest?.toAddress?.street ?? ""}
+              />
+            </>
+          ) : (
+            <>
+              <EstimateHeaderSection
+                moveType={estimateRequest?.moveType as MoveType}
+                isDesignated={false}
+                status={status}
+                customerName={customer?.authUser?.name ?? "고객명 없음"}
+                price={price}
+              />
+
+              <EstimateInfoSection
+                createdAt={estimateRequest?.createdAt ? formatDate(estimateRequest.createdAt) : ""}
+                moveTypeLabel={
+                  moveTypeLabelMap[estimateRequest?.moveType as MoveType]?.label || estimateRequest?.moveType
+                }
+                moveDate={estimateRequest?.moveDate ? formatDateTime(estimateRequest.moveDate) : ""}
+                from={estimateRequest?.fromAddress?.street ?? ""}
+                to={estimateRequest?.toAddress?.street ?? ""}
+              />
+            </>
+          )}
+        </section>
+      </main>
+    </div>
   );
 }
