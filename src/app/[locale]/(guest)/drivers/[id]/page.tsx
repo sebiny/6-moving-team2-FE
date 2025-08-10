@@ -28,7 +28,7 @@ function DriverDetailPage() {
   const shareToKakao = useKakaoShare();
 
   const { data: driver, isPending } = useQuery<DriverType | null>({
-    queryKey: ["driver", driverId, user],
+    queryKey: ["driver", driverId, user?.id],
     queryFn: () =>
       user ? driverService.getDriverDetailCookie(driverId) : driverService.getDriverDetailDefault(driverId)
   });
