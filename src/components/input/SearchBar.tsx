@@ -77,6 +77,7 @@ export default function SearchBar({
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               onKeyDown={handleKeyDown}
+              aria-label="검색어 입력"
             />
             {/* 입력 중일 때만 x(클리어) 버튼과 오른쪽 검색 아이콘 */}
             {isActive && (
