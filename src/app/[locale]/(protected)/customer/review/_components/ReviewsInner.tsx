@@ -8,32 +8,19 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { TranslateRegion } from "@/utills/TranslateFunction";
 import { batchTranslate } from "@/utills/batchTranslate";
-
-interface ReviewsProps {
-  setIsModal: (value: boolean) => void;
-  review: {
-    id: string;
-    moveType: string;
-    moveDate: string;
-    fromAddress: { region: string; district: string };
-    toAddress: { region: string; district: string };
-    estimates: {
-      id: string;
-      price: number;
-      driver: {
-        id: string;
-        nickname: string;
-        shortIntro: string;
-      };
-    }[];
-  };
-}
+import { ReviewsProps } from "@/types/reviewType";
 
 export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
   const { isMd, isLg } = useMediaHook();
   const t = useTranslations("Review");
   const locale = useLocale();
-  const [translatedInfo, setTransaltedInfo] = useState({ fromD: "", fromR: "", toD: "", toR: "", date: "" });
+  const [translatedInfo, setTransaltedInfo] = useState({
+    fromDistrict: "",
+    fromRegion: "",
+    toDistrict: "",
+    toRegion: "",
+    date: ""
+  });
   const cost = review.estimates[0].price;
 
   const formatDate = (isoString: string) => {
@@ -45,10 +32,10 @@ export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
       if (!review) return;
       if (locale === "ko") {
         setTransaltedInfo({
-          fromD: review.fromAddress.district,
-          fromR: review.fromAddress.region,
-          toD: review.toAddress.district,
-          toR: review.toAddress.region,
+          fromDistrict: review.fromAddress.district,
+          fromRegion: review.fromAddress.region,
+          toDistrict: review.toAddress.district,
+          toRegion: review.toAddress.region,
           date: formatDate(review.moveDate)
         });
         return;
@@ -56,19 +43,20 @@ export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
       try {
         const result = await batchTranslate(
           {
-            fromD: review.fromAddress.district ?? "",
-            fromR: review.fromAddress.region ?? "",
-            toD: review.toAddress.district ?? "",
-            toR: review.toAddress.region ?? "",
+            fromDistrict: review.fromAddress.district ?? "",
+            fromRegion: review.fromAddress.region ?? "",
+            toDistrict: review.toAddress.district ?? "",
+            toRegion: review.toAddress.region ?? "",
             date: formatDate(review.moveDate) ?? ""
           },
           locale
         );
+        console.log(result);
         setTransaltedInfo({
-          fromD: result.fromD,
-          fromR: result.fromR,
-          toD: result.toD,
-          toR: result.toR,
+          fromDistrict: result.fromDistrict,
+          fromRegion: result.fromRegion,
+          toDistrict: result.toDistrict,
+          toRegion: result.toRegion,
           date: result.date
         });
       } catch (e) {
@@ -83,14 +71,14 @@ export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
       content:
         locale === "ko"
           ? `${TranslateRegion(review.fromAddress.region)} ${review.fromAddress.district}`
-          : `${translatedInfo.fromR} ${translatedInfo.fromD}`
+          : `${translatedInfo.fromRegion} ${translatedInfo.fromDistrict}`
     },
     {
       label: "to",
       content:
         locale === "ko"
           ? `${TranslateRegion(review.toAddress.region)} ${review.toAddress.district}`
-          : `${translatedInfo.toR} ${translatedInfo.toD}`
+          : `${translatedInfo.toRegion} ${translatedInfo.toDistrict}`
     },
     {
       label: "date",

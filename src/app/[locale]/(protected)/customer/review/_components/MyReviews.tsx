@@ -5,7 +5,7 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import StarIcon from "@/components/icon/StarIcon";
 import useMediaHook from "@/hooks/useMediaHook";
 import { useTranslations, useLocale } from "next-intl";
-import { getMyReviews } from "@/lib/api/api-review";
+import { deleteMyReview, getMyReviews } from "@/lib/api/api-review";
 import { ko, enUS, ja } from "date-fns/locale";
 import { format, type Locale } from "date-fns";
 import { TranslateRegion } from "@/utills/TranslateFunction";
@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { batchTranslate } from "@/utills/batchTranslate";
 import type { ReviewListResponse, TranslatedMeta } from "@/types/reviewType";
+import Button from "@/components/Button";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
@@ -118,9 +119,9 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
             <div
               key={review.id}
               className={clsx(
-                "lg:h-[338px] lg:w-[1120px] lg:gap-5 lg:p-10",
-                "h-[410px] w-[327px] px-5 py-6",
-                "md:h-91 md:w-147 md:p-10",
+                "lg:h-auto lg:w-[1120px] lg:gap-5 lg:p-10",
+                "h-auto w-[327px] px-5 py-6",
+                "md:h-auto md:w-147 md:p-10",
                 "border-line-100 mx-auto flex flex-col gap-4 self-stretch rounded-[20px] border-[0.5px] bg-gray-50 md:gap-5"
               )}
             >
@@ -209,6 +210,20 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                   <p className="text-[12px] leading-[18px] text-gray-300">{translatedMeta[review.id]?.moveDate}</p>
                 </div>
               )}
+              <Button
+                text="삭제"
+                type="orange"
+                onClick={async () => {
+                  try {
+                    await deleteMyReview(review.id);
+                    alert("리뷰 삭제 완료");
+                    // 가능하면 삭제 후 목록 새로고침 또는 상태 업데이트 필요
+                  } catch (err) {
+                    console.error(err);
+                    alert("삭제 실패");
+                  }
+                }}
+              />
             </div>
           );
         })}

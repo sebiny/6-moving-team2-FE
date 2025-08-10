@@ -9,11 +9,6 @@ export interface ReviewType {
 
 import { MoveType } from "@/constant/moveTypes";
 
-export type Address = {
-  region: string;
-  district: string;
-};
-
 export type ReviewItem = {
   id: string;
   content: string;
@@ -27,14 +22,51 @@ export type ReviewItem = {
   request: {
     moveDate: string;
     moveType: MoveType;
-    fromAddress: Address;
-    toAddress: Address;
+    fromAddress: string;
+    toAddress: string;
     estimates: {
       isDesignated: boolean;
     }[];
   };
 };
 
+export interface Address {
+  district: string;
+  region: string;
+}
+
+export interface ReviewsProps {
+  setIsModal: (value: boolean) => void;
+  review: {
+    id: string;
+    moveType: string;
+    moveDate: string;
+    fromAddress: Address;
+    toAddress: Address;
+    estimates: {
+      id: string;
+      price: number;
+      driver: {
+        id: string;
+        nickname: string;
+        shortIntro: string;
+      };
+    }[];
+  };
+}
+
+export interface reviewModalProps {
+  setIsModal: (value: boolean) => void;
+  estimateRequestId: string;
+  moveType: MoveType;
+  driverId: string;
+  isDesignated: boolean;
+  fromAddress: Address;
+  toAddress: Address;
+  moveDate: string;
+  driverNickName: string;
+  driverProfileImage: string | null;
+}
 export type ReviewableItem = {
   id: string;
   moveType: MoveType;
