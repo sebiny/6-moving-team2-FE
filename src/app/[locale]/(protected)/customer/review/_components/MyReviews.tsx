@@ -45,30 +45,35 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
     if (!reviews || reviews.length === 0) return;
 
     const translateInfo = async () => {
-      const allTranslatedMeta: Record<string, TranslatedMeta> = {};
+      try {
+        const translatedArray = await Promise.all(
+          reviews.map(async (review) => {
+            const { fromAddress, toAddress, moveDate } = review.request;
+            const { nickname, shortIntro } = review.driver;
+            const textMap = {
+              content: review.content,
+              fromRegion: fromAddress.region,
+              toRegion: toAddress.region,
+              fromDistrict: fromAddress.district,
+              toDistrict: toAddress.district,
+              moveDate: formatDate(moveDate),
+              nickname,
+              shortIntro
+            };
 
-      for (const review of reviews) {
-        const { fromAddress, toAddress, moveDate } = review.request;
-        const { nickname, shortIntro } = review.driver;
-        const textMap = {
-          content: review.content,
-          fromRegion: fromAddress.region,
-          toRegion: toAddress.region,
-          fromDistrict: fromAddress.district,
-          toDistrict: toAddress.district,
-          moveDate: formatDate(moveDate),
-          nickname,
-          shortIntro
-        };
+            try {
+              const translated = await batchTranslate(textMap, locale);
+              return [review.id, translated] as const;
+            } catch {
+              return [review.id, textMap] as const;
+            }
+          })
+        );
 
-        try {
-          const translated = await batchTranslate(textMap, locale);
-          allTranslatedMeta[review.id] = translated;
-        } catch {
-          allTranslatedMeta[review.id] = textMap;
-        }
+        setTranslatedMeta(Object.fromEntries(translatedArray));
+      } catch (error) {
+        console.error(error);
       }
-      setTranslatedMeta(allTranslatedMeta);
     };
 
     translateInfo();

@@ -22,8 +22,8 @@ export type ReviewItem = {
   request: {
     moveDate: string;
     moveType: MoveType;
-    fromAddress: string;
-    toAddress: string;
+    fromAddress: Address;
+    toAddress: Address;
     estimates: {
       isDesignated: boolean;
     }[];
