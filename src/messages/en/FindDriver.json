@@ -30,7 +30,19 @@
     "requestQuote": "Request a Quote",
     "requestingQuote": "Requesting a Quote",
     "requestQuoteComplete": "Complete Quote",
-    "reviewFetchFailed": "Failed to load review data."
+    "reviewFetchFailed": "Failed to load review data.",
+    "driverInfoSection": "Driver Information",
+    "serviceInfoSection": "Service Information",
+    "shareSection": "Share Section",
+    "estimateAndShareSection": "Estimate and Share",
+    "bottomNavigation": "Bottom Navigation",
+    "reviewSection": "Driver Reviews",
+    "profileImageAlt": "{name}'s profile image",
+    "serviceTypeList": "List of service types",
+    "shortIntro": "Short introduction",
+    "driverNameSection": "Driver name section",
+    "favoriteCount": "Number of favorites: {count}",
+    "detailIntro": "Detailed introduction"
   },
   "requestQuote": {
     "title": "To the Driver",

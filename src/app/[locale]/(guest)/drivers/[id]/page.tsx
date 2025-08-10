@@ -41,18 +41,18 @@ function DriverDetailPage() {
 
   if (isPending)
     return (
-      <div className="flex flex-col items-center">
+      <main className="flex flex-col items-center" aria-busy="true" aria-live="polite">
         <OrangeBackground />
         <LoadingLottie text={t("loadingDriverInfo")} />
-      </div>
+      </main>
     );
 
   if (!driver)
     return (
-      <div className="flex flex-col items-center">
+      <main className="flex flex-col items-center" aria-live="polite">
         <OrangeBackground />
-        <div>{t("noDrivers")}</div>
-      </div>
+        <p role="alert">{t("noDrivers")}</p>
+      </main>
     );
 
   // 카카오 공유
@@ -80,24 +80,34 @@ function DriverDetailPage() {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <main className="flex flex-col items-center">
       <OrangeBackground />
       <div className="flex w-full justify-center gap-[116px]">
-        <div className="mx-5 w-full max-w-[742px] md:mx-18">
-          <DriverInfo driver={driver} />
-          <Service services={driver.moveType} serviceAreas={driver.serviceAreas} />
-          <div className="mb-8 lg:hidden">
-            <div className="border-line-100 border-b"></div>
+        <section className="mx-5 w-full max-w-[742px] md:mx-18" aria-label={t("driverPage.driverInfoSection")}>
+          <header>
+            <DriverInfo driver={driver} />
+          </header>
+
+          <section aria-label={t("driverPage.serviceInfoSection")}>
+            <Service services={driver.moveType} serviceAreas={driver.serviceAreas} />
+          </section>
+
+          <section className="mb-8 lg:hidden" aria-label={t("driverPage.shareSection")}>
+            <div className="border-line-100 border-b" role="presentation"></div>
             <ShareDriver
               text={t("driverPage.wannaRecommend?")}
               onKakaoShare={handleKakaoShare}
               onFacebookShare={handleFacebookShare}
             />
-            <div className="border-line-100 mt-8 border-b"></div>
-          </div>
-          <DriverReviews driver={driver} />
-        </div>
-        <div className="mt-[109px] hidden w-80 lg:block">
+            <div className="border-line-100 mt-8 border-b" role="presentation"></div>
+          </section>
+
+          <section aria-label={t("driverPage.reviewSection")}>
+            <DriverReviews driver={driver} />
+          </section>
+        </section>
+
+        <aside className="mt-[109px] hidden w-80 lg:block" aria-label={t("driverPage.estimateAndShareSection")}>
           <RequestEstimate
             nickname={driver.nickname}
             favorite={favorite}
@@ -109,10 +119,13 @@ function DriverDetailPage() {
             onKakaoShare={handleKakaoShare}
             onFacebookShare={handleFacebookShare}
           />
-        </div>
+        </aside>
       </div>
-      <BottomNav favorite={favorite} setFavorite={setFavorite} isDesignated={driver.isDesignated ?? false} />
-    </div>
+
+      <nav aria-label={t("driverPage.bottomNavigation")}>
+        <BottomNav favorite={favorite} setFavorite={setFavorite} isDesignated={driver.isDesignated ?? false} />
+      </nav>
+    </main>
   );
 }
 
