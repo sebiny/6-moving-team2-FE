@@ -9,6 +9,7 @@ import { driverService } from "@/lib/api/api-driver";
 import { mapBackendRejectedRequestToFrontend } from "@/utills/RequestMapper";
 import { BackendRequest } from "@/types/request";
 import { useTranslations } from "next-intl";
+import RejectedEstimateCardListSkeleton from "@/components/skeleton/RejectedEstimateCardListSkeleton";
 
 export default function RejectedEstimatesPage() {
   const router = useRouter();
@@ -41,11 +42,22 @@ export default function RejectedEstimatesPage() {
   ).map(mapBackendRejectedRequestToFrontend);
 
   const renderContent = () => {
-    if (isPending)
-      return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("loading")}</p>;
-    if (error) return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{tC("failedRejReq")}</p>;
-    if (estimates.length === 0)
+    // Early return 패턴으로 가독성 향상
+    if (isPending) {
+      // 이전 데이터가 있다면 그것을 기반으로 스켈레톤 개수 결정
+      const skeletonCount = (backendEstimates?.length || 0) > 0 ? Math.min(backendEstimates?.length || 0, 4) : 1;
+      return <RejectedEstimateCardListSkeleton count={skeletonCount} />;
+    }
+
+    if (error) {
+      return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{tC("failedRejReq")}</p>;
+    }
+
+    if (estimates.length === 0) {
       return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("noReject")}</p>;
+    }
+
+    // 정상적인 경우: 거부된 견적 목록 렌더링
     return <RejectedCardList requests={estimates} />;
   };
 

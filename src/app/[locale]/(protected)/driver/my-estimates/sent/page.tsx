@@ -11,6 +11,7 @@ import { MoveType } from "@/constant/moveTypes";
 import { formatDate, formatTimeAgo, formatAddress } from "@/utills/RequestMapper";
 import { useLocale, useTranslations } from "next-intl";
 import { batchTranslate } from "@/utills/batchTranslate";
+import EstimateCardListSkeleton from "@/components/skeleton/EstimateCardListSkeleton";
 
 export default function SentEstimatesPage() {
   const router = useRouter();
@@ -84,11 +85,20 @@ export default function SentEstimatesPage() {
   });
 
   const renderContent = () => {
-    if (isPending)
-      return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("loading")}</p>;
-    if (error) return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{tC("failedReq")}</p>;
-    if (estimates.length === 0)
+    // Early return 패턴으로 가독성 향상
+    if (isPending) {
+      return <EstimateCardListSkeleton />;
+    }
+
+    if (error) {
+      return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{tC("failedReq")}</p>;
+    }
+
+    if (estimates.length === 0) {
       return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("noSentReq")}</p>;
+    }
+
+    // 정상적인 경우: 견적 목록 렌더링
     return <EstimateCardList requests={estimates} />;
   };
 

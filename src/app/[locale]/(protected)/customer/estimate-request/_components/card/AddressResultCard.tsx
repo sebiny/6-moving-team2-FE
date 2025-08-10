@@ -26,19 +26,27 @@ export default function AddressResultCard({
 }: AddressResultCardProps) {
   const t = useTranslations("Chip");
   return (
-    <div
+    <article
       onClick={onClick}
       className={clsx(
         "flex w-full cursor-pointer gap-4 rounded-2xl border px-4 pt-5 pb-6",
         "shadow-[2px_2px_10px_0px_rgba(224,224,224,0.20)] transition-colors",
         selected ? "border-orange-500 bg-orange-100" : "border-line-100 bg-white"
       )}
+      role="button"
+      tabIndex={0}
+      aria-pressed={selected}
     >
       <div className="flex flex-col gap-4 text-sm md:text-base">
-        <p className="text-black-400 text-sm font-semibold md:text-base">{postalCode}</p>
-        <AddressChip label={t("road")} value={roadAddress} />
-        <AddressChip label={t("jibun")} value={jibunAddress} />
+        <header>
+          <p className="text-black-400 text-sm font-semibold md:text-base">{postalCode}</p>
+        </header>
+
+        <address className="flex flex-col gap-4 not-italic">
+          <AddressChip label={t("road")} value={roadAddress} />
+          <AddressChip label={t("jibun")} value={jibunAddress} />
+        </address>
       </div>
-    </div>
+    </article>
   );
 }

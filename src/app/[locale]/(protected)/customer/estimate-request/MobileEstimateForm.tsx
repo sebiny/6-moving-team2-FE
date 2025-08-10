@@ -95,10 +95,12 @@ export default function MobileEstimateForm() {
 
   // 단계 표시 인디케이터
   const renderStepIndicator = () => (
-    <div className="mb-3 flex justify-center gap-2">
+    <div className="mb-3 flex justify-center gap-2" role="list">
       {[1, 2, 3].map((s) => (
         <div
           key={s}
+          role="listitem"
+          aria-current={step === s ? "step" : undefined}
           className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold ${
             step === s ? "bg-[var(--color-orange-400)] text-white" : "bg-background-200 text-gray-300"
           }`}
@@ -119,12 +121,11 @@ export default function MobileEstimateForm() {
 
       {/* 1. 이사 유형 선택 */}
       {step === 1 && (
-        <div className="flex flex-col items-center">
-          {/* 타이틀 */}
-          <div className="mb-4 flex flex-col text-center">
+        <section className="flex flex-col items-center">
+          <header className="mb-4 flex flex-col text-center">
             <h2 className="text-xl font-bold">{t("typeText")}</h2>
             <p className="text-sm text-gray-400">{t("estimateReqSubTitle")}</p>
-          </div>
+          </header>
           <div className="w-[327px]">
             {/* 이동 유형 카드 */}
             <div className="flex flex-col gap-4">
@@ -149,17 +150,17 @@ export default function MobileEstimateForm() {
               />
             </div>
           </div>
-        </div>
+        </section>
       )}
 
       {/* 2. 이사 예정일 선택 */}
       {step === 2 && (
-        <>
+        <section>
           {/* 타이틀 */}
-          <div className="mb-[70px] flex flex-col text-center">
+          <header className="mb-[70px] flex flex-col text-center">
             <h2 className="text-xl font-bold">{t("dateText")}</h2>
             <p className="text-sm text-gray-400">{t("estimateReqSubTitle")}</p>
-          </div>
+          </header>
           {/* 달력 */}
           <div>
             <MobileDatePicker selectedDate={moveDate} onSelectDate={setMoveDate} />
@@ -180,17 +181,17 @@ export default function MobileEstimateForm() {
               className="w-[155.5px]"
             />
           </div>
-        </>
+        </section>
       )}
 
       {/* 3. 이사 지역 선택 */}
       {step === 3 && (
-        <div className="flex flex-col items-center">
+        <section className="flex flex-col items-center">
           {/* 타이틀 */}
-          <div className="mb-[62px] flex flex-col text-center">
+          <header className="mb-[62px] flex flex-col text-center">
             <h2 className="text-xl font-bold">{t("areaText")}</h2>
             <p className="text-sm text-gray-400">{t("estimateReqSubTitle")}</p>
-          </div>
+          </header>
           {/* 주소 검색 버튼 */}
           <div className="flex w-[327px] flex-col gap-6">
             <div className="flex flex-col gap-3">
@@ -206,6 +207,7 @@ export default function MobileEstimateForm() {
                   )
                 }
                 type="white-orange"
+                aria-label={addressFrom ? `${t("from")}: ${translatedAddressFrom}` : t("fromChoose")}
                 className="h-[54px] justify-start rounded-xl px-8 leading-[22px]"
                 onClick={() => setShowModal("from")}
               />
@@ -223,6 +225,7 @@ export default function MobileEstimateForm() {
                   )
                 }
                 type="white-orange"
+                aria-label={addressTo ? `${t("to")}: ${translatedAddressTo}` : t("toChoose")}
                 className="h-[54px] justify-start rounded-xl px-8 leading-[22px]"
                 onClick={() => setShowModal("to")}
               />
@@ -237,7 +240,6 @@ export default function MobileEstimateForm() {
               text={t("previous")}
               className="h-[54px] w-[158px]"
             />
-
             <Button
               isDisabled={!isValidStep3}
               onClick={handleRequest}
@@ -246,7 +248,7 @@ export default function MobileEstimateForm() {
               className="h-[54px] w-[158px]"
             />
           </div>
-        </div>
+        </section>
       )}
 
       {/* 주소 검색 모달 */}

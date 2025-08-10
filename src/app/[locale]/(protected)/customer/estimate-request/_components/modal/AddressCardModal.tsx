@@ -133,14 +133,15 @@ export default function AddressCardModal({
         {/* 상단 헤더 */}
         <div className="mb-[30px] flex items-center justify-between md:mb-10">
           <h2 className="text-lg font-bold md:text-2xl">{title}</h2>
-          <button onClick={onClose}>
+          <button onClick={onClose} aria-label={t("close", { default: "닫기" })}>
             <Image
               src="/assets/icons/ic_X.svg"
-              alt="닫기"
+              alt=""
               width={24}
               height={24}
               loading="lazy"
               className="md:h-9 md:w-9"
+              aria-hidden="true"
             />
           </button>
         </div>
@@ -190,33 +191,34 @@ export default function AddressCardModal({
           </div>
 
           {/* 검색 결과 */}
-          <div
+          <ul
             className="mb-6 flex w-full flex-col gap-4 overflow-y-auto text-sm md:mb-10 md:text-base"
             style={{ maxHeight: "168px" }}
           >
             {addressList.map((addr, idx) => (
-              <AddressResultCard
-                key={addr.id}
-                postalCode={addr.postalCode}
-                roadAddress={
-                  locale === "ko"
-                    ? addr.roadAddress
-                    : isTranslating
-                      ? t("translating")
-                      : addr.translations?.roadAddress || addr.roadAddress
-                }
-                jibunAddress={
-                  locale === "ko"
-                    ? addr.jibunAddress
-                    : isTranslating
-                      ? t("translating")
-                      : addr.translations?.jibunAddress || addr.jibunAddress
-                }
-                selected={selectedIndex === idx}
-                onClick={() => handleSelectAddress(idx)}
-              />
+              <li key={addr.id}>
+                <AddressResultCard
+                  postalCode={addr.postalCode}
+                  roadAddress={
+                    locale === "ko"
+                      ? addr.roadAddress
+                      : isTranslating
+                        ? t("translating")
+                        : addr.translations?.roadAddress || addr.roadAddress
+                  }
+                  jibunAddress={
+                    locale === "ko"
+                      ? addr.jibunAddress
+                      : isTranslating
+                        ? t("translating")
+                        : addr.translations?.jibunAddress || addr.jibunAddress
+                  }
+                  selected={selectedIndex === idx}
+                  onClick={() => handleSelectAddress(idx)}
+                />
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
         {/* 확인 버튼 */}
