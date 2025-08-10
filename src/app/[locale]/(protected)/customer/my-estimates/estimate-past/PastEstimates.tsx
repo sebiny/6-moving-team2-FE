@@ -50,7 +50,7 @@ export default function PastEstimates() {
   }
 
   return (
-    <main className="md:bg-background-200 mt-11 bg-white md:mt-22 lg:mt-35" id="main-content" role="main">
+    <main className="md:bg-background-200 mt-6 bg-white md:mt-16 lg:mt-25" id="main-content" role="main">
       {data?.map((group, index) => {
         const groupTitleId = `past-group-${group.estimateRequest.id}-heading`;
         return (

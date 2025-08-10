@@ -111,7 +111,7 @@ export default function PastDetailPage() {
           기사 프로필
         </h2>
         <OrangeBackground /> {/* 내부 이미지는 alt="" 처리되었거나 aria-hidden 적용 권장 */}
-        <div className="relative mx-auto max-w-[600px] md:max-w-[700px] lg:max-w-[1150px]">
+        <div className="relative mx-auto max-w-[550px] md:max-w-[650px] lg:max-w-[1150px]">
           <div className="relative -mt-10 md:-mt-20">
             <Image
               src={driver.profileImage ?? "/assets/images/img_profile.svg"}

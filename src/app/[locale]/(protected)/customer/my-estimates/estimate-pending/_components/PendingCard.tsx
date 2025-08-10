@@ -144,7 +144,7 @@ export default function PendingCard({ data, moveType }: Props) {
               aria-label={isFavorite ? "찜 취소" : "찜하기"}
             >
               <Image
-                src={isFavorite ? "/assets/icons/ic_like_black.svg" : "/assets/icons/ic_like_empty.svg"}
+                src={isFavorite ? "/assets/icons/ic_like_red.svg" : "/assets/icons/ic_like_empty.svg"}
                 alt=""
                 width={23}
                 height={23}

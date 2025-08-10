@@ -38,7 +38,10 @@ export default function MyEstimatePage() {
       </a>
 
       {/* 상단 고정 헤더 */}
-      <header className="fixed z-9 w-full bg-white lg:top-22" aria-label="내 견적 관리 상단">
+      <header
+        className="fixed z-9 w-full bg-white shadow-[inset_0_-1px_0_rgba(0,0,0,0.08)] lg:top-22"
+        aria-label="내 견적 관리 상단"
+      >
         {/* 헤더 컴포넌트가 role="tablist" 등을 제공하도록 아래 참고사항대로 보강 권장 */}
         <Header type="estimate" selectedIdx={selectedIdx} setSelectedIdx={handleTabChange} />
       </header>

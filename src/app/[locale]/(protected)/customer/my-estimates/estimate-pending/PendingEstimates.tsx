@@ -70,7 +70,7 @@ export default function PendingEstimates() {
   // 2) 요청 없음
   if (!hasRequest) {
     return (
-      <section aria-labelledby="no-request-title" className="mt-10 lg:mt-20">
+      <section aria-labelledby="no-request-title" className="mt-20 lg:mt-35">
         <h1 id="no-request-title" className="sr-only">
           대기 중인 견적 요청이 없습니다
         </h1>
@@ -107,8 +107,14 @@ export default function PendingEstimates() {
   return (
     <section aria-labelledby="pending-estimates-heading">
       {/* 페이지 헤더: 현재 활성 요청 요약 */}
-      <header aria-labelledby="pending-estimates-heading" className="-mt-2 md:-mt-3">
-        <h1 id="pending-estimates-heading" className="sr-only">
+      <header
+        aria-labelledby="pending-estimates-heading"
+        className="relative z-10 -mt-2 mb-0 bg-white shadow-md md:-mt-3"
+      >
+        <h1
+          id="pending-estimates-heading"
+          className="mx-auto w-full px-5 py-6 md:px-15 lg:max-w-[1400px] lg:px-20 lg:py-8"
+        >
           대기 중인 견적 리스트
         </h1>
         <EstimateSubHeader data={translatedRequestData!} />
@@ -117,7 +123,7 @@ export default function PendingEstimates() {
       {/* 견적 카드 리스트 */}
       <section
         aria-labelledby="pending-list-heading"
-        className="bg-background-200 px-5 py-10 md:px-15 lg:mx-auto lg:max-w-[1400px] lg:px-20 lg:py-20"
+        className="bg-background-200 relative z-0 px-5 py-10 md:px-15 lg:mx-auto lg:max-w-[1400px] lg:px-20 lg:py-20"
       >
         <h2 id="pending-list-heading" className="sr-only">
           기사님들이 보낸 견적 목록
