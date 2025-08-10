@@ -9,6 +9,12 @@ export async function getWritableReviews(page?: number) {
   return res;
 }
 
+//내가 쓴 리뷰 가져오기
+export async function getMyReviews(page: number) {
+  return cookieFetch(`/reviews/mine?page=${page}`, {
+    method: "GET"
+  });
+}
 //리뷰 생성하기
 export async function createReview(data: {
   estimateRequestId: string;
@@ -22,23 +28,11 @@ export async function createReview(data: {
   });
 }
 
-//내가 쓴 리뷰 가져오기
-export async function getMyReviews(page: number) {
-  return cookieFetch(`/reviews/mine?page=${page}`, {
-    method: "GET"
-  });
-}
-
 //리뷰 삭제
-export async function deleteMyReview(reviewId: string) {
-  const response = await cookieFetch(`/reviews/mine/${reviewId}`, {
+export async function deleteMyReview(reviewId: string, driverId: string) {
+  const response = await cookieFetch(`/reviews/mine/${reviewId}?driverId=${driverId}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" }
   });
-
-  if (!response.ok) {
-    throw new Error(`삭제 실패: ${response.status} ${response.statusText || "Unknown error"}`);
-  }
-
-  return response.json();
+  return response;
 }

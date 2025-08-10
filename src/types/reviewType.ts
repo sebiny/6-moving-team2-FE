@@ -18,6 +18,7 @@ export type ReviewItem = {
     profileImage: string | null;
     shortIntro: string;
     averageRating: number;
+    id: string;
   };
   request: {
     moveDate: string;

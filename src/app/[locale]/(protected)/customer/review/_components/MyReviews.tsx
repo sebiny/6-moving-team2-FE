@@ -11,7 +11,7 @@ import { format, type Locale } from "date-fns";
 import { TranslateRegion } from "@/utills/TranslateFunction";
 import NoMyReview from "./NoMyReview";
 import Pagination from "@/components/Pagination";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { batchTranslate } from "@/utills/batchTranslate";
 import type { ReviewListResponse, TranslatedMeta } from "@/types/reviewType";
@@ -29,6 +29,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
     const date = new Date(isoString);
     return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
   };
+  const queryClient = useQueryClient();
   //리액트쿼리로 리뷰 불러오기
   const { data, isLoading, isError } = useQuery<ReviewListResponse>({
     queryKey: ["reviews", page],
@@ -37,10 +38,20 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviews = data?.reviews ?? [];
-  //DeepL로 동적 다국어
+
+  const handleDelete = async (reviewId: string, driverId: string) => {
+    try {
+      await deleteMyReview(reviewId, driverId);
+      alert("리뷰 삭제 완료");
+      queryClient.invalidateQueries({ queryKey: ["reviews"] }); // 목록 새로고침
+    } catch (err) {
+      console.error(err);
+      alert("삭제 실패");
+    }
+  };
+
   const locale = useLocale();
   const [translatedMeta, setTranslatedMeta] = useState<Record<string, TranslatedMeta>>({});
-
   useEffect(() => {
     if (!reviews || reviews.length === 0) return;
 
@@ -148,6 +159,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       height={100}
                     />
                   )}
+
                   {isMd && !isLg && (
                     <Image
                       className="rounded-[12px] md:order-1"
@@ -167,7 +179,6 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       height={50}
                     />
                   )}
-
                   <div className="order-1 md:order-2 lg:pt-[10px]">
                     <div>
                       <div className={clsx(isMd && "flex gap-[6px]", isSm && !isMd && "flex flex-col gap-[4px]")}>
@@ -189,6 +200,15 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       )}
                     </div>
                   </div>
+                  {isLg && (
+                    <Image
+                      className="order-2 ml-auto rounded-[12px]"
+                      src="/assets/icons/ic_edit.svg"
+                      alt="수정"
+                      width={24}
+                      height={24}
+                    />
+                  )}
                 </div>
               </div>
               <div className={clsx("flex gap-5", isSm && !isMd && "border-line-100 border-b pb-4")}>
@@ -203,11 +223,21 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                   </div>
                 ))}
               </div>
-              <div className={clsx("flex flex-col gap-3")}>
-                <StarIcon rating={rating} width={100} height={20} aria-label={`별점 ${rating}`} />
-                <p className="text-black-400 min-w-[287px] font-[Pretendard] text-[16px] leading-[26px] font-medium md:text-[18px]">
-                  {translatedMeta[review.id]?.content || content}
-                </p>
+              <div className="flex justify-between">
+                <div className={clsx("flex flex-col gap-3")}>
+                  <StarIcon rating={rating} width={100} height={20} aria-label={`별점 ${rating}`} />
+                  <p className="text-black-400 min-w-[287px] font-[Pretendard] text-[16px] leading-[26px] font-medium md:text-[18px]">
+                    {translatedMeta[review.id]?.content || content}
+                  </p>
+                </div>
+                {isLg && (
+                  <Button
+                    text="삭제"
+                    type="orange"
+                    className="h-[54px] w-40 sm:rounded-[12px] sm:font-medium"
+                    onClick={() => handleDelete(review.id, review.driver.id)}
+                  />
+                )}
               </div>
               {isSm && !isMd && (
                 <div className="mt-auto flex justify-end">
@@ -215,20 +245,14 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                   <p className="text-[12px] leading-[18px] text-gray-300">{translatedMeta[review.id]?.moveDate}</p>
                 </div>
               )}
-              <Button
-                text="삭제"
-                type="orange"
-                onClick={async () => {
-                  try {
-                    await deleteMyReview(review.id);
-                    alert("리뷰 삭제 완료");
-                    // 가능하면 삭제 후 목록 새로고침 또는 상태 업데이트 필요
-                  } catch (err) {
-                    console.error(err);
-                    alert("삭제 실패");
-                  }
-                }}
-              />
+              <div className="flex justify-between gap-2 md:gap-6">
+                {isSm && !isLg && (
+                  <Button text="삭제" type="orange" onClick={() => handleDelete(review.id, review.driver.id)} />
+                )}
+                {isSm && !isLg && (
+                  <Button text="수정" type="white-orange" onClick={() => handleEdit(review.id, review.driver.id)} />
+                )}
+              </div>
             </div>
           );
         })}
