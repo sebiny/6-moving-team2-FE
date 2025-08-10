@@ -9,7 +9,8 @@
     "career": "Career",
     "confirm": "Done",
     "year": "YR",
-    "count": ""
+    "count": "",
+    "rating": "Rating"
   },
   "noEstimateRequest": "There is no ongoing general estimate request.",
   "alreadyApprovedEstimateRequest": "You cannot make a designated request for a confirmed estimate.",
@@ -42,7 +43,13 @@
     "shortIntro": "Short introduction",
     "driverNameSection": "Driver name section",
     "favoriteCount": "Number of favorites: {count}",
-    "detailIntro": "Detailed introduction"
+    "detailIntro": "Detailed introduction",
+    "reviewSummary": "Review Summary",
+    "averageRating": "Average Rating",
+    "totalReviewCount": "Total Review Count",
+    "ratingDistribution": "Rating Distribution",
+    "pagination": "Pagination",
+    "reviewList": "Review List"
   },
   "requestQuote": {
     "title": "To the Driver",

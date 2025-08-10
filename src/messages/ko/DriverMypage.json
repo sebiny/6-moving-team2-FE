@@ -6,5 +6,16 @@
   "editProfile": "내 프로필 수정",
   "editBasic": "기본 정보 수정",
   "mypage": "마이페이지",
-  "loadingDriverInfo": "기사님 정보를 불러오고 있어요!!"
+  "loadingDriverInfo": "기사님 정보를 불러오고 있어요!!",
+  "driverMyPageMain": "기사님 마이페이지 메인 영역",
+  "driverInfoSection": "기사님 정보 영역",
+  "profileSection": "프로필 영역",
+  "profileImageAlt": "프로필 이미지",
+  "profileIconAlt": "프로필 아이콘",
+  "favoriteCount": "찜한 수",
+  "driverIntroduction": "기사님 소개",
+  "driverOverviewSection": "기사님 개요 영역",
+  "serviceInfoSection": "서비스 정보 영역",
+  "reviewSection": "리뷰 영역",
+  "editButtons": "수정 버튼"
 }

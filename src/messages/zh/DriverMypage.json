@@ -5,5 +5,16 @@
   "overview": "活动概览",
   "editProfile": "编辑我的资料",
   "editBasic": "编辑基",
-  "loadingDriverInfo": "正在加载司机信息！！"
+  "loadingDriverInfo": "正在加载司机信息！！",
+  "driverMyPageMain": "司机我的页面主区域",
+  "driverInfoSection": "司机信息区域",
+  "profileSection": "个人资料区域",
+  "profileImageAlt": "个人资料图片",
+  "profileIconAlt": "个人资料图标",
+  "favoriteCount": "收藏数",
+  "driverIntroduction": "司机介绍",
+  "driverOverviewSection": "司机概览区域",
+  "serviceInfoSection": "服务信息区域",
+  "reviewSection": "评论区域",
+  "editButtons": "编辑按钮"
 }

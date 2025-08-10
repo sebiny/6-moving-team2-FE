@@ -9,7 +9,8 @@
     "career": "经验",
     "confirm": "确认",
     "year": "年",
-    "count": "个"
+    "count": "个",
+    "rating": "评分"
   },
   "noEstimateRequest": "当前没有正在进行的一般报价请求。",
   "alreadyApprovedEstimateRequest": "已确定司机的请求无法再进行指定请求。",
@@ -42,7 +43,13 @@
     "shortIntro": "简短介绍",
     "driverNameSection": "司机姓名区",
     "favoriteCount": "收藏数：{count}",
-    "detailIntro": "详细介绍"
+    "detailIntro": "详细介绍",
+    "reviewSummary": "评论摘要",
+    "averageRating": "平均评分",
+    "totalReviewCount": "评论总数",
+    "ratingDistribution": "评分分布",
+    "pagination": "分页",
+    "reviewList": "评论列表"
   },
   "requestQuote": {
     "title": "给司机",
