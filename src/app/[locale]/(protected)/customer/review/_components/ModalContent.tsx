@@ -8,94 +8,84 @@ import DriverImg from "/public/assets/images/img_profile.svg";
 import ReviewWrite from "./ReviewWrite";
 import useMediaHook from "@/hooks/useMediaHook";
 import { useLocale, useTranslations } from "next-intl";
-import { getWritableReviews } from "@/lib/api/api-review";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import { TranslateRegion } from "@/utills/TranslateFunction";
 import { MoveType } from "@/constant/moveTypes";
 import { batchTranslate } from "@/utills/batchTranslate";
+import { Address } from "@/types/reviewType";
+import { TranslateRegion } from "@/utills/TranslateFunction";
 
 interface Props {
   setIsValid: (value: boolean) => void;
   setRating: (value: number) => void;
   setContent: (value: string) => void;
-  setEstimateRequestId: (id: string) => void;
-  setDriverId: (id: string) => void;
+  estimateRequestId: string;
+  isDesignated: boolean;
+  fromAddress: Address;
+  toAddress: Address;
+  moveDate: string;
+  moveType: MoveType;
+  driverNickName: string;
+  driverProfileImage: string | null;
 }
 
-type ReviewItem = {
-  id: string;
-  moveType: MoveType;
-  moveDate: string;
-  fromAddress: { region: string; district: string };
-  toAddress: { region: string; district: string };
-  estimates: {
-    price: number;
-    driver: {
-      nickname: string;
-      shortIntro: string;
-      profileImage: string | null;
-    };
-    isDesignated: boolean;
-  }[];
-};
-
-export default function ModalContent({ setIsValid, setRating, setContent, setDriverId, setEstimateRequestId }: Props) {
+export default function ModalContent({
+  setIsValid,
+  setRating,
+  setContent,
+  estimateRequestId,
+  moveDate,
+  moveType,
+  fromAddress,
+  isDesignated,
+  toAddress,
+  driverNickName,
+  driverProfileImage
+}: Props) {
   const { isSm, isLg } = useMediaHook();
-  const [review, setReview] = useState<ReviewItem | null>(null);
   const t = useTranslations("Review");
   const locale = useLocale();
-  const [translatedInfo, setTransaltedInfo] = useState({ fromD: "", fromR: "", toD: "", toR: "", date: "" });
+  const [translatedInfo, setTransaltedInfo] = useState({
+    fromDistrict: "",
+    fromRegion: "",
+    toDistrict: "",
+    toRegion: "",
+    date: ""
+  });
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
     return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
   };
-  useEffect(() => {
-    async function fetchReviews() {
-      try {
-        const data = await getWritableReviews(); // page 파라미터 생략 가능
-        const first = data?.reviewableEstimates?.[0]; // 첫 번째 리뷰만 선택
-        if (first) {
-          setEstimateRequestId(first.id);
-          setDriverId(first.estimates[0].driver.id);
-          setReview(first);
-        }
-      } catch (error) {
-        console.error("리뷰 가져오기 실패", error);
-      }
-    }
-    fetchReviews();
-  }, []);
 
   useEffect(() => {
     const translatedTexts = async () => {
-      if (!review) return;
+      if (!fromAddress || !toAddress) return;
       if (locale === "ko") {
         setTransaltedInfo({
-          fromD: review.fromAddress.district,
-          fromR: review.fromAddress.region,
-          toD: review.toAddress.district,
-          toR: review.toAddress.region,
-          date: formatDate(review.moveDate)
+          fromDistrict: fromAddress.district,
+          fromRegion: fromAddress.region,
+          toDistrict: toAddress.district,
+          toRegion: toAddress.region,
+          date: formatDate(moveDate)
         });
         return;
       }
       try {
         const result = await batchTranslate(
           {
-            fromD: review.fromAddress.district ?? "",
-            fromR: review.fromAddress.region ?? "",
-            toD: review.toAddress.district ?? "",
-            toR: review.toAddress.region ?? "",
-            date: formatDate(review.moveDate) ?? ""
+            fromDistrict: fromAddress.district ?? "",
+            fromRegion: fromAddress.region ?? "",
+            toDistrict: toAddress.district ?? "",
+            toRegion: toAddress.region ?? "",
+            date: formatDate(moveDate) ?? ""
           },
           locale
         );
         setTransaltedInfo({
-          fromD: result.fromD,
-          fromR: result.fromR,
-          toD: result.toD,
-          toR: result.toR,
+          fromDistrict: fromAddress.district,
+          fromRegion: fromAddress.region,
+          toDistrict: toAddress.district,
+          toRegion: toAddress.region,
           date: result.date
         });
       } catch (e) {
@@ -104,27 +94,27 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
     };
     translatedTexts();
     console.log(translatedInfo);
-  }, [review, locale]);
+  }, [estimateRequestId, locale]);
 
-  const moveDetails = review
+  const moveDetails = estimateRequestId
     ? [
         {
           label: "from",
           content:
             locale === "ko"
-              ? `${TranslateRegion(review.fromAddress.region)} ${review.fromAddress.district}`
-              : `${translatedInfo.fromR} ${translatedInfo.fromD}`
+              ? `${TranslateRegion(fromAddress.region)} ${fromAddress.district}`
+              : `${translatedInfo.fromRegion} ${translatedInfo.fromDistrict}`
         },
         {
           label: "to",
           content:
             locale === "ko"
-              ? `${TranslateRegion(review.toAddress.region)} ${review.toAddress.district}`
-              : `${translatedInfo.toR} ${translatedInfo.toD}`
+              ? `${TranslateRegion(toAddress.region)} ${toAddress.district}`
+              : `${translatedInfo.toRegion} ${translatedInfo.toDistrict}`
         },
         {
           label: "date",
-          content: locale === "ko" ? formatDate(review.moveDate) : translatedInfo.date,
+          content: locale === "ko" ? formatDate(moveDate) : translatedInfo.date,
           isArrow: false
         }
       ]
@@ -132,13 +122,11 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
 
   return (
     <div className="flex flex-col gap-7 self-stretch lg:gap-8">
-      {review && (
-        <div>
+      {estimateRequestId && (
+        <div className="pointer-events-none">
           <div className="flex gap-3">
-            <ChipRectangle moveType={review.moveType} size={!isLg && isSm ? "sm" : "md"} />
-            {review.estimates[0].isDesignated && (
-              <ChipRectangle moveType="REQUEST" size={!isLg && isSm ? "sm" : "md"} />
-            )}
+            <ChipRectangle moveType={moveType} size={!isLg && isSm ? "sm" : "md"} />
+            {isDesignated && <ChipRectangle moveType="REQUEST" size={!isLg && isSm ? "sm" : "md"} />}
           </div>
 
           <div className="border-line-100 flex justify-between border-b pt-[14px] pb-3 lg:py-4">
@@ -146,12 +134,11 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
               {!isLg && isSm && <Image src={DriverIcon} width={15} height={18} alt="driver_icon" />}
               {isLg && <Image src={DriverIcon} width={18} height={20} alt="driver_icon" />}
               <p className="text-black-300 text-4 leading-[26px] font-semibold lg:text-[18px]">
-                {review.estimates[0].driver.nickname}
-                {t("driver.title")}
+                {driverNickName} {t("driver.title")}
               </p>
             </div>
 
-            <Image src={review.estimates[0].driver.profileImage ?? DriverImg} width={50} height={50} alt="driver_img" />
+            <Image src={driverProfileImage ?? DriverImg} width={50} height={50} alt="driver_img" />
           </div>
 
           <div className="border-line-100 flex border-b py-3 lg:py-4">
@@ -169,6 +156,7 @@ export default function ModalContent({ setIsValid, setRating, setContent, setDri
           </div>
         </div>
       )}
+
       <ReviewWrite setIsValid={setIsValid} setRating={setRating} setContent={setContent} />
     </div>
   );
