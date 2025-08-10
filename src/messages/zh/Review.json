@@ -30,5 +30,7 @@
   },
   "button": {
     "createReview": "创建评价"
-  }
+  },
+  "myReviewListTitle": "我的评价列表",
+  "myReviewableList": "我可写的评价列表"
 }

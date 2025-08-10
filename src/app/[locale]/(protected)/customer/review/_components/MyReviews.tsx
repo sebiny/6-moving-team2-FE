@@ -18,11 +18,6 @@ import type { ReviewListResponse, TranslatedMeta } from "@/types/reviewType";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
-const dateFnsLocales: Record<string, Locale> = {
-  ko,
-  en: enUS,
-  ja
-};
 export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const t = useTranslations("Review");
   const tC = useTranslations("Common");
@@ -41,7 +36,6 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviews = data?.reviews ?? [];
-
   //DeepL로 동적 다국어
   const locale = useLocale();
   const [translatedMeta, setTranslatedMeta] = useState<Record<string, TranslatedMeta>>({});
@@ -91,7 +85,10 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
     );
   }
   return (
-    <div>
+    <section aria-labelledby="my-reviews-heading">
+      <h2 id="my-reviews-heading" className="sr-only">
+        {t("myReviewListTitle")}
+      </h2>
       <div className="flex flex-col items-center gap-5">
         {reviews.map((review) => {
           const { content, rating, driver, request } = review;
@@ -129,9 +126,9 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
             >
               <div className={clsx("flex flex-col", isSm && !isMd && "border-line-100 border-b pb-4")}>
                 {isSm && !isMd && (
-                  <div className="mb-3 flex gap-2">
+                  <div className="mb-3 flex gap-2" role="group" aria-label="이사 유형 및 지정 기사 여부">
                     <ChipRectangle moveType={request.moveType} size="sm" />
-                    {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
+                    {request.estimates[0].isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
                   </div>
                 )}
 
@@ -140,7 +137,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                     <Image
                       className="order-2 rounded-[12px]"
                       src={review.driver.profileImage ?? "/assets/images/img_profile.svg"}
-                      alt="driverImg"
+                      alt={`기사님 프로필 사진: ${driver.nickname}`}
                       width={100}
                       height={100}
                     />
@@ -149,7 +146,8 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                     <Image
                       className="rounded-[12px] md:order-1"
                       src={review.driver.profileImage ?? "/assets/images/img_profile.svg"}
-                      alt="driverImg"
+                      alt=""
+                      aria-hidden="true"
                       width={80}
                       height={80}
                     />
@@ -158,7 +156,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                     <Image
                       className="order-2 rounded-[12px]"
                       src={review.driver.profileImage ?? "/assets/images/img_profile.svg"}
-                      alt="driverImg"
+                      alt={`기사님 프로필 사진: ${driver.nickname}`}
                       width={50}
                       height={50}
                     />
@@ -167,7 +165,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                   <div className="order-1 md:order-2 lg:pt-[10px]">
                     <div>
                       <div className={clsx(isMd && "flex gap-[6px]", isSm && !isMd && "flex flex-col gap-[4px]")}>
-                        <Image src="/assets/icons/ic_driver.svg" width={16} height={18} alt="driver_icon" />
+                        <Image src="/assets/icons/ic_driver.svg" width={16} height={18} alt="" aria-hidden="true" />
                         <p className="text-black-300 font-[Pretendard] text-[16px] leading-[26px] font-bold md:text-[18px]">
                           {driver.nickname} {t("driver.title")}
                         </p>
@@ -178,10 +176,12 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                         </p>
                       )}
                     </div>
-                    {isMd && <ChipRectangle moveType={request.moveType} size={isLg ? "md" : "sm"} className="mt-2" />}
-                    {isMd && request.isDesignated && (
-                      <ChipRectangle moveType="REQUEST" size={isLg ? "md" : "sm"} className="mt-2 ml-2" />
-                    )}
+                    <div role="group" aria-label="이사 유형 및 지정 기사 여부">
+                      {isMd && <ChipRectangle moveType={request.moveType} size={isLg ? "md" : "sm"} className="mt-2" />}
+                      {isMd && request.estimates[0].isDesignated && (
+                        <ChipRectangle moveType="REQUEST" size={isLg ? "md" : "sm"} className="mt-2 ml-2" />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -198,7 +198,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                 ))}
               </div>
               <div className={clsx("flex flex-col gap-3")}>
-                <StarIcon rating={rating} width={100} height={20} />
+                <StarIcon rating={rating} width={100} height={20} aria-label={`별점 ${rating}`} />
                 <p className="text-black-400 min-w-[287px] font-[Pretendard] text-[16px] leading-[26px] font-medium md:text-[18px]">
                   {translatedMeta[review.id]?.content || content}
                 </p>
@@ -216,6 +216,6 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
           <Pagination currentPage={page} setCurrentPage={setPage} totalReviews={totalCount} />
         </div>
       </div>
-    </div>
+    </section>
   );
 }

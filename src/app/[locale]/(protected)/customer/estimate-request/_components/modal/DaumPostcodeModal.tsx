@@ -29,22 +29,31 @@ export default function DaumPostcodeModal({ onComplete, onClose, query }: Postco
 
     onClose();
   };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="postcodeModalTitle"
+    >
       <div className="w-[608px] max-w-lg overflow-hidden rounded-2xl bg-white shadow-xl">
         {/* 상단 헤더 */}
         <header className="flex items-center gap-2 border-gray-100 p-4">
-          <button onClick={onClose}>
+          <button onClick={onClose} aria-label={t("back", { default: "뒤로가기" })}>
             <Image
               src="/assets/icons/ic_chevron_left_black.svg"
-              alt="뒤로가기"
+              alt=""
+              aria-hidden="true"
               width={28}
               height={28}
               loading="lazy"
               className="transition hover:opacity-70"
             />
           </button>
-          <h2 className="text-lg font-bold text-gray-800">{t("searchResult")}</h2>
+          <h2 id="postcodeModalTitle" className="text-lg font-bold text-gray-800">
+            {t("searchResult")}
+          </h2>
         </header>
 
         {/* 다음 우편번호 검색창 */}

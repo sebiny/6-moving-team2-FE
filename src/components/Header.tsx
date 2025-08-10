@@ -47,7 +47,7 @@ export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProp
     // base: [""],
     // sm: ["sm: sm:px-6 sm:w-full"],
     // md: ["md: md:px-18 md:w-full"]
-    base: ["lg:gap-8 lg:pt-4 "],
+    base: ["lg:gap-8 lg:pt-4 lg:h-20"],
     sm: ["sm:gap-6 "],
     md: ["md:gap-6 "]
   };
@@ -56,7 +56,7 @@ export default function Header({ type, selectedIdx, setSelectedIdx }: HeaderProp
     <div className="border-line-100 flex items-center justify-center border-b-1 bg-gray-50 pb-0 shadow-[0px_2px_10px_rgba(248,248,248,0.10)]">
       <div
         className={clsx(
-          "flex w-full max-w-[var(--container-gnb)] min-w-[375px] flex-row items-start px-6 lg:pl-55 xl:pl-49",
+          "flex h-[54px] w-full max-w-[var(--container-gnb)] min-w-[375px] flex-row items-start px-6 lg:pl-55 xl:pl-49",
           ...SIZE_CLASSES.base,
           ...SIZE_CLASSES.md,
           ...SIZE_CLASSES.sm

@@ -76,7 +76,6 @@ export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
       }
     };
     translatedTexts();
-    console.log(translatedInfo);
   }, [review, locale]);
   const moveDetails = [
     {
@@ -101,11 +100,12 @@ export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
   return (
     <div className="flex h-[54px] max-w-[1040px] justify-between md:mt-6 lg:mt-0">
       <div className="flex md:gap-22 lg:gap-0">
-        <div
+        <section
           className={clsx("flex-wrap sm:mt-3 sm:flex md:mt-0", isMd && "gap-3", isLg && "gap-5", {
             "gap-1": locale === "en",
             "gap-5": locale === "ko" || locale === "zh"
           })}
+          aria-labelledby="move-details-heading"
         >
           {moveDetails.map(({ label, content }, index) => (
             <div
@@ -122,7 +122,7 @@ export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
             </div>
           ))}
           {isMd && !isLg && <ReviewCost cost={cost} />}
-        </div>
+        </section>
       </div>
       {isLg && (
         <Button

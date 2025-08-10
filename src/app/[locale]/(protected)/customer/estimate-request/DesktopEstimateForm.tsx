@@ -105,16 +105,15 @@ export default function DesktopEstimateForm() {
   }
 
   return (
-    <div className="bg-background-100 min-h-screen pt-1">
+    <main className="bg-background-100 min-h-screen pt-1">
       {/* 컨테이너 */}
-      <div className="mx-auto mt-[33px] flex max-w-[700px] flex-col items-center rounded-[40px] bg-white px-10 pt-[79px] pb-12 lg:mt-9 lg:max-w-[894px] lg:px-[47px] lg:pt-[89px]">
-        {/* 타이틀 */}
-        <div className="flex flex-col gap-2 text-center lg:gap-4">
+      <section className="mx-auto mt-[33px] flex max-w-[700px] flex-col items-center rounded-[40px] bg-white px-10 pt-[79px] pb-12 lg:mt-9 lg:max-w-[894px] lg:px-[47px] lg:pt-[89px]">
+        <header className="flex flex-col gap-2 text-center lg:gap-4">
           <h1 className="text-2xl font-bold">{t("estimateReqTitle")}</h1>
           <p className="text-[var(--color-gray-400)]">{t("estimateReqSubTitle")}</p>
-        </div>
+        </header>
         {/* 콘텐츠 */}
-        <div className="mt-16 lg:mt-20">
+        <section className="mt-16 lg:mt-20">
           {/* 이사 유형 */}
           <div className="lg mb-12 flex flex-col gap-2">
             <p className="text-lg font-bold">{t("movingType")}</p>
@@ -154,6 +153,7 @@ export default function DesktopEstimateForm() {
                   type="white-orange"
                   onClick={() => setShowModal("from")}
                   className="h-[54px] w-[400px] justify-start rounded-xl px-6 py-4 lg:w-[252px]"
+                  aria-label={addressFrom ? `${t("from")}: ${translatedAddressFrom}` : t("fromChoose")}
                 />
               </div>
               <div className="flex flex-col gap-3 lg:w-full">
@@ -171,11 +171,12 @@ export default function DesktopEstimateForm() {
                   type="white-orange"
                   onClick={() => setShowModal("to")}
                   className="h-[54px] w-[400px] justify-start rounded-xl px-6 py-4 lg:w-[252px]"
+                  aria-label={addressTo ? `${t("to")}: ${translatedAddressTo}` : t("toChoose")}
                 />
               </div>
             </div>
           </div>
-        </div>
+        </section>
         {/* 태블릿 버튼 */}
         <div className="mt-[57px] flex w-full justify-end lg:hidden">
           <Button
@@ -186,7 +187,7 @@ export default function DesktopEstimateForm() {
             onClick={handleRequest}
           />
         </div>
-      </div>
+      </section>
 
       {/* PC 버튼 */}
       <div className="hidden lg:block">
@@ -215,6 +216,6 @@ export default function DesktopEstimateForm() {
           selectedAddress={showModal === "from" ? addressFrom : addressTo}
         />
       )}
-    </div>
+    </main>
   );
 }

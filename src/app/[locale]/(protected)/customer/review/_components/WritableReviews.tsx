@@ -37,28 +37,33 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];
-
   useEffect(() => {
-    // To only get one data;;
+    //병렬 요청
     const translateAllIntros = async () => {
       if (!reviewables.length || locale === "ko") return;
 
-      const translations: Record<string, string> = {};
+      try {
+        const translationEntries = await Promise.all(
+          reviewables.map(async (item) => {
+            const shortIntro = item.estimates[0].driver.shortIntro;
+            if (!shortIntro) return [item.id, ""];
 
-      for (const item of reviewables) {
-        const shortIntro = item.estimates[0].driver.shortIntro;
-        if (!shortIntro) continue;
+            try {
+              const translated = await translateWithDeepL(shortIntro, locale.toUpperCase());
+              return [item.id, translated];
+            } catch (e) {
+              console.warn(`번역 실패 (ID: ${item.id})`, e);
+              return [item.id, shortIntro]; // fallback
+            }
+          })
+        );
 
-        try {
-          const translated = await translateWithDeepL(shortIntro, locale.toUpperCase());
-          translations[item.id] = translated;
-        } catch (e) {
-          console.warn(`번역 실패 (ID: ${item.id})`, e);
-          translations[item.id] = shortIntro; // fallback
-        }
+        // 배열을 객체로 변환하여 상태 저장
+        const translations = Object.fromEntries(translationEntries);
+        setTranslatedIntros(translations);
+      } catch (error) {
+        console.error("전체 번역 실패", error);
       }
-
-      setTranslatedIntros(translations);
     };
 
     translateAllIntros();
@@ -76,7 +81,10 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
     );
   }
   return (
-    <div>
+    <section aria-labelledby="review-section-heading">
+      <h2 id="review-section-heading" className="sr-only">
+        {t("myReviewableList")}
+      </h2>
       <div className="flex flex-col items-center gap-5">
         {reviewables.map((reviewable) => (
           <div
@@ -103,6 +111,7 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                     alt="driverImg"
                     width={100}
                     height={100}
+                    priority
                   />
                 )}
                 {isMd && !isLg && (
@@ -171,6 +180,6 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
           <Pagination currentPage={page} setCurrentPage={setPage} totalReviews={totalCount} />
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -108,50 +108,63 @@ export default function CustomerProfileCreateForm() {
   };
 
   return (
-    <form className="w-[327px] max-w-160 space-y-4 p-6 lg:w-full" onSubmit={handleSubmit}>
-      <div>
-        <h2 className="text-lg font-bold lg:text-[32px]">{t("title")}</h2>
-        <p className="text-black-100 my-4 text-xs lg:my-7 lg:text-[16px]">{t("subtitle")}</p>
+    <main role="main">
+      <form className="w-[327px] max-w-160 space-y-4 p-6 lg:w-full" onSubmit={handleSubmit}>
+        <header>
+          <h2 className="text-lg font-bold lg:text-[32px]">{t("title")}</h2>
+          <p className="text-black-100 my-4 text-xs lg:my-7 lg:text-[16px]">{t("subtitle")}</p>
+          <div className="border-line-100 border-b"></div>
+        </header>
+
+        <ImageUploader
+          id="profileImage"
+          label={t("profileImage")}
+          maxSizeMB={5}
+          onImageChange={handleImageChange}
+          previewUrl={profileImagePreview}
+          isSubmitting={isSubmitting || isUploading}
+          isRequired={false}
+          error={imageError}
+          allowRemove={true}
+          onImageError={handleImageError}
+          aria-label="프로필 이미지 업로더"
+        />
+        {isUploading && <p className="text-sm text-gray-500">{t("uploading")}</p>}
+
         <div className="border-line-100 border-b"></div>
-      </div>
 
-      <ImageUploader
-        id="profileImage"
-        label={t("profileImage")}
-        maxSizeMB={5}
-        onImageChange={handleImageChange}
-        previewUrl={profileImagePreview}
-        isSubmitting={isSubmitting || isUploading}
-        isRequired={false}
-        error={imageError}
-        allowRemove={true}
-        onImageError={handleImageError}
-      />
-      {isUploading && <p className="text-sm text-gray-500">{t("uploading")}</p>}
+        <div>
+          <p className="text-black-300 font-semibold lg:text-xl">{t("serviceTitle")}</p>
+          <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">{t("serviceDescription")}</p>
 
-      <div className="border-line-100 border-b"></div>
+          <SelectService
+            aria-label="이사 서비스 선택"
+            services={selectedMoveTypes}
+            setServices={setSelectedMoveTypes}
+          />
+        </div>
 
-      <div>
-        <p className="text-black-300 font-semibold lg:text-xl">{t("serviceTitle")}</p>
-        <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">{t("serviceDescription")}</p>
+        <div className="border-line-100 border-b"></div>
 
-        <SelectService services={selectedMoveTypes} setServices={setSelectedMoveTypes} />
-      </div>
-
-      <div className="border-line-100 border-b"></div>
-
-      <div>
-        <p className="text-black-300 font-semibold lg:text-xl">{t("regionTitle")}</p>
-        <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">{t("regionDescription")}</p>
-        <SelectRegion setCurrentArea={setCurrentArea} currentArea={currentArea} type="customer" />
-      </div>
-
-      <Button
-        type="orange"
-        text={isSubmitting ? t("loading") : t("submit")}
-        isDisabled={isSubmitting || isUploading || !isFormValid}
-        className="mt-15 w-full rounded bg-blue-600 py-2 text-white"
-      />
-    </form>
+        <div>
+          <p className="text-black-300 font-semibold lg:text-xl">{t("regionTitle")}</p>
+          <p className="mt-2 mb-6 text-xs text-gray-400 lg:text-[16px]">{t("regionDescription")}</p>
+          <SelectRegion
+            aria-label="지역 선택"
+            setCurrentArea={setCurrentArea}
+            currentArea={currentArea}
+            type="customer"
+          />
+        </div>
+        <nav aria-label="Form actions">
+          <Button
+            type="orange"
+            text={isSubmitting ? t("loading") : t("submit")}
+            isDisabled={isSubmitting || isUploading || !isFormValid}
+            className="mt-15 w-full rounded bg-blue-600 py-2 text-white"
+          />
+        </nav>
+      </form>
+    </main>
   );
 }

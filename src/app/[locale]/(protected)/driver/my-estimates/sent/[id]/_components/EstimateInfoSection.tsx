@@ -1,4 +1,6 @@
 // components/estimate/EstimateInfoSection.tsx
+"use client";
+
 import React from "react";
 import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
 

@@ -29,9 +29,9 @@ export default function PastDetailPage() {
 
   if (!data) {
     return (
-      <>
-        <LoadingLottie className="mt-70" />
-      </>
+      <main id="main-content" role="main" className="mt-70">
+        <LoadingLottie className="mt-30" role="status" aria-live="polite" />
+      </main>
     );
   }
 
@@ -101,35 +101,44 @@ export default function PastDetailPage() {
   return (
     <>
       {/* 상단 서브 헤더 */}
-      <div className="sticky top-14 z-9 bg-white lg:top-22">
+      <header className="sticky top-14 z-9 bg-white lg:top-22" aria-label="페이지 헤더">
         <PageHeader title={t("estimateDetail")} />
-      </div>
+      </header>
 
       {/* 상단 배경 + 프로필 */}
-      <div className="relative">
-        <OrangeBackground />
-        <div className="relative mx-auto max-w-[600px] md:max-w-[700px] lg:max-w-[1150px]">
+      <section aria-labelledby="driver-profile-section" className="relative">
+        <h2 id="driver-profile-section" className="sr-only">
+          기사 프로필
+        </h2>
+        <OrangeBackground /> {/* 내부 이미지는 alt="" 처리되었거나 aria-hidden 적용 권장 */}
+        <div className="relative mx-auto max-w-[550px] md:max-w-[650px] lg:max-w-[1150px]">
           <div className="relative -mt-10 md:-mt-20">
             <Image
               src={driver.profileImage ?? "/assets/images/img_profile.svg"}
-              alt="기사님 프로필"
+              alt={`${driver.name} 기사님 프로필 사진`}
               width={100}
               height={100}
               className="h-18 w-18 rounded-lg md:h-27 md:w-27 lg:h-37 lg:w-37"
             />
           </div>
         </div>
-      </div>
+      </section>
 
       {/* 본문 */}
-      <div className="bg-white">
+      <main id="main-content" role="main" className="bg-white">
         <div className="flex flex-col px-5 py-[60px] pt-10 md:px-17 md:pt-15 lg:mx-auto lg:grid lg:max-w-[1300px] lg:grid-cols-[1fr_300px] lg:gap-20 lg:px-10 lg:pt-[50px] lg:pb-[120px]">
           {/* 왼쪽 콘텐츠 */}
-          <div className="flex flex-col gap-10">
+          <article className="flex flex-col gap-10" aria-labelledby="estimate-article-title">
+            <h1 id="estimate-article-title" className="sr-only">
+              {driver.name} 기사님의 견적 상세
+            </h1>
+
             <Title
               status={status}
               labels={labels}
               driver={{
+                id: driver.id,
+                isFavorite: driver.isFavorite,
                 name: driver.name,
                 rating: driver.avgRating ?? 0.0,
                 reviewCount: driver.reviewCount,
@@ -141,7 +150,7 @@ export default function PastDetailPage() {
               estimatePrice={price}
             />
 
-            <div className="border-t border-gray-100" />
+            <hr className="border-t border-gray-100" />
 
             <EstimateDetailInfo
               requestDate={dayjs(requestDate).format("YY.MM.DD")}
@@ -149,21 +158,28 @@ export default function PastDetailPage() {
               moveDate={dayjs(moveDate).format("YYYY. MM. DD(ddd) A hh:mm")}
               from={formatStreetAddress(fromAddress)}
               to={formatStreetAddress(toAddress)}
+              // 선택: ISO 값까지 넘기면 <time dateTime> 채워져 접근성/SEO 향상
+              requestDateISO={dayjs(requestDate).toISOString()}
+              moveDateISO={dayjs(moveDate).toISOString()}
             />
 
             {/* AUTO_REJECTED인 경우만 표시 */}
             {status === "AUTO_REJECTED" && <AutoRejectedAlert />}
-          </div>
+          </article>
 
-          <div className="my-6 border-t border-gray-100 lg:hidden" />
+          {/* 모바일 구분선 */}
+          <hr className="my-6 border-t border-gray-100 lg:hidden" />
 
-          <ShareDriver
-            text={t("shareEstimate")}
-            onKakaoShare={handleKakaoShare}
-            onFacebookShare={handleFacebookShare}
-          />
+          {/* 우측 사이드: 공유만 */}
+          <aside className="lg:flex lg:flex-col lg:gap-6" aria-label="공유 영역">
+            <ShareDriver
+              text={t("shareEstimate")}
+              onKakaoShare={handleKakaoShare}
+              onFacebookShare={handleFacebookShare}
+            />
+          </aside>
         </div>
-      </div>
+      </main>
     </>
   );
 }

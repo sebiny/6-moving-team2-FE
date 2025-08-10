@@ -23,13 +23,22 @@ export default function MoveTypeCard({ label, description, selected, onClick }: 
   const iconSrc = imageMap[label];
 
   return (
-    <button
-      type="button"
+    <article
+      role="radio"
+      aria-checked={selected}
+      tabIndex={0}
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === " " || e.key === "Enter") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
       className={clsx(
         "relative flex flex-col rounded-2xl border-2 px-4 pt-5 pb-5 text-left transition-colors md:pb-4",
         "h-[160px] w-[327px] cursor-pointer md:h-[222px] md:w-50 lg:h-[222px] lg:w-[256px]",
-        selected ? "border-orange-400 bg-orange-100" : "bg-background-200 border-transparent"
+        selected ? "border-orange-400 bg-orange-100" : "bg-background-200 border-transparent",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
       )}
     >
       <div className="flex h-full w-full flex-row justify-between md:flex-col">
@@ -38,16 +47,18 @@ export default function MoveTypeCard({ label, description, selected, onClick }: 
           <CheckBox checked={selected} />
 
           {/* 텍스트 */}
-          <div className="flex flex-col">
-            <p className={clsx("leading-6 font-semibold", selected ? "text-orange-400" : "text-black")}>{label}</p>
+
+          <header className="flex flex-col">
+            <h3 className={clsx("leading-6 font-semibold", selected ? "text-orange-400" : "text-black")}>{label}</h3>
             <p className={clsx("text-sm", selected ? "text-orange-400" : "text-gray-500")}>{description}</p>
-          </div>
+          </header>
         </div>
 
         {/* 이미지 */}
         <Image
           src={iconSrc}
-          alt={label}
+          alt=""
+          aria-hidden={true}
           width={120}
           height={120}
           priority
@@ -55,6 +66,6 @@ export default function MoveTypeCard({ label, description, selected, onClick }: 
           className="self-center object-contain md:mt-auto md:self-end"
         />
       </div>
-    </button>
+    </article>
   );
 }

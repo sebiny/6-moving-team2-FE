@@ -25,16 +25,22 @@ export default function PendingEstimates() {
   const { data, isLoading } = usePendingEstimates();
   const tC = useTranslations("Common");
   const locale = useLocale();
-  const [translatedRequestData, setTranslatedRequestData] = useState<RequestData | null>(null);
 
-  const estimates = data?.estimates ?? []; // 견적서를 바로 못받을 수 있으니 처음은 빈배열
+  const estimates = data?.estimates ?? [];
   const estimateRequest = data?.estimateRequest;
 
+  const [translatedRequestData, setTranslatedRequestData] = useState<RequestData | null>(null);
+
+  // 요청이 변할 때마다 번역 데이터 초기화
+  useEffect(() => {
+    setTranslatedRequestData(null);
+  }, [estimateRequest?.id, locale]);
+
+  // 번역 실행
   useEffect(() => {
     if (!estimateRequest) return;
 
     const translate = async () => {
-      // 견적 요청 건 데이터 매핑 후 번역 요청
       const textMap = {
         label: getMoveTypeLabel(estimateRequest.moveType),
         requestDate: dayjs(estimateRequest.requestDate).format("YYYY년 M월 D일"),
@@ -45,47 +51,106 @@ export default function PendingEstimates() {
       const result = await batchTranslate(textMap, locale);
       setTranslatedRequestData(result);
     };
+
     translate();
   }, [estimateRequest, locale]);
 
-  if (isLoading)
-    return (
-      <>
-        <LoadingLottie className="mt-30" />
-      </>
-    );
-  if (!translatedRequestData)
-    return (
-      <div className="mt-45 flex flex-col items-center justify-center gap-2 lg:mt-75">
-        <img src="/assets/images/img_empty_car.svg" alt="견적요청 없음" width={250} height={250} className="mr-7" />
-        <p className="text-center text-lg font-normal text-neutral-400">
-          {tC("RequestYet?")}
-          <br />
-          {tC("RequestFirst")}
-        </p>
-      </div>
-    );
-  return (
-    <div className="mt-11 md:mt-13 lg:mt-21">
-      {/* 견적 요청이 있을 경우에만 헤더 렌더링 */}
-      <EstimateSubHeader data={translatedRequestData} />
+  const hasRequest = !!estimateRequest;
+  const isTranslating = hasRequest && !translatedRequestData;
 
-      <div className="bg-background-200 grid grid-cols-1 gap-8 px-5 py-10 md:grid-cols-1 md:px-15 lg:mx-auto lg:max-w-[1400px] lg:grid-cols-2 lg:px-20 lg:py-20">
+  // 1) 로딩
+  if (isLoading) {
+    return (
+      <section aria-busy="true">
+        <LoadingLottie className="mt-30" aria-live="polite" role="status" />
+      </section>
+    );
+  }
+
+  // 2) 요청 없음
+  if (!hasRequest) {
+    return (
+      <section aria-labelledby="no-request-title" className="mt-20 lg:mt-35">
+        <h1 id="no-request-title" className="sr-only">
+          대기 중인 견적 요청이 없습니다
+        </h1>
+
+        <figure aria-describedby="no-request-desc" className="flex flex-col items-center justify-center gap-2">
+          <img
+            src="/assets/images/img_empty_car.svg"
+            alt=""
+            width={250}
+            height={250}
+            className="mr-7"
+            aria-hidden="true"
+          />
+          <figcaption id="no-request-desc" className="text-center text-lg font-normal text-neutral-400">
+            {tC("RequestYet?")}
+            <br />
+            {tC("RequestFirst")}
+          </figcaption>
+        </figure>
+      </section>
+    );
+  }
+
+  // 3) 번역 중
+  if (isTranslating) {
+    return (
+      <section aria-busy="true">
+        <LoadingLottie className="mt-30" aria-live="polite" role="status" />
+      </section>
+    );
+  }
+
+  // 4) 정상 렌더
+  return (
+    <section aria-labelledby="pending-estimates-heading">
+      {/* 페이지 헤더: 현재 활성 요청 요약 */}
+      <header
+        aria-labelledby="pending-estimates-heading"
+        className="relative z-10 -mt-2 mb-0 bg-white shadow-md md:-mt-3"
+      >
+        <h1
+          id="pending-estimates-heading"
+          className="mx-auto w-full px-5 py-6 md:px-15 lg:max-w-[1400px] lg:px-20 lg:py-8"
+        >
+          대기 중인 견적 리스트
+        </h1>
+        <EstimateSubHeader data={translatedRequestData!} />
+      </header>
+
+      {/* 견적 카드 리스트 */}
+      <section
+        aria-labelledby="pending-list-heading"
+        className="bg-background-200 relative z-0 px-5 py-10 md:px-15 lg:mx-auto lg:max-w-[1400px] lg:px-20 lg:py-20"
+      >
+        <h2 id="pending-list-heading" className="sr-only">
+          기사님들이 보낸 견적 목록
+        </h2>
+
         {estimates.length === 0 ? (
-          <div className="col-span-full flex flex-col items-center justify-center gap-2">
-            <img src="/assets/images/img_moving_car1.svg" alt="견적 없음" width={250} height={250} />
+          <div role="status" aria-live="polite" className="flex flex-col items-center justify-center gap-2">
+            <img src="/assets/images/img_moving_car1.svg" alt="" width={250} height={250} aria-hidden="true" />
             <p className="text-center text-lg font-normal text-neutral-400">
               {tC("driverIsChecking")} <br />
               {tC("quoteWillSoon")}
             </p>
           </div>
         ) : (
-          estimates.map((estimate) => (
-            <PendingCard key={estimate.id} data={estimate} moveType={estimateRequest!.moveType} />
-          ))
-          //moveType이 넘어가는지 테스트-> 넘어감-> 한글로 넘어가서 card에서 동적 다국어 처리
+          <ul
+            className="grid grid-cols-1 gap-8 md:grid-cols-1 lg:grid-cols-2"
+            role="list"
+            aria-label="대기 중인 견적 카드 목록"
+          >
+            {estimates.map((estimate) => (
+              <li key={estimate.id} className="list-none">
+                <PendingCard data={estimate} moveType={estimateRequest!.moveType} />
+              </li>
+            ))}
+          </ul>
         )}
-      </div>
-    </div>
+      </section>
+    </section>
   );
 }
