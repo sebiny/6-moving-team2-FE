@@ -53,13 +53,12 @@ export default function FavoriteDrivers() {
     });
   };
 
-  const qcInvalidate = () => queryClient.invalidateQueries({ queryKey: ["favoriteDrivers"] });
   // 찜한 기사 삭제
   const deleteFavoriteMutation = useMutation({
     mutationFn: (driverId: string) => favoriteService.deleteFavorite(driverId),
     onSuccess: () => {
       // 쿼리 캐시 무효화하여 목록 다시 불러오기
-      qcInvalidate;
+      queryClient.invalidateQueries({ queryKey: ["favoriteDrivers"] });
     }
   });
 
