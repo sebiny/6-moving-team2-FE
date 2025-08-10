@@ -4,7 +4,7 @@ import DriverReview from "./DriverReview";
 import StarIcon from "../icon/StarIcon";
 import Pagination from "../Pagination";
 import { DriverType } from "@/types/driverType";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { driverService } from "@/lib/api/api-driver";
 import { ReviewType } from "@/types/reviewType";
 import { useTranslations } from "next-intl";
@@ -21,10 +21,12 @@ function DriverReviews({ driver }: ReviewsType) {
   const {
     data: reviews,
     isPending,
-    isFetching
-  } = useQuery<ReviewType[] | null>({
+    isFetching,
+    isPlaceholderData
+  } = useQuery<ReviewType[] | null, Error>({
     queryKey: ["reviews", driver.id, page],
-    queryFn: () => driverService.getDriverReviews(driver.id, page)
+    queryFn: () => driverService.getDriverReviews(driver.id, page),
+    placeholderData: keepPreviousData
   });
 
   if (!reviews)
