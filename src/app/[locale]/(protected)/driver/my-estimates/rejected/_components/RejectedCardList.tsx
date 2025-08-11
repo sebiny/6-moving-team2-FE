@@ -15,10 +15,14 @@ interface RejectedCardListProps {
 
 export default function RejectedCardList({ requests }: RejectedCardListProps) {
   return (
-    <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-2 lg:gap-6">
+    <section
+      role="list"
+      aria-label="거부된 견적 목록"
+      className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-2 lg:gap-6"
+    >
       {requests.map((request) => (
         <CompletedRejectedCard key={request.id} request={request} />
       ))}
-    </div>
+    </section>
   );
 }

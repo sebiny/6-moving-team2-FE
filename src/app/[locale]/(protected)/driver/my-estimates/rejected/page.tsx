@@ -46,15 +46,27 @@ export default function RejectedEstimatesPage() {
     if (isPending) {
       // 이전 데이터가 있다면 그것을 기반으로 스켈레톤 개수 결정
       const skeletonCount = (backendEstimates?.length || 0) > 0 ? Math.min(backendEstimates?.length || 0, 4) : 1;
-      return <RejectedEstimateCardListSkeleton count={skeletonCount} />;
+      return (
+        <section aria-label="로딩 중" aria-live="polite">
+          <RejectedEstimateCardListSkeleton count={skeletonCount} />
+        </section>
+      );
     }
 
     if (error) {
-      return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{tC("failedRejReq")}</p>;
+      return (
+        <div role="alert" aria-live="polite" className="text-center text-base font-normal text-red-400 lg:text-xl">
+          {tC("failedRejReq")}
+        </div>
+      );
     }
 
     if (estimates.length === 0) {
-      return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("noReject")}</p>;
+      return (
+        <section aria-label="빈 상태" className="text-center text-base font-normal text-neutral-400 lg:text-xl">
+          {tC("noReject")}
+        </section>
+      );
     }
 
     // 정상적인 경우: 거부된 견적 목록 렌더링
@@ -62,13 +74,13 @@ export default function RejectedEstimatesPage() {
   };
 
   return (
-    <>
+    <main className="flex min-h-screen flex-col bg-neutral-50" role="main" aria-label="거부된 견적 페이지">
       <Header type="driver-estimate" selectedIdx={selectedIdx} setSelectedIdx={handleTabChange} />
       <div className="flex min-h-screen flex-col bg-neutral-50 px-4 pt-6 pb-10 md:pt-8 lg:pt-11">
         <div className="flex w-full flex-col items-center justify-center px-6 py-20">
           <div className="flex flex-col items-center gap-6">{renderContent()}</div>
         </div>
       </div>
-    </>
+    </main>
   );
 }
