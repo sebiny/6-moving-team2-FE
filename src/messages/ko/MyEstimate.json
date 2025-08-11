@@ -18,5 +18,13 @@
   "wannaRecommend?": "나만 알기엔 아쉬운 기사님인가요?",
   "shareEstimate": "견적서 공유하기",
   "comment": "코멘트",
-  "rejectReason": "거절 사유"
+  "rejectReason": "거절 사유",
+  "loading": "견적 정보를 불러오는 중입니다.",
+  "error": {
+    "loadFailed": "견적 정보를 불러올 수 없습니다.",
+    "incompleteData": "견적 정보가 불완전합니다.",
+    "shareUrlFailed": "공유 URL을 생성하지 못했습니다.",
+    "shareLinkFailed": "공유 링크 생성 실패",
+    "facebookShareFailed": "Facebook 공유 링크 생성 실패"
+  }
 }

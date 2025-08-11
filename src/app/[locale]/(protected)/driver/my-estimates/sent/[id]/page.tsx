@@ -8,6 +8,7 @@ import OrangeBackground from "@/components/OrangeBackground";
 import ShareDriver from "@/components/ShareDriver";
 import EstimateHeaderSection from "./_components/EstimateHeaderSection";
 import EstimateInfoSection from "./_components/EstimateInfoSection";
+import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { useTranslations, useLocale } from "next-intl";
 import { driverService } from "@/lib/api/api-driver";
 import { DriverEstimateDetailType } from "@/types/estimateType";
@@ -15,6 +16,7 @@ import { formatDate, formatDateTime, setDayjsLocale } from "@/utills/dateUtils";
 import { MoveType, moveTypeLabelMap } from "@/constant/moveTypes";
 import { useKakaoShare } from "@/hooks/useKakaoShare";
 import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 export default function EstimateDetailPage() {
   const t = useTranslations("MyEstimate");
@@ -40,11 +42,7 @@ export default function EstimateDetailPage() {
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
-        <div className="flex flex-col items-start gap-7">
-          <div className="h-8 w-32 animate-pulse rounded bg-gray-200" aria-hidden="true"></div>
-          <div className="h-6 w-48 animate-pulse rounded bg-gray-200" aria-hidden="true"></div>
-          <div className="h-4 w-24 animate-pulse rounded bg-gray-200" aria-hidden="true"></div>
-        </div>
+        <LoadingLottie text={t("loading")} />
       </div>
     </main>
   );
@@ -64,7 +62,7 @@ export default function EstimateDetailPage() {
   );
 
   if (isPending) return renderLoadingState();
-  if (error || !estimateDetail) return renderErrorState("견적 정보를 불러올 수 없습니다.");
+  if (error || !estimateDetail) return renderErrorState(t("error.loadFailed"));
 
   const { estimateRequest, price, status, isDesignated } = estimateDetail;
   const { customer, moveType, moveDate, fromAddress, toAddress } = estimateRequest;
@@ -72,7 +70,7 @@ export default function EstimateDetailPage() {
   // 데이터 안전성 검증
   if (!customer?.authUser || !fromAddress || !toAddress) {
     console.error("Missing required data:", { customer, fromAddress, toAddress });
-    return renderErrorState("견적 정보가 불완전합니다.");
+    return renderErrorState(t("error.incompleteData"));
   }
 
   const customerName = customer.authUser.name || "고객명 없음";
@@ -84,7 +82,7 @@ export default function EstimateDetailPage() {
         onSuccess: (response) => {
           const shareUrl = response?.shareUrl;
           if (!shareUrl) {
-            alert("공유 URL을 생성하지 못했습니다.");
+            ToastModal(t("error.shareUrlFailed"), 3000, "error");
             return;
           }
 
@@ -97,7 +95,7 @@ export default function EstimateDetailPage() {
           });
         },
         onError: (error: Error) => {
-          alert("공유 링크 생성 실패: " + error.message);
+          ToastModal(t("error.shareLinkFailed") + ": " + error.message, 3000, "error");
         }
       }
     );
@@ -110,14 +108,14 @@ export default function EstimateDetailPage() {
         onSuccess: (response) => {
           const shareUrl = response?.shareUrl;
           if (!shareUrl) {
-            alert("공유 URL을 생성하지 못했습니다.");
+            ToastModal(t("error.shareUrlFailed"), 3000, "error");
             return;
           }
           const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
           window.open(facebookShareUrl, "_blank", "width=600,height=400");
         },
         onError: (error: Error) => {
-          alert("Facebook 공유 링크 생성 실패: " + error.message);
+          ToastModal(t("error.facebookShareFailed") + ": " + error.message, 3000, "error");
         }
       }
     );
