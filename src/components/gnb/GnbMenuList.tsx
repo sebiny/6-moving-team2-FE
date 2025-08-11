@@ -11,7 +11,7 @@ interface GnbListProps {
   browserWidth: "lg" | "default";
   userRole?: "GUEST" | "CUSTOMER" | "DRIVER" | undefined;
   onClick?: () => void;
-  isLg: boolean;
+  ref?: any;
 }
 
 const browserWidthType = {
@@ -27,7 +27,7 @@ const browserWidthType = {
   }
 };
 
-export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: GnbListProps) {
+export default function GnbMenuList({ browserWidth, userRole, onClick, ref }: GnbListProps) {
   const { pushWithTransition } = useTransitionRouter();
   const { user } = useAuth();
   const isLoggedIn = !!user;
@@ -52,7 +52,7 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
   };
 
   return (
-    <nav className={`${browserWidthType[browserWidth].layoutDiv} `}>
+    <nav className={`${browserWidthType[browserWidth].layoutDiv} `} ref={ref}>
       {browserWidth === "default" && (
         <button className="flex h-15 w-full cursor-pointer justify-end px-4 py-[10px]" onClick={onClick}>
           <Image src={ImgXBtn} alt="닫는버튼" width={24} height={24} />
@@ -67,7 +67,7 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
           <span
             className={
               label.includes(t("login"))
-                ? isLg || isLoggedIn
+                ? browserWidth === "lg" || isLoggedIn
                   ? "hidden"
                   : "block"
                 : `${browserWidthType[browserWidth].textStyle} text-black-500`
