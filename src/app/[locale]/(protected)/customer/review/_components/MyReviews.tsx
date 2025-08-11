@@ -5,8 +5,8 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import StarIcon from "@/components/icon/StarIcon";
 import useMediaHook from "@/hooks/useMediaHook";
 import { useTranslations, useLocale } from "next-intl";
-import { deleteMyReview, getMyReviews } from "@/lib/api/api-review";
-import { ko, enUS, ja } from "date-fns/locale";
+import { deleteMyReview, getMyReviews, updateMyReview } from "@/lib/api/api-review";
+import { ko, enUS, ja, tr } from "date-fns/locale";
 import { format, type Locale } from "date-fns";
 import { TranslateRegion } from "@/utills/TranslateFunction";
 import NoMyReview from "./NoMyReview";
@@ -47,6 +47,16 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
     } catch (err) {
       console.error(err);
       alert("삭제 실패");
+    }
+  };
+  const handleEdit = async (reviewId: string, driverId: string, rating: number, content: string) => {
+    try {
+      await updateMyReview(reviewId, driverId, rating, content);
+      alert("리뷰 수정 완료");
+      queryClient.invalidateQueries({ queryKey: ["reviews"] }); // 목록 새로고침
+    } catch (err) {
+      console.error(err);
+      alert("수정 실패");
     }
   };
 
@@ -200,7 +210,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       )}
                     </div>
                   </div>
-                  {isLg && (
+                  {/* {isLg && (
                     <Image
                       className="order-2 ml-auto rounded-[12px]"
                       src="/assets/icons/ic_edit.svg"
@@ -208,7 +218,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       width={24}
                       height={24}
                     />
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className={clsx("flex gap-5", isSm && !isMd && "border-line-100 border-b pb-4")}>
@@ -249,9 +259,13 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                 {isSm && !isLg && (
                   <Button text="삭제" type="orange" onClick={() => handleDelete(review.id, review.driver.id)} />
                 )}
-                {isSm && !isLg && (
-                  <Button text="수정" type="white-orange" onClick={() => handleEdit(review.id, review.driver.id)} />
-                )}
+                {/* {isSm && !isLg && (
+                  <Button
+                    text="수정"
+                    type="white-orange"
+                    onClick={() => handleEdit(review.id, review.driver.id, review.rating, review.content)}
+                  />
+                )} */}
               </div>
             </div>
           );

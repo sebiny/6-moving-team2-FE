@@ -36,3 +36,10 @@ export async function deleteMyReview(reviewId: string, driverId: string) {
   });
   return response;
 }
+//리뷰 수정
+export async function updateMyReview(reviewId: string, driverId: string, rating: number, content: string) {
+  return cookieFetch(`/reviews/mine/${reviewId}`, {
+    method: "PUT",
+    body: JSON.stringify({ driverId, rating, content })
+  });
+}
