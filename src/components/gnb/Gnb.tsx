@@ -9,7 +9,6 @@ import GnbMenuList from "./GnbMenuList";
 import { useAuth } from "@/providers/AuthProvider";
 import Button from "../Button";
 import { usePathname, useRouter } from "next/navigation";
-import { OpenLayer, useGnbHooks } from "@/hooks/useGnbHook";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useTranslations } from "next-intl";
 
@@ -20,12 +19,12 @@ import { useTranslations } from "next-intl";
 interface GnbProps {
   userRole?: "GUEST" | "CUSTOMER" | "DRIVER" | undefined;
 }
+type OpenLayer = "notification" | "profile" | "gnbMobileMenu" | null;
 
 export default function Gnb() {
   const t = useTranslations("Gnb");
-  const { user, isLoading, logout } = useAuth();
-  const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
-  // user가 null이면 비로그인 상태
+  const { user, logout } = useAuth();
+  const [openLayer, setOpenLayer] = useState<OpenLayer>(null);
 
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -63,12 +62,6 @@ export default function Gnb() {
     };
   }, [openLayer, handleClickOutside]);
 
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   const isLoggedIn = !!user;
   const userRole = user?.userType ?? "GUEST";
 
@@ -85,74 +78,70 @@ export default function Gnb() {
     >
       <div className="flex w-full max-w-[var(--container-gnb)] items-center justify-between">
         <Logo />
-        {isLg ? (
-          <div className="flex flex-1 items-center justify-between">
-            <GnbListLayout lg="lg" className="flex-1">
-              <GnbMenuList browserWidth="lg" isLg={true} userRole={userRole} />
-            </GnbListLayout>
-            <div className="flex items-center justify-between">
-              <div className="mr-5">
-                {isLoggedIn ? <LanguageSwitcher /> : <LanguageSwitcher classname={"py-2 px-4 text-lg"} />}
-              </div>
+        {/* 데스크톱 레이아웃: lg 이상에서 보임 */}
+        <div className="hidden items-center justify-between lg:flex lg:flex-1">
+          <GnbListLayout className="flex-1">
+            <GnbMenuList browserWidth="lg" userRole={userRole} />
+          </GnbListLayout>
+          <div className="flex items-center justify-between">
+            <div className="mr-5">
+              {isLoggedIn ? <LanguageSwitcher /> : <LanguageSwitcher classname={"py-2 px-4 text-lg"} />}
+            </div>
 
-              {isLoggedIn ? (
-                <div className="flex flex-row justify-between gap-5">
-                  <Notification
-                    ref={notificationRef}
-                    isOpen={openLayer === "notification"}
-                    onClick={() => toggleLayer("notification")}
-                  />
-                  <Profile
-                    ref={profileRef}
-                    lg="lg"
-                    isOpen={openLayer === "profile"}
-                    onClick={() => toggleLayer("profile")}
-                  />
-                </div>
-              ) : (
-                <div>
-                  <Button
-                    type="orange"
-                    text={t("login")}
-                    isLoginText={true}
-                    className="w-30 rounded-md"
-                    onClick={() => router.push("/login/customer")}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between gap-5">
-            <LanguageSwitcher /> {/* 여기! */}
-            <Notification
-              ref={notificationRef}
-              className={isLoggedIn ? "block" : "hidden"}
-              isOpen={openLayer === "notification"}
-              onClick={() => toggleLayer("notification")}
-            />
-            <div className="flex items-center justify-between gap-5">
-              <Profile
-                ref={profileRef}
-                className={isLoggedIn ? "block" : "hidden"}
-                isOpen={openLayer === "profile"}
-                onClick={() => toggleLayer("profile")}
-              />
-              <GnbListLayout
-                ref={gnbMobileMenuRef}
-                isOpen={openLayer === "gnbMobileMenu"}
-                onClick={() => toggleLayer("gnbMobileMenu")}
-              >
-                <GnbMenuList
-                  browserWidth="default"
-                  isLg={false}
-                  userRole={userRole}
-                  onClick={() => toggleLayer("gnbMobileMenu")}
+            {isLoggedIn ? (
+              <div className="flex flex-row justify-between gap-5">
+                <Notification
+                  ref={notificationRef}
+                  isOpen={openLayer === "notification"}
+                  onClick={() => toggleLayer("notification")}
                 />
-              </GnbListLayout>
-            </div>
+                <Profile ref={profileRef} isOpen={openLayer === "profile"} onClick={() => toggleLayer("profile")} />
+              </div>
+            ) : (
+              <div>
+                <Button
+                  type="orange"
+                  text={t("login")}
+                  isLoginText={true}
+                  className="w-30 rounded-md"
+                  onClick={() => router.push("/login/customer")}
+                />
+              </div>
+            )}
           </div>
-        )}
+        </div>
+
+        {/* 모바일 레이아웃: lg 미만에서 보임 */}
+        <div className="flex items-center justify-between gap-5 lg:hidden">
+          <LanguageSwitcher /> {/* 여기! */}
+          <Notification
+            ref={notificationRef}
+            className={isLoggedIn ? "block" : "hidden"}
+            isOpen={openLayer === "notification"}
+            onClick={(e: any) => {
+              e.stopPropagation();
+              toggleLayer("notification");
+            }}
+          />
+          <div className="flex items-center justify-between gap-5">
+            <Profile
+              ref={profileRef}
+              className={isLoggedIn ? "block" : "hidden"}
+              isOpen={openLayer === "profile"}
+              onClick={(e: any) => {
+                e.stopPropagation();
+                toggleLayer("profile");
+              }}
+            />
+            <GnbListLayout
+              ref={gnbMobileMenuRef}
+              isOpen={openLayer === "gnbMobileMenu"}
+              onClick={() => toggleLayer("gnbMobileMenu")}
+            >
+              <GnbMenuList browserWidth="default" userRole={userRole} onClick={() => toggleLayer("gnbMobileMenu")} />
+            </GnbListLayout>
+          </div>
+        </div>
       </div>
     </header>
   );

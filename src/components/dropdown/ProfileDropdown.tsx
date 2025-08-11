@@ -9,14 +9,13 @@ import { useAuth } from "@/providers/AuthProvider";
 import { authService } from "@/lib/api/api-auth";
 
 interface ProfileProps {
-  lg?: string;
   isOpen: boolean;
-  onClick: () => void;
+  onClick: (e: any) => void;
   className?: string;
   ref?: React.Ref<HTMLDivElement> | undefined;
 }
 
-export default function Profile({ ref, isOpen, onClick, className, lg }: ProfileProps) {
+export default function Profile({ ref, isOpen, onClick, className }: ProfileProps) {
   const { pushWithTransition } = useTransitionRouter();
   const { user, logout, isLoading } = useAuth();
   const userType = user?.userType;
@@ -43,7 +42,7 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
     buttonElement.style.viewTransitionName = uniqueName;
 
     const transition = pushWithTransition(path);
-    onClick?.();
+    onClick?.(onClick);
 
     // transition 객체가 존재하면(API가 지원되면)
     if (transition) {
@@ -59,32 +58,30 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
   };
   return (
     <div className={`${className} relative flex items-center`} ref={ref}>
-      {lg ? (
-        <button className="flex cursor-pointer items-center justify-between gap-3" onClick={onClick}>
-          <Image
-            src={detailedUser?.profileImage ?? icProfile}
-            alt="프로필 이미지"
-            width={26}
-            height={26}
-            className="h-[26px] w-[26px] rounded-full object-cover object-center"
-          />
-          {isLoading ? (
-            <div className="h-5 w-20 animate-pulse rounded bg-gray-300"></div> // 스켈레톤 UI
-          ) : (
-            (detailedUser?.name ?? "이름없음")
-          )}
-        </button>
-      ) : (
-        <button className="cursor-pointer" onClick={onClick}>
-          <Image
-            src={detailedUser?.profileImage ?? icProfile}
-            alt="프로필 이미지"
-            width={26}
-            height={26}
-            className="h-[26px] w-[26px] rounded-full border object-cover object-center"
-          />
-        </button>
-      )}
+      <button className="hidden cursor-pointer items-center justify-between gap-3 lg:flex" onClick={onClick}>
+        <Image
+          src={detailedUser?.profileImage ?? icProfile}
+          alt="프로필 이미지"
+          width={26}
+          height={26}
+          className="h-[26px] w-[26px] rounded-full object-cover object-center"
+        />
+        {isLoading ? (
+          <div className="h-5 w-20 animate-pulse rounded bg-gray-300"></div> // 스켈레톤 UI
+        ) : (
+          (detailedUser?.name ?? "이름없음")
+        )}
+      </button>
+
+      <button className="block cursor-pointer lg:hidden" onClick={onClick}>
+        <Image
+          src={detailedUser?.profileImage ?? icProfile}
+          alt="프로필 이미지"
+          width={26}
+          height={26}
+          className="h-[26px] w-[26px] rounded-full border object-cover object-center"
+        />
+      </button>
 
       {/* 프로필 레이어 */}
       {isOpen && (

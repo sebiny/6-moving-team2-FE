@@ -19,7 +19,7 @@ interface NotificationProps {
   ref: React.Ref<HTMLDivElement> | undefined;
   isOpen: boolean;
   className?: string;
-  onClick: () => void;
+  onClick: (e: any) => void;
 }
 
 export interface NotificationData {
