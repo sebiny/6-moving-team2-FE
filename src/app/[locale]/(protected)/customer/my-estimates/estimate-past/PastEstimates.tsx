@@ -35,9 +35,6 @@ export default function PastEstimates() {
           aria-labelledby="past-empty-heading"
           className="col-span-full flex flex-col items-center justify-center gap-2 py-20"
         >
-          <h1 id="past-empty-heading" className="sr-only">
-            받았던 견적 없음
-          </h1>
           <img src="/assets/images/img_empty_review.svg" alt="" width={250} height={250} aria-hidden="true" />
           <p className="text-center text-lg font-normal text-neutral-400">
             {tC("noRequest")}
@@ -50,7 +47,7 @@ export default function PastEstimates() {
   }
 
   return (
-    <main className="md:bg-background-200 mt-6 bg-white md:mt-16 lg:mt-25" id="main-content" role="main">
+    <main className="md:bg-background-200 bg-white md:mt-6 lg:mt-16" id="main-content" role="main">
       {data?.map((group, index) => {
         const groupTitleId = `past-group-${group.estimateRequest.id}-heading`;
         return (
