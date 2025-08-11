@@ -16,7 +16,7 @@ interface EstimateCardListProps {
 
 export default function EstimateCardList({ requests }: EstimateCardListProps) {
   return (
-    <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-2 lg:gap-6">
+    <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-2 lg:gap-6" role="list" aria-label="보낸 견적 목록">
       {requests.map((request) =>
         request.isCompleted ? (
           <CompletedEstimateCard key={request.id} request={request} />
