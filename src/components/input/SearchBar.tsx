@@ -30,8 +30,7 @@ export default function SearchBar({
   const styles = {
     container: size === "sm" ? "h-[54px] px-4 py-3.5 gap-1.5" : "h-16 px-6 py-3.5 gap-2",
     iconWrapper: size === "sm" ? "h-6 w-6" : "h-9 w-9",
-    inputText: size === "sm" ? "text-sm leading-normal" : "text-lg leading-relaxed",
-    iconSize: size === "sm" ? 20 : 24
+    inputText: size === "sm" ? "text-sm leading-normal" : "text-lg leading-relaxed"
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +60,13 @@ export default function SearchBar({
             className={`relative flex items-center justify-center overflow-hidden ${styles.iconWrapper}`}
             onClick={handleSearchClick}
           >
-            <Image src="/assets/icons/ic_search.svg" alt="검색" width={styles.iconSize} height={styles.iconSize} />
+            <Image
+              src="/assets/icons/ic_search.svg"
+              alt="검색"
+              width={20}
+              height={20}
+              className="h-5 w-5 md:h-6 md:w-6"
+            />
           </button>
         </div>
       )}
@@ -100,8 +105,9 @@ export default function SearchBar({
                   <Image
                     src="/assets/icons/ic_search.svg"
                     alt="검색"
-                    width={styles.iconSize}
-                    height={styles.iconSize}
+                    width={20}
+                    height={20}
+                    className="h-5 w-5 md:h-6 md:w-6"
                   />
                 </button>
               </>

@@ -58,48 +58,60 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
     translateTexts();
   }, [driver, locale]);
   return (
-    <div
+    <article
       className="border-line-100 relative cursor-pointer rounded-2xl border bg-white p-5 shadow-sm"
       onClick={handleClick}
+      role={!isFavoritePage ? "link" : undefined}
+      aria-label={!isFavoritePage ? `${driver.nickname} ${t("driver")} 상세 보기` : undefined}
     >
       {/* 체크박스 (우측 상단) */}
       {isFavoritePage && (
         <div className="absolute top-4 right-4">
-          <CustomCheckbox checked={checked} onChange={onCheckChange} shape="square" />
+          <CustomCheckbox
+            checked={checked}
+            onChange={onCheckChange}
+            shape="square"
+            aria-label={`${driver.nickname} ${t("driver")} 선택`}
+          />
         </div>
       )}
 
-      {/* sm */}
-      <div className="flex gap-2 md:hidden">
+      {/* 서비스 목록 */}
+      <ul className="flex gap-2 md:hidden">
         {driver.moveType.map((service) => (
-          <ChipRectangle key={service} moveType={service} size="sm" />
+          <li key={service}>
+            <ChipRectangle moveType={service} size="sm" />
+          </li>
         ))}
-      </div>
+      </ul>
 
-      {/* md 이상 */}
-      <div className="hidden gap-2 md:flex">
+      <ul className="hidden gap-2 md:flex">
         {driver.moveType.map((service) => (
-          <ChipRectangle key={service} moveType={service} size="md" />
+          <li key={service}>
+            <ChipRectangle moveType={service} size="md" />
+          </li>
         ))}
-      </div>
+      </ul>
 
       <div className="mt-3 flex gap-5 overflow-hidden">
         <Image
           src={driver.profileImage ?? "/assets/images/img_profile.svg"}
-          alt="프로필 이미지"
+          alt={`${driver.nickname} ${t("driver")} 프로필 사진`}
           width={134}
           height={134}
           className="hidden h-[134px] w-[134px] rounded-2xl object-cover object-center md:block"
         />
         <div className="w-full">
-          <p className="text-black-300 w-full truncate text-xl font-semibold">{translatedIntro.short}</p>
-          <p className="mt-2 w-full truncate text-sm text-gray-500">{translatedIntro.detail}</p>
-          <div className="border-line-100 mt-4 border-b md:hidden"></div>
+          <header>
+            <p className="text-black-300 w-full truncate text-xl font-semibold">{translatedIntro.short}</p>
+            <p className="mt-2 w-full truncate text-sm text-gray-500">{translatedIntro.detail}</p>
+          </header>
+
           <div className="relative mt-5">
             <div className="flex gap-2">
               <Image
                 src={driver.profileImage ?? "/assets/images/img_profile.svg"}
-                alt="프로필 이미지"
+                alt={`${driver.nickname} ${t("driver")} 프로필 사진`}
                 width={50}
                 height={50}
                 className="h-[50px] w-[50px] rounded-xl object-cover object-center md:hidden"
@@ -107,48 +119,61 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
               <div className="w-full">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1">
-                    <Image src="/assets/icons/ic_driver.svg" alt="기사님" width={20} height={23} />
+                    <Image src="/assets/icons/ic_driver.svg" alt="" aria-hidden="true" width={20} height={23} />
                     <p className="text-sm font-semibold md:text-base">
                       {driver.nickname} {t("driver")}
                     </p>
                   </div>
-                  <div className="flex items-center justify-center md:hidden">
+                  <button
+                    className="flex items-center justify-center md:hidden"
+                    aria-label={`${driver.nickname} ${t("driver")} 찜하기`}
+                  >
                     <LikeIcon color="red" />
                     <p className="pt-1 text-gray-500">{driver.favoriteCount}</p>
-                  </div>
+                  </button>
                 </div>
-                <div className="mt-[2px] flex items-center gap-2 text-[13px] md:mt-2">
+
+                {/* 정의 목록으로 변환 */}
+                <dl className="mt-[2px] flex items-center gap-2 text-[13px] md:mt-2">
                   <div className="flex gap-1">
-                    <Image src="/assets/icons/ic_star_yellow.svg" alt="별점" width={20} height={20} />
-                    <p>{driver.averageRating?.toFixed(1)}</p>
-                    <p className="text-gray-300">({driver.reviewCount ?? 0})</p>
+                    <Image src="/assets/icons/ic_star_yellow.svg" alt="" aria-hidden="true" width={20} height={20} />
+                    <dt className="sr-only">{t("rating")}</dt>
+                    <dd aria-label={`평점 ${driver.averageRating?.toFixed(1)}점, 리뷰 ${driver.reviewCount ?? 0}개`}>
+                      {driver.averageRating?.toFixed(1)}
+                    </dd>
+                    <span className="text-gray-300">({driver.reviewCount ?? 0})</span>
                   </div>
-                  <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
+                  <div className="border-line-200 h-[14px] w-[1px] border-l" aria-hidden="true"></div>
                   <div className="flex gap-1">
-                    <p className="text-gray-300">{t("career")}</p>
-                    <p>
+                    <dt>{t("career")}</dt>
+                    <dd>
                       {driver.career} {t("year")}
-                    </p>
+                    </dd>
                   </div>
-                  <div className="border-line-200 h-[14px] w-[1px] border-l"></div>
+                  <div className="border-line-200 h-[14px] w-[1px] border-l" aria-hidden="true"></div>
                   <div className="flex gap-1">
-                    <div>
+                    <dt>{t("count")}</dt>
+                    <dd>
                       {driver.work}
                       {t("count")}
-                    </div>
-                    <p className="text-gray-300">{t("confirm")}</p>
+                    </dd>
+                    <span className="text-gray-300">{t("confirm")}</span>
                   </div>
-                </div>
+                </dl>
               </div>
             </div>
-            <div className="absolute right-0 bottom-0 hidden items-center justify-center gap-[6px] md:flex">
+
+            <button
+              className="absolute right-0 bottom-0 hidden items-center justify-center gap-[6px] md:flex"
+              aria-label={`${driver.nickname} ${t("driver")} 찜하기`}
+            >
               <LikeIcon color="red" />
               <p className="pt-1 text-gray-500">{driver.favoriteCount}</p>
-            </div>
+            </button>
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 

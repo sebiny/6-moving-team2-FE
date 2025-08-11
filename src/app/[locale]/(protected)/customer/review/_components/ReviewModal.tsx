@@ -7,19 +7,25 @@ import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import { createReview } from "@/lib/api/api-review";
 import { ToastModal } from "@/components/common-modal/ToastModal";
+import { reviewModalProps } from "@/types/reviewType";
 
-interface Props {
-  setIsModal: (value: boolean) => void;
-}
-
-export default function ReviewModal({ setIsModal }: Props) {
+export default function ReviewModal({
+  setIsModal,
+  estimateRequestId,
+  moveType,
+  driverId,
+  isDesignated,
+  fromAddress,
+  toAddress,
+  moveDate,
+  driverNickName,
+  driverProfileImage
+}: reviewModalProps) {
   const t = useTranslations("Review");
   const tm = useTranslations("ToastModal.review");
   const [isValid, setIsValid] = useState(false);
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
-  const [estimateRequestId, setEstimateRequestId] = useState("");
-  const [driverId, setDriverId] = useState("");
 
   const handleSubmit = async () => {
     try {
@@ -38,10 +44,14 @@ export default function ReviewModal({ setIsModal }: Props) {
 
   return (
     <div
-      onClick={() => setIsModal(false)}
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 md:items-center"
+      onClick={(e) => {
+        setIsModal(false);
+        e.stopPropagation();
+      }}
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/20 md:items-center"
     >
       <div
+        onClick={(e) => e.stopPropagation()}
         className={clsx(
           "h-auto w-full rounded-t-[32px] bg-gray-50 px-6 py-8 shadow-[4px_4px_10px_rgba(169,169,169,0.2)]",
           "sm:max-h-none",
@@ -65,8 +75,14 @@ export default function ReviewModal({ setIsModal }: Props) {
             setIsValid={setIsValid}
             setRating={setRating}
             setContent={setContent}
-            setEstimateRequestId={setEstimateRequestId}
-            setDriverId={setDriverId}
+            estimateRequestId={estimateRequestId}
+            moveType={moveType}
+            fromAddress={fromAddress}
+            toAddress={toAddress}
+            moveDate={moveDate}
+            isDesignated={isDesignated}
+            driverNickName={driverNickName}
+            driverProfileImage={driverProfileImage}
           />
           <Button
             onClick={handleSubmit}

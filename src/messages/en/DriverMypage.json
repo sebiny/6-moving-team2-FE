@@ -5,5 +5,16 @@
   "overview": "Activity Overview",
   "editProfile": "Edit my profile",
   "editBasic": "Edit bacic Info",
-  "loadingDriverInfo": "Loading driver information!!"
+  "loadingDriverInfo": "Loading driver information!!",
+  "driverMyPageMain": "Driver My Page Main Section",
+  "driverInfoSection": "Driver Information Section",
+  "profileSection": "Profile Section",
+  "profileImageAlt": "Profile image",
+  "profileIconAlt": "Profile icon",
+  "favoriteCount": "Favorite count",
+  "driverIntroduction": "Driver Introduction",
+  "driverOverviewSection": "Driver Overview Section",
+  "serviceInfoSection": "Service Information Section",
+  "reviewSection": "Review Section",
+  "editButtons": "Edit Buttons"
 }

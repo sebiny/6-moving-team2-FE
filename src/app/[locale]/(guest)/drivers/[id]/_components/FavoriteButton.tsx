@@ -14,7 +14,7 @@ interface FavoriteButtonType {
   setFavorite: (value: boolean) => void;
 }
 
-function FavoriteButton({ favorite, setFavorite }: FavoriteButtonType) {
+const FavoriteButton = React.memo(function FavoriteButton({ favorite, setFavorite }: FavoriteButtonType) {
   const { isLg } = useMediaHook();
   const { id } = useParams();
   const driverId = id as string;
@@ -57,6 +57,6 @@ function FavoriteButton({ favorite, setFavorite }: FavoriteButtonType) {
       )}
     </button>
   );
-}
+});
 
 export default FavoriteButton;

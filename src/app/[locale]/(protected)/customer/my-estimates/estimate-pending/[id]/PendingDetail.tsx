@@ -136,7 +136,7 @@ export default function PendingDetailPage() {
           기사 프로필
         </h2>
         <OrangeBackground />
-        <div className="relative mx-auto max-w-[600px] md:max-w-[700px] lg:max-w-[1150px]">
+        <div className="relative mx-auto max-w-[550px] md:max-w-[650px] lg:max-w-[1150px]">
           <div className="relative -mt-10 md:-mt-20">
             <Image
               src={driver.profileImage ?? "/assets/images/img_profile.svg"}

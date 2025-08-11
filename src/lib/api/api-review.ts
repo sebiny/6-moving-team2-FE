@@ -31,11 +31,14 @@ export async function getMyReviews(page: number) {
 
 //리뷰 삭제
 export async function deleteMyReview(reviewId: string) {
-  return cookieFetch("/reviews/mine", {
+  const response = await cookieFetch(`/reviews/mine/${reviewId}`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ reviewId })
+    headers: { "Content-Type": "application/json" }
   });
+
+  if (!response.ok) {
+    throw new Error(`삭제 실패: ${response.status} ${response.statusText || "Unknown error"}`);
+  }
+
+  return response.json();
 }
