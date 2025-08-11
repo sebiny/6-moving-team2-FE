@@ -91,25 +91,37 @@ export default function SentEstimatesPage() {
     }
 
     if (error) {
-      return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{tC("failedReq")}</p>;
+      return (
+        <div role="alert" aria-live="polite">
+          <p className="text-center text-base font-normal text-red-400 lg:text-xl">{tC("failedReq")}</p>
+        </div>
+      );
     }
 
     if (estimates.length === 0) {
-      return <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("noSentReq")}</p>;
+      return (
+        <section aria-label="빈 상태" className="flex flex-col items-center gap-6">
+          <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tC("noSentReq")}</p>
+        </section>
+      );
     }
 
     // 정상적인 경우: 견적 목록 렌더링
-    return <EstimateCardList requests={estimates} />;
+    return (
+      <section aria-label="보낸 견적 목록">
+        <EstimateCardList requests={estimates} />
+      </section>
+    );
   };
 
   return (
-    <>
+    <main className="flex min-h-screen flex-col bg-neutral-50" role="main" aria-label="보낸 견적 페이지">
       <Header type="driver-estimate" selectedIdx={selectedIdx} setSelectedIdx={handleTabChange} />
       <div className="flex min-h-screen flex-col bg-neutral-50 px-4 pt-6 pb-10 md:pt-8 lg:pt-11">
         <div className="flex w-full flex-col items-center justify-center px-6 py-20">
           <div className="flex flex-col items-center gap-6">{renderContent()}</div>
         </div>
       </div>
-    </>
+    </main>
   );
 }

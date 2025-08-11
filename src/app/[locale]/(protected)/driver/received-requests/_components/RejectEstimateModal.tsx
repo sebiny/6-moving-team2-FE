@@ -94,6 +94,10 @@ export default function RejectEstimateModal({
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 md:items-center"
       onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reject-estimate-modal-title"
+      aria-describedby="reject-estimate-modal-description"
     >
       <div
         className={clsx(
@@ -105,15 +109,24 @@ export default function RejectEstimateModal({
       >
         <div className="flex flex-col gap-[26px] lg:gap-10">
           <div className="flex justify-between">
-            <p className="text-black-400 text-[18px] leading-[26px] font-semibold lg:text-[24px] lg:leading-[32px]">
-              {t("rejectReq")}
-            </p>
-            <Image onClick={onClose} src={XIcon} alt="X_icon" className="h-6 w-6 cursor-pointer lg:w-9" />
+            <h2
+              id="reject-estimate-modal-title"
+              className="text-black-400 m-0 p-0 text-[18px] leading-[26px] font-semibold lg:text-[24px] lg:leading-[32px]"
+            >
+              {t("reject")}
+            </h2>
+            <button
+              onClick={onClose}
+              className="m-0 h-6 w-6 cursor-pointer border-none bg-transparent p-0 lg:w-9"
+              aria-label="견적 거절 모달 닫기"
+            >
+              <Image src={XIcon} alt="닫기" className="h-full w-full" />
+            </button>
           </div>
           {/* ModalContent 내용 시작 */}
-          <div className="flex flex-col gap-7 self-stretch lg:gap-8">
+          <div id="reject-estimate-modal-description" className="flex flex-col gap-7 self-stretch lg:gap-8">
             <div>
-              <div className="flex gap-3">
+              <div className="flex gap-3" role="group" aria-label="이사 유형">
                 <ChipRectangle moveType={moveTypeKey} size={!isLg && isSm ? "sm" : "md"} />
                 {isDesignated && <ChipRectangle moveType="REQUEST" size={!isLg && isSm ? "sm" : "md"} />}
               </div>
@@ -124,15 +137,19 @@ export default function RejectEstimateModal({
                   </p>
                 </div>
               </div>
-              <div className="border-line-100 flex flex-row items-center gap-4 border-b py-3 md:flex-col md:items-start lg:flex-row lg:items-center lg:py-4">
-                <div className="flex flex-1 items-center">
+              <div
+                className="border-line-100 flex flex-row items-center gap-4 border-b py-3 md:flex-col md:items-start lg:flex-row lg:items-center lg:py-4"
+                role="group"
+                aria-label="이사 정보"
+              >
+                <div className="flex flex-1 items-center" role="group" aria-label="이사 경로">
                   <div>
                     <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">{t("from")}</p>
                     <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">
                       {translatedInfo.from}
                     </p>
                   </div>
-                  <Image src={arrow} height={23} alt="arrow" className="mx-3 w-3 lg:w-4" />
+                  <Image src={arrow} height={23} alt="출발지에서 도착지로" className="mx-3 w-3 lg:w-4" />
                   <div>
                     <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">{t("to")}</p>
                     <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">
@@ -144,17 +161,28 @@ export default function RejectEstimateModal({
                   <p className="text-[12px] leading-[18px] text-gray-500 lg:text-[14px] lg:leading-6">
                     {t("moveDate")}
                   </p>
-                  <p className="text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]">
+                  <time
+                    className="m-0 p-0 text-[13px] leading-[22px] font-medium lg:text-[14px] lg:leading-[26px]"
+                    dateTime={moveDate}
+                  >
                     {translatedInfo.date}
-                  </p>
+                  </time>
                 </div>
               </div>
             </div>
-            {/* 견적/코멘트 입력 */}
-            <div className="flex flex-col gap-7 lg:gap-8">
+            {/* 거절 사유 입력 */}
+            <div className="m-0 flex flex-col gap-7 p-0 lg:gap-8">
               <div>
-                <p className={textClass}>{t("enterReason")}</p>
-                <InputText setInputValid={setCommentValid} value={comment} onChange={setComment} />
+                <p className={`${textClass} m-0 p-0`}>{t("enterComment")}</p>
+                <InputText
+                  setInputValid={setCommentValid}
+                  value={comment}
+                  onChange={setComment}
+                  aria-describedby="reject-reason-description"
+                />
+                <div id="reject-reason-description" className="sr-only">
+                  견적 거절 사유를 입력해주세요
+                </div>
               </div>
             </div>
           </div>
@@ -165,6 +193,7 @@ export default function RejectEstimateModal({
             className="mt-auto h-[54px] lg:h-[64px]"
             isDisabled={!commentValid}
             onClick={() => commentValid && onSubmit(estimateRequestId, comment)}
+            aria-label={`${customerName} 고객의 요청 거절하기`}
           />
         </div>
       </div>

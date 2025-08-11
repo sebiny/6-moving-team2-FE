@@ -8,6 +8,7 @@ import OrangeBackground from "@/components/OrangeBackground";
 import ShareDriver from "@/components/ShareDriver";
 import EstimateHeaderSection from "./_components/EstimateHeaderSection";
 import EstimateInfoSection from "./_components/EstimateInfoSection";
+import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { useTranslations, useLocale } from "next-intl";
 import { driverService } from "@/lib/api/api-driver";
 import { DriverEstimateDetailType } from "@/types/estimateType";
@@ -15,6 +16,7 @@ import { formatDate, formatDateTime, setDayjsLocale } from "@/utills/dateUtils";
 import { MoveType, moveTypeLabelMap } from "@/constant/moveTypes";
 import { useKakaoShare } from "@/hooks/useKakaoShare";
 import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 export default function EstimateDetailPage() {
   const t = useTranslations("MyEstimate");
@@ -36,33 +38,31 @@ export default function EstimateDetailPage() {
   });
 
   const renderLoadingState = () => (
-    <>
+    <main className="flex min-h-screen flex-col bg-neutral-50" role="main" aria-label="견적 상세 페이지 로딩 중">
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
-        <div className="flex flex-col items-start gap-7">
-          <div className="h-8 w-32 animate-pulse rounded bg-gray-200"></div>
-          <div className="h-6 w-48 animate-pulse rounded bg-gray-200"></div>
-          <div className="h-4 w-24 animate-pulse rounded bg-gray-200"></div>
-        </div>
+        <LoadingLottie text={t("loading")} />
       </div>
-    </>
+    </main>
   );
 
   const renderErrorState = (message: string) => (
-    <>
+    <main className="flex min-h-screen flex-col bg-neutral-50" role="main" aria-label="견적 상세 페이지 오류">
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-80">
         <div className="flex flex-col items-start gap-7">
-          <div className="text-red-500">{message}</div>
+          <div role="alert" aria-live="polite" className="text-red-500">
+            {message}
+          </div>
         </div>
       </div>
-    </>
+    </main>
   );
 
   if (isPending) return renderLoadingState();
-  if (error || !estimateDetail) return renderErrorState("견적 정보를 불러올 수 없습니다.");
+  if (error || !estimateDetail) return renderErrorState(t("error.loadFailed"));
 
   const { estimateRequest, price, status, isDesignated } = estimateDetail;
   const { customer, moveType, moveDate, fromAddress, toAddress } = estimateRequest;
@@ -70,7 +70,7 @@ export default function EstimateDetailPage() {
   // 데이터 안전성 검증
   if (!customer?.authUser || !fromAddress || !toAddress) {
     console.error("Missing required data:", { customer, fromAddress, toAddress });
-    return renderErrorState("견적 정보가 불완전합니다.");
+    return renderErrorState(t("error.incompleteData"));
   }
 
   const customerName = customer.authUser.name || "고객명 없음";
@@ -82,7 +82,7 @@ export default function EstimateDetailPage() {
         onSuccess: (response) => {
           const shareUrl = response?.shareUrl;
           if (!shareUrl) {
-            alert("공유 URL을 생성하지 못했습니다.");
+            ToastModal(t("error.shareUrlFailed"), 3000, "error");
             return;
           }
 
@@ -95,7 +95,7 @@ export default function EstimateDetailPage() {
           });
         },
         onError: (error: Error) => {
-          alert("공유 링크 생성 실패: " + error.message);
+          ToastModal(t("error.shareLinkFailed") + ": " + error.message, 3000, "error");
         }
       }
     );
@@ -108,26 +108,26 @@ export default function EstimateDetailPage() {
         onSuccess: (response) => {
           const shareUrl = response?.shareUrl;
           if (!shareUrl) {
-            alert("공유 URL을 생성하지 못했습니다.");
+            ToastModal(t("error.shareUrlFailed"), 3000, "error");
             return;
           }
           const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
           window.open(facebookShareUrl, "_blank", "width=600,height=400");
         },
         onError: (error: Error) => {
-          alert("Facebook 공유 링크 생성 실패: " + error.message);
+          ToastModal(t("error.facebookShareFailed") + ": " + error.message, 3000, "error");
         }
       }
     );
   };
 
   return (
-    <>
+    <main className="flex min-h-screen flex-col bg-neutral-50" role="main" aria-label="견적 상세 페이지">
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       {/* 상단 정보 + 공유 */}
       <div className="mt-8 flex w-full flex-col gap-10 px-5 md:gap-7 md:px-55 lg:mb-20 lg:flex-row lg:items-start lg:justify-between">
-        <div className="w-full lg:w-[60%]">
+        <section className="w-full lg:w-[60%]" aria-label="견적 정보">
           <EstimateHeaderSection
             moveType={moveType as MoveType}
             isDesignated={isDesignated}
@@ -148,16 +148,16 @@ export default function EstimateDetailPage() {
               to={toAddress.street}
             />
           </div>
-        </div>
+        </section>
 
         {/* 오른쪽 - 공유 버튼 (lg에서만 보임) */}
-        <div className="hidden lg:flex lg:w-[30%] lg:items-start lg:justify-end">
+        <aside className="hidden lg:flex lg:w-[30%] lg:items-start lg:justify-end" aria-label="공유 옵션">
           <ShareDriver
             text={t("shareEstimate")}
             onKakaoShare={handleKakaoShare}
             onFacebookShare={handleFacebookShare}
           />
-        </div>
+        </aside>
       </div>
 
       {/* 모바일/태블릿용 구분선과 공유 버튼 */}
@@ -166,13 +166,16 @@ export default function EstimateDetailPage() {
         <div className="h-0 w-full outline outline-offset-[-0.5px] outline-zinc-100" />
       </div>
 
-      <div className="items-left mb-10 flex flex-col px-5 md:flex-row md:px-55 lg:hidden">
+      <aside
+        className="items-left mb-10 flex flex-col px-5 md:flex-row md:px-55 lg:hidden"
+        aria-label="모바일 공유 옵션"
+      >
         <ShareDriver
           text={t("wannaRecommend?")}
           onKakaoShare={handleKakaoShare}
           onFacebookShare={handleFacebookShare}
         />
-      </div>
-    </>
+      </aside>
+    </main>
   );
 }
