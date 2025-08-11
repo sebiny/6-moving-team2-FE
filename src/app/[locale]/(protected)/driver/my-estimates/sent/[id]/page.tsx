@@ -36,29 +36,31 @@ export default function EstimateDetailPage() {
   });
 
   const renderLoadingState = () => (
-    <>
+    <main className="flex min-h-screen flex-col bg-neutral-50" role="main" aria-label="견적 상세 페이지 로딩 중">
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
         <div className="flex flex-col items-start gap-7">
-          <div className="h-8 w-32 animate-pulse rounded bg-gray-200"></div>
-          <div className="h-6 w-48 animate-pulse rounded bg-gray-200"></div>
-          <div className="h-4 w-24 animate-pulse rounded bg-gray-200"></div>
+          <div className="h-8 w-32 animate-pulse rounded bg-gray-200" aria-hidden="true"></div>
+          <div className="h-6 w-48 animate-pulse rounded bg-gray-200" aria-hidden="true"></div>
+          <div className="h-4 w-24 animate-pulse rounded bg-gray-200" aria-hidden="true"></div>
         </div>
       </div>
-    </>
+    </main>
   );
 
   const renderErrorState = (message: string) => (
-    <>
+    <main className="flex min-h-screen flex-col bg-neutral-50" role="main" aria-label="견적 상세 페이지 오류">
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-80">
         <div className="flex flex-col items-start gap-7">
-          <div className="text-red-500">{message}</div>
+          <div role="alert" aria-live="polite" className="text-red-500">
+            {message}
+          </div>
         </div>
       </div>
-    </>
+    </main>
   );
 
   if (isPending) return renderLoadingState();
@@ -122,12 +124,12 @@ export default function EstimateDetailPage() {
   };
 
   return (
-    <>
+    <main className="flex min-h-screen flex-col bg-neutral-50" role="main" aria-label="견적 상세 페이지">
       <PageHeader title={t("estDetail")} />
       <OrangeBackground />
       {/* 상단 정보 + 공유 */}
       <div className="mt-8 flex w-full flex-col gap-10 px-5 md:gap-7 md:px-55 lg:mb-20 lg:flex-row lg:items-start lg:justify-between">
-        <div className="w-full lg:w-[60%]">
+        <section className="w-full lg:w-[60%]" aria-label="견적 정보">
           <EstimateHeaderSection
             moveType={moveType as MoveType}
             isDesignated={isDesignated}
@@ -148,16 +150,16 @@ export default function EstimateDetailPage() {
               to={toAddress.street}
             />
           </div>
-        </div>
+        </section>
 
         {/* 오른쪽 - 공유 버튼 (lg에서만 보임) */}
-        <div className="hidden lg:flex lg:w-[30%] lg:items-start lg:justify-end">
+        <aside className="hidden lg:flex lg:w-[30%] lg:items-start lg:justify-end" aria-label="공유 옵션">
           <ShareDriver
             text={t("shareEstimate")}
             onKakaoShare={handleKakaoShare}
             onFacebookShare={handleFacebookShare}
           />
-        </div>
+        </aside>
       </div>
 
       {/* 모바일/태블릿용 구분선과 공유 버튼 */}
@@ -166,13 +168,16 @@ export default function EstimateDetailPage() {
         <div className="h-0 w-full outline outline-offset-[-0.5px] outline-zinc-100" />
       </div>
 
-      <div className="items-left mb-10 flex flex-col px-5 md:flex-row md:px-55 lg:hidden">
+      <aside
+        className="items-left mb-10 flex flex-col px-5 md:flex-row md:px-55 lg:hidden"
+        aria-label="모바일 공유 옵션"
+      >
         <ShareDriver
           text={t("wannaRecommend?")}
           onKakaoShare={handleKakaoShare}
           onFacebookShare={handleFacebookShare}
         />
-      </div>
-    </>
+      </aside>
+    </main>
   );
 }
