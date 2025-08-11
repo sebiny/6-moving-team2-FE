@@ -93,9 +93,19 @@ export default function Gnb() {
                 <Notification
                   ref={notificationRef}
                   isOpen={openLayer === "notification"}
-                  onClick={() => toggleLayer("notification")}
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    toggleLayer("notification");
+                  }}
                 />
-                <Profile ref={profileRef} isOpen={openLayer === "profile"} onClick={() => toggleLayer("profile")} />
+                <Profile
+                  ref={profileRef}
+                  isOpen={openLayer === "profile"}
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    toggleLayer("profile");
+                  }}
+                />
               </div>
             ) : (
               <div>
