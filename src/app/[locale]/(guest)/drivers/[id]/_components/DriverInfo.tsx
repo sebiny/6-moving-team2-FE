@@ -19,7 +19,7 @@ function DriverInfo({ driver }: DriverInfoType) {
   useEffect(() => {
     const translatedTexts = async () => {
       if (!driver) return;
-      if (locale == "ko") {
+      if (locale === "ko") {
         setTranslatedIntro({
           short: driver.shortIntro ?? "",
           detail: driver.detailIntro ?? ""
@@ -45,35 +45,54 @@ function DriverInfo({ driver }: DriverInfoType) {
 
     translatedTexts();
   }, [driver, locale]);
+
   return (
-    <div className="relative mt-[35px] md:mt-[46px] lg:mt-[62px]">
-      <Image
-        src={driver.profileImage ?? "/assets/images/img_profile.svg"}
-        alt="프로필"
-        width={134}
-        height={134}
-        className="absolute top-[-77px] h-16 w-16 rounded-2xl object-cover object-center md:top-[-120px] md:h-25 md:w-25 lg:top-[-150px] lg:h-[134px] lg:w-[134px]"
-      />
-      <div className="flex gap-3">
+    <section className="relative mt-[35px] md:mt-[46px] lg:mt-[62px]" aria-label={t("driverPage.driverInfoSection")}>
+      <figure className="absolute top-[-77px] md:top-[-120px] lg:top-[-150px]">
+        <Image
+          src={driver.profileImage ?? "/assets/images/img_profile.svg"}
+          alt={t("driverPage.profileImageAlt", { name: driver.nickname })}
+          width={134}
+          height={134}
+          className="h-16 w-16 rounded-2xl object-cover object-center md:h-25 md:w-25 lg:h-[134px] lg:w-[134px]"
+        />
+      </figure>
+
+      {/* 이동 서비스 유형 */}
+      <ul className="flex gap-3" aria-label={t("driverPage.serviceTypeList")}>
         {driver.moveType.map((service) => (
-          <ChipRectangle moveType={service} key={service} />
+          <li key={service}>
+            <ChipRectangle moveType={service} />
+          </li>
         ))}
-      </div>
-      <p className="mt-3 text-2xl font-semibold">{translatedIntro.short}</p>
+      </ul>
+
+      {/* 짧은 소개 */}
+      <p className="mt-3 text-2xl font-semibold" aria-label={t("driverPage.shortIntro")}>
+        {translatedIntro.short}
+      </p>
+
+      {/* 닉네임과 찜 수 */}
       <div className="mt-5 flex justify-between">
-        <div className="flex gap-[6px]">
-          <Image src="/assets/icons/ic_driver.svg" alt="기사님" width={20} height={23} />
+        <div className="flex items-center gap-[6px]" aria-label={t("driverPage.driverNameSection")}>
+          <Image src="/assets/icons/ic_driver.svg" alt="" role="presentation" width={20} height={23} />
           <p className="text-lg font-semibold">
             {driver.nickname}
             {t("driverFindCard.driver")}
           </p>
         </div>
-        <div className="flex items-center">
-          <p>{driver.favoriteCount}</p>
-          <LikeIcon color="black" />
+        <div className="flex items-center" aria-label={t("driverPage.favoriteCount", { count: driver.favoriteCount })}>
+          <p aria-hidden="true">{driver.favoriteCount}</p>
+          <LikeIcon color="black" aria-hidden="true" />
         </div>
       </div>
-      <div className="mt-5 mb-[31px] text-gray-500">{translatedIntro.detail}</div>
+
+      {/* 상세 소개 */}
+      <p className="mt-5 mb-[31px] text-gray-500" aria-label={t("driverPage.detailIntro")}>
+        {translatedIntro.detail}
+      </p>
+
+      {/* 간단 정보 */}
       <DriverSimpleInfo
         type="detail"
         career={driver.career}
@@ -81,7 +100,7 @@ function DriverInfo({ driver }: DriverInfoType) {
         reviewCount={driver.reviewCount}
         work={driver.work}
       />
-    </div>
+    </section>
   );
 }
 

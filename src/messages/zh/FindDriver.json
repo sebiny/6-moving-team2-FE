@@ -9,7 +9,8 @@
     "career": "经验",
     "confirm": "确认",
     "year": "年",
-    "count": "个"
+    "count": "个",
+    "rating": "评分"
   },
   "noEstimateRequest": "当前没有正在进行的一般报价请求。",
   "alreadyApprovedEstimateRequest": "已确定司机的请求无法再进行指定请求。",
@@ -30,7 +31,25 @@
     "requestQuote": "指定报价请求",
     "requestingQuote": "正在请求指定报价…",
     "requestQuoteComplete": "指定报价请求已完成",
-    "reviewFetchFailed": "无法加载评论数据"
+    "reviewFetchFailed": "无法加载评论数据",
+    "driverInfoSection": "司机信息",
+    "serviceInfoSection": "服务信息",
+    "shareSection": "分享区",
+    "estimateAndShareSection": "报价与分享",
+    "bottomNavigation": "底部导航",
+    "reviewSection": "司机评价",
+    "profileImageAlt": "{name}的头像",
+    "serviceTypeList": "服务类型列表",
+    "shortIntro": "简短介绍",
+    "driverNameSection": "司机姓名区",
+    "favoriteCount": "收藏数：{count}",
+    "detailIntro": "详细介绍",
+    "reviewSummary": "评论摘要",
+    "averageRating": "平均评分",
+    "totalReviewCount": "评论总数",
+    "ratingDistribution": "评分分布",
+    "pagination": "分页",
+    "reviewList": "评论列表"
   },
   "requestQuote": {
     "title": "给司机",

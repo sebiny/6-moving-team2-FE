@@ -10,7 +10,8 @@
     "career": "경력",
     "confirm": "확정",
     "year": "년",
-    "count": "건"
+    "count": "건",
+    "rating": "평점"
   },
   "noEstimateRequest": "진행 중인 일반 견적 요청이 없습니다.",
   "alreadyApprovedEstimateRequest": "이미 기사님이 확정된 요청에는 지정 요청을 할 수 없습니다.",
@@ -31,7 +32,25 @@
     "requestQuote": "지정 견적 요청하기",
     "requestingQuote": "지정 견적 요청 중...",
     "requestQuoteComplete": "지정 견적 요청 완료",
-    "reviewFetchFailed": "리뷰 데이터를 불러오지 못했습니다."
+    "reviewFetchFailed": "리뷰 데이터를 불러오지 못했습니다.",
+    "driverInfoSection": "기사 정보",
+    "serviceInfoSection": "서비스 정보",
+    "shareSection": "공유 섹션",
+    "estimateAndShareSection": "견적 요청 및 공유",
+    "bottomNavigation": "하단 내비게이션",
+    "reviewSection": "기사 리뷰",
+    "profileImageAlt": "{name}님의 프로필 이미지",
+    "serviceTypeList": "서비스 유형 목록",
+    "shortIntro": "짧은 소개",
+    "driverNameSection": "기사 이름 섹션",
+    "favoriteCount": "찜 개수: {count}",
+    "detailIntro": "상세 소개",
+    "reviewSummary": "리뷰 요약",
+    "averageRating": "평균 평점",
+    "totalReviewCount": "전체 리뷰 수",
+    "ratingDistribution": "평점 분포",
+    "pagination": "페이지 네비게이션",
+    "reviewList": "리뷰 목록"
   },
   "requestQuote": {
     "title": "기사님에게",

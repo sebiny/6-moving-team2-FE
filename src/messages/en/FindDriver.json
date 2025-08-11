@@ -9,7 +9,8 @@
     "career": "Career",
     "confirm": "Done",
     "year": "YR",
-    "count": ""
+    "count": "",
+    "rating": "Rating"
   },
   "noEstimateRequest": "There is no ongoing general estimate request.",
   "alreadyApprovedEstimateRequest": "You cannot make a designated request for a confirmed estimate.",
@@ -30,7 +31,25 @@
     "requestQuote": "Request a Quote",
     "requestingQuote": "Requesting a Quote",
     "requestQuoteComplete": "Complete Quote",
-    "reviewFetchFailed": "Failed to load review data."
+    "reviewFetchFailed": "Failed to load review data.",
+    "driverInfoSection": "Driver Information",
+    "serviceInfoSection": "Service Information",
+    "shareSection": "Share Section",
+    "estimateAndShareSection": "Estimate and Share",
+    "bottomNavigation": "Bottom Navigation",
+    "reviewSection": "Driver Reviews",
+    "profileImageAlt": "{name}'s profile image",
+    "serviceTypeList": "List of service types",
+    "shortIntro": "Short introduction",
+    "driverNameSection": "Driver name section",
+    "favoriteCount": "Number of favorites: {count}",
+    "detailIntro": "Detailed introduction",
+    "reviewSummary": "Review Summary",
+    "averageRating": "Average Rating",
+    "totalReviewCount": "Total Review Count",
+    "ratingDistribution": "Rating Distribution",
+    "pagination": "Pagination",
+    "reviewList": "Review List"
   },
   "requestQuote": {
     "title": "To the Driver",
