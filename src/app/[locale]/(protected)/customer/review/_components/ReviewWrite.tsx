@@ -19,7 +19,6 @@ export default function ReviewWrite({ setIsValid, setRating, setContent }: Props
 
   useEffect(() => {
     setIsValid(localRating > 0 && InputValid);
-
     if (localContent) {
       setContent(localContent);
     }

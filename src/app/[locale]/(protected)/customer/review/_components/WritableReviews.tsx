@@ -14,15 +14,16 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { ReviewableItem } from "@/types/reviewType";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
+import ReviewModal from "./ReviewModal";
 
-interface ReviewsProps {
-  setIsModal: (value: boolean) => void;
-}
 type ReviewListResponse = {
   reviewableEstimates: ReviewableItem[];
   totalCount: number;
 };
-export default function Reviews({ setIsModal }: ReviewsProps) {
+export default function Reviews() {
+  const [isModal, setIsModal] = useState(false);
+  const [selectedReviewable, setSelectedReviewable] = useState<ReviewableItem | null>(null);
+
   const t = useTranslations("Review");
   const locale = useLocale();
   const tC = useTranslations("Common");
@@ -37,6 +38,8 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];
+  console.log("reviewables", reviewables);
+  console.log("reviewables", reviewables[0]);
   useEffect(() => {
     //병렬 요청
     const translateAllIntros = async () => {
@@ -89,6 +92,10 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
         {reviewables.map((reviewable) => (
           <div
             key={reviewable.id}
+            onClick={() => {
+              setSelectedReviewable(reviewable); // 클릭 시 해당 항목 선택
+              setIsModal(true); // 모달 열기
+            }}
             className={clsx(
               "lg:h-[242px] lg:w-280 lg:gap-6 lg:px-10 lg:py-8",
               "h-[410px] w-[327px] px-5 py-6",
@@ -172,6 +179,20 @@ export default function Reviews({ setIsModal }: ReviewsProps) {
                 type="orange"
                 text={t("button.createReview")}
                 className="w-[287px] py-[16px] sm:rounded-[12px] sm:font-medium"
+              />
+            )}
+            {isModal && selectedReviewable && (
+              <ReviewModal
+                setIsModal={setIsModal}
+                driverId={selectedReviewable.estimates[0].driver.id}
+                estimateRequestId={selectedReviewable.id}
+                moveType={selectedReviewable.moveType}
+                isDesignated={selectedReviewable.estimates[0].isDesignated}
+                fromAddress={selectedReviewable.fromAddress}
+                toAddress={selectedReviewable.toAddress}
+                moveDate={selectedReviewable.moveDate}
+                driverNickName={selectedReviewable.estimates[0].driver.nickname}
+                driverProfileImage={selectedReviewable.estimates[0].driver.profileImage}
               />
             )}
           </div>
