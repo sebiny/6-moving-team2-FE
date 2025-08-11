@@ -19,6 +19,7 @@ import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
 import PageHeader from "@/components/common/PageHeader";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
 import "dayjs/locale/ko";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 export default function PendingDetailPage() {
   dayjs.locale("ko");
@@ -56,7 +57,7 @@ export default function PendingDetailPage() {
     acceptEstimate(data.id, {
       onSuccess: () => setShowModal(true),
       onError: (error: any) => {
-        alert(error.message || "견적 확정 중 오류가 발생했습니다.");
+        ToastModal(error.message || "견적 확정 중 오류가 발생했습니다.");
       }
     });
   };
@@ -70,7 +71,7 @@ export default function PendingDetailPage() {
           const shareUrl = response?.shareUrl;
 
           if (!shareUrl) {
-            alert("공유 URL을 생성하지 못했습니다.");
+            ToastModal("공유 URL을 생성하지 못했습니다.");
             return;
           }
 
@@ -93,7 +94,7 @@ export default function PendingDetailPage() {
           });
         },
         onError: (error: any) => {
-          alert("공유 링크 생성 실패: " + error.message);
+          ToastModal("공유 링크 생성 실패: " + error.message);
         }
       }
     );
@@ -108,7 +109,7 @@ export default function PendingDetailPage() {
           const shareUrl = response?.shareUrl;
 
           if (!shareUrl) {
-            alert("공유 URL을 생성하지 못했습니다.");
+            ToastModal("공유 URL을 생성하지 못했습니다.");
             return;
           }
 
@@ -117,7 +118,7 @@ export default function PendingDetailPage() {
           window.open(facebookShareUrl, "_blank", "width=600,height=400");
         },
         onError: (error: any) => {
-          alert("Facebook 공유 링크 생성 실패: " + error.message);
+          ToastModal("Facebook 공유 링크 생성 실패: " + error.message);
         }
       }
     );
@@ -131,10 +132,7 @@ export default function PendingDetailPage() {
       </header>
 
       {/* 상단 배경 + 프로필 */}
-      <section aria-labelledby="driver-profile-section" className="relative">
-        <h2 id="driver-profile-section" className="sr-only">
-          기사 프로필
-        </h2>
+      <section className="relative" aria-label="기사 프로필">
         <OrangeBackground />
         <div className="relative mx-auto max-w-[550px] md:max-w-[650px] lg:max-w-[1150px]">
           <div className="relative -mt-10 md:-mt-20">
@@ -153,11 +151,7 @@ export default function PendingDetailPage() {
       <main id="main-content" role="main" className="bg-white">
         <div className="flex flex-col px-5 py-[60px] pt-10 md:px-17 md:pt-15 lg:mx-auto lg:grid lg:max-w-[1300px] lg:grid-cols-[1fr_300px] lg:gap-20 lg:px-10 lg:pt-[50px] lg:pb-[120px]">
           {/* 왼쪽 메인 콘텐츠 */}
-          <article className="flex flex-col gap-10" aria-labelledby="estimate-article-title">
-            <h1 id="estimate-article-title" className="sr-only">
-              {driver.name} 기사님의 견적 상세
-            </h1>
-
+          <article className="flex flex-col gap-10">
             <Title
               status={status}
               labels={labels}
@@ -177,10 +171,7 @@ export default function PendingDetailPage() {
 
             <hr className="border-t border-gray-100" />
 
-            <section aria-labelledby="estimate-info-heading">
-              <h2 id="estimate-info-heading" className="sr-only">
-                견적 정보
-              </h2>
+            <section aria-labelledby="견적 정보">
               <EstimateDetailInfo
                 requestDate={dayjs(requestDate).format("YY.MM.DD")}
                 serviceType={getMoveTypeLabel(moveType)}
