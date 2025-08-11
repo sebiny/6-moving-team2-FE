@@ -109,14 +109,8 @@ export default function PendingEstimates() {
       {/* 페이지 헤더: 현재 활성 요청 요약 */}
       <header
         aria-labelledby="pending-estimates-heading"
-        className="relative z-10 -mt-2 mb-0 bg-white shadow-md md:-mt-3"
+        className="relative z-9 -mt-2 mb-0 bg-white shadow-md md:-mt-3"
       >
-        <h1
-          id="pending-estimates-heading"
-          className="mx-auto w-full px-5 py-6 md:px-15 lg:max-w-[1400px] lg:px-20 lg:py-8"
-        >
-          대기 중인 견적 리스트
-        </h1>
         <EstimateSubHeader data={translatedRequestData!} />
       </header>
 
