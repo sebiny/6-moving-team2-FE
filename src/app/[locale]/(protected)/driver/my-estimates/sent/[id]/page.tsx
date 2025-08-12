@@ -8,7 +8,7 @@ import OrangeBackground from "@/components/OrangeBackground";
 import ShareDriver from "@/components/ShareDriver";
 import EstimateHeaderSection from "./_components/EstimateHeaderSection";
 import EstimateInfoSection from "./_components/EstimateInfoSection";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingAnimation from "@/components/loading/LoadingAnimation";
 import { useTranslations, useLocale } from "next-intl";
 import { driverService } from "@/lib/api/api-driver";
 import { DriverEstimateDetailType } from "@/types/estimateType";
@@ -42,9 +42,8 @@ export default function EstimateDetailPage() {
     () => (
       <main className="flex min-h-screen flex-col bg-neutral-50" role="main" aria-label="견적 상세 페이지 로딩 중">
         <PageHeader title={t("estDetail")} />
-        <OrangeBackground />
         <div className="mt-8 flex w-full flex-col gap-10 px-4 lg:flex-row lg:items-start lg:justify-between lg:px-90">
-          <LoadingLottie text={t("loading")} />
+          <LoadingAnimation />
         </div>
       </main>
     ),
