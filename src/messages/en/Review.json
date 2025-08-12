@@ -32,5 +32,7 @@
     "date": "Moving Date"
   },
   "myReviewListTitle": "My Review List",
-  "myReviewableList": "My Writable Reviews"
+  "myReviewableList": "My Writable Reviews",
+  "reviewDeleted": "Review deleted successfully",
+  "reviewDeleteFailed": "Failed to delete review"
 }

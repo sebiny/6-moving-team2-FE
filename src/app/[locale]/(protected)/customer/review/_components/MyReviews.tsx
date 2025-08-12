@@ -16,6 +16,7 @@ import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { batchTranslate } from "@/utills/batchTranslate";
 import type { ReviewListResponse, TranslatedMeta } from "@/types/reviewType";
 import Button from "@/components/Button";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
@@ -45,11 +46,12 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const handleDelete = async (reviewId: string, driverId: string) => {
     try {
       await deleteMyReview(reviewId, driverId);
-      alert("리뷰 삭제 완료");
+      ToastModal(t("reviewDeleted"));
+
       queryClient.invalidateQueries({ queryKey: ["reviews"] }); // 목록 새로고침
     } catch (err) {
       console.error(err);
-      alert("삭제 실패");
+      ToastModal(t("reviewDeleteFailed"));
     }
   };
   const locale = useLocale();
