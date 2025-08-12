@@ -128,14 +128,14 @@ export default function Gnb() {
             ref={notificationRef}
             className={isLoggedIn ? "block" : "hidden"}
             isOpen={openLayer === "notification"}
-            onClick={() => toggleLayer("notification")}
+            onClick={(e: any) => toggleLayer("notification")}
           />
           <div className="flex items-center justify-between gap-5">
             <Profile
               ref={profileRef}
               className={isLoggedIn ? "block" : "hidden"}
               isOpen={openLayer === "profile"}
-              onClick={() => toggleLayer("profile")}
+              onClick={(e: any) => toggleLayer("profile")}
             />
             <GnbListLayout
               ref={gnbMobileMenuRef}
