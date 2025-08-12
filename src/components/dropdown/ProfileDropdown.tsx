@@ -40,9 +40,8 @@ export default function Profile({ ref, isOpen, onClick, className }: ProfileProp
     const buttonElement = event.currentTarget;
     const uniqueName = `gnb-menu-${path.replace("/", "")}`;
     buttonElement.style.viewTransitionName = uniqueName;
-
+    onClick?.(event);
     const transition = pushWithTransition(path);
-    onClick?.(onClick);
 
     // transition 객체가 존재하면(API가 지원되면)
     if (transition) {
