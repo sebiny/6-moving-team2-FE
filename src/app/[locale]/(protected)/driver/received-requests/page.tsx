@@ -252,6 +252,7 @@ export default function ReceivedRequestsPage() {
                 src={imgEmptyReview}
                 alt="받은 요청이 없음을 나타내는 빈 상태 이미지"
                 className="absolute top-0 left-0 h-full w-full object-contain opacity-50"
+                unoptimized
               />
             </div>
             <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tm("noRequestReceived")}</p>
