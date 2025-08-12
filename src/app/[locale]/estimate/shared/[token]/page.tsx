@@ -64,7 +64,7 @@ export default function SharedEstimatePage() {
       <header aria-label="견적서 공유 헤더" className="relative">
         <OrangeBackground />
         {!isDriverShared && (
-          <div className="relative mx-auto max-w-[550px] md:max-w-[650px] lg:max-w-[950px]">
+          <div className="relative mx-auto max-w-[650px] md:max-w-[850px] lg:max-w-[1050px]">
             {/* 장식/프로필: 정보 전달 목적이면 figure, 아니면 단순 이미지 */}
             <figure className="relative -mt-10 md:-mt-20">
               <Image
