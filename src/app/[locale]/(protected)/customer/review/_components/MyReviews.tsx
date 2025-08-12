@@ -25,10 +25,13 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const [page, setPage] = useState(1); //임의로 추가
   const { isSm, isMd, isLg } = useMediaHook();
 
-  const formatDate = (isoString: string) => {
+  const formatDate = (isoString?: string) => {
+    if (!isoString) return ""; // 없으면 빈 문자열 반환하거나 적절히 처리
     const date = new Date(isoString);
+    if (isNaN(date.getTime())) return ""; // 유효하지 않은 날짜면 빈 문자열 반환
     return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
   };
+
   const queryClient = useQueryClient();
   //리액트쿼리로 리뷰 불러오기
   const { data, isLoading, isError } = useQuery<ReviewListResponse>({
@@ -38,7 +41,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviews = data?.reviews ?? [];
-
+  console.log("reviews", reviews[0]);
   const handleDelete = async (reviewId: string, driverId: string) => {
     try {
       await deleteMyReview(reviewId, driverId);
@@ -49,17 +52,6 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
       alert("삭제 실패");
     }
   };
-  const handleEdit = async (reviewId: string, driverId: string, rating: number, content: string) => {
-    try {
-      await updateMyReview(reviewId, driverId, rating, content);
-      alert("리뷰 수정 완료");
-      queryClient.invalidateQueries({ queryKey: ["reviews"] }); // 목록 새로고침
-    } catch (err) {
-      console.error(err);
-      alert("수정 실패");
-    }
-  };
-
   const locale = useLocale();
   const [translatedMeta, setTranslatedMeta] = useState<Record<string, TranslatedMeta>>({});
   useEffect(() => {
@@ -79,7 +71,8 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
               toDistrict: toAddress.district,
               moveDate: formatDate(moveDate),
               nickname,
-              shortIntro
+              shortIntro,
+              createdAt: formatDate(review.createdAt)
             };
 
             try {
@@ -252,7 +245,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
               {isSm && !isMd && (
                 <div className="mt-auto flex justify-end">
                   <p className="pr-2 text-[12px] leading-[18px] text-gray-300">{t("review.date")}</p>
-                  <p className="text-[12px] leading-[18px] text-gray-300">{translatedMeta[review.id]?.moveDate}</p>
+                  <p className="text-[12px] leading-[18px] text-gray-300">{translatedMeta[review.id]?.createdAt}</p>
                 </div>
               )}
               <div className="flex justify-between gap-2 md:gap-6">
