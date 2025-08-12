@@ -5,7 +5,6 @@ export function useTransitionRouter() {
   const pathname = usePathname();
 
   const pushWithTransition = (path: string): ViewTransition | undefined => {
-    if (path === pathname) return;
     if (path === pathname) {
       console.log("같은 경로라서 리턴");
       return;

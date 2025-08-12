@@ -94,7 +94,6 @@ export default function Gnb() {
                   ref={notificationRef}
                   isOpen={openLayer === "notification"}
                   onClick={(e: any) => {
-                    e.stopPropagation();
                     toggleLayer("notification");
                   }}
                 />
@@ -102,7 +101,6 @@ export default function Gnb() {
                   ref={profileRef}
                   isOpen={openLayer === "profile"}
                   onClick={(e: any) => {
-                    e.stopPropagation();
                     toggleLayer("profile");
                   }}
                 />
