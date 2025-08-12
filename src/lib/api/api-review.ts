@@ -24,6 +24,7 @@ export async function createReview(data: {
 }) {
   return cookieFetch("/reviews", {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
 }
@@ -37,9 +38,9 @@ export async function deleteMyReview(reviewId: string, driverId: string) {
   return response;
 }
 //리뷰 수정
-export async function updateMyReview(reviewId: string, driverId: string, rating: number, content: string) {
-  return cookieFetch(`/reviews/mine/${reviewId}`, {
+export async function updateMyReview(reviewId: string, driverId: string, data: { rating: number; content: string }) {
+  return cookieFetch(`/reviews/mine/${reviewId}?driverId=${driverId}`, {
     method: "PUT",
-    body: JSON.stringify({ driverId, rating, content })
+    body: JSON.stringify(data)
   });
 }
