@@ -26,6 +26,7 @@ export default function ReviewModal({
   const [isValid, setIsValid] = useState(false);
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
+  console.log({ estimateRequestId, driverId, rating, content });
 
   const handleSubmit = async () => {
     try {

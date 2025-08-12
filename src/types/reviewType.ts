@@ -13,11 +13,13 @@ export type ReviewItem = {
   id: string;
   content: string;
   rating: number;
+  createdAt: string;
   driver: {
     nickname: string;
     profileImage: string | null;
     shortIntro: string;
     averageRating: number;
+    id: string;
   };
   request: {
     moveDate: string;
@@ -100,4 +102,5 @@ export type TranslatedMeta = {
   moveDate: string;
   nickname: string;
   shortIntro: string;
+  createdAt: string;
 };
