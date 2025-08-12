@@ -16,5 +16,15 @@
   "service": "Service",
   "useDate": "Date of Use",
   "wannaRecommend?": "Wanna Recommend The Driver?",
-  "shareEstimate": "Share Estimate"
+  "shareEstimate": "Share Estimate",
+  "comment": "Comment",
+  "rejectReason": "Rejection Reason",
+  "loading": "Loading estimate information...",
+  "error": {
+    "loadFailed": "Failed to load estimate information.",
+    "incompleteData": "Estimate information is incomplete.",
+    "shareUrlFailed": "Failed to generate share URL.",
+    "shareLinkFailed": "Share link generation failed",
+    "facebookShareFailed": "Facebook share link generation failed"
+  }
 }

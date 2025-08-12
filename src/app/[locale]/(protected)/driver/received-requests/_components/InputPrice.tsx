@@ -54,6 +54,7 @@ export default function InputPrice({ value, onChange, placeholder, icon, size = 
         }
       >
         <input
+          id="price-input"
           className={
             isSm
               ? "w-full bg-transparent font-['Pretendard'] text-base leading-relaxed font-normal text-neutral-800 outline-none placeholder:text-neutral-400"
@@ -65,6 +66,8 @@ export default function InputPrice({ value, onChange, placeholder, icon, size = 
           value={value}
           onChange={handleChange}
           placeholder={placeholder || t("enter")}
+          aria-label="견적 금액 입력"
+          aria-describedby="price-unit"
         />
         {icon && isSm && (
           <div className="absolute top-1/2 right-4 flex h-6 w-6 -translate-y-1/2 items-center justify-center overflow-hidden">
@@ -72,7 +75,9 @@ export default function InputPrice({ value, onChange, placeholder, icon, size = 
           </div>
         )}
         {icon && !isSm && <div className="ml-2 flex h-6 w-6 items-center justify-center">{icon}</div>}
-        <span className={isSm ? "ml-2 text-base text-neutral-400" : "ml-2 text-lg text-neutral-400"}>{tC("won")}</span>
+        <span id="price-unit" className={isSm ? "ml-2 text-base text-neutral-400" : "ml-2 text-lg text-neutral-400"}>
+          {tC("won")}
+        </span>
       </div>
     </div>
   );

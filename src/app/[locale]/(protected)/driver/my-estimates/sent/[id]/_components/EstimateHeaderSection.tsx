@@ -19,12 +19,12 @@ export default function EstimateHeaderSection({ moveType, isDesignated, status, 
   const t = useTranslations("MyEstimate");
 
   return (
-    <div className="flex flex-col items-start gap-5 md:gap-7">
+    <section className="flex flex-col items-start gap-5 md:gap-7" aria-label="견적 헤더 정보">
       {/* 상단 정보 */}
       <div className="flex w-full flex-col gap-5">
         {/* 첫 번째 줄: 칩들 + 확정견적 칩 */}
         <div className="flex w-full items-center justify-between">
-          <div className="flex flex-wrap items-center justify-start gap-3">
+          <div className="flex flex-wrap items-center justify-start gap-3" role="group" aria-label="이사 유형">
             <ChipRectangle moveType={moveType} size="md" />
             {isDesignated && <ChipRectangle moveType="REQUEST" size="md" />}
           </div>
@@ -35,8 +35,8 @@ export default function EstimateHeaderSection({ moveType, isDesignated, status, 
         {/* 두 번째 줄: 고객명 */}
         <div className="flex w-full items-center justify-start gap-1.5 md:justify-between">
           <div className="flex items-center gap-1.5">
-            <div className="text-lg font-semibold text-zinc-800 md:text-2xl">{customerName}</div>
-            <div className="text-lg font-semibold text-zinc-800 md:text-2xl">{t("customer")}</div>
+            <h1 className="m-0 p-0 text-lg font-semibold text-zinc-800 md:text-2xl">{customerName}</h1>
+            <span className="text-lg font-semibold text-zinc-800 md:text-2xl">{t("customer")}</span>
           </div>
           {/* md 이상일 때만 보여지는 상태 칩 */}
           <div className="ml-auto hidden md:block">{status === "ACCEPTED" && <ChipConfirmed />}</div>
@@ -47,7 +47,7 @@ export default function EstimateHeaderSection({ moveType, isDesignated, status, 
       <div className="h-0 w-full outline outline-offset-[-0.5px] outline-zinc-100" />
 
       {/* 견적가 */}
-      <div className="flex w-full items-start text-base md:max-w-[420px]">
+      <div className="flex w-full items-start text-base md:max-w-[420px]" role="group" aria-label="견적 금액">
         {/* label - 고정 너비 */}
         <span className="w-32 font-semibold text-neutral-800 md:w-[220px] md:text-xl">{t("cost")}</span>
         {/* value - 오른쪽 정렬 */}
@@ -58,6 +58,6 @@ export default function EstimateHeaderSection({ moveType, isDesignated, status, 
 
       {/* 견적가 아래 구분선 - 모바일에서 끝까지 */}
       <div className="h-0 w-full outline-1 outline-offset-[-0.5px] outline-zinc-100" />
-    </div>
+    </section>
   );
 }
