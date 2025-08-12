@@ -103,7 +103,10 @@ export default function PendingEstimates() {
   return (
     <section aria-labelledby="pending-estimates-heading">
       {/* 페이지 헤더: 현재 활성 요청 요약 */}
-      <header aria-labelledby="pending-estimates-heading" className="relative -mt-2 mb-0 bg-white shadow-sm md:-mt-3">
+      <header
+        aria-labelledby="pending-estimates-heading"
+        className="relative z-3 -mt-2 mb-0 bg-white shadow-sm md:-mt-3"
+      >
         <EstimateSubHeader data={translatedRequestData!} />
       </header>
 
