@@ -11,7 +11,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { MoveType } from "@/constant/moveTypes";
-import { batchTranslate } from "@/utills/batchTranslate";
 import { Address } from "@/types/reviewType";
 import { TranslateRegion } from "@/utills/TranslateFunction";
 
@@ -60,6 +59,8 @@ export default function ModalContent({
   useEffect(() => {
     const translatedTexts = async () => {
       if (!fromAddress || !toAddress) return;
+
+      // 한국어면 그냥 원본 세팅
       if (locale === "ko") {
         setTransaltedInfo({
           fromDistrict: fromAddress.district,
@@ -70,30 +71,38 @@ export default function ModalContent({
         });
         return;
       }
+
       try {
-        const result = await batchTranslate(
-          {
-            fromDistrict: fromAddress.district ?? "",
-            fromRegion: fromAddress.region ?? "",
-            toDistrict: toAddress.district ?? "",
-            toRegion: toAddress.region ?? "",
-            date: formatDate(moveDate) ?? ""
-          },
-          locale
-        );
+        // 각각 translate 호출
+        const translate = async (text: string) => {
+          const res = await fetch("http://localhost:4000/translate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text, targetLang: locale.toUpperCase() })
+          });
+          const data = await res.json();
+          return data.translation;
+        };
+
+        const fromDistrictTranslated = await translate(fromAddress.district ?? "");
+        const fromRegionTranslated = await translate(fromAddress.region ?? "");
+        const toDistrictTranslated = await translate(toAddress.district ?? "");
+        const toRegionTranslated = await translate(toAddress.region ?? "");
+        const dateTranslated = await translate(formatDate(moveDate) ?? "");
+
         setTransaltedInfo({
-          fromDistrict: fromAddress.district,
-          fromRegion: fromAddress.region,
-          toDistrict: toAddress.district,
-          toRegion: toAddress.region,
-          date: result.date
+          fromDistrict: fromDistrictTranslated,
+          fromRegion: fromRegionTranslated,
+          toDistrict: toDistrictTranslated,
+          toRegion: toRegionTranslated,
+          date: dateTranslated
         });
       } catch (e) {
         console.warn("번역 실패", e);
       }
     };
+
     translatedTexts();
-    console.log(translatedInfo);
   }, [estimateRequestId, locale]);
 
   const moveDetails = estimateRequestId
