@@ -2,7 +2,7 @@
 
 import Logo from "./_components/Logo";
 import GnbListLayout from "@/components/gnb/GnbListLayout";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Notification from "../notification/NotificationDropdown";
 import Profile from "../dropdown/ProfileDropdown";
 import GnbMenuList from "./GnbMenuList";
@@ -34,22 +34,19 @@ export default function Gnb() {
   const pathname = usePathname();
   const drivers = pathname.includes("/drivers");
   // 레이어가 열려있는 상태일 때, 레이어 DOM이 존재하며, 클릭한 위치가 레이어 밖이라면 닫힘
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if (
-        (openLayer === "notification" &&
-          notificationRef.current &&
-          !notificationRef.current.contains(event.target as Node)) ||
-        (openLayer === "profile" && profileRef.current && !profileRef.current.contains(event.target as Node)) ||
-        (openLayer === "gnbMobileMenu" &&
-          gnbMobileMenuRef.current &&
-          !gnbMobileMenuRef.current.contains(event.target as Node))
-      ) {
-        setOpenLayer(null);
-      }
-    },
-    [openLayer, setOpenLayer]
-  );
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      (openLayer === "notification" &&
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)) ||
+      (openLayer === "profile" && profileRef.current && !profileRef.current.contains(event.target as Node)) ||
+      (openLayer === "gnbMobileMenu" &&
+        gnbMobileMenuRef.current &&
+        !gnbMobileMenuRef.current.contains(event.target as Node))
+    ) {
+      setOpenLayer(null);
+    }
+  };
 
   // 컴포넌트 마운트 시 바깥 클릭 이벤트 리스너 등록, 언마운트 시 해제
   useEffect(() => {
@@ -61,23 +58,29 @@ export default function Gnb() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [openLayer, handleClickOutside]);
+  }, [openLayer]);
 
   useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [openLayer]);
 
+  // if (isLoading)
+  //   return (
+  //     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+  //       <svg className="h-12 w-12 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+  //         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+  //         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+  //       </svg>
+  //     </div>
+  //   );
   const isLoggedIn = !!user;
   const userRole = user?.userType ?? "GUEST";
 
-  const toggleLayer = useCallback(
-    (layer: OpenLayer) => {
-      setOpenLayer((prev) => (prev === layer ? null : layer));
-    },
-    [setOpenLayer]
-  );
+  const toggleLayer = (layer: OpenLayer) => {
+    setOpenLayer((prev: any) => (prev === layer ? null : layer));
+  };
 
   return (
     <header

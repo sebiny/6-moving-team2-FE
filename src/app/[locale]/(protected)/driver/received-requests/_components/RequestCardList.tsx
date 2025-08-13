@@ -16,7 +16,11 @@ export default function ReceivedRequestCardList({
   onRejectEstimate
 }: ReceivedRequestCardListProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-6 self-stretch">
+    <div
+      className="grid grid-cols-1 gap-6 self-stretch md:gap-8 lg:grid-cols-2 lg:gap-6"
+      role="list"
+      aria-label="받은 요청 목록"
+    >
       {requests.map((request) => (
         <ReceivedRequestCard
           key={request.id}

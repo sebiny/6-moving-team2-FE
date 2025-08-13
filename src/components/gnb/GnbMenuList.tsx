@@ -21,7 +21,7 @@ const browserWidthType = {
     textStyle: "text-lg font-bold"
   },
   default: {
-    layoutDiv: "flex h-screen w-55 flex-col bg-gray-50 transition-all transform duration-300 ease-out ",
+    layoutDiv: "fixed top-0 right-0 z-50 flex h-screen w-55 flex-col bg-gray-50 transition-all",
     buttonStyle: "h-18 text-left pl-6",
     textStyle: "text-base font-medium"
   }
@@ -52,7 +52,7 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
   };
 
   return (
-    <nav className={`${browserWidthType[browserWidth].layoutDiv} `}>
+    <nav className={`${browserWidthType[browserWidth].layoutDiv}`}>
       {browserWidth === "default" && (
         <button className="flex h-15 w-full cursor-pointer justify-end px-4 py-[10px]" onClick={onClick}>
           <Image src={ImgXBtn} alt="닫는버튼" width={24} height={24} />

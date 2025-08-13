@@ -236,38 +236,45 @@ export default function ReceivedRequestsPage() {
     }
 
     if (error) {
-      return <p className="text-center text-base font-normal text-red-400 lg:text-xl">{t("failedFetchReq")}</p>;
+      return (
+        <div role="alert" aria-live="polite">
+          <p className="text-center text-base font-normal text-red-400 lg:text-xl">{t("failedFetchReq")}</p>
+        </div>
+      );
     }
 
     if (filteredRequests.length === 0) {
       return (
-        <div className="flex w-full flex-col items-center justify-center px-6 py-20">
+        <section aria-label="빈 상태" className="flex w-full flex-col items-center justify-center px-6 py-20">
           <div className="flex flex-col items-center gap-6">
             <div className="relative h-48 w-48">
               <Image
                 src={imgEmptyReview}
-                alt="empty"
+                alt="받은 요청이 없음을 나타내는 빈 상태 이미지"
                 className="absolute top-0 left-0 h-full w-full object-contain opacity-50"
+                unoptimized
               />
             </div>
             <p className="text-center text-base font-normal text-neutral-400 lg:text-xl">{tm("noRequestReceived")}</p>
           </div>
-        </div>
+        </section>
       );
     }
 
     // 정상적인 경우: 요청 목록 렌더링
     return (
-      <RequestCardList
-        requests={filteredRequests}
-        onSendEstimate={handleSendEstimate}
-        onRejectEstimate={handleRejectEstimate}
-      />
+      <section aria-label="받은 요청 목록">
+        <RequestCardList
+          requests={filteredRequests}
+          onSendEstimate={handleSendEstimate}
+          onRejectEstimate={handleRejectEstimate}
+        />
+      </section>
     );
   };
 
   return (
-    <div className="flex min-h-screen justify-center bg-gray-50 px-4">
+    <main className="flex min-h-screen justify-center bg-gray-50 px-4" role="main" aria-label="받은 요청 페이지">
       <SendEstimateModal
         open={modalOpen}
         onClose={handleCloseModal}
@@ -293,8 +300,10 @@ export default function ReceivedRequestsPage() {
       />
       <div className="flex flex-col gap-6">
         <PageHeader title={t("receivedReq")} />
+
         <SearchBar width="w-full" placeholder={t("placeholder")} value={searchKeyword} onChange={setSearchKeyword} />
-        <div className="hidden items-start justify-start gap-3 lg:inline-flex">
+
+        <div className="hidden items-start justify-start gap-3 lg:inline-flex" role="group" aria-label="이사 유형 필터">
           {MOVE_TYPES.map((moveType) => (
             <ChipCircle
               key={moveType}
@@ -304,20 +313,25 @@ export default function ReceivedRequestsPage() {
               click={true}
               isSelected={selectedMoveTypes.includes(moveType)}
               onSelect={() => handleMoveTypeToggle(moveType)}
+              aria-label={`${moveType} 필터 ${selectedMoveTypes.includes(moveType) ? "선택됨" : "선택되지 않음"}`}
             />
           ))}
         </div>
 
         {/* 모바일/태블릿에서는 전체 옆에 드롭다운 */}
-        <div className="flex w-full flex-col gap-4">
+        <div className="flex w-full flex-col gap-4" role="group" aria-label="요청 목록 제어">
           {/* 전체 4건 + 드롭다운 */}
           <div className="flex w-full items-center justify-between gap-2 lg:w-auto">
-            <div className="font-['Pretendard'] text-lg leading-relaxed font-semibold text-neutral-800">
+            <div
+              className="font-['Pretendard'] text-lg leading-relaxed font-semibold text-neutral-800"
+              role="status"
+              aria-live="polite"
+            >
               {t("total")} {filteredRequests.length}
               {t("count")}
             </div>
             {/* 모바일에선 오른쪽 붙고, lg 이상에선 이 div가 무시됨 */}
-            <div className="flex items-center gap-2 lg:hidden">
+            <div className="flex items-center gap-2 lg:hidden" role="group" aria-label="모바일 정렬 및 필터">
               <SortDropdown
                 sortings={SORT_OPTIONS}
                 sort={sort}
@@ -336,14 +350,22 @@ export default function ReceivedRequestsPage() {
           </div>
 
           {/* PC에서만 나오는 체크박스 + 드롭다운 */}
-          <div className="hidden w-full items-center justify-between lg:flex">
+          <div
+            className="hidden w-full items-center justify-between lg:flex"
+            role="group"
+            aria-label="데스크톱 필터 및 정렬"
+          >
             {/* 체크박스 2개 */}
-            <div className="flex gap-4">
+            <fieldset className="m-0 flex gap-4 border-none p-0" aria-label="필터 옵션">
+              <legend className="absolute -m-px h-px w-px overflow-hidden border-0 p-0 whitespace-nowrap">
+                필터 옵션
+              </legend>
               <label className="flex items-center gap-2">
                 <CustomCheckbox
                   checked={isDesignatedChecked}
                   onChange={(checked) => handleCheckboxChange("designated", checked)}
                   shape="square"
+                  aria-label="지정된 요청만 보기"
                 />
                 <span className="text-base font-normal text-neutral-900">{t("filter.req")}</span>
               </label>
@@ -352,10 +374,11 @@ export default function ReceivedRequestsPage() {
                   checked={isAvailableRegionChecked}
                   onChange={(checked) => handleCheckboxChange("available", checked)}
                   shape="square"
+                  aria-label="서비스 가능 지역 요청만 보기"
                 />
                 <span className="text-base font-normal text-neutral-900">{t("filter.service")}</span>
               </label>
-            </div>
+            </fieldset>
             <SortDropdown
               sortings={SORT_OPTIONS}
               sort={sort}
@@ -364,8 +387,9 @@ export default function ReceivedRequestsPage() {
             />
           </div>
         </div>
+
         {renderContent()}
       </div>
-    </div>
+    </main>
   );
 }

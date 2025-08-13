@@ -12,10 +12,18 @@ interface Props {
   to: string;
 }
 
-export default function EstimateInfoSection({ createdAt, moveTypeLabel, moveDate, from, to }: Props) {
+const EstimateInfoSection = React.memo(function EstimateInfoSection({
+  createdAt,
+  moveTypeLabel,
+  moveDate,
+  from,
+  to
+}: Props) {
   return (
-    <div>
+    <section aria-label="견적 상세 정보">
       <EstimateDetailInfo requestDate={createdAt} serviceType={moveTypeLabel} moveDate={moveDate} from={from} to={to} />
-    </div>
+    </section>
   );
-}
+});
+
+export default EstimateInfoSection;

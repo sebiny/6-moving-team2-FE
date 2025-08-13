@@ -9,8 +9,9 @@ import { formatAddress } from "@/utills/addressUtils";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { batchTranslate } from "@/utills/batchTranslate";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+// import LoadingLottie from "@/components/lottie/LoadingLottie";
 import "dayjs/locale/ko";
+import LoadingAnimation from "@/components/loading/LoadingAnimation";
 
 type RequestData = {
   label: string;
@@ -61,8 +62,8 @@ export default function PendingEstimates() {
   // 1) 로딩
   if (isLoading) {
     return (
-      <section aria-busy="true">
-        <LoadingLottie className="mt-30" aria-live="polite" role="status" />
+      <section aria-busy="true" >
+        <LoadingAnimation />
       </section>
     );
   }
@@ -71,10 +72,6 @@ export default function PendingEstimates() {
   if (!hasRequest) {
     return (
       <section aria-labelledby="no-request-title" className="mt-20 lg:mt-35">
-        <h1 id="no-request-title" className="sr-only">
-          대기 중인 견적 요청이 없습니다
-        </h1>
-
         <figure aria-describedby="no-request-desc" className="flex flex-col items-center justify-center gap-2">
           <img
             src="/assets/images/img_empty_car.svg"
@@ -98,7 +95,7 @@ export default function PendingEstimates() {
   if (isTranslating) {
     return (
       <section aria-busy="true">
-        <LoadingLottie className="mt-30" aria-live="polite" role="status" />
+        <LoadingAnimation />
       </section>
     );
   }
@@ -109,7 +106,7 @@ export default function PendingEstimates() {
       {/* 페이지 헤더: 현재 활성 요청 요약 */}
       <header
         aria-labelledby="pending-estimates-heading"
-        className="relative z-9 -mt-2 mb-0 bg-white shadow-md md:-mt-3"
+        className="relative z-3 -mt-2 mb-0 bg-white shadow-sm md:-mt-3"
       >
         <EstimateSubHeader data={translatedRequestData!} />
       </header>
@@ -119,10 +116,6 @@ export default function PendingEstimates() {
         aria-labelledby="pending-list-heading"
         className="bg-background-200 relative z-0 px-5 py-10 md:px-15 lg:mx-auto lg:max-w-[1400px] lg:px-20 lg:py-20"
       >
-        <h2 id="pending-list-heading" className="sr-only">
-          기사님들이 보낸 견적 목록
-        </h2>
-
         {estimates.length === 0 ? (
           <div role="status" aria-live="polite" className="flex flex-col items-center justify-center gap-2">
             <img src="/assets/images/img_moving_car1.svg" alt="" width={250} height={250} aria-hidden="true" />

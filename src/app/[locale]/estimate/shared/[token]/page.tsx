@@ -64,7 +64,7 @@ export default function SharedEstimatePage() {
       <header aria-label="견적서 공유 헤더" className="relative">
         <OrangeBackground />
         {!isDriverShared && (
-          <div className="relative mx-auto max-w-[800px] md:max-w-[1000px] lg:max-w-[1550px]">
+          <div className="relative mx-auto max-w-[650px] md:max-w-[850px] lg:max-w-[1050px]">
             {/* 장식/프로필: 정보 전달 목적이면 figure, 아니면 단순 이미지 */}
             <figure className="relative -mt-10 md:-mt-20">
               <Image
@@ -74,8 +74,6 @@ export default function SharedEstimatePage() {
                 height={100}
                 className="h-18 w-18 rounded-lg md:h-27 md:w-27 lg:h-37 lg:w-37"
               />
-              {/* 캡션이 필요 없다면 생략 가능 */}
-              {/* <figcaption className="sr-only">{driver?.authUser?.name ?? "기사님"}</figcaption> */}
             </figure>
           </div>
         )}
@@ -84,13 +82,9 @@ export default function SharedEstimatePage() {
       {/* 본문 */}
       <main
         id="main-content"
-        className="flex flex-col px-5 pt-10 md:px-17 lg:mx-auto lg:max-w-[1700px] lg:gap-20 lg:px-10 lg:pb-[120px]"
+        className="flex flex-col px-5 pt-10 md:px-17 lg:mx-auto lg:max-w-[1400px] lg:gap-20 lg:px-10 lg:pb-[120px]"
       >
         <section aria-labelledby="estimate-section-title" className="flex flex-col gap-10">
-          <h1 id="estimate-section-title" className="sr-only">
-            공유된 견적 상세
-          </h1>
-
           {!isDriverShared ? (
             <>
               <Title

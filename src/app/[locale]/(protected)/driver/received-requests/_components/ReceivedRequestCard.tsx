@@ -67,15 +67,21 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
   }, [request.createdAt, locale]);
 
   return (
-    <div className="inline-flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.20)] outline outline-offset-[-0.5px] outline-zinc-100 md:w-full md:gap-8 md:px-10 md:py-8">
+    <article
+      className="inline-flex w-80 flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.20)] outline outline-offset-[-0.5px] outline-zinc-100 md:w-full md:gap-8 md:px-10 md:py-8"
+      role="listitem"
+      aria-label={`${request.customerName} 고객의 ${request.moveType} 이사 요청`}
+    >
       {/* 상단 */}
       <div className="flex w-full flex-col gap-4">
         <div className="flex h-8 items-center justify-between">
-          <div className="flex gap-2">
+          <div className="flex gap-2" role="group" aria-label="이사 유형">
             <ChipRectangle moveType={request.moveType} size="sm" />
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
-          <div className="text-sm text-zinc-500">{translatedCreatedAt}</div>
+          <time className="text-sm text-zinc-500" dateTime={request.createdAt}>
+            {translatedCreatedAt}
+          </time>
         </div>
         {/* 고객명 */}
         <div className="flex w-full flex-col gap-3">
@@ -91,6 +97,8 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
             className={`flex flex-1 items-end gap-3 ${
               locale === "en" ? "flex-col items-start md:flex-row md:items-center" : "md:flex-row md:items-center"
             }`}
+            role="group"
+            aria-label="이사 경로"
           >
             <div className="flex flex-col">
               <div className="text-sm text-zinc-500">{t("from")}</div>
@@ -99,7 +107,7 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
               </div>
             </div>
             <div className={`relative h-5 w-4 flex-shrink-0 ${locale === "en" ? "hidden text-left md:block" : ""}`}>
-              <Image src="/assets/icons/ic_arrow.svg" alt="화살표" fill className="object-center" />
+              <Image src="/assets/icons/ic_arrow.svg" alt="출발지에서 도착지로" fill className="object-center" />
             </div>
             <div className="flex flex-col">
               <div className="text-sm text-zinc-500">{t("to")}</div>
@@ -110,12 +118,14 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
           </div>
           <div className="flex flex-col">
             <div className="text-sm text-zinc-500">{t("moveDate")}</div>
-            <div className="text-base font-semibold text-neutral-900">{translatedInfo.date}</div>
+            <time className="text-base font-semibold text-neutral-900" dateTime={request.moveDate}>
+              {translatedInfo.date}
+            </time>
           </div>
         </div>
       </div>
       {/* 하단 */}
-      <div className="flex w-full flex-col gap-2.5 md:flex-row-reverse">
+      <div className="flex w-full flex-col gap-2.5 md:flex-row-reverse" role="group" aria-label="견적 액션">
         <div className="w-full md:w-1/2">
           <EstimateButton
             text={t("sendReq")}
@@ -123,12 +133,18 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
             image={true}
             onClick={() => onSendEstimate(request)}
             estimateCount={request.estimateCount}
+            aria-label={`${request.customerName} 고객에게 견적 보내기`}
           />
         </div>
         <div className="w-full md:w-1/2">
-          <Button text={t("reject")} type="white-orange" onClick={() => onRejectEstimate(request)} />
+          <Button
+            text={t("reject")}
+            type="white-orange"
+            onClick={() => onRejectEstimate(request)}
+            aria-label={`${request.customerName} 고객의 요청 거절하기`}
+          />
         </div>
       </div>
-    </div>
+    </article>
   );
 }

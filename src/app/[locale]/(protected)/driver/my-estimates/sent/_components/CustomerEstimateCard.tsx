@@ -52,14 +52,22 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
   }, [request, locale]);
 
   return (
-    <div
+    <article
       className="flex w-80 cursor-pointer flex-col gap-6 rounded-[20px] bg-white px-5 py-6 shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.20)] outline outline-offset-[-0.5px] outline-zinc-100 transition-shadow hover:shadow-[-2px_-2px_15px_0px_rgba(220,220,220,0.30)] md:w-[588px] md:gap-8 md:px-10 md:py-8"
       onClick={() => router.push(`/driver/my-estimates/sent/${request.id}`)}
+      role="listitem"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          router.push(`/driver/my-estimates/sent/${request.id}`);
+        }
+      }}
+      aria-label={`${request.customerName} 고객의 ${request.moveType} 견적 상세보기`}
     >
       {/* 상단 */}
       <div className="flex w-full flex-col gap-4">
         <div className="flex h-8 items-center justify-between">
-          <div className="flex gap-2">
+          <div className="flex gap-2" role="group" aria-label="이사 유형">
             <ChipRectangle moveType={moveTypeKey} size="sm" />
             {request.isDesignated === true && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
@@ -77,12 +85,16 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
         <AddressDateSection from={translatedInfo.from} to={translatedInfo.to} date={translatedInfo.date} />
       </div>
       {/* 하단 */}
-      <div className="flex w-full items-end justify-between border-t border-neutral-200 pt-4">
+      <div
+        className="flex w-full items-end justify-between border-t border-neutral-200 pt-4"
+        role="group"
+        aria-label="견적 금액"
+      >
         <div className="text-base font-medium text-neutral-800">{t("cost")}</div>
         <div className="text-2xl font-bold text-neutral-800">
           {request.estimateAmount ? request.estimateAmount : ESTIMATE_TEXT.UNDEFINED}
         </div>
       </div>
-    </div>
+    </article>
   );
 }

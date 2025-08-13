@@ -15,11 +15,15 @@ export default function AddressDateSection({ from, to, date }: AddressDateSectio
   return (
     <div
       className={`flex w-full flex-col gap-3 ${locale === "en" ? "" : "md:flex-row md:items-end md:justify-between"}`}
+      role="group"
+      aria-label="이사 정보"
     >
       <div
         className={`flex flex-1 items-end gap-3 ${
           locale === "en" ? "flex-col items-start md:flex-row md:items-center" : "md:flex-row md:items-center"
         }`}
+        role="group"
+        aria-label="이사 경로"
       >
         <div className="flex flex-col">
           <div className="text-sm font-normal text-zinc-500">{t("to")}</div>
@@ -28,7 +32,7 @@ export default function AddressDateSection({ from, to, date }: AddressDateSectio
           </div>
         </div>
         <div className={`relative h-5 w-4 flex-shrink-0 ${locale === "en" ? "hidden text-left md:block" : ""}`}>
-          <Image src="/assets/icons/ic_arrow.svg" alt="화살표" fill className="object-center" />
+          <Image src="/assets/icons/ic_arrow.svg" alt="출발지에서 도착지로" fill className="object-center" />
         </div>
         <div className="flex flex-col">
           <div className="text-sm font-normal text-zinc-500">{t("from")}</div>
@@ -39,7 +43,7 @@ export default function AddressDateSection({ from, to, date }: AddressDateSectio
       </div>
       <div className="flex flex-col">
         <div className="text-sm font-normal text-zinc-500">{t("date")}</div>
-        <div className="text-base font-semibold text-neutral-900">{date}</div>
+        <time className="text-base font-semibold text-neutral-900">{date}</time>
       </div>
     </div>
   );
