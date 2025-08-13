@@ -34,5 +34,8 @@
   "myReviewListTitle": "내 리뷰 목록",
   "myReviewableList": "내가 작성할 수 있는 리뷰 목록",
   "reviewDeleted": "리뷰 삭제 완료",
-  "reviewDeleteFailed": "리뷰 삭제에 실패했습니다"
+  "reviewDeleteFailed": "리뷰 삭제에 실패했습니다",
+  "deleteConfirm": "정말 삭제하시겠습니까?",
+  "yes": "네",
+  "no": "아니오"
 }
