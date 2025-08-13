@@ -34,5 +34,8 @@
   "myReviewListTitle": "我的评价列表",
   "myReviewableList": "我可写的评价列表",
   "reviewDeleted": "评论删除成功",
-  "reviewDeleteFailed": "删除评论失败"
+  "reviewDeleteFailed": "删除评论失败",
+  "deleteConfirm": "您确定要删除此评论吗？",
+  "yes": "是",
+  "no": "否"
 }
