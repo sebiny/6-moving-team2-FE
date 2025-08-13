@@ -5,9 +5,9 @@ import ChipRectangle from "@/components/chip/ChipRectangle";
 import StarIcon from "@/components/icon/StarIcon";
 import useMediaHook from "@/hooks/useMediaHook";
 import { useTranslations, useLocale } from "next-intl";
-import { deleteMyReview, getMyReviews, updateMyReview } from "@/lib/api/api-review";
-import { ko, enUS, ja, tr } from "date-fns/locale";
-import { format, type Locale } from "date-fns";
+import { deleteMyReview, getMyReviews } from "@/lib/api/api-review";
+import { ko } from "date-fns/locale";
+import { format } from "date-fns";
 import { TranslateRegion } from "@/utills/TranslateFunction";
 import NoMyReview from "./NoMyReview";
 import Pagination from "@/components/Pagination";
@@ -17,14 +17,21 @@ import { batchTranslate } from "@/utills/batchTranslate";
 import type { ReviewListResponse, TranslatedMeta } from "@/types/reviewType";
 import Button from "@/components/Button";
 import { ToastModal } from "@/components/common-modal/ToastModal";
+import DeleteConfirmModal from "./DeleteConfirmModal";
+import { review } from "@/constant/constant";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
 export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   const t = useTranslations("Review");
   const tC = useTranslations("Common");
-  const [page, setPage] = useState(1); //임의로 추가
+  const [page, setPage] = useState(1);
   const { isSm, isMd, isLg } = useMediaHook();
+  const queryClient = useQueryClient();
+  const [translatedMeta, setTranslatedMeta] = useState<Record<string, TranslatedMeta>>({});
+  const locale = useLocale();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedReview, setSelectedReview] = useState<{ reviewId: string; driverId: string } | null>(null);
 
   const formatDate = (isoString?: string) => {
     if (!isoString) return ""; // 없으면 빈 문자열 반환하거나 적절히 처리
@@ -32,9 +39,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
     if (isNaN(date.getTime())) return ""; // 유효하지 않은 날짜면 빈 문자열 반환
     return format(date, "yyyy년 MM월 dd일 (EEE)", { locale: ko });
   };
-
-  const queryClient = useQueryClient();
-  //리액트쿼리로 리뷰 불러오기
+  //리뷰 불러오기
   const { data, isLoading, isError } = useQuery<ReviewListResponse>({
     queryKey: ["reviews", page],
     queryFn: () => getMyReviews(page),
@@ -42,20 +47,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviews = data?.reviews ?? [];
-  console.log("reviews", reviews[0]);
-  const handleDelete = async (reviewId: string, driverId: string) => {
-    try {
-      await deleteMyReview(reviewId, driverId);
-      ToastModal(t("reviewDeleted"));
 
-      queryClient.invalidateQueries({ queryKey: ["reviews"] }); // 목록 새로고침
-    } catch (err) {
-      console.error(err);
-      ToastModal(t("reviewDeleteFailed"));
-    }
-  };
-  const locale = useLocale();
-  const [translatedMeta, setTranslatedMeta] = useState<Record<string, TranslatedMeta>>({});
   useEffect(() => {
     if (!reviews || reviews.length === 0) return;
 
@@ -99,6 +91,11 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
     return <LoadingLottie className="mt-30" text={tC("myReviewLoading")} />;
   }
 
+  const handleClickDelete = (reviewId: string, driverId: string) => {
+    // 삭제 버튼 클릭 시 모달 열기
+    setSelectedReview({ reviewId, driverId });
+    setIsModalOpen(true);
+  };
   if (isError || !reviews || reviews.length === 0) {
     return (
       <div className="mt-30 flex h-full items-center justify-center">
@@ -140,8 +137,7 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
             <div
               key={review.id}
               className={clsx(
-                "lg:h-auto lg:w-[1120px] lg:gap-5 lg:p-10",
-                "h-auto w-[327px] px-5 py-6",
+                "h-auto w-[327px] px-5 py-6 lg:h-auto lg:w-[1120px] lg:gap-5 lg:p-10",
                 "md:h-auto md:w-147 md:p-10",
                 "border-line-100 mx-auto flex flex-col gap-4 self-stretch rounded-[20px] border-[0.5px] bg-gray-50 md:gap-5"
               )}
@@ -205,15 +201,6 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                       )}
                     </div>
                   </div>
-                  {/* {isLg && (
-                    <Image
-                      className="order-2 ml-auto rounded-[12px]"
-                      src="/assets/icons/ic_edit.svg"
-                      alt="수정"
-                      width={24}
-                      height={24}
-                    />
-                  )} */}
                 </div>
               </div>
               <div className={clsx("flex gap-5", isSm && !isMd && "border-line-100 border-b pb-4")}>
@@ -237,10 +224,10 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
                 </div>
                 {isLg && (
                   <Button
-                    text="삭제"
+                    text={tC("delete")}
                     type="orange"
                     className="h-[54px] w-40 sm:rounded-[12px] sm:font-medium"
-                    onClick={() => handleDelete(review.id, review.driver.id)}
+                    onClick={() => handleClickDelete(review.id, review.driver.id)}
                   />
                 )}
               </div>
@@ -252,19 +239,21 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
               )}
               <div className="flex justify-between gap-2 md:gap-6">
                 {isSm && !isLg && (
-                  <Button text="삭제" type="orange" onClick={() => handleDelete(review.id, review.driver.id)} />
-                )}
-                {/* {isSm && !isLg && (
                   <Button
-                    text="수정"
-                    type="white-orange"
-                    onClick={() => handleEdit(review.id, review.driver.id, review.rating, review.content)}
+                    text={tC("delete")}
+                    type="orange"
+                    onClick={() => handleClickDelete(review.id, review.driver.id)}
                   />
-                )} */}
+                )}
               </div>
             </div>
           );
         })}
+        <DeleteConfirmModal
+          onClose={() => setIsModalOpen(false)}
+          isOpen={isModalOpen}
+          selectedReview={selectedReview}
+        />
         <div className="mt-10">
           <Pagination currentPage={page} setCurrentPage={setPage} totalReviews={totalCount} />
         </div>
