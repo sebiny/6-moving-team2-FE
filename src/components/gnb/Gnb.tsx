@@ -13,10 +13,6 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useTranslations } from "next-intl";
 import useMediaHook from "@/hooks/useMediaHook";
 
-// Gnb에서 정의해야 하는 요소들
-// 화면 너비에 따라 UI가 바뀜
-// 유저 상태에 따라 메뉴가 바뀜
-
 interface GnbProps {
   userRole?: "GUEST" | "CUSTOMER" | "DRIVER" | undefined;
 }
@@ -25,7 +21,7 @@ export type OpenLayer = "notification" | "profile" | "gnbMobileMenu" | null;
 
 export default function Gnb() {
   const t = useTranslations("Gnb");
-  const { user, isLoading, logout } = useAuth();
+  const { user, logout } = useAuth();
   const { isLg } = useMediaHook();
   const [openLayer, setOpenLayer] = useState<OpenLayer>(null);
 

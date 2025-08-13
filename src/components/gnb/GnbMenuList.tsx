@@ -4,7 +4,7 @@ import Image from "next/image";
 import ImgXBtn from "/public/assets/icons/ic_X.svg";
 import { useAuth } from "@/providers/AuthProvider";
 import { useTranslations } from "next-intl";
-import { useTransitionRouter } from "@/hooks/useTransitionRouter";
+import { useRouter } from "next/navigation";
 
 interface GnbListProps {
   isOpen?: boolean;
@@ -28,7 +28,7 @@ const browserWidthType = {
 };
 
 export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: GnbListProps) {
-  const { pushWithTransition } = useTransitionRouter();
+  const router = useRouter();
   const { user } = useAuth();
   const isLoggedIn = !!user;
   const t = useTranslations("Gnb");
@@ -38,17 +38,8 @@ export default function GnbMenuList({ browserWidth, userRole, onClick, isLg }: G
     const buttonElement = event.currentTarget;
     const uniqueName = `gnb-menu-${path.replace("/", "")}`;
     buttonElement.style.viewTransitionName = uniqueName;
-
-    const transition = pushWithTransition(path);
+    router.push(path);
     onClick?.();
-
-    // transition 객체가 존재하면(API가 지원되면)
-    if (transition) {
-      transition.finished.finally(() => {
-        // 애니메이션이 완전히 끝나고 나면 스타일을 제거합니다.
-        buttonElement.style.viewTransitionName = "";
-      });
-    }
   };
 
   return (
