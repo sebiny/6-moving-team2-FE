@@ -22,7 +22,7 @@ export default function ReviewWrite({ setIsValid, setRating, setContent }: Props
     if (localContent) {
       setContent(localContent);
     }
-  }, [localRating, InputValid]);
+  }, [localRating, InputValid, localContent]);
 
   const handleRating = (num: number) => {
     setLocalRating(num);
