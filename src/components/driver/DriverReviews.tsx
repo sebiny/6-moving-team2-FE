@@ -54,7 +54,7 @@ function DriverReviews({ driver }: ReviewsType) {
         </div>
       ) : reviews.length ? (
         <>
-          <section className="mt-4 flex justify-between" aria-label={t("reviewSummary")}>
+          <section className="mt-4 flex flex-col justify-between gap-6 md:flex-row" aria-label={t("reviewSummary")}>
             <div className="flex gap-[18px]" aria-live="polite">
               <div className="text-black-400 text-[40px] font-normal" aria-label={t("averageRating")}>
                 {driver.averageRating}

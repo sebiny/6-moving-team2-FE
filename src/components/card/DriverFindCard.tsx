@@ -167,7 +167,7 @@ function DriverFindCard({ driver, isFavoritePage = false, checked = false, onChe
               className="absolute right-0 bottom-0 hidden items-center justify-center gap-[6px] md:flex"
               aria-label={`${driver.nickname} ${t("driver")} 찜하기`}
             >
-              <LikeIcon color="red" />
+              <LikeIcon color="red" isFilled={driver.isFavorite || isFavoritePage} />
               <p className="pt-1 text-gray-500">{driver.favoriteCount}</p>
             </button>
           </div>

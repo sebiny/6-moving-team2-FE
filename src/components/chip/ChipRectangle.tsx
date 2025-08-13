@@ -29,7 +29,7 @@ export default function ChipRectangle({ moveType, size = "md", className = "" }:
       className={`inline-flex items-center rounded-md bg-rose-50 font-[Pretendard] font-semibold shadow-[4px_4px_8px_0px_rgba(217,217,217,0.10)] ${current.container} ${className}`}
     >
       <div className="relative h-5 w-5">
-        <Image src={iconSrc} alt={t(moveType)} fill />
+        <Image src={iconSrc} alt="" fill />
       </div>
       <div className={`${moveType === "REQUEST" ? "text-rose-500" : "text-red-500"} ${current.text}`}>
         {t(moveType)}
