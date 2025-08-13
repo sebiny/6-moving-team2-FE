@@ -43,7 +43,7 @@ export default function ReviewsInner({ setIsModal, review }: ReviewsProps) {
 
       try {
         const translate = async (text: string) => {
-          const res = await fetch("http://localhost:4000/translate", {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/translate`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text, targetLang: locale.toUpperCase() })
