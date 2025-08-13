@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import RequestCardList from "./_components/RequestCardList";
 import { Request } from "@/types/request";
@@ -35,6 +35,7 @@ export default function ReceivedRequestsPage() {
   const [sort, setSort] = useState("request");
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedMoveTypes, setSelectedMoveTypes] = useState<string[]>([]);
+  const [minLoadingTime, setMinLoadingTime] = useState(false);
 
   // useDebounce 훅 사용
   const debouncedSearchKeyword = useDebounce(searchKeyword, 300);
@@ -47,7 +48,8 @@ export default function ReceivedRequestsPage() {
   const {
     data: requests = [],
     isPending,
-    error
+    error,
+    isFetching
   } = useQuery({
     queryKey: ["driver-requests", isDesignatedChecked, isAvailableRegionChecked],
     queryFn: async () => {
@@ -78,6 +80,16 @@ export default function ReceivedRequestsPage() {
     staleTime: 5 * 60 * 1000, // 5분 캐시
     refetchOnWindowFocus: false // 창 포커스 시 재조회 비활성화
   });
+
+  // 최소 로딩 시간 관리 (0.5초)
+  useEffect(() => {
+    if (!isPending) {
+      const timer = setTimeout(() => setMinLoadingTime(false), 500);
+      return () => clearTimeout(timer);
+    } else {
+      setMinLoadingTime(true);
+    }
+  }, [isPending]);
 
   // useCallback으로 콜백 함수 최적화
   const handleSortChange = useCallback(
@@ -231,7 +243,7 @@ export default function ReceivedRequestsPage() {
 
   const renderContent = () => {
     // Early return 패턴으로 가독성 향상
-    if (isPending) {
+    if (isPending || minLoadingTime) {
       return <RequestCardListSkeleton />;
     }
 
