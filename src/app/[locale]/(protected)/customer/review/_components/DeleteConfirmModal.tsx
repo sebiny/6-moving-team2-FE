@@ -1,7 +1,6 @@
 // DeleteConfirmModal.jsx
 import Button from "@/components/Button";
 import { ToastModal } from "@/components/common-modal/ToastModal";
-import { queryClient } from "@/components/notification/NotificationDropdown";
 import { deleteMyReview } from "@/lib/api/api-review";
 import { useTranslations } from "next-intl";
 import React from "react";
@@ -14,12 +13,11 @@ type DeleteConfirmModalProps = {
 
 export default function DeleteConfirmModal({ isOpen, onClose, selectedReview }: DeleteConfirmModalProps) {
   const t = useTranslations("Review");
-
   const handleDelete = async (reviewId: string, driverId: string) => {
     try {
       await deleteMyReview(reviewId, driverId);
       ToastModal(t("reviewDeleted"));
-      queryClient.invalidateQueries({ queryKey: ["reviews"] }); // 목록 새로고침
+      onClose();
     } catch (err) {
       console.error(err);
       ToastModal(t("reviewDeleteFailed"));
