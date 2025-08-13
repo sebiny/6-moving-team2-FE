@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
@@ -15,6 +15,7 @@ export default function RejectedEstimatesPage() {
   const router = useRouter();
   const pathname = usePathname();
   const tC = useTranslations("Common");
+  const [minLoadingTime, setMinLoadingTime] = useState(false);
 
   // 현재 URL에 따라 selectedIdx 초기값 설정
   const currentTab = pathname.split("/").pop(); // 'sent' or 'rejected'
@@ -24,17 +25,29 @@ export default function RejectedEstimatesPage() {
   const {
     data: backendEstimates = [],
     isPending,
-    error
+    error,
+    isFetching
   } = useQuery({
     queryKey: ["driverRejectedEstimates"],
     queryFn: driverService.getRejectedRequests,
-    staleTime: 5 * 60 * 1000 // 5분
+    staleTime: 5 * 60 * 1000, // 5분 캐시
+    refetchOnWindowFocus: false // 창 포커스 시 재조회 비활성화
   });
 
   const handleTabChange = (idx: string) => {
     setSelectedIdx(idx);
     router.push(`/driver/my-estimates/${idx}`);
   };
+
+  // 최소 로딩 시간 관리 (0.5초)
+  useEffect(() => {
+    if (!isPending) {
+      const timer = setTimeout(() => setMinLoadingTime(false), 500);
+      return () => clearTimeout(timer);
+    } else {
+      setMinLoadingTime(true);
+    }
+  }, [isPending]);
 
   // 백엔드 데이터를 프론트엔드 형식으로 변환
   const estimates = (
@@ -43,7 +56,7 @@ export default function RejectedEstimatesPage() {
 
   const renderContent = () => {
     // Early return 패턴으로 가독성 향상
-    if (isPending) {
+    if (isPending || minLoadingTime) {
       // 이전 데이터가 있다면 그것을 기반으로 스켈레톤 개수 결정
       const skeletonCount = (backendEstimates?.length || 0) > 0 ? Math.min(backendEstimates?.length || 0, 4) : 1;
       return (

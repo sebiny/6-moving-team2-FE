@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
@@ -17,6 +17,7 @@ export default function SentEstimatesPage() {
   const router = useRouter();
   const locale = useLocale();
   const [translatedTexts, setTranslatedTexts] = useState<Record<string, string>>({});
+  const [minLoadingTime, setMinLoadingTime] = useState(false);
 
   const pathname = usePathname();
   const tC = useTranslations("Common");
@@ -28,17 +29,29 @@ export default function SentEstimatesPage() {
   const {
     data: backendEstimates = [],
     isPending,
-    error
+    error,
+    isFetching
   } = useQuery({
     queryKey: ["driverEstimates"],
     queryFn: driverService.getDriverEstimates,
-    staleTime: 5 * 60 * 1000 // 5분
+    staleTime: 5 * 60 * 1000, // 5분 캐시
+    refetchOnWindowFocus: false // 창 포커스 시 재조회 비활성화
   });
 
   const handleTabChange = (idx: string) => {
     setSelectedIdx(idx);
     router.push(`/driver/my-estimates/${idx}`);
   };
+
+  // 최소 로딩 시간 관리 (0.5초)
+  useEffect(() => {
+    if (!isPending) {
+      const timer = setTimeout(() => setMinLoadingTime(false), 500);
+      return () => clearTimeout(timer);
+    } else {
+      setMinLoadingTime(true);
+    }
+  }, [isPending]);
   //동적번역 요청
   useEffect(() => {
     if (!backendEstimates || backendEstimates.length === 0) return;
@@ -86,7 +99,7 @@ export default function SentEstimatesPage() {
 
   const renderContent = () => {
     // Early return 패턴으로 가독성 향상
-    if (isPending) {
+    if (isPending || minLoadingTime) {
       return <EstimateCardListSkeleton />;
     }
 
