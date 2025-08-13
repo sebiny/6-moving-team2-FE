@@ -29,11 +29,9 @@ export default Page;
 //       },
 //       body: JSON.stringify({ text, targetLang: "ZH" })
 //     });
-
 //     const data = await res.json();
 //     setResult(data.translation);
 //   };
-
 //   return (
 //     <div>
 //       <h1>DeepL Translation Test</h1>
