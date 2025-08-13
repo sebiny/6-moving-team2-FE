@@ -13,13 +13,13 @@ export default function ChangeImagesPicture() {
   return (
     <div className="relative flex max-h-[850px] w-full lg:justify-end">
       <picture>
-        <source media="(min-width: 744px)" srcSet={IMG_LG} type="image/avif" />
-        <source media="(min-width: 375px)" srcSet={IMG_MD} type="image/avif" />
+        <source media="(min-width: 745px)" srcSet={IMG_LG} type="image/avif" />
+        <source media="(min-width: 376px)" srcSet={IMG_MD} type="image/avif" />
 
-        <img src={IMG_DEFAULT} alt="견적카드" className={`h-auto w-full object-contain`} />
+        <img src={IMG_DEFAULT} alt="견적카드" className={`w-full object-contain`} />
       </picture>
 
-      <div className="absolute top-8 z-50 w-full pr-10 text-right text-xl font-bold text-gray-50 md:top-13 md:text-[32px] lg:top-54 lg:flex lg:w-1/2 lg:justify-start lg:pl-10 lg:text-[32px]">
+      <div className="absolute top-8 z-50 w-full pr-10 text-right text-xl font-bold text-gray-50 md:top-13 md:text-[28px] lg:top-54 lg:flex lg:w-1/2 lg:justify-start lg:pl-10 lg:text-[32px]">
         <div className="lg:text-left">
           {t("imageTitle")}
           <br />
