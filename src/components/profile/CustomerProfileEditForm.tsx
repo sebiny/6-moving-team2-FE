@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { cookieFetch, authUtils } from "@/lib/FetchClient";
 import ImageUploader from "@/components/profile/ImageUploader";
@@ -10,6 +10,7 @@ import SelectRegion from "./SelectRegion";
 import SelectService from "./SelectService";
 import { useTranslations } from "next-intl";
 import { ToastModal } from "../common-modal/ToastModal";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
 
 interface CustomerProfileEditFormProps {
   initialData?: any;
@@ -20,6 +21,7 @@ const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\
 export default function CustomerProfileEditForm({ initialData }: CustomerProfileEditFormProps) {
   const router = useRouter();
   const t = useTranslations("Profile");
+  const t1 = useTranslations("Common");
 
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
@@ -40,6 +42,8 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
   const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null); // 새 비밀번호 확인에러 상태 추가
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
+
+  const [guardEnabled, setGuardEnabled] = useState(true);
 
   useEffect(() => {
     if (initialData) {
@@ -82,6 +86,25 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
     if (response?.imageUrl) return response.imageUrl;
     throw new Error(t("error.upload.fail"));
   };
+
+  // 이탈 방지 
+     const isDirty = useMemo(() => {
+      if (isSubmitting || isUploading) return false;
+      return (
+        selectedMoveTypes.length > 0 ||
+        currentArea !== "" ||
+        !!profileImageFile ||
+        !!profileImagePreview
+      );
+    }, [isSubmitting, isUploading, selectedMoveTypes.length, currentArea, profileImageFile, profileImagePreview]);
+  
+    useUnsavedChangesGuard({
+      when: guardEnabled && isDirty,
+      message: t1("leaveWarning"),
+      interceptLinks: true,
+      interceptBeforeUnload: true,
+      patchRouterMethods: true,
+    });
 
   const handleImageChange = async (file: File | null, previewUrl: string | null) => {
     setImageError(null);
@@ -161,6 +184,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
       }
 
       ToastModal(t("success.edit"));
+      setGuardEnabled(false);
       router.push("/");
     } catch (error: any) {
       ToastModal(error?.message || t("error.edit"));

@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"]
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "무빙 - 복잡한 이사 준비, 무빙 하나면 끝!",
   description:
     "무빙에서는 여러 이사 기사에게 한 번에 견적을 받아 가격, 서비스, 후기 등 다양한 정보를 한눈에 비교할 수 있습니다. 각 기사별로 제공하는 서비스의 차이점과 비용을 꼼꼼하게 확인한 뒤, 내 상황과 예산에 가장 잘 맞는 이사 업체를 직접 선택할 수 있어 더욱 합리적이고 현명한 이사가 가능합니다. 복잡한 이사 준비 과정에서 발생할 수 있는 불필요한 고민과 시간 낭비를 줄여주며, 신뢰할 수 있는 기사와의 매칭을 통해 안전하고 만족스러운 이사 경험을 제공합니다.",
@@ -32,6 +32,9 @@ export const metadata = {
   icons: {
     icon: "/favicon.svg"
   },
+
+  metadataBase: new URL("https://www.moving-2.click"),
+
   openGraph: {
     title: "무빙 - 복잡한 이사 준비, 무빙 하나면 끝!",
     description:
@@ -40,7 +43,7 @@ export const metadata = {
     siteName: "Moving",
     images: [
       {
-        url: "https://www.moving-2.click/og-image.webp",
+        url: "/og-image.webp",
         width: 1353,
         height: 740,
         alt: "Moving 서비스 소개 이미지"
@@ -53,9 +56,9 @@ export const metadata = {
     card: "summary_large_image",
     title: "무빙 - 복잡한 이사 준비, 무빙 하나면 끝!",
     description: "무빙으로 복잡한 이사, 쉽게 시작하고 끝내세요!",
-    images: ["https://www.moving-2.click/og-image.webp"]
-  },
-  metadataBase: new URL("https://www.moving-2.click")
+
+    images: ["/og-image.webp"]
+  }
 };
 
 export default async function RootLayout({
@@ -72,23 +75,6 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" content="#F9502E" />
-        <meta name="description" content="복잡한 이사 준비, 무빙 하나면 끝!" />
-        <meta property="og:url" content="https://www.moving-2.click/" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="무빙 - 복잡한 이사 준비, 무빙 하나면 끝!" />
-        <meta property="og:description" content="복잡한 이사 준비, 무빙 하나면 끝!" />
-        <meta property="og:image" content="https://www.moving-2.click/og-image.webp" />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="무빙 - 복잡한 이사 준비, 무빙 하나면 끝!" />
-        <meta name="twitter:description" content="복잡한 이사 준비, 무빙 하나면 끝!" />
-        <meta name="twitter:image" content="https://www.moving-2.click/og-image.webp" />
-        <link rel="icon" href="/favicon.svg" />
-        <link rel="canonical" href="https://www.moving-2.click/" />
-      </head>
       <link rel="icon" href="/favicon.svg" />
       <body className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col`}>
         <Script src="https://developers.kakao.com/sdk/js/kakao.min.js" strategy="beforeInteractive" />

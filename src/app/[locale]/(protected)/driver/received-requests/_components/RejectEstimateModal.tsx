@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Button from "@/components/Button";
 import XIcon from "../../../../../../../public/assets/icons/ic_X_gray.svg";
@@ -10,6 +10,7 @@ import InputText from "@/components/InputText";
 import useMediaHook from "@/hooks/useMediaHook";
 import { useLocale, useTranslations } from "next-intl";
 import { batchTranslate } from "@/utills/batchTranslate";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
 
 interface RejectEstimateModalProps {
   open: boolean;
@@ -37,19 +38,46 @@ export default function RejectEstimateModal({
   moveDate
 }: RejectEstimateModalProps) {
   const t = useTranslations("ReceivedReq");
+  const t1 = useTranslations("Common");
+
   const locale = useLocale();
   const [translatedInfo, setTranslatedInfo] = useState({ from: "", to: "", date: "" });
 
   const [comment, setComment] = useState("");
   const [commentValid, setCommentValid] = useState(false);
 
+  const [guardEnabled, setGuardEnabled] = useState(true);
+
   const moveTypeKey: MoveType = moveTypeFromKorean[moveType] ?? "SMALL";
   const { isLg, isSm } = useMediaHook();
   const textClass = "text-black-300 mb-3 lg:text-[18px] text-[16px] leading-[26px] font-semibold ";
 
+  // 이탈 방지
+  const isDirty = useMemo(() => comment.trim().length > 0, [comment]);
+
+  useUnsavedChangesGuard({
+    when: open && guardEnabled && isDirty,
+    message: t1("leaveWarning"),
+    interceptLinks: true,
+    interceptBeforeUnload: true,
+    patchRouterMethods: true
+  });
+
+  // 닫기 시에도 입력 있을 경우 대비
+  const safeClose = () => {
+    if (isDirty) {
+      const ok = window.confirm(t1("leaveWarning"));
+      if (!ok) return;
+    }
+    setGuardEnabled(false);
+    onClose();
+  };
+
   // 모달이 닫힐 때 상태 초기화
   useEffect(() => {
-    if (!open) {
+    if (open) {
+      setGuardEnabled(true);
+    } else {
       setComment("");
       setCommentValid(false);
     }
@@ -86,8 +114,15 @@ export default function RejectEstimateModal({
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      safeClose(); // 배경 닫기에도 똑같이 적용
     }
+  };
+
+  // 가드 비활성화를 넣기 위해 변수로 묶어서 정리했습니다!
+  const handleSubmit = () => {
+    if (!commentValid) return;
+    setGuardEnabled(false); // 제출 시엔 가드 비활성화
+    onSubmit(estimateRequestId, comment);
   };
 
   return (
@@ -116,7 +151,7 @@ export default function RejectEstimateModal({
               {t("reject")}
             </h2>
             <button
-              onClick={onClose}
+              onClick={safeClose}
               className="m-0 h-6 w-6 cursor-pointer border-none bg-transparent p-0 lg:w-9"
               aria-label="견적 거절 모달 닫기"
             >
@@ -192,7 +227,7 @@ export default function RejectEstimateModal({
             text={t("reject")}
             className="mt-auto h-[54px] lg:h-[64px]"
             isDisabled={!commentValid}
-            onClick={() => commentValid && onSubmit(estimateRequestId, comment)}
+            onClick={handleSubmit}
             aria-label={`${customerName} 고객의 요청 거절하기`}
           />
         </div>

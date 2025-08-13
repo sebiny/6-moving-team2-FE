@@ -81,21 +81,6 @@ function DriverDetailPage() {
 
   return (
     <main className="flex flex-col items-center">
-      {/* ===== 메타 태그 추가 ===== */}
-      <title>{`${driver.nickname} 기사님 | 무빙`}</title>
-      <meta property="og:title" content={`${driver.nickname} 기사님`} />
-      <meta property="og:description" content="무빙에서 이 기사님을 추천합니다!" />
-      <meta
-        property="og:image"
-        content={
-          driver.profileImage
-            ? `https://www.moving-2.click${driver.profileImage}`
-            : "https://www.moving-2.click/assets/images/img_profile.svg"
-        }
-      />
-      <meta property="og:url" content={driverUrl} />
-      <meta property="og:type" content="website" />
-      {/* ========= 메타 태그 끝 =========== */}
       <OrangeBackground />
       <div className="flex w-full justify-center gap-[116px]">
         <section className="mx-5 w-full max-w-[742px] md:mx-18" aria-label={t("driverPage.driverInfoSection")}>

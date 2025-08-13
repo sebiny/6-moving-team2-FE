@@ -2,9 +2,10 @@
 import Button from "@/components/Button";
 import TextField from "@/components/input/TextField";
 import { useSignupForm } from "@/hooks/useAuthForm";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
 import { authService } from "@/lib/api/api-auth";
 import { profileService } from "@/lib/api/api-profile";
-import { useAuth, User } from "@/providers/AuthProvider";
+import { useAuth } from "@/providers/AuthProvider";
 import { UserType } from "@/types/UserType";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -12,6 +13,8 @@ import React, { useEffect, useMemo, useState } from "react";
 
 function MyPageEditPage() {
   const t = useTranslations("DriverProfile");
+  const t1 = useTranslations("Common");
+
   const router = useRouter();
   const { user } = useAuth();
   const {
@@ -32,17 +35,30 @@ function MyPageEditPage() {
   } = useSignupForm(UserType.DRIVER);
 
   const [currentPassword, setCurrentPassword] = useState<string>("");
+
+  const [guardEnabled, setGuardEnabled] = useState(true);
+  const [initialName, setInitialName] = useState<string>("");
+  const [initialPhone, setInitialPhone] = useState<string>("");
+
   const handleClickEdit = async () => {
-    if (password)
-      await profileService.updateBasicDriverProfile({
-        name,
-        phone,
-        currentPassword,
-        newPassword: password,
-        passwordConfirmation
-      });
-    else await profileService.updateBasicDriverProfile({ name, phone });
-    router.push("/driver/my-page");
+    setGuardEnabled(false);
+    try {
+      if (password) {
+        await profileService.updateBasicDriverProfile({
+          name,
+          phone,
+          currentPassword,
+          newPassword: password,
+          passwordConfirmation
+        });
+      } else {
+        await profileService.updateBasicDriverProfile({ name, phone });
+      }
+      router.push("/driver/my-page");
+    } catch (err) {
+      setGuardEnabled(true);
+      throw err;
+    }
   };
 
   const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
@@ -78,14 +94,38 @@ function MyPageEditPage() {
         setName(userData?.name ?? "");
         setEmail(userData?.email ?? "");
         setPhone(userData?.phone ?? "");
+
+        setInitialName(userData?.name ?? "");
+        setInitialPhone(userData?.email ?? "");
       };
       fetchUserData();
     }
   }, [user]);
 
+  // 이탈 방지
+  const isDirty = useMemo(() => {
+    return (
+      name !== initialName ||
+      phone !== initialPhone ||
+      currentPassword.length > 0 ||
+      password.length > 0 ||
+      passwordConfirmation.length > 0
+    );
+  }, [name, phone, initialName, initialPhone, currentPassword, password, passwordConfirmation]);
+
+  useUnsavedChangesGuard({
+    when: guardEnabled && isDirty,
+    message: t1("leaveWarning"),
+    interceptLinks: true,
+    interceptBeforeUnload: true,
+    patchRouterMethods: true
+  });
+
   const handleClickCancel = () => {
+    setGuardEnabled(false);
     router.push("/driver/my-page");
   };
+
   return (
     <div className="flex justify-center">
       <div className="mt-[26px] w-[327px] max-w-[1120px] lg:mt-20 lg:w-full">

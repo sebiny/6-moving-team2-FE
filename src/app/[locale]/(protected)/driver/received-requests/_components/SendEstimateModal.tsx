@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Button from "@/components/Button";
 import XIcon from "../../../../../../../public/assets/icons/ic_X_gray.svg";
@@ -11,6 +11,7 @@ import InputPrice, { removeCommas } from "./InputPrice";
 import useMediaHook from "@/hooks/useMediaHook";
 import { useLocale, useTranslations } from "next-intl";
 import { batchTranslate } from "@/utills/batchTranslate";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
 
 interface SendEstimateModalProps {
   open: boolean;
@@ -36,6 +37,7 @@ export default function SendEstimateModal({
   moveDate
 }: SendEstimateModalProps) {
   const t = useTranslations("ReceivedReq");
+  const t1 = useTranslations("Common");
   const locale = useLocale();
   const [translatedInfo, setTranslatedInfo] = useState({ from: "", to: "", date: "" });
   const [price, setPrice] = useState("");
@@ -45,6 +47,23 @@ export default function SendEstimateModal({
   const moveTypeKey: MoveType = moveTypeFromKorean[moveType] ?? "SMALL";
   const { isLg, isSm } = useMediaHook();
   const textClass = "text-black-300 mb-3 lg:text-[18px] text-[16px] leading-[26px] font-semibold ";
+
+  // 작성 중 여부 계산
+  const isDirty = useMemo(() => {
+    // 공백만 있는 경우도 제외
+    const hasPrice = removeCommas(price).trim() !== "";
+    const hasComment = comment.trim() !== "";
+    return hasPrice || hasComment;
+  }, [price, comment]);
+
+  // 이탈 방지 훅 (모달이 열려 있고, 작성 중일 때만 동작)
+  useUnsavedChangesGuard({
+    when: open && isDirty,
+    message: t1("leaveWarning"),
+    interceptLinks: true,
+    interceptBeforeUnload: true,
+    patchRouterMethods: true
+  });
 
   // 모달이 닫힐 때 상태 초기화
   useEffect(() => {
@@ -85,10 +104,26 @@ export default function SendEstimateModal({
   }, [fromAddress, toAddress, moveDate, locale]);
   if (!open) return null;
 
+  // 공통 닫기 시도 핸들러(X 버튼)
+  const tryClose = () => {
+    if (isDirty) {
+      const ok = window.confirm("작성 중인 내용이 있습니다. 닫으시겠습니까?");
+      if (!ok) return;
+    }
+    onClose();
+  };
+
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      tryClose();
     }
+  };
+
+  const handleSubmit = () => {
+    const cleanPrice = removeCommas(price);
+    const numericPrice = Number(cleanPrice);
+    onSubmit(numericPrice, comment);
+    onClose();
   };
 
   return (
@@ -117,7 +152,7 @@ export default function SendEstimateModal({
               {t("sendReq")}
             </h2>
             <button
-              onClick={onClose}
+              onClick={tryClose}
               className="m-0 h-6 w-6 cursor-pointer border-none bg-transparent p-0 lg:w-9"
               aria-label="견적 전송 모달 닫기"
             >
@@ -200,11 +235,7 @@ export default function SendEstimateModal({
             text={t("sendEst")}
             className="h-[54px] lg:h-[64px]"
             isDisabled={price === "" || !commentValid || Number(removeCommas(price)) <= 0}
-            onClick={() => {
-              const cleanPrice = removeCommas(price);
-              const numericPrice = Number(cleanPrice);
-              onSubmit(numericPrice, comment);
-            }}
+            onClick={handleSubmit}
             aria-label={`${customerName} 고객에게 ${price}원 견적 전송하기`}
           />
         </div>
