@@ -2,40 +2,38 @@ import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   images: {
     domains: ["aws-basic-codeit-bucket-1.s3.ap-northeast-2.amazonaws.com", "dfji8rtv1ziar.cloudfront.net"]
+  },
+
+  // 아이콘 라이브러리와 함께 다국어 패키지도 최적화 대상에 추가합니다.
+  experimental: {
+    optimizePackageImports: [
+      "react-icons",
+      "lucide-react",
+      "next-intl" // 다국어 패키지 최적화 추가
+    ]
+  },
+
+  // Webpack 설정을 통해 캐시는 유지하되, 큰 파일이 생성되지 않도록 제어합니다.
+  webpack: (config, { dev }) => {
+    // 개발 환경에만 적용
+    if (dev && config.optimization?.splitChunks) {
+      config.optimization.splitChunks.maxSize = 200000; // 청크 최대 크기를 200KB로 제한
+    }
+    return config;
   }
 };
-const withNextIntl = createNextIntlPlugin();
-export default withSentryConfig(withNextIntl(nextConfig), {
-  // For all available options, see:
-  // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
+const withNextIntl = createNextIntlPlugin();
+
+export default withSentryConfig(withNextIntl(nextConfig), {
   org: "moving-wm",
   project: "javascript-nextjs-3j",
-
-  // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
-
-  // For all available options, see:
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-
-  // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
-
-  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  // This can increase your server load as well as your hosting bill.
-  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-  // side errors will fail.
   tunnelRoute: "/monitoring",
-
-  // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
-
-  // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-  // See the following for more information:
-  // https://docs.sentry.io/product/crons/
-  // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true
 });

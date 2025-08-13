@@ -8,7 +8,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import ConditionalTransitionWrapper from "@/components/container/ConditionalTransitionWrapper";
-import { cssTransition, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Script from "next/script";
 import WelcomeToastTrigger from "@/components/WelcomeToastTrigger";
 
@@ -41,8 +41,8 @@ export const metadata = {
     images: [
       {
         url: "https://www.moving-2.click/og-image.webp",
-        width: 1488,
-        height: 556,
+        width: 1353,
+        height: 740,
         alt: "Moving 서비스 소개 이미지"
       }
     ],

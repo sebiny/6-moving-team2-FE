@@ -29,7 +29,7 @@ function DriverReviews({ driver }: ReviewsType) {
     placeholderData: keepPreviousData
   });
 
-  if (!reviews)
+  if (!reviews && !isPending && !isFetching)
     return (
       <section role="alert" aria-live="assertive" className="mb-50">
         <p>{t("reviewFetchFailed")}</p>
@@ -52,9 +52,9 @@ function DriverReviews({ driver }: ReviewsType) {
             <DriverReviewSkeleton key={i} />
           ))}
         </div>
-      ) : reviews.length ? (
+      ) : reviews && reviews.length ? (
         <>
-          <section className="mt-4 flex justify-between" aria-label={t("reviewSummary")}>
+          <section className="mt-4 flex flex-col justify-between gap-6 md:flex-row" aria-label={t("reviewSummary")}>
             <div className="flex gap-[18px]" aria-live="polite">
               <div className="text-black-400 text-[40px] font-normal" aria-label={t("averageRating")}>
                 {driver.averageRating}

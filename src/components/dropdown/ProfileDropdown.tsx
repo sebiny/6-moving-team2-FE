@@ -1,22 +1,24 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import icProfile from "/public/assets/icons/ic_profile.svg";
-import { useTransitionRouter } from "@/hooks/useTransitionRouter";
+
 import { getProfileDropdownMenu, UserType } from "@/constant/constant";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/providers/AuthProvider";
 
 import { authService } from "@/lib/api/api-auth";
+import { useRouter } from "next/navigation";
 
 interface ProfileProps {
+  lg?: string;
   isOpen: boolean;
-  onClick: (e: any) => void;
+  onClick: () => void;
   className?: string;
   ref?: React.Ref<HTMLDivElement> | undefined;
 }
 
-export default function Profile({ ref, isOpen, onClick, className }: ProfileProps) {
-  const { pushWithTransition } = useTransitionRouter();
+export default function Profile({ ref, isOpen, onClick, className, lg }: ProfileProps) {
+  const router = useRouter();
   const { user, logout, isLoading } = useAuth();
   const userType = user?.userType;
 
@@ -40,16 +42,9 @@ export default function Profile({ ref, isOpen, onClick, className }: ProfileProp
     const buttonElement = event.currentTarget;
     const uniqueName = `gnb-menu-${path.replace("/", "")}`;
     buttonElement.style.viewTransitionName = uniqueName;
-    onClick?.(event);
-    const transition = pushWithTransition(path);
 
-    // transition 객체가 존재하면(API가 지원되면)
-    if (transition) {
-      transition.finished.finally(() => {
-        // 애니메이션이 완전히 끝나고 나면 스타일을 제거합니다.
-        buttonElement.style.viewTransitionName = "";
-      });
-    }
+    router.push(path);
+    onClick?.();
   };
 
   const handleLogout = async () => {
@@ -57,30 +52,32 @@ export default function Profile({ ref, isOpen, onClick, className }: ProfileProp
   };
   return (
     <div className={`${className} relative flex items-center`} ref={ref}>
-      <button className="hidden cursor-pointer items-center justify-between gap-3 lg:flex" onClick={onClick}>
-        <Image
-          src={detailedUser?.profileImage ?? icProfile}
-          alt="프로필 이미지"
-          width={26}
-          height={26}
-          className="h-[26px] w-[26px] rounded-full object-cover object-center"
-        />
-        {isLoading ? (
-          <div className="h-5 w-20 animate-pulse rounded bg-gray-300"></div> // 스켈레톤 UI
-        ) : (
-          (detailedUser?.name ?? "이름없음")
-        )}
-      </button>
-
-      <button className="block cursor-pointer lg:hidden" onClick={onClick}>
-        <Image
-          src={detailedUser?.profileImage ?? icProfile}
-          alt="프로필 이미지"
-          width={26}
-          height={26}
-          className="h-[26px] w-[26px] rounded-full border object-cover object-center"
-        />
-      </button>
+      {lg ? (
+        <button className="flex cursor-pointer items-center justify-between gap-3" onClick={onClick}>
+          <Image
+            src={detailedUser?.profileImage ?? icProfile}
+            alt="프로필 이미지"
+            width={26}
+            height={26}
+            className="h-[26px] w-[26px] rounded-full object-cover object-center"
+          />
+          {isLoading ? (
+            <div className="h-5 w-20 animate-pulse rounded bg-gray-300"></div> // 스켈레톤 UI
+          ) : (
+            (detailedUser?.name ?? "이름없음")
+          )}
+        </button>
+      ) : (
+        <button className="cursor-pointer" onClick={onClick}>
+          <Image
+            src={detailedUser?.profileImage ?? icProfile}
+            alt="프로필 이미지"
+            width={26}
+            height={26}
+            className="h-[26px] w-[26px] rounded-full border object-cover object-center"
+          />
+        </button>
+      )}
 
       {/* 프로필 레이어 */}
       {isOpen && (

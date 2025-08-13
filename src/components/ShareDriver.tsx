@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useCallback } from "react";
 import { ToastModal } from "./common-modal/ToastModal";
 import { useTranslations } from "next-intl";
 
@@ -10,10 +10,10 @@ interface ShareDriverType {
   onFacebookShare?: () => void;
 }
 
-function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
+const ShareDriver = React.memo(function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
   const tm = useTranslations("ToastModal");
 
-  const handleCopyLink = async () => {
+  const handleCopyLink = useCallback(async () => {
     try {
       const href = typeof window !== "undefined" ? window.location.href : "";
       await navigator.clipboard.writeText(href);
@@ -21,7 +21,7 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
     } catch {
       ToastModal(tm("shareDriver.isCopyLinkFalse"));
     }
-  };
+  }, [tm]);
 
   const kakaoDisabled = !onKakaoShare;
   const fbDisabled = !onFacebookShare;
@@ -37,13 +37,13 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
         <button
           type="button"
           onClick={handleCopyLink}
-          className="border-line-200 flex h-10 w-10 items-center justify-center rounded-[8px] border focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none lg:h-16 lg:w-16 lg:rounded-2xl"
+          className="border-line-200 flex h-10 w-10 cursor-pointer items-center justify-center rounded-[8px] border focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none lg:h-16 lg:w-16 lg:rounded-2xl"
           aria-label="링크 복사"
           title="링크 복사"
         >
           <Image
             src="/assets/icons/ic_clip.svg"
-            alt=""
+            alt="링크 복사"
             aria-hidden="true"
             width={36}
             height={36}
@@ -55,7 +55,7 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
         <button
           type="button"
           onClick={onKakaoShare}
-          className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#FAE100] focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:h-16 lg:w-16 lg:rounded-2xl"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-[8px] bg-[#FAE100] focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:h-16 lg:w-16 lg:rounded-2xl"
           aria-label="카카오톡으로 공유"
           title="카카오톡으로 공유"
           disabled={kakaoDisabled}
@@ -63,7 +63,7 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
         >
           <Image
             src="/assets/icons/ic_share_kakao.svg"
-            alt=""
+            alt="카카오톡"
             aria-hidden="true"
             width={28}
             height={28}
@@ -75,7 +75,7 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
         <button
           type="button"
           onClick={onFacebookShare}
-          className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-orange-400 focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:h-16 lg:w-16 lg:rounded-2xl"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-[8px] bg-orange-400 focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:h-16 lg:w-16 lg:rounded-2xl"
           aria-label="페이스북으로 공유"
           title="페이스북으로 공유"
           disabled={fbDisabled}
@@ -83,7 +83,7 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
         >
           <Image
             src="/assets/icons/ic_share_facebook.svg"
-            alt=""
+            alt="페이스북"
             aria-hidden="true"
             width={28}
             height={28}
@@ -93,6 +93,6 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
       </div>
     </section>
   );
-}
+});
 
 export default ShareDriver;

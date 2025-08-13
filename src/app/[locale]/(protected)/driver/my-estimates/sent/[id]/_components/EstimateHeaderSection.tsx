@@ -15,7 +15,13 @@ interface Props {
   price: number | null;
 }
 
-export default function EstimateHeaderSection({ moveType, isDesignated, status, customerName, price }: Props) {
+const EstimateHeaderSection = React.memo(function EstimateHeaderSection({
+  moveType,
+  isDesignated,
+  status,
+  customerName,
+  price
+}: Props) {
   const t = useTranslations("MyEstimate");
 
   return (
@@ -60,4 +66,6 @@ export default function EstimateHeaderSection({ moveType, isDesignated, status, 
       <div className="h-0 w-full outline-1 outline-offset-[-0.5px] outline-zinc-100" />
     </section>
   );
-}
+});
+
+export default EstimateHeaderSection;
