@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cookieFetch, authUtils } from "@/lib/FetchClient";
 import ImageUploader from "@/components/profile/ImageUploader";
@@ -9,10 +9,12 @@ import SelectService from "./SelectService";
 import Button from "../Button";
 import { useTranslations } from "next-intl";
 import { ToastModal } from "../common-modal/ToastModal";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
 
 export default function CustomerProfileCreateForm() {
   const router = useRouter();
   const t = useTranslations("Profile");
+  const t1 = useTranslations("Common");
 
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
@@ -23,7 +25,30 @@ export default function CustomerProfileCreateForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
+
+  // 성공적으로 제출 할 경우 꺼줄 가드
+   const [guardEnabled, setGuardEnabled] = useState(true);
+
   const isFormValid = selectedMoveTypes.length > 0 && currentArea !== "";
+
+  // 이탈 방지 
+   const isDirty = useMemo(() => {
+    if (isSubmitting || isUploading) return false;
+    return (
+      selectedMoveTypes.length > 0 ||
+      currentArea !== "" ||
+      !!profileImageFile ||
+      !!profileImagePreview
+    );
+  }, [isSubmitting, isUploading, selectedMoveTypes.length, currentArea, profileImageFile, profileImagePreview]);
+
+  useUnsavedChangesGuard({
+    when: guardEnabled && isDirty,
+    message: t1("leaveWarning"),
+    interceptLinks: true,
+    interceptBeforeUnload: true,
+    patchRouterMethods: true,
+  });
 
   const handleImageError = (error: string | null) => {
     setImageError(error);
@@ -99,6 +124,7 @@ export default function CustomerProfileCreateForm() {
       }
 
       ToastModal(t("success.create"));
+      setGuardEnabled(false);
       router.push("/");
     } catch (error: any) {
       ToastModal(error.message || t("error.create"));

@@ -12,9 +12,12 @@ import { useLocale, useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { batchTranslate } from "@/utills/batchTranslate";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
 
 export default function MobileEstimateForm() {
   const t = useTranslations("EstimateReq");
+  const t1 = useTranslations("Common");
+
   const locale = useLocale();
   const queryClient = useQueryClient();
   const moveTypes = useMemo(
@@ -26,6 +29,7 @@ export default function MobileEstimateForm() {
     [t]
   );
   type MoveTypeKey = (typeof moveTypes)[number]["key"];
+
   const [step, setStep] = useState(1);
   const [moveType, setMoveType] = useState<MoveTypeKey | null>(null);
   const [moveDate, setMoveDate] = useState<Date | null>(null);
@@ -36,6 +40,8 @@ export default function MobileEstimateForm() {
 
   const [translatedAddressFrom, setTranslatedAddressFrom] = useState("");
   const [translatedAddressTo, setTranslatedAddressTo] = useState("");
+
+  const [guardEnabled, setGuardEnabled] = useState(true);
 
   // 주소 동적 번역
   useEffect(() => {
@@ -64,6 +70,23 @@ export default function MobileEstimateForm() {
   const isValidStep2 = !!moveDate;
   const isValidStep3 = !!addressFrom && !!addressTo;
 
+  const isDirty =
+    !isRequesting &&
+    (step > 1 ||
+      !!moveType ||
+      !!moveDate ||
+      !!addressFrom ||
+      !!addressTo ||
+      !!showModal);
+
+  useUnsavedChangesGuard({
+    when: guardEnabled && isDirty,
+    message: t1("leaveWarning"), // 공용 문구가 있으면 사용
+    interceptLinks: true,
+    interceptBeforeUnload: true,
+    patchRouterMethods: true,
+  });
+
   // 견적 요청 mutation
   const { mutateAsync: requestEstimate } = useMutation({
     mutationFn: createEstimateRequest,
@@ -78,6 +101,7 @@ export default function MobileEstimateForm() {
 
     try {
       setIsRequesting(true);
+      setGuardEnabled(false);
       await requestEstimate({
         moveType: moveType,
         moveDate: moveDate.toISOString(),
@@ -86,6 +110,7 @@ export default function MobileEstimateForm() {
       });
       ToastModal(t("estimateReqSuccess"));
     } catch (err: any) {
+       setGuardEnabled(true);
       const messageKey = err?.response?.data?.message || err?.message || "estimateReqFailure";
       ToastModal(t(messageKey));
     } finally {

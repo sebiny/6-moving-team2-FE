@@ -41,5 +41,7 @@
   "selectToDelete": "Please select drivers to delete.",
   "confirmDelete": "Are you sure you want to delete?",
   "deleted": "Deleted successfully.",
-  "deleteError": "An error occurred while deleting."
+  "deleteError": "An error occurred while deleting.",
+
+  "leaveWarning": "Are you sure you want to leave this page? Your input may not be saved."
 }

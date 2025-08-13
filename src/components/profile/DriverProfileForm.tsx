@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { cookieFetch, authUtils } from "@/lib/FetchClient";
-import { regionMap, regionMapReverse } from "@/constant/profile";
 import ImageUploader from "@/components/profile/ImageUploader";
 import Button from "@/components/Button";
 import TextField from "@/components/input/TextField";
@@ -12,6 +11,7 @@ import SelectService from "@/components/profile/SelectService"; // 고객 컴포
 import SelectRegion from "@/components/profile/SelectRegion"; // 고객 컴포넌트 import
 import { useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
 
 interface DriverProfileFormProps {
   isEditMode: boolean;
@@ -21,6 +21,8 @@ interface DriverProfileFormProps {
 export default function DriverProfileForm({ isEditMode, initialData }: DriverProfileFormProps) {
   const router = useRouter();
   const t = useTranslations("DriverProfileEdit");
+  const t1 = useTranslations("Common");
+
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -33,6 +35,23 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
+
+  const [guardEnabled, setGuardEnabled] = useState(true);
+
+  // 이탈방지: 초기값 저장(수정 모드 비교용)
+  const initial = useMemo(() => {
+    if (!isEditMode || !initialData?.driver) return null;
+    const d = initialData.driver;
+    return {
+      profileImage: d.profileImage || null,
+      moveType: (d.moveType || []).slice().sort(),
+      nickname: d.nickname || "",
+      career: String(d.career ?? ""),
+      shortIntro: d.shortIntro || "",
+      detailIntro: d.detailIntro || "",
+      regions: (d.serviceAreas?.map((a: { region: string }) => a.region) || []).slice().sort()
+    };
+  }, [isEditMode, initialData]);
 
   useEffect(() => {
     if (isEditMode && initialData?.driver) {
@@ -99,6 +118,61 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
   const isFormValid =
     isNicknameValid && isCareerValid && isIntroValid && isDescriptionValid && isServicesValid && isRegionsValid;
 
+  // 이탈 방지
+  const isDirty = useMemo(() => {
+    if (isSubmitting || isUploading) return false; // 전송/업로드 중엔 경고 끄기
+    if (isEditMode && initial) {
+      const now = {
+        profileImage: profileImagePreview || null,
+        moveType: selectedMoveTypes.slice().sort(),
+        nickname: nickname,
+        career: career,
+        shortIntro,
+        detailIntro,
+        regions: selectedRegions.slice().sort()
+      };
+      return (
+        now.profileImage !== initial.profileImage ||
+        JSON.stringify(now.moveType) !== JSON.stringify(initial.moveType) ||
+        now.nickname !== initial.nickname ||
+        now.career !== initial.career ||
+        now.shortIntro !== initial.shortIntro ||
+        now.detailIntro !== initial.detailIntro ||
+        JSON.stringify(now.regions) !== JSON.stringify(initial.regions)
+      );
+    }
+    // 생성 모드: 아무 값이라도 채워졌으면 dirty
+    return (
+      !!profileImagePreview ||
+      nickname.trim().length > 0 ||
+      career.trim().length > 0 ||
+      shortIntro.trim().length > 0 ||
+      detailIntro.trim().length > 0 ||
+      selectedMoveTypes.length > 0 ||
+      selectedRegions.length > 0
+    );
+  }, [
+    isEditMode,
+    initial,
+    isSubmitting,
+    isUploading,
+    profileImagePreview,
+    nickname,
+    career,
+    shortIntro,
+    detailIntro,
+    selectedMoveTypes,
+    selectedRegions
+  ]);
+
+  useUnsavedChangesGuard({
+    when: guardEnabled && isDirty,
+    message: t1("leaveWarning"),
+    interceptLinks: true,
+    interceptBeforeUnload: true,
+    patchRouterMethods: true
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid) return;
@@ -119,6 +193,8 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
       const endpoint = "/profile/driver";
       const method = isEditMode ? "PATCH" : "POST";
 
+      setGuardEnabled(false);
+
       const response = await cookieFetch<{ accessToken?: string }>(endpoint, {
         method,
         body: JSON.stringify(payload)
@@ -131,6 +207,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
       ToastModal(t(isEditMode ? "success.edit" : "success.create"));
       router.push("/");
     } catch (error: any) {
+      setGuardEnabled(true);
       console.error(error);
       ToastModal(t(isEditMode ? "error.edit" : "error.create"));
     } finally {
@@ -265,6 +342,7 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
                 buttonType="button"
                 className="h-15 w-full rounded-2xl bg-gray-200 text-lg font-semibold text-gray-700 md:w-full"
                 onClick={() => {
+                  setGuardEnabled(false);
                   router.push("/driver/my-page");
                 }}
               />

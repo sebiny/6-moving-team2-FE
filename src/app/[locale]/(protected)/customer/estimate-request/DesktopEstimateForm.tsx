@@ -12,9 +12,12 @@ import { useLocale, useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 import LoadingLottie from "@/components/lottie/LoadingLottie";
 import { batchTranslate } from "@/utills/batchTranslate";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
 
 export default function DesktopEstimateForm() {
   const t = useTranslations("EstimateReq");
+  const t1 = useTranslations("Common");
+
   const locale = useLocale();
   const queryClient = useQueryClient();
   const moveTypes = useMemo(
@@ -36,6 +39,8 @@ export default function DesktopEstimateForm() {
 
   const [translatedAddressFrom, setTranslatedAddressFrom] = useState("");
   const [translatedAddressTo, setTranslatedAddressTo] = useState("");
+
+  const [guardEnabled, setGuardEnabled] = useState(true);
 
   // 주소 동적 번역
   useEffect(() => {
@@ -69,6 +74,20 @@ export default function DesktopEstimateForm() {
     return () => clearTimeout(timer);
   }, []);
 
+  // 이탈 방지
+  const isDirty = useMemo(() => {
+    if (isRequesting || isLoading) return false; 
+    return !!(selectedMoveType || selectedDate || addressFrom || addressTo || showModal);
+  }, [isRequesting, isLoading, selectedMoveType, selectedDate, addressFrom, addressTo, showModal]);
+
+  useUnsavedChangesGuard({
+    when: guardEnabled && isDirty,
+    message: t1("leaveWarning"),
+    interceptLinks: true,
+    interceptBeforeUnload: true,
+    patchRouterMethods: true,
+  });
+
   // 견적 요청 mutation
   const { mutateAsync: requestEstimate } = useMutation({
     mutationFn: createEstimateRequest,
@@ -83,6 +102,7 @@ export default function DesktopEstimateForm() {
 
     try {
       setIsRequesting(true);
+      setGuardEnabled(false);
       await requestEstimate({
         moveType: selectedMoveType,
         moveDate: selectedDate.toISOString(),
@@ -91,6 +111,7 @@ export default function DesktopEstimateForm() {
       });
       ToastModal(t("estimateReqSuccess"));
     } catch (err: any) {
+      setGuardEnabled(true);
       const messageKey = err?.response?.data?.message || err?.message || "estimateReqFailure";
       ToastModal(t(messageKey));
     } finally {
