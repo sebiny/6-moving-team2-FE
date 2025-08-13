@@ -27,19 +27,14 @@ export default function CustomerProfileCreateForm() {
   const [imageError, setImageError] = useState<string | null>(null);
 
   // 성공적으로 제출 할 경우 꺼줄 가드
-   const [guardEnabled, setGuardEnabled] = useState(true);
+  const [guardEnabled, setGuardEnabled] = useState(true);
 
   const isFormValid = selectedMoveTypes.length > 0 && currentArea !== "";
 
-  // 이탈 방지 
-   const isDirty = useMemo(() => {
+  // 이탈 방지
+  const isDirty = useMemo(() => {
     if (isSubmitting || isUploading) return false;
-    return (
-      selectedMoveTypes.length > 0 ||
-      currentArea !== "" ||
-      !!profileImageFile ||
-      !!profileImagePreview
-    );
+    return selectedMoveTypes.length > 0 || currentArea !== "" || !!profileImageFile || !!profileImagePreview;
   }, [isSubmitting, isUploading, selectedMoveTypes.length, currentArea, profileImageFile, profileImagePreview]);
 
   useUnsavedChangesGuard({
@@ -47,7 +42,7 @@ export default function CustomerProfileCreateForm() {
     message: t1("leaveWarning"),
     interceptLinks: true,
     interceptBeforeUnload: true,
-    patchRouterMethods: true,
+    patchRouterMethods: true
   });
 
   const handleImageError = (error: string | null) => {

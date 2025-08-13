@@ -209,7 +209,11 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
     } catch (error: any) {
       setGuardEnabled(true);
       console.error(error);
-      ToastModal(t(isEditMode ? "error.edit" : "error.create"));
+      if (error?.message === "이미 사용 중인 닉네임입니다.") {
+        ToastModal(error.message); // 백엔드 메시지 그대로
+      } else {
+        ToastModal(t(isEditMode ? "error.edit" : "error.create"));
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -298,9 +302,6 @@ export default function DriverProfileForm({ isEditMode, initialData }: DriverPro
                 onChange={setDetailIntro}
                 setInputValid={() => {}}
               />
-              {!isDescriptionValid && detailIntro.length > 0 && (
-                <p className="text-base text-rose-500">{t("descriptionError")}</p>
-              )}
             </div>
 
             <div className="bg-line-100 h-px" />
