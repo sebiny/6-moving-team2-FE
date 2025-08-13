@@ -11,7 +11,7 @@ import { getWritableReviews } from "@/lib/api/api-review";
 import NoReview from "./NoReview";
 import Pagination from "@/components/Pagination";
 import { useQuery } from "@tanstack/react-query";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 import { ReviewableItem } from "@/types/reviewType";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
 import ReviewModal from "./ReviewModal";

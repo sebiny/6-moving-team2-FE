@@ -14,7 +14,7 @@ import { driverService } from "@/lib/api/api-driver";
 import { useParams } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { useTranslations } from "next-intl";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 import { useKakaoShare } from "@/hooks/useKakaoShare";
 
 function DriverDetailPage() {

@@ -5,7 +5,7 @@ import ProfileForm from "@/components/profile/ProfileForm";
 import { authService } from "@/lib/api/api-auth";
 import { User } from "@/providers/AuthProvider";
 import { useTranslations } from "next-intl";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 
 export default function DriverProfileEditPage() {
   const [initialData, setInitialData] = useState<User | null>(null);

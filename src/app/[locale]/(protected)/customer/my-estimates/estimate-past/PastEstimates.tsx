@@ -9,7 +9,7 @@ import { usePastEstimates } from "@/lib/api/api-myEstimate";
 import { getMoveTypeLabel } from "@/utills/moveUtils";
 import { formatStreetAddress } from "@/utills/addressUtils";
 import dayjs from "dayjs";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 import "dayjs/locale/ko";
 
 export default function PastEstimates() {

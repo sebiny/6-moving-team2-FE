@@ -12,7 +12,7 @@ import EstimateHeaderSection from "@/app/[locale]/(protected)/driver/my-estimate
 import EstimateInfoSection from "@/app/[locale]/(protected)/driver/my-estimates/sent/[id]/_components/EstimateInfoSection";
 import { MoveType, moveTypeLabelMap } from "@/constant/moveTypes";
 import { formatDate, formatDateTime } from "@/utills/dateUtils";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 import "dayjs/locale/ko";
 
 dayjs.locale("ko");
