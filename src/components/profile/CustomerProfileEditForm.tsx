@@ -87,24 +87,19 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
     throw new Error(t("error.upload.fail"));
   };
 
-  // 이탈 방지 
-     const isDirty = useMemo(() => {
-      if (isSubmitting || isUploading) return false;
-      return (
-        selectedMoveTypes.length > 0 ||
-        currentArea !== "" ||
-        !!profileImageFile ||
-        !!profileImagePreview
-      );
-    }, [isSubmitting, isUploading, selectedMoveTypes.length, currentArea, profileImageFile, profileImagePreview]);
-  
-    useUnsavedChangesGuard({
-      when: guardEnabled && isDirty,
-      message: t1("leaveWarning"),
-      interceptLinks: true,
-      interceptBeforeUnload: true,
-      patchRouterMethods: true,
-    });
+  // 이탈 방지
+  const isDirty = useMemo(() => {
+    if (isSubmitting || isUploading) return false;
+    return selectedMoveTypes.length > 0 || currentArea !== "" || !!profileImageFile || !!profileImagePreview;
+  }, [isSubmitting, isUploading, selectedMoveTypes.length, currentArea, profileImageFile, profileImagePreview]);
+
+  useUnsavedChangesGuard({
+    when: guardEnabled && isDirty,
+    message: t1("leaveWarning"),
+    interceptLinks: true,
+    interceptBeforeUnload: true,
+    patchRouterMethods: true
+  });
 
   const handleImageChange = async (file: File | null, previewUrl: string | null) => {
     setImageError(null);
@@ -197,7 +192,7 @@ export default function CustomerProfileEditForm({ initialData }: CustomerProfile
     <main role="main">
       <form
         onSubmit={handleSubmit}
-        className="mx-auto mt-[23px] box-border flex w-[372px] max-w-[1200px] flex-col gap-12 rounded-[32px] bg-gray-50 px-6 pt-8 pb-10 md:w-[372px] lg:w-[1200px] lg:px-10"
+        className="mx-auto mt-[23px] box-border flex w-[375px] max-w-[1200px] flex-col gap-12 rounded-[32px] bg-gray-50 px-6 pt-8 pb-10 md:w-[375px] lg:w-[1200px] lg:px-10"
       >
         {/* 상단 제목 */}
         <header className="flex flex-col gap-8">
