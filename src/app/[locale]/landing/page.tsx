@@ -60,16 +60,7 @@ export default function LandingPage() {
             backgroundRepeat: "no-repeat",
             zIndex: 1
           }}
-        >
-          {/* <Image
-            src={bgSm}
-            width={375}
-            height={313}
-            alt="배경이미지"
-            className="h-full min-h-[313px] w-full object-cover"
-            priority
-          /> */}
-        </div>
+        ></div>
         {/* 타블렛(sm 이상) 배경은 div의 css로 */}
         <div
           className="absolute inset-0 hidden max-h-[405px] sm:block md:hidden lg:hidden"
@@ -80,16 +71,7 @@ export default function LandingPage() {
             backgroundRepeat: "no-repeat",
             zIndex: 1
           }}
-        >
-          {/* <Image
-            src={bgMd}
-            width={744}
-            height={405}
-            alt="배경이미지"
-            className="h-full min-h-[405px] w-full object-cover"
-            priority
-          /> */}
-        </div>
+        ></div>
         {/* 타블렛 (md 이상) 배경은 div의 css로 */}
         <div
           className="absolute inset-0 hidden max-h-[405px] w-full md:block xl:h-[405px]"
@@ -129,7 +111,10 @@ export default function LandingPage() {
           ))}
         </div>
       </Container>
-      <Container padding="p-0" className="flex max-h-[850px] max-w-[1400px] justify-center sm:mb-20 sm:p-4">
+      <Container
+        padding="p-0"
+        className="flex max-h-[850px] max-w-[1400px] justify-center sm:mb-20 sm:p-4 xl:min-h-[1040px]"
+      >
         <ChangeImages />
       </Container>
       <Container padding="px-0 sm:px-8" className="flex justify-center md:max-w-[1400px]">
