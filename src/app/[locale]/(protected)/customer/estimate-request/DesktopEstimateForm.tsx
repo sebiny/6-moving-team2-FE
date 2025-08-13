@@ -10,7 +10,7 @@ import Button from "@/components/Button";
 import { Address } from "@/types/Address";
 import { useLocale, useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 import { batchTranslate } from "@/utills/batchTranslate";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
 
@@ -76,7 +76,7 @@ export default function DesktopEstimateForm() {
 
   // 이탈 방지
   const isDirty = useMemo(() => {
-    if (isRequesting || isLoading) return false; 
+    if (isRequesting || isLoading) return false;
     return !!(selectedMoveType || selectedDate || addressFrom || addressTo || showModal);
   }, [isRequesting, isLoading, selectedMoveType, selectedDate, addressFrom, addressTo, showModal]);
 
@@ -85,7 +85,7 @@ export default function DesktopEstimateForm() {
     message: t1("leaveWarning"),
     interceptLinks: true,
     interceptBeforeUnload: true,
-    patchRouterMethods: true,
+    patchRouterMethods: true
   });
 
   // 견적 요청 mutation

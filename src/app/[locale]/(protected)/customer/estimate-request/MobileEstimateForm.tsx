@@ -10,7 +10,7 @@ import Button from "@/components/Button";
 import { Address } from "@/types/Address";
 import { useLocale, useTranslations } from "next-intl";
 import { ToastModal } from "@/components/common-modal/ToastModal";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 import { batchTranslate } from "@/utills/batchTranslate";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
 
@@ -71,20 +71,14 @@ export default function MobileEstimateForm() {
   const isValidStep3 = !!addressFrom && !!addressTo;
 
   const isDirty =
-    !isRequesting &&
-    (step > 1 ||
-      !!moveType ||
-      !!moveDate ||
-      !!addressFrom ||
-      !!addressTo ||
-      !!showModal);
+    !isRequesting && (step > 1 || !!moveType || !!moveDate || !!addressFrom || !!addressTo || !!showModal);
 
   useUnsavedChangesGuard({
     when: guardEnabled && isDirty,
     message: t1("leaveWarning"), // 공용 문구가 있으면 사용
     interceptLinks: true,
     interceptBeforeUnload: true,
-    patchRouterMethods: true,
+    patchRouterMethods: true
   });
 
   // 견적 요청 mutation
@@ -110,7 +104,7 @@ export default function MobileEstimateForm() {
       });
       ToastModal(t("estimateReqSuccess"));
     } catch (err: any) {
-       setGuardEnabled(true);
+      setGuardEnabled(true);
       const messageKey = err?.response?.data?.message || err?.message || "estimateReqFailure";
       ToastModal(t(messageKey));
     } finally {

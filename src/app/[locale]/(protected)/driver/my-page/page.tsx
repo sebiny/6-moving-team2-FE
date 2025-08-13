@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DriverType } from "@/types/driverType";
 import { driverService } from "@/lib/api/api-driver";
 import { useLocale, useTranslations } from "next-intl";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 import { batchTranslate } from "@/utills/batchTranslate";
 
 function DriverMyPage() {
