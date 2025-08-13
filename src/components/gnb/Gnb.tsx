@@ -64,17 +64,15 @@ export default function Gnb() {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [openLayer]);
+  }, [handleResize]);
 
-  // if (isLoading)
-  //   return (
-  //     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-  //       <svg className="h-12 w-12 animate-spin text-white" viewBox="0 0 24 24" fill="none">
-  //         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-  //         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-  //       </svg>
-  //     </div>
-  //   );
+  useEffect(() => {
+    // isLg가 true(데스크탑)가 되고, 모바일 메뉴가 열려있을 때
+    if (isLg && openLayer === "gnbMobileMenu") {
+      setOpenLayer(null); // 모바일 메뉴를 닫습니다.
+    }
+  }, [isLg, openLayer, setOpenLayer]);
+
   const isLoggedIn = !!user;
   const userRole = user?.userType ?? "GUEST";
 

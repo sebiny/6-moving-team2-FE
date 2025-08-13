@@ -21,7 +21,7 @@ const browserWidthType = {
     textStyle: "text-lg font-bold"
   },
   default: {
-    layoutDiv: "fixed top-0 right-0 z-50 flex h-screen w-55 flex-col bg-gray-50 transition-all",
+    layoutDiv: "flex h-screen w-55 flex-col bg-gray-50 transition-all transform duration-300 ease-out",
     buttonStyle: "h-18 text-left pl-6",
     textStyle: "text-base font-medium"
   }
