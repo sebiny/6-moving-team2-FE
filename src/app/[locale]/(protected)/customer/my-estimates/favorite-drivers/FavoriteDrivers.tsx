@@ -11,7 +11,7 @@ import { ToastModal } from "@/components/common-modal/ToastModal";
 import AlertModal from "@/components/common-modal/AlertModal";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 import PageHeader from "@/components/common/PageHeader";
 
 export default function FavoriteDrivers() {

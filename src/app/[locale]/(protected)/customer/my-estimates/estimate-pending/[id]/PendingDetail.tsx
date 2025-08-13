@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import { useKakaoShare } from "@/hooks/useKakaoShare";
 import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
 import PageHeader from "@/components/common/PageHeader";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 import "dayjs/locale/ko";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 

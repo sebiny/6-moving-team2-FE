@@ -15,7 +15,7 @@ import EstimateDetailInfo from "@/components/common/EstimateDetailInfo";
 import { useKakaoShare } from "@/hooks/useKakaoShare";
 import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
 import PageHeader from "@/components/common/PageHeader";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+import LoadingLottie from "@/components/loading/LoadingAnimation";
 import "dayjs/locale/ko";
 
 export default function PastDetailPage() {

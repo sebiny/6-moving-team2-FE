@@ -9,7 +9,6 @@ import { formatAddress } from "@/utills/addressUtils";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { batchTranslate } from "@/utills/batchTranslate";
-// import LoadingLottie from "@/components/lottie/LoadingLottie";
 import "dayjs/locale/ko";
 import LoadingAnimation from "@/components/loading/LoadingAnimation";
 
@@ -62,7 +61,7 @@ export default function PendingEstimates() {
   // 1) 로딩
   if (isLoading) {
     return (
-      <section aria-busy="true" >
+      <section aria-busy="true">
         <LoadingAnimation />
       </section>
     );
