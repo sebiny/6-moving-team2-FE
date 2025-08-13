@@ -37,7 +37,7 @@ const ShareDriver = React.memo(function ShareDriver({ text, onKakaoShare, onFace
         <button
           type="button"
           onClick={handleCopyLink}
-          className="border-line-200 flex h-10 w-10 items-center justify-center rounded-[8px] border focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none lg:h-16 lg:w-16 lg:rounded-2xl"
+          className="border-line-200 flex h-10 w-10 cursor-pointer items-center justify-center rounded-[8px] border focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none lg:h-16 lg:w-16 lg:rounded-2xl"
           aria-label="링크 복사"
           title="링크 복사"
         >
@@ -55,7 +55,7 @@ const ShareDriver = React.memo(function ShareDriver({ text, onKakaoShare, onFace
         <button
           type="button"
           onClick={onKakaoShare}
-          className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#FAE100] focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:h-16 lg:w-16 lg:rounded-2xl"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-[8px] bg-[#FAE100] focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:h-16 lg:w-16 lg:rounded-2xl"
           aria-label="카카오톡으로 공유"
           title="카카오톡으로 공유"
           disabled={kakaoDisabled}
@@ -75,7 +75,7 @@ const ShareDriver = React.memo(function ShareDriver({ text, onKakaoShare, onFace
         <button
           type="button"
           onClick={onFacebookShare}
-          className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-orange-400 focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:h-16 lg:w-16 lg:rounded-2xl"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-[8px] bg-orange-400 focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:h-16 lg:w-16 lg:rounded-2xl"
           aria-label="페이스북으로 공유"
           title="페이스북으로 공유"
           disabled={fbDisabled}
