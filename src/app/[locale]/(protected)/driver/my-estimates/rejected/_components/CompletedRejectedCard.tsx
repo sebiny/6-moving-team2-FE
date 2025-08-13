@@ -19,6 +19,7 @@ export default function CompletedRejectedCard({ request }: CompletedRejectedCard
   useEffect(() => {
     const translatedTexts = async () => {
       if (!request) return;
+
       if (locale === "ko") {
         setTransaltedInfo({
           from: request.fromAddress,
@@ -27,24 +28,34 @@ export default function CompletedRejectedCard({ request }: CompletedRejectedCard
         });
         return;
       }
+
       try {
-        const result = await batchTranslate(
-          {
-            from: request.fromAddress ?? "",
-            to: request.toAddress ?? "",
-            date: request.moveDate ?? ""
-          },
-          locale
-        );
+        const translate = async (text: string) => {
+          const res = await fetch("http://localhost:4000/translate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text, targetLang: locale.toUpperCase() })
+          });
+          const data = await res.json();
+          return data.translation;
+        };
+
+        const [fromTranslated, toTranslated, dateTranslated] = await Promise.all([
+          translate(request.fromAddress ?? ""),
+          translate(request.toAddress ?? ""),
+          translate(request.moveDate ?? "")
+        ]);
+
         setTransaltedInfo({
-          from: result.from,
-          to: result.to,
-          date: result.date
+          from: fromTranslated,
+          to: toTranslated,
+          date: dateTranslated
         });
       } catch (e) {
         console.warn("번역 실패", e);
       }
     };
+
     translatedTexts();
   }, [request, locale]);
 
