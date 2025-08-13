@@ -1,12 +1,13 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import icProfile from "/public/assets/icons/ic_profile.svg";
-import { useTransitionRouter } from "@/hooks/useTransitionRouter";
+
 import { getProfileDropdownMenu, UserType } from "@/constant/constant";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/providers/AuthProvider";
 
 import { authService } from "@/lib/api/api-auth";
+import { useRouter } from "next/navigation";
 
 interface ProfileProps {
   lg?: string;
@@ -17,7 +18,7 @@ interface ProfileProps {
 }
 
 export default function Profile({ ref, isOpen, onClick, className, lg }: ProfileProps) {
-  const { pushWithTransition } = useTransitionRouter();
+  const router = useRouter();
   const { user, logout, isLoading } = useAuth();
   const userType = user?.userType;
 
@@ -42,16 +43,8 @@ export default function Profile({ ref, isOpen, onClick, className, lg }: Profile
     const uniqueName = `gnb-menu-${path.replace("/", "")}`;
     buttonElement.style.viewTransitionName = uniqueName;
 
-    const transition = pushWithTransition(path);
+    router.push(path);
     onClick?.();
-
-    // transition 객체가 존재하면(API가 지원되면)
-    if (transition) {
-      transition.finished.finally(() => {
-        // 애니메이션이 완전히 끝나고 나면 스타일을 제거합니다.
-        buttonElement.style.viewTransitionName = "";
-      });
-    }
   };
 
   const handleLogout = async () => {

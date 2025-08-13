@@ -9,23 +9,21 @@ import GnbMenuList from "./GnbMenuList";
 import { useAuth } from "@/providers/AuthProvider";
 import Button from "../Button";
 import { usePathname, useRouter } from "next/navigation";
-import { OpenLayer, useGnbHooks } from "@/hooks/useGnbHook";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useTranslations } from "next-intl";
-
-// Gnb에서 정의해야 하는 요소들
-// 화면 너비에 따라 UI가 바뀜
-// 유저 상태에 따라 메뉴가 바뀜
+import useMediaHook from "@/hooks/useMediaHook";
 
 interface GnbProps {
   userRole?: "GUEST" | "CUSTOMER" | "DRIVER" | undefined;
 }
 
+export type OpenLayer = "notification" | "profile" | "gnbMobileMenu" | null;
+
 export default function Gnb() {
   const t = useTranslations("Gnb");
-  const { user, isLoading, logout } = useAuth();
-  const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
-  // user가 null이면 비로그인 상태
+  const { user, logout } = useAuth();
+  const { isLg } = useMediaHook();
+  const [openLayer, setOpenLayer] = useState<OpenLayer>(null);
 
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -61,20 +59,12 @@ export default function Gnb() {
   }, [openLayer]);
 
   useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [openLayer]);
+    // isLg가 true(데스크탑)가 되고, 모바일 메뉴가 열려있을 때
+    if (isLg && openLayer === "gnbMobileMenu") {
+      setOpenLayer(null); // 모바일 메뉴를 닫습니다.
+    }
+  }, [isLg, openLayer, setOpenLayer]);
 
-  // if (isLoading)
-  //   return (
-  //     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-  //       <svg className="h-12 w-12 animate-spin text-white" viewBox="0 0 24 24" fill="none">
-  //         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-  //         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-  //       </svg>
-  //     </div>
-  //   );
   const isLoggedIn = !!user;
   const userRole = user?.userType ?? "GUEST";
 
