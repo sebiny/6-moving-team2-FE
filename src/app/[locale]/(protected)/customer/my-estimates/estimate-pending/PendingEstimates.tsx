@@ -9,8 +9,9 @@ import { formatAddress } from "@/utills/addressUtils";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { batchTranslate } from "@/utills/batchTranslate";
-import LoadingLottie from "@/components/lottie/LoadingLottie";
+// import LoadingLottie from "@/components/lottie/LoadingLottie";
 import "dayjs/locale/ko";
+import LoadingAnimation from "@/components/loading/LoadingAnimation";
 
 type RequestData = {
   label: string;
@@ -61,8 +62,8 @@ export default function PendingEstimates() {
   // 1) 로딩
   if (isLoading) {
     return (
-      <section aria-busy="true">
-        <LoadingLottie className="mt-30" aria-live="polite" role="status" />
+      <section aria-busy="true" >
+        <LoadingAnimation />
       </section>
     );
   }
@@ -94,7 +95,7 @@ export default function PendingEstimates() {
   if (isTranslating) {
     return (
       <section aria-busy="true">
-        <LoadingLottie className="mt-30" aria-live="polite" role="status" />
+        <LoadingAnimation />
       </section>
     );
   }

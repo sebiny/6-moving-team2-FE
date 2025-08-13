@@ -9,9 +9,9 @@ import GnbMenuList from "./GnbMenuList";
 import { useAuth } from "@/providers/AuthProvider";
 import Button from "../Button";
 import { usePathname, useRouter } from "next/navigation";
-import { OpenLayer, useGnbHooks } from "@/hooks/useGnbHook";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useTranslations } from "next-intl";
+import useMediaHook from "@/hooks/useMediaHook";
 
 // Gnb에서 정의해야 하는 요소들
 // 화면 너비에 따라 UI가 바뀜
@@ -21,11 +21,13 @@ interface GnbProps {
   userRole?: "GUEST" | "CUSTOMER" | "DRIVER" | undefined;
 }
 
+export type OpenLayer = "notification" | "profile" | "gnbMobileMenu" | null;
+
 export default function Gnb() {
   const t = useTranslations("Gnb");
   const { user, isLoading, logout } = useAuth();
-  const { handleResize, isLg, openLayer, setOpenLayer } = useGnbHooks();
-  // user가 null이면 비로그인 상태
+  const { isLg } = useMediaHook();
+  const [openLayer, setOpenLayer] = useState<OpenLayer>(null);
 
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -59,12 +61,6 @@ export default function Gnb() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [openLayer]);
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [handleResize]);
 
   useEffect(() => {
     // isLg가 true(데스크탑)가 되고, 모바일 메뉴가 열려있을 때

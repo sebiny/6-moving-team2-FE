@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useCallback } from "react";
 import { ToastModal } from "./common-modal/ToastModal";
 import { useTranslations } from "next-intl";
 
@@ -10,10 +10,10 @@ interface ShareDriverType {
   onFacebookShare?: () => void;
 }
 
-function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
+const ShareDriver = React.memo(function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
   const tm = useTranslations("ToastModal");
 
-  const handleCopyLink = async () => {
+  const handleCopyLink = useCallback(async () => {
     try {
       const href = typeof window !== "undefined" ? window.location.href : "";
       await navigator.clipboard.writeText(href);
@@ -21,7 +21,7 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
     } catch {
       ToastModal(tm("shareDriver.isCopyLinkFalse"));
     }
-  };
+  }, [tm]);
 
   const kakaoDisabled = !onKakaoShare;
   const fbDisabled = !onFacebookShare;
@@ -93,6 +93,6 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
       </div>
     </section>
   );
-}
+});
 
 export default ShareDriver;
