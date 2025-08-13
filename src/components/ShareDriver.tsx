@@ -43,7 +43,7 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
         >
           <Image
             src="/assets/icons/ic_clip.svg"
-            alt=""
+            alt="링크 복사"
             aria-hidden="true"
             width={36}
             height={36}
@@ -63,7 +63,7 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
         >
           <Image
             src="/assets/icons/ic_share_kakao.svg"
-            alt=""
+            alt="카카오톡"
             aria-hidden="true"
             width={28}
             height={28}
@@ -83,7 +83,7 @@ function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
         >
           <Image
             src="/assets/icons/ic_share_facebook.svg"
-            alt=""
+            alt="페이스북"
             aria-hidden="true"
             width={28}
             height={28}

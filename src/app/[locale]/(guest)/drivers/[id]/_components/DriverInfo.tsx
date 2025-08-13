@@ -14,18 +14,21 @@ interface DriverInfoType {
 function DriverInfo({ driver }: DriverInfoType) {
   const t = useTranslations("FindDriver");
   const locale = useLocale();
-  const [translatedIntro, setTranslatedIntro] = useState({ short: "", detail: "" });
+  const [translatedIntro, setTranslatedIntro] = useState({
+    short: driver.shortIntro ?? "",
+    detail: driver.detailIntro ?? ""
+  });
 
   useEffect(() => {
     const translatedTexts = async () => {
       if (!driver) return;
-      if (locale === "ko") {
-        setTranslatedIntro({
-          short: driver.shortIntro ?? "",
-          detail: driver.detailIntro ?? ""
-        });
-        return;
-      }
+
+      setTranslatedIntro({
+        short: driver.shortIntro ?? "",
+        detail: driver.detailIntro ?? ""
+      });
+      if (locale === "ko") return;
+
       try {
         const result = await batchTranslate(
           {

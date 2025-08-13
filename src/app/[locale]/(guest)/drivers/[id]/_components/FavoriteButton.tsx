@@ -48,6 +48,7 @@ const FavoriteButton = React.memo(function FavoriteButton({ favorite, setFavorit
     <button
       className="border-line-200 flex h-[54px] w-[54px] cursor-pointer items-center justify-center gap-[10px] rounded-2xl border lg:h-16 lg:w-80"
       onClick={handleClickFavorite}
+      aria-label={t("like Driver")}
     >
       <LikeIcon color="black" isFilled={isLg || favorite} />
       {isLg && (
