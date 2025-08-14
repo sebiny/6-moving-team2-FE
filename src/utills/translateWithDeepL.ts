@@ -1,5 +1,5 @@
 export async function translateWithDeepL(text: string, targetLang: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/translate`, {
+  const res = await fetch("/api/translate", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text, targetLang })
@@ -11,5 +11,5 @@ export async function translateWithDeepL(text: string, targetLang: string) {
   }
 
   const data = await res.json();
-  return data.translation;
+  return data.translated;
 }
