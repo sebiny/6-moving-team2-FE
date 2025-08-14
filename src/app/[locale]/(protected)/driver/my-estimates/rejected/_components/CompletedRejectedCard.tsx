@@ -30,29 +30,22 @@ export default function CompletedRejectedCard({ request }: CompletedRejectedCard
       }
 
       try {
-        const translate = async (text: string) => {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/translate`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text, targetLang: locale.toUpperCase() })
-          });
-          const data = await res.json();
-          return data.translation;
+        const textMap = {
+          from: request.fromAddress ?? "",
+          to: request.toAddress ?? "",
+          date: request.moveDate ?? ""
         };
 
-        const [fromTranslated, toTranslated, dateTranslated] = await Promise.all([
-          translate(request.fromAddress ?? ""),
-          translate(request.toAddress ?? ""),
-          translate(request.moveDate ?? "")
-        ]);
-
-        setTransaltedInfo({
-          from: fromTranslated,
-          to: toTranslated,
-          date: dateTranslated
-        });
+        const result = await batchTranslate(textMap, locale);
+        setTransaltedInfo(result);
       } catch (e) {
         console.warn("번역 실패", e);
+        // 번역 실패 시 원본 텍스트 사용
+        setTransaltedInfo({
+          from: request.fromAddress ?? "",
+          to: request.toAddress ?? "",
+          date: request.moveDate ?? ""
+        });
       }
     };
 
