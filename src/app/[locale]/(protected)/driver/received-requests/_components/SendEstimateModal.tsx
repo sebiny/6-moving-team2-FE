@@ -12,6 +12,7 @@ import useMediaHook from "@/hooks/useMediaHook";
 import { useLocale, useTranslations } from "next-intl";
 import { batchTranslate } from "@/utills/batchTranslate";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
+import AlertModal from "@/components/common-modal/AlertModal";
 
 interface SendEstimateModalProps {
   open: boolean;
@@ -43,6 +44,7 @@ export default function SendEstimateModal({
   const [price, setPrice] = useState("");
   const [comment, setComment] = useState("");
   const [commentValid, setCommentValid] = useState(false);
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
 
   const moveTypeKey: MoveType = moveTypeFromKorean[moveType] ?? "SMALL";
   const { isLg, isSm } = useMediaHook();
@@ -107,10 +109,10 @@ export default function SendEstimateModal({
   // 공통 닫기 시도 핸들러(X 버튼)
   const tryClose = () => {
     if (isDirty) {
-      const ok = window.confirm("작성 중인 내용이 있습니다. 닫으시겠습니까?");
-      if (!ok) return;
+      setShowLeaveModal(true);
+    } else {
+      onClose();
     }
-    onClose();
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -238,6 +240,22 @@ export default function SendEstimateModal({
             onClick={handleSubmit}
             aria-label={`${customerName} 고객에게 ${price}원 견적 전송하기`}
           />
+
+          {/* 이탈 방지 모달 */}
+          {showLeaveModal && (
+            <AlertModal
+              type="handleClick"
+              message={t1("leaveWarning")}
+              buttonText={t1("confirm")}
+              onConfirm={() => {
+                setShowLeaveModal(false);
+                onClose();
+              }}
+              onClose={() => {
+                setShowLeaveModal(false);
+              }}
+            />
+          )}
         </div>
       </div>
     </div>
