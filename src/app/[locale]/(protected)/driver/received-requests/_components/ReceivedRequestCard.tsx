@@ -7,7 +7,7 @@ import Image from "next/image";
 import Button from "@/components/Button";
 import EstimateButton from "@/components/button/EstimateButton";
 import { useLocale, useTranslations } from "next-intl";
-import { translateWithDeepL } from "@/utills/translateWithDeepL";
+import { batchTranslate } from "@/utills/batchTranslate";
 
 interface ReceivedRequestCardProps {
   request: Request;
@@ -16,10 +16,9 @@ interface ReceivedRequestCardProps {
 }
 
 export default function ReceivedRequestCard({ request, onSendEstimate, onRejectEstimate }: ReceivedRequestCardProps) {
-  const [translatedCreatedAt, setTranslatedCreatedAt] = useState<string | null>(null);
   const locale = useLocale();
   const t = useTranslations("ReceivedReq");
-  const [translatedInfo, setTransaltedInfo] = useState({ from: "", to: "", date: "" });
+  const [translatedInfo, setTransaltedInfo] = useState({ from: "", to: "", date: "", createdAt: "" });
 
   useEffect(() => {
     const translatedTexts = async () => {
@@ -29,52 +28,36 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
         setTransaltedInfo({
           from: request.fromAddress,
           to: request.toAddress,
-          date: request.moveDate
+          date: request.moveDate,
+          createdAt: request.createdAt
         });
         return;
       }
 
       try {
-        const translate = async (text: string) => {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/translate`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text, targetLang: locale.toUpperCase() })
-          });
-          const data = await res.json();
-          return data.translation;
+        const textMap = {
+          from: request.fromAddress ?? "",
+          to: request.toAddress ?? "",
+          date: request.moveDate ?? "",
+          createdAt: request.createdAt ?? ""
         };
 
-        const [fromTranslated, toTranslated, dateTranslated] = await Promise.all([
-          translate(request.fromAddress ?? ""),
-          translate(request.toAddress ?? ""),
-          translate(request.moveDate ?? "")
-        ]);
-
-        setTransaltedInfo({
-          from: fromTranslated,
-          to: toTranslated,
-          date: dateTranslated
-        });
+        const result = await batchTranslate(textMap, locale);
+        setTransaltedInfo(result);
       } catch (e) {
         console.warn("번역 실패", e);
+        // 번역 실패 시 원본 텍스트 사용
+        setTransaltedInfo({
+          from: request.fromAddress ?? "",
+          to: request.toAddress ?? "",
+          date: request.moveDate ?? "",
+          createdAt: request.createdAt ?? ""
+        });
       }
     };
 
     translatedTexts();
   }, [request, locale]);
-
-  useEffect(() => {
-    const translate = async () => {
-      try {
-        const translated = await translateWithDeepL(request.createdAt, locale.toUpperCase());
-        setTranslatedCreatedAt(translated);
-      } catch {
-        setTranslatedCreatedAt(request.createdAt); //fallback
-      }
-    };
-    translate();
-  }, [request.createdAt, locale]);
 
   return (
     <article
@@ -90,7 +73,7 @@ export default function ReceivedRequestCard({ request, onSendEstimate, onRejectE
             {request.isDesignated && <ChipRectangle moveType="REQUEST" size="sm" />}
           </div>
           <time className="text-sm text-zinc-500" dateTime={request.createdAt}>
-            {translatedCreatedAt}
+            {translatedInfo.createdAt}
           </time>
         </div>
         {/* 고객명 */}
