@@ -9,14 +9,21 @@ type DeleteConfirmModalProps = {
   isOpen: boolean;
   onClose: () => void;
   selectedReview: { reviewId: string; driverId: string } | null;
+  onDeleteSuccess?: (reviewId: string) => void;
 };
 
-export default function DeleteConfirmModal({ isOpen, onClose, selectedReview }: DeleteConfirmModalProps) {
+export default function DeleteConfirmModal({
+  isOpen,
+  onClose,
+  selectedReview,
+  onDeleteSuccess
+}: DeleteConfirmModalProps) {
   const t = useTranslations("Review");
   const handleDelete = async (reviewId: string, driverId: string) => {
     try {
       await deleteMyReview(reviewId, driverId);
       ToastModal(t("reviewDeleted"));
+      onDeleteSuccess?.(reviewId);
       onClose();
     } catch (err) {
       console.error(err);

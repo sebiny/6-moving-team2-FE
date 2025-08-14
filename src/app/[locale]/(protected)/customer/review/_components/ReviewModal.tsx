@@ -15,13 +15,14 @@ export default function ReviewModal({
   estimateRequestId,
   moveType,
   driverId,
+  onReviewSuccess,
   isDesignated,
   fromAddress,
   toAddress,
   moveDate,
   driverNickName,
   driverProfileImage
-}: reviewModalProps) {
+}: reviewModalProps & { onReviewSuccess?: (id: string) => void }) {
   const t = useTranslations("Review");
   const tm = useTranslations("ToastModal.review");
   const t1 = useTranslations("Common");
@@ -66,6 +67,7 @@ export default function ReviewModal({
         content
       });
       ToastModal(tm("reviewRegistered"));
+      onReviewSuccess?.(estimateRequestId);
       setIsModal(false);
     } catch (error) {
       setGuardEnabled(true);

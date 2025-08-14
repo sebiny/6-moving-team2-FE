@@ -16,9 +16,7 @@ import LoadingLottie from "@/components/loading/LoadingAnimation";
 import { batchTranslate } from "@/utills/batchTranslate";
 import type { ReviewListResponse, TranslatedMeta } from "@/types/reviewType";
 import Button from "@/components/Button";
-import { ToastModal } from "@/components/common-modal/ToastModal";
 import DeleteConfirmModal from "./DeleteConfirmModal";
-import { review } from "@/constant/constant";
 interface MyReviewsProps {
   setSelectedIdx: (value: string) => void;
 }
@@ -253,6 +251,16 @@ export default function MyReviews({ setSelectedIdx }: MyReviewsProps) {
           onClose={() => setIsModalOpen(false)}
           isOpen={isModalOpen}
           selectedReview={selectedReview}
+          onDeleteSuccess={(reviewId) => {
+            queryClient.setQueryData<ReviewListResponse>(["reviews", page], (oldData) => {
+              if (!oldData) return oldData;
+              return {
+                ...oldData,
+                reviews: oldData.reviews.filter((r) => r.id !== reviewId),
+                totalCount: oldData.totalCount - 1
+              };
+            });
+          }}
         />
         <div className="mt-10">
           <Pagination currentPage={page} setCurrentPage={setPage} totalReviews={totalCount} />
