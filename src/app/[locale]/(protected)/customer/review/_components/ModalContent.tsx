@@ -75,13 +75,15 @@ export default function ModalContent({
       try {
         // 각각 translate 호출
         const translate = async (text: string) => {
-          const res = await fetch(`/translate`, {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/translate`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text, targetLang: locale.toUpperCase() })
           });
           if (!res.ok) {
             console.warn(`번역 API 호출 실패: ${res.statusText}`);
+            console.log(process.env.NEXT_PUBLIC_API_BASE_URL);
+
             return text; // fallback
           }
           const data = await res.json();
