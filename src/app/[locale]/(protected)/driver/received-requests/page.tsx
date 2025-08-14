@@ -48,8 +48,7 @@ export default function ReceivedRequestsPage() {
   const {
     data: requests = [],
     isPending,
-    error,
-    isFetching
+    error
   } = useQuery({
     queryKey: ["driver-requests", isDesignatedChecked, isAvailableRegionChecked],
     queryFn: async () => {

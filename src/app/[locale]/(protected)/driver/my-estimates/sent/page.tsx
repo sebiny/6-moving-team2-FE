@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
@@ -29,8 +29,7 @@ export default function SentEstimatesPage() {
   const {
     data: backendEstimates = [],
     isPending,
-    error,
-    isFetching
+    error
   } = useQuery({
     queryKey: ["driverEstimates"],
     queryFn: driverService.getDriverEstimates,

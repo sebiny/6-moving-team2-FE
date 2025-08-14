@@ -6,6 +6,7 @@ import { CompletedEstimateCardType } from "@/types/estimateType";
 import { ESTIMATE_STATUS, ESTIMATE_TEXT } from "@/constant/constant";
 import ChipConfirmed from "@/components/chip/ChipConfirmed";
 import { useLocale, useTranslations } from "next-intl";
+import { batchTranslate } from "@/utills/batchTranslate";
 import AddressDateSection from "./AddressDateSection";
 
 interface CustomerEstimateCardProps {
@@ -33,30 +34,22 @@ export default function CustomerEstimateCard({ request }: CustomerEstimateCardPr
       }
 
       try {
-        const translate = async (text: string) => {
-          const res = await fetch(`/translate`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text, targetLang: locale.toUpperCase() })
-          });
-          const data = await res.json();
-          return data.translation;
+        const textMap = {
+          from: request.fromAddress ?? "",
+          to: request.toAddress ?? "",
+          date: request.moveDate ?? ""
         };
 
-        // 동시에 번역
-        const [fromTranslated, toTranslated, dateTranslated] = await Promise.all([
-          translate(request.fromAddress ?? ""),
-          translate(request.toAddress ?? ""),
-          translate(request.moveDate ?? "")
-        ]);
-
-        setTransaltedInfo({
-          from: fromTranslated,
-          to: toTranslated,
-          date: dateTranslated
-        });
+        const result = await batchTranslate(textMap, locale);
+        setTransaltedInfo(result);
       } catch (e) {
         console.warn("번역 실패", e);
+        // 번역 실패 시 원본 텍스트 사용
+        setTransaltedInfo({
+          from: request.fromAddress ?? "",
+          to: request.toAddress ?? "",
+          date: request.moveDate ?? ""
+        });
       }
     };
 

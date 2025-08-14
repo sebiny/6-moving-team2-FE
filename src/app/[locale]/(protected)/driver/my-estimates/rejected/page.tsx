@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
@@ -25,8 +25,7 @@ export default function RejectedEstimatesPage() {
   const {
     data: backendEstimates = [],
     isPending,
-    error,
-    isFetching
+    error
   } = useQuery({
     queryKey: ["driverRejectedEstimates"],
     queryFn: driverService.getRejectedRequests,
