@@ -10,7 +10,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { getWritableReviews } from "@/lib/api/api-review";
 import NoReview from "./NoReview";
 import Pagination from "@/components/Pagination";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import LoadingLottie from "@/components/loading/LoadingAnimation";
 import { ReviewableItem } from "@/types/reviewType";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
@@ -23,6 +23,7 @@ type ReviewListResponse = {
 export default function Reviews() {
   const [isModal, setIsModal] = useState(false);
   const [selectedReviewable, setSelectedReviewable] = useState<ReviewableItem | null>(null);
+  const queryClient = useQueryClient();
 
   const t = useTranslations("Review");
   const locale = useLocale();
@@ -38,8 +39,16 @@ export default function Reviews() {
   });
   const totalCount = data?.totalCount ?? 0;
   const reviewables = data?.reviewableEstimates ?? [];
-  console.log("reviewables", reviewables);
-  console.log("reviewables", reviewables[0]);
+  const handleReviewSuccess = (id: string) => {
+    queryClient.setQueryData<ReviewListResponse>(["reviewable", page], (oldData) => {
+      if (!oldData) return oldData;
+      return {
+        ...oldData,
+        reviewableEstimates: oldData.reviewableEstimates.filter((item) => item.id !== id),
+        totalCount: oldData.totalCount - 1
+      };
+    });
+  };
   useEffect(() => {
     //병렬 요청
     const translateAllIntros = async () => {
@@ -193,6 +202,7 @@ export default function Reviews() {
                 moveDate={selectedReviewable.moveDate}
                 driverNickName={selectedReviewable.estimates[0].driver.nickname}
                 driverProfileImage={selectedReviewable.estimates[0].driver.profileImage}
+                onReviewSuccess={handleReviewSuccess}
               />
             )}
           </div>
