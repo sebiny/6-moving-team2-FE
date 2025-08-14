@@ -22,7 +22,7 @@ type RequestData = {
 export default function PendingEstimates() {
   dayjs.locale("ko");
 
-  const { data, isLoading } = usePendingEstimates();
+  const { data, isLoading, isFetching } = usePendingEstimates();
   const tC = useTranslations("Common");
   const locale = useLocale();
 
@@ -40,7 +40,7 @@ export default function PendingEstimates() {
   useEffect(() => {
     if (!estimateRequest) return;
 
-    const translate = async () => {
+    (async () => {
       const textMap = {
         label: getMoveTypeLabel(estimateRequest.moveType),
         requestDate: dayjs(estimateRequest.requestDate).format("YYYY년 M월 D일"),
@@ -50,19 +50,17 @@ export default function PendingEstimates() {
       };
       const result = await batchTranslate(textMap, locale);
       setTranslatedRequestData(result);
-    };
-
-    translate();
+    })();
   }, [estimateRequest, locale]);
 
   const hasRequest = !!estimateRequest;
   const isTranslating = hasRequest && !translatedRequestData;
 
   // 1) 로딩
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <section aria-busy="true">
-        <LoadingAnimation />
+        <LoadingAnimation className="mt-30" />
       </section>
     );
   }
@@ -107,7 +105,7 @@ export default function PendingEstimates() {
         aria-labelledby="pending-estimates-heading"
         className="relative z-3 -mt-2 mb-0 bg-white shadow-sm md:-mt-3"
       >
-        <EstimateSubHeader data={translatedRequestData!} />
+        {translatedRequestData && <EstimateSubHeader data={translatedRequestData} />}
       </header>
 
       {/* 견적 카드 리스트 */}

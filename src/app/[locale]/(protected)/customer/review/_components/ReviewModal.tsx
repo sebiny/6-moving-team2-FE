@@ -9,6 +9,7 @@ import { createReview } from "@/lib/api/api-review";
 import { ToastModal } from "@/components/common-modal/ToastModal";
 import { reviewModalProps } from "@/types/reviewType";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
+import AlertModal from "@/components/common-modal/AlertModal";
 
 export default function ReviewModal({
   setIsModal,
@@ -30,6 +31,9 @@ export default function ReviewModal({
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
   const [guardEnabled, setGuardEnabled] = useState(true);
+
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+
   console.log({ estimateRequestId, driverId, rating, content });
 
   // 이탈방지
@@ -44,12 +48,11 @@ export default function ReviewModal({
   });
 
   const safeClose = () => {
-    if (isDirty) {
-      const ok = window.confirm(t1("leaveWarning"));
-      if (!ok) return;
+    if (!isDirty) {
+      setIsModal(false);
+      return;
     }
-    setGuardEnabled(false);
-    setIsModal(false);
+    setShowLeaveModal(true);
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -114,6 +117,25 @@ export default function ReviewModal({
             className="h-[54px] lg:h-[64px]"
             isDisabled={!isValid}
           />
+
+          {/* 이탈 방지 커스텀 모달 */}
+          {showLeaveModal && (
+            <AlertModal
+              type="handleClick"
+              message={t1("leaveWarning")}
+              buttonText={t1("confirm")} // 필요 시 번역 키 맞춰주세요
+              onConfirm={() => {
+                // 확인 시 진짜 닫기 (가드 해제 후)
+                setGuardEnabled(false);
+                setIsModal(false);
+                setShowLeaveModal(false);
+              }}
+              onClose={() => {
+                // 취소(배경/X/버튼): 모달만 닫고 계속 작성
+                setShowLeaveModal(false);
+              }}
+            />
+          )}
         </div>
       </div>
     </div>
