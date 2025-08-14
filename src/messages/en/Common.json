@@ -43,5 +43,5 @@
   "deleted": "Deleted successfully.",
   "deleteError": "An error occurred while deleting.",
 
-  "leaveWarning": "Are you sure you want to leave this page? Your input may not be saved."
+  "leaveWarning": "Are you sure you want to leave this page?\nYour input may not be saved."
 }

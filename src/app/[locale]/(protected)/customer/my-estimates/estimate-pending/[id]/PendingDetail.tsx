@@ -20,6 +20,7 @@ import PageHeader from "@/components/common/PageHeader";
 import LoadingLottie from "@/components/loading/LoadingAnimation";
 import "dayjs/locale/ko";
 import { ToastModal } from "@/components/common-modal/ToastModal";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function PendingDetailPage() {
   dayjs.locale("ko");
@@ -30,12 +31,15 @@ export default function PendingDetailPage() {
   const { id } = useParams();
   const { data } = useEstimateDetail(id as string);
 
+  const queryClient = useQueryClient();
+
   const router = useRouter();
 
   const { mutate: acceptEstimate } = useAcceptEstimate();
   const { mutate: createShareLink } = useCreateShareLink();
 
   const [showModal, setShowModal] = useState(false);
+  const [isAccepting, setIsAccepting] = useState(false);
 
   const shareToKakao = useKakaoShare();
 
@@ -53,13 +57,26 @@ export default function PendingDetailPage() {
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
 
-  const handleAcceptEstimate = () => {
-    acceptEstimate(data.id, {
-      onSuccess: () => setShowModal(true),
-      onError: (error: any) => {
-        ToastModal(error.message || "견적 확정 중 오류가 발생했습니다.");
-      }
-    });
+  const handleAcceptEstimate = async () => {
+    if (isAccepting) return;
+    setIsAccepting(true);
+    try {
+      await acceptEstimate(data.id);
+      setShowModal(true);
+    } catch (e: any) {
+      ToastModal(e?.message || "견적 확정 중 오류가 발생했습니다.");
+    } finally {
+      setIsAccepting(false);
+    }
+  };
+
+  const goPastAndRefresh = async () => {
+    try {
+      await queryClient.invalidateQueries({ queryKey: ["pendingEstimates"] });
+      await queryClient.prefetchQuery({ queryKey: ["pastEstimates"] });
+    } finally {
+      router.push("/customer/my-estimates?tab=past");
+    }
   };
 
   // 카카오 공유
@@ -229,13 +246,15 @@ export default function PendingDetailPage() {
       </main>
 
       {showModal && (
-        <AlertModal
-          type="handleClick"
-          message={tC("GoToRecReq")}
-          buttonText={tC("reqConfirmed")}
-          onClose={() => setShowModal(false)}
-          onConfirm={() => router.push("/customer/my-estimates?tab=past")}
-        />
+        <div onClick={(e) => e.stopPropagation()}>
+          <AlertModal
+            type="handleClick"
+            message={tC("GoToRecReq")}
+            buttonText={tC("reqConfirmed")}
+            onClose={goPastAndRefresh}
+            onConfirm={goPastAndRefresh}
+          />
+        </div>
       )}
     </>
   );

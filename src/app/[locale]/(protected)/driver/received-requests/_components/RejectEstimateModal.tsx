@@ -11,6 +11,7 @@ import useMediaHook from "@/hooks/useMediaHook";
 import { useLocale, useTranslations } from "next-intl";
 import { batchTranslate } from "@/utills/batchTranslate";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedGuard";
+import AlertModal from "@/components/common-modal/AlertModal";
 
 interface RejectEstimateModalProps {
   open: boolean;
@@ -47,6 +48,7 @@ export default function RejectEstimateModal({
   const [commentValid, setCommentValid] = useState(false);
 
   const [guardEnabled, setGuardEnabled] = useState(true);
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
 
   const moveTypeKey: MoveType = moveTypeFromKorean[moveType] ?? "SMALL";
   const { isLg, isSm } = useMediaHook();
@@ -66,11 +68,10 @@ export default function RejectEstimateModal({
   // 닫기 시에도 입력 있을 경우 대비
   const safeClose = () => {
     if (isDirty) {
-      const ok = window.confirm(t1("leaveWarning"));
-      if (!ok) return;
+      setShowLeaveModal(true);
+    } else {
+      onClose();
     }
-    setGuardEnabled(false);
-    onClose();
   };
 
   // 모달이 닫힐 때 상태 초기화
@@ -230,6 +231,22 @@ export default function RejectEstimateModal({
             onClick={handleSubmit}
             aria-label={`${customerName} 고객의 요청 거절하기`}
           />
+
+          {/* 이탈 방지 모달 */}
+          {showLeaveModal && (
+            <AlertModal
+              type="handleClick"
+              message={t1("leaveWarning")}
+              buttonText={t1("confirm")}
+              onConfirm={() => {
+                setShowLeaveModal(false);
+                onClose();
+              }}
+              onClose={() => {
+                setShowLeaveModal(false);
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

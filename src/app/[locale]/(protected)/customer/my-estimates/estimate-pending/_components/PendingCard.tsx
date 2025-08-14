@@ -13,6 +13,8 @@ import AlertModal from "@/components/common-modal/AlertModal";
 import { useLocale, useTranslations } from "next-intl";
 import { translateWithDeepL } from "@/utills/translateWithDeepL";
 import { favoriteService } from "@/lib/api/api-favorite";
+import { useQueryClient } from "@tanstack/react-query";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 interface Props {
   data: Estimate;
@@ -23,6 +25,8 @@ export default function PendingCard({ data, moveType }: Props) {
   const t = useTranslations("MyEstimates");
   const tC = useTranslations("Common");
   const locale = useLocale();
+  const queryClient = useQueryClient();
+  const { mutate: acceptEstimate } = useAcceptEstimate();
   const router = useRouter();
 
   const { driver, price, status, id, isDesignated } = data;
@@ -30,7 +34,6 @@ export default function PendingCard({ data, moveType }: Props) {
   // 라벨 목록 구성
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
-  const { mutate: acceptEstimate } = useAcceptEstimate();
 
   const [translatedComment, setTranslatedComment] = useState<string | null>(null);
   (useEffect(() => {
@@ -47,6 +50,7 @@ export default function PendingCard({ data, moveType }: Props) {
     [data.comment, locale]);
 
   const [showModal, setShowModal] = useState(false);
+  const [isAccepting, setIsAccepting] = useState(false);
 
   const safeDriverId = driver?.id ?? null;
 
@@ -74,6 +78,28 @@ export default function PendingCard({ data, moveType }: Props) {
       console.error("찜하기 실패:", err);
     } finally {
       setBusy(false);
+    }
+  };
+
+  const handleAccept = async () => {
+    if (isAccepting) return;
+    setIsAccepting(true);
+    try {
+      await acceptEstimate(id);
+      setShowModal(true);
+    } catch (e: any) {
+      ToastModal(e?.message || "견적 확정 중 오류가 발생했습니다.");
+    } finally {
+      setIsAccepting(false);
+    }
+  };
+
+  const goPastAndRefresh = async () => {
+    try {
+      await queryClient.invalidateQueries({ queryKey: ["pendingEstimates"] });
+      await queryClient.prefetchQuery({ queryKey: ["pastEstimates"] });
+    } finally {
+      router.push("/customer/my-estimates?tab=past");
     }
   };
 
@@ -204,33 +230,17 @@ export default function PendingCard({ data, moveType }: Props) {
       {/* 버튼 영역 */}
       <div className="mt-10 flex w-full flex-col gap-3 md:flex-row md:gap-3">
         <div className="order-1 w-full md:order-2 md:w-1/2">
-          <Button
-            type="orange"
-            text={t("acceptEstimate")}
-            onClick={() =>
-              acceptEstimate(id, {
-                onSuccess: () => setShowModal(true),
-                onError: (error: any) => {
-                  alert(error.message || "견적 확정 중 오류가 발생했습니다.");
-                }
-              })
-            }
-            aria-label="견적 확정하기"
-          />
+          <Button type="orange" text={t("acceptEstimate")} onClick={handleAccept} aria-label="견적 확정하기" />
         </div>
 
         {showModal && (
-          <div
-            className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center"
-            role="dialog"
-            aria-modal="true"
-          >
+          <div onClick={(e) => e.stopPropagation()}>
             <AlertModal
               type="handleClick"
               message={tC("pendingCardMsg")}
               buttonText={tC("pendingCardBtn")}
-              onClose={() => setShowModal(false)}
-              onConfirm={() => router.push("/customer/my-estimates?tab=past")}
+              onClose={goPastAndRefresh}
+              onConfirm={goPastAndRefresh}
             />
           </div>
         )}
