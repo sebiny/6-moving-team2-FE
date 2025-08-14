@@ -14,7 +14,7 @@ export function useTranslate(textMap: Record<string, string>) {
 
     const fetchTranslation = async () => {
       try {
-        const res = await fetch("/translate", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/translate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: textMap, targetLang: locale.toUpperCase() })
