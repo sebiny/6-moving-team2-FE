@@ -387,9 +387,9 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 
 이렇게 변경하여 **번역이 동시에 진행되기 때문에 초기 렌더링이 훨씬 빨라지고**, Lighthouse 성능 점수도 더 높아진 것을 확인할 수 있었습니다.
 
-![라이팅하우스.png](attachment:af4e66b5-056e-4889-8505-1eb6c8622197:라이팅하우스.png)
+<img src="https://user-images.githubusercontent.com/사용자ID/af4e66b5-056e-4889-8505-1eb6c8622197.png" width="300"/>
+<img src="https://user-images.githubusercontent.com/사용자ID/96e4a289-9576-4191-bf8d-893ed39830c1.png" width="300"/>
 
-![image.png](attachment:96e4a289-9576-4191-bf8d-893ed39830c1:image.png)
 
 ### 배경
 
