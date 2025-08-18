@@ -111,7 +111,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 ## 8. 트러블 슈팅
 
 <details>
-<summary><h3> 1. DeepL 번역 시 HTML 태그 중복으로 인한 스타일 오적용 문제</h3></summary>
+<summary>__[ 1. DeepL 번역 시 HTML 태그 중복으로 인한 스타일 오적용 문제 ]__</summary>
 	
 #### Problem
 - 백엔드에서 (텍스트 색상 변경)  html코드를 함께 전송하고 있음
@@ -166,7 +166,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 - **정규식 기반 Placeholder 패턴의 효과** - **배운 점**: HTML 태그를 임시 플레이스홀더로 치환 후 번역하는 방식이 매우 효과적 - **구현**: **`__SPAN_PLACEHOLDER_${index}__`** 패턴 사용 - **장점**: 번역 품질 유지 + HTML 구조 보존
 </details>
 <details>
-<summary><h3> 2. 보안을 위해 사용자 입력을 HTML로 직접 렌더링하지 않게 하는 방법 (XSS 방지)</h3></summary>
+<summary>__[ 2. 보안을 위해 사용자 입력을 HTML로 직접 렌더링하지 않게 하는 방법 (XSS 방지) ]__</summary>
 
 #### Problem
 
@@ -216,7 +216,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 ## 9. 최적화
 
 <details>
-<summary><h3> 리뷰 라이트 하우스 성능 최적화</h3></summary>
+<summary>__[ 리뷰 라이트 하우스 성능 최적화 ]__</summary>
 	
 - **전 코드**
     ```jsx
