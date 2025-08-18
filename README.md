@@ -266,7 +266,7 @@ url : https://www.moving-2.click
 - 안정적인 에러 핸들링으로 서비스 신뢰성이 증가하였습니다.
 </details>
 <details>
-<summary>📂 폴더 구조</summary>
+<summary><h3>📂 폴더 구조</h3></summary>
 
 ```bash
 .
