@@ -126,8 +126,6 @@
     - **구현**: **`__SPAN_PLACEHOLDER_${index}__`** 패턴 사용
     - **장점**: 번역 품질 유지 + HTML 구조 보존
 </details>
-
-
 <details>
 <summary><h3> 2. 보안을 위해 사용자 입력을 HTML로 직접 렌더링하지 않게 하는 방법 (XSS 방지)</h3></summary>
 
