@@ -263,3 +263,32 @@
 - 코드 가독성과 유지보수성이 향상되었습니다.
 - 안정적인 에러 핸들링으로 서비스 신뢰성이 증가하였습니다.
 </details>
+
+<details>
+<summary><h3>폴더 구조</h3></summary>
+.
+├── README.md
+├── package.json
+├── next.config.ts
+├── tailwind.config.mjs
+├── tsconfig.json
+├── public
+│   ├── assets/        # 아이콘, 이미지, 폰트 등 정적 리소스
+│   ├── lottie/        # 로티 애니메이션
+│   └── og-image*.webp # 메타 태그 이미지
+├── src
+│   ├── app/           # Next.js App Router 페이지
+│   │   ├── [locale]/  # 다국어 라우팅
+│   │   ├── api/       # API 라우트
+│   │   └── globals.css
+│   ├── components/    # 공용 UI 컴포넌트
+│   ├── constant/      # 상수 정의
+│   ├── hooks/         # 커스텀 훅
+│   ├── i18n/          # 다국어 라우팅/내비게이션 설정
+│   ├── lib/           # API 클라이언트, 유틸리티
+│   ├── messages/      # 다국어 번역 JSON
+│   ├── providers/     # Context Providers
+│   ├── types/         # 타입 정의 (TS Interfaces)
+│   └── utills/        # 공용 함수/유틸 모듈
+</details>
+
