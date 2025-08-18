@@ -2,6 +2,8 @@
 
 # 복잡한 이사, 무빙으로 끝!
 url : https://www.moving-2.click
+FE: https://github.com/sebiny/6-moving-team2-FE
+BE: https://github.com/sebiny/6-moving-team2-BE
 
 
 ## 목차
@@ -54,9 +56,8 @@ url : https://www.moving-2.click
 - react-toastify : 토스트 알림 메시지 표시
 
 ## 6. 팀 소개 및 문서
-#### 깃헙 주소
-- FE: https://github.com/sebiny/6-moving-team2-FE
-- BE: https://github.com/sebiny/6-moving-team2-BE
+#### 개인 개발 리포트
+
 
 #### 개인 개발 보고서
 
