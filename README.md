@@ -9,6 +9,7 @@
 4. [기술 스택](#4-기술-스택)
 5. [주요 라이브러리](#5-주요-라이브러리)
 6. [팀 소개 및 문서](#6-팀-소개-및-문서)
+7. [개인별 주요 작업 내역](#7-개인별-주요-작업-내역)
 
 
 ## 1. 프로젝트 소개
@@ -40,19 +41,20 @@
 ![GitHub](https://img.shields.io/badge/github-%23121212.svg?style=for-the-badge&logo=github&logoColor=white)
 
 ## 5. 주요 라이브러리
-- ✅ tanstack/react-query : 서버 상태 관리를 위한 데이터 동기화
-- ✅ clsx : 조건부 CSS 클래스 적용
-- ✅ event-source-polyfill : 구형 브라우저에서 SSE 통신 지원
-- ✅ html-react-parser : HTML 문자열을 리액트 컴포넌트로 변환할 때 사용
-- ✅ use-media : 미디어 쿼리 변화를 감지하는 커스텀 훅
-- ✅ react-simple-star-rating : 별점 UI를 구현하는 리액트 컴포넌트
-- ✅ react-toastify : 토스트 알림 메시지 표시
+- tanstack/react-query : 서버 상태 관리를 위한 데이터 동기화
+- clsx : 조건부 CSS 클래스 적용
+- event-source-polyfill : 구형 브라우저에서 SSE 통신 지원
+- html-react-parser : HTML 문자열을 리액트 컴포넌트로 변환할 때 사용
+- use-media : 미디어 쿼리 변화를 감지하는 커스텀 훅
+- react-simple-star-rating : 별점 UI를 구현하는 리액트 컴포넌트
+- react-toastify : 토스트 알림 메시지 표시
 
 ## 6. 팀 소개 및 문서
-깃헙 주소
-FE: https://github.com/sebiny/6-moving-team2-FE
-BE: https://github.com/sebiny/6-moving-team2-BE
-개인 개발 보고서
+#### 깃헙 주소
+- FE: https://github.com/sebiny/6-moving-team2-FE
+- BE: https://github.com/sebiny/6-moving-team2-BE
+
+#### 개인 개발 보고서
 
 ## 7. 개인별 주요 작업 내역
 ## 팀원 및 담당 역할
@@ -68,15 +70,17 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 | **황수정** | 알림, 랜딩페이지 | - 실시간 알림 수신 가능<br>- 이사 당일 알림 제공 |
 
 ## 8. 트러블 슈팅
-1. DeepL 번역 시 HTML 태그 중복으로 인한 스타일 오적용 문제
-### Problem
-
+<details>
+<summary><h3> 1. DeepL 번역 시 HTML 태그 중복으로 인한 스타일 오적용 문제</h3></summary>
+	
+#### Problem
 - 백엔드에서 (텍스트 색상 변경)  html코드를 함께 전송하고 있음
 - 영어/중국어의 경우  HTML 태그가 중복 생성되어 스타일이 전체 텍스트에 잘못 적용됨
-
-![스크린샷 2025-08-01 오후 1.07.55.png](attachment:c6cfb815-1e8d-4f1b-92c5-add898705c03:스크린샷_2025-08-01_오후_1.07.55.png)
-
-![스크린샷 2025-08-01 오후 1.07.45.png](attachment:f7ae1205-4bb7-4a9d-8796-7dfba63f683c:스크린샷_2025-08-01_오후_1.07.45.png)
+<p align="center">
+  <img width="350" height="368" alt="noti-kr" src="https://github.com/user-attachments/assets/8abdf1b2-a84b-4177-881e-8a03f20651f6" width="40%"/>
+  &nbsp; 
+  <img width="321" height="333" alt="noti-en" src="https://github.com/user-attachments/assets/282f445a-6ba7-45c3-94d2-0d0835d21d06" width="40%" />
+</p>
 
 ```jsx
 // 한국어
@@ -92,109 +96,27 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 }
 ```
 
-### Product Context & Goals
-
+#### Product Context & Goals
 - HTML 태그 중복 문제 해결
 - 모든 언어에서 일관된 스타일 적용
 - 닉네임은 번역되지 않도록 적용
 
-### Solutions
 
+#### Solutions
 - 회원가입 축하 알림 타입(WELCOME)일 경우
 - HTML이 적용되어야 할 텍스트(닉네임)를 제외하고 API 적용
 - Placeholder 방식으로 구현
     - <span> 태그를 임시 플레이스 홀더로 교체
     - <span>이 제거된 텍스트만 번역
     - 번역 후 원본 span 태그 복원
+- 해결 ![소스코드 바로가기](https://github.com/sebiny/6-moving-team2-FE/blob/main/src/components/notification/_components/NotificationItem.tsx)
+<p align="center">
+	<img width="339" height="367" alt="tobe-noti-kr" src="https://github.com/user-attachments/assets/f37c983a-04da-4a86-adb2-379ad74105bb" width="40%" />
+	&nbsp; 
+	<img width="353" height="362" alt="tobe-noti-en" src="https://github.com/user-attachments/assets/0356599f-e620-430a-8dc0-fa0f77ff2ed7" width="40%" />
+</p>
 
-```jsx
-  useEffect(() => {
-    const translateAllMeta = async () => {
-      if (!item || translatedMeta[item.id]) return;
-
-      setIsTranslating(true);
-
-      try {
-        let { message } = item;
-        let translatedMessage: any;
-
-        // WELCOME 타입인 경우 특별 처리
-        if (item.type?.toString() === "WELCOME") { // 회원가입 축하 알림 타입
-          // <span> 태그와 그 내용을 임시로 플레이스홀더로 교체
-          const spanRegex = /<span[^>]*>(.*?)<\/span>/g;
-          const spanMatches: string[] = [];
-
-          // span 태그들을 찾아서 저장하고 플레이스홀더로 교체
-          const messageForTranslation = message.replace(spanRegex, (match) => {
-            const index = spanMatches.length;
-            spanMatches.push(match);
-            return `__SPAN_PLACEHOLDER_${index}__`;
-          });
-
-          // span이 제거된 텍스트만 번역
-          translatedMessage = await translateWithDeepL(messageForTranslation, locale.toUpperCase());
-
-          // 번역된 텍스트에 원래 span 태그들을 다시 삽입
-          spanMatches.forEach((spanContent, index) => {
-            translatedMessage = translatedMessage.replace(`__SPAN_PLACEHOLDER_${index}__`, spanContent);
-          });
-        } else {
-          // 일반 알림은 전체 번역
-          translatedMessage = await translateWithDeepL(message, locale.toUpperCase());
-        }
-
-        // 번역 결과를 state에 저장
-        setTranslatedMeta((prev) => ({
-          ...prev,
-          [item.id]: {
-            message: translatedMessage,
-            createdAt: formatTimeFromNow(item.createdAt) // 날짜는 포맷팅만
-          }
-        }));
-      } catch (e) {
-        console.warn("번역 실패, 원문 사용", e);
-        // 번역 실패시 원문 사용
-        setTranslatedMeta((prev) => ({
-          ...prev,
-          [item.id]: {
-            message: item.message,
-            createdAt: formatTimeFromNow(item.createdAt)
-          }
-        }));
-      } finally {
-        setIsTranslating(false);
-      }
-    };
-    translateAllMeta();
-  }, [item, locale, translatedMeta]);
-  
-  const displayMessage = translatedMeta[item.id]?.message || item.message;
-  
-  return (
-    <li
-      ref={itemRef}
-      role={role}
-      aria-describedby={ariaDescribedBy}
-      className={`border-line-200 text-black-400 flex flex-col gap-[2px] border-b p-3 text-sm font-medium transition-colors`}
-    >
-      <p>{parse(displayMessage)}</p> // 번역된 메시지
-      <time dateTime={item.createdAt} className={`text-[13px] ${isInitiallyRead ? "text-gray-300" : "text-gray-400"}`}>
-        {displayTime}
-      </time>
-    </li>
-  );
-```
-
-- 해결
-    
-    
-    ![스크린샷 2025-08-04 오후 1.25.52.png](attachment:c852cb74-0879-46ab-952c-12cdcf0465f8:스크린샷_2025-08-04_오후_1.25.52.png)
-    
-    ![스크린샷 2025-08-04 오후 1.24.55.png](attachment:56074cde-67e1-4719-9cad-f0a25693c6a2:스크린샷_2025-08-04_오후_1.24.55.png)
-    
-
-### Lesson Learned
-
+#### Lesson Learned
 - **번역 API의 HTML 처리 한계**
     - **배운 점**: DeepL 등 번역 서비스는 HTML 태그를 텍스트로 인식하여 구조가 변형될 수 있음
     - **영향**: 의도치 않은 태그 중복 및 스타일 오적용 발생
@@ -203,36 +125,18 @@ BE: https://github.com/sebiny/6-moving-team2-BE
     - **배운 점**: HTML 태그를 임시 플레이스홀더로 치환 후 번역하는 방식이 매우 효과적
     - **구현**: **`__SPAN_PLACEHOLDER_${index}__`** 패턴 사용
     - **장점**: 번역 품질 유지 + HTML 구조 보존
+</details>
 
-2. 보안을 위해 사용자 입력을 HTML로 직접 렌더링하지 않게 하는 방법 (XSS 방지)
-### Problem
 
+<details>
+<summary><h3> 2. 보안을 위해 사용자 입력을 HTML로 직접 렌더링하지 않게 하는 방법 (XSS 방지)</h3></summary>
+
+#### Problem
 - BE 에서 아무 검증 없이 사용자 제공값(이름, 메시지 등)이나 외부 연동 데이터를 그대로 내려주면, FE가 HTML로 직접 렌더링할 때 악성 스크립트가 실행될 수 있음
 
-### Research
-
-- **XSS(크로스사이트 스크립팅) 정의**
-    - 웹사이트에 악성 스크립트(주로 자바스크립트 등)를 삽입하여, 해당 사이트를 이용하는 사용자의 브라우저에서 공격자가 원하는 명령이 실행되도록 만드는 보안 취약점
-    - **피해 예시:**
-        - 사용자 세션/쿠키 탈취 및 계정 탈취
-        - 악성 웹사이트로 자동 이동(피싱)
-        - 페이지 내용 위조, 악성 입력 양식 노출 등
-- **XSS 방지**
-    - 입력값 검증, 출력 escape, 필터링 등은 BE에서 반드시 보안 대응이 필요한 부분
-    - API라고 해서 예외가 아님, API에서 리턴하는 모든 동적 텍스트는 “그대로 사용자에게 노출될 수 있다”는 전제로 설계해야 함
-- **보안이 필요한 데이터**
-    - 사용자 입력값 (회원명, 메시지, 자유 입력, 별명 등)
-    - 외부 API 결과값 (타 시스템/파트너에서 들어온 데이터)
-    - 관리자/운영툴 입력 (내부라도 신뢰할 수 없는 채널)
-    - 하드코딩된 문구(정적 텍스트)는 보안 처리가 불필요함. ****그러나 조합·합성되는 부분에 동적 입력이 섞여 있으면 그 부분만 escape 등 처리 필수
-- HTML 컨텍스트로 내려갈 데이터라면 반드시 **HTML 이스케이프(escape) 또는 정제**해야 함
-- JSON이나 API 응답이라도, 최종적으로 클라이언트가 렌더링에 사용할 수 있는 데이터라면 같은 원칙 적용
-- 조합·합성되는 부분에 동적 입력이 섞여 있으면 그 부분만 escape 등 처리 필요
-
-### Solutions
+#### Solutions
 
 **동적 엔티티는 엔티티 변환으로 완전 무해화**
-
 **의도한 스타일만 React 컴포넌트로 렌더링**
 
 - **escapeHTML 함수 생성**
@@ -250,30 +154,6 @@ BE: https://github.com/sebiny/6-moving-team2-BE
             '"': "&quot;",
             "'": "&#39;"
           }[m] || m));
-        }
-        ```
-        
-- **isomorphic-dompurify**
-    - DOMPurify를 브라우저(클라이언트)와 서버(Node.js SSR 등) 양쪽에서 동일하게 사용할 수 있도록 감싸주는 래퍼 라이브러리
-    - 내부적으로 DOMPurify를 감싸서 클라이언트(브라우저)와 서버(Node.js, SSR) 모두에서 일관되게 sanitize(정제) 기능을 제공함
-    - **HTML로 랜더링할 때 일부 태그는 허용(화이트리스트), 그 외는 제거 같은 목적이 있을 때 사용**
-    - 일반 dompurify는 브라우저 전용(DOM API 필요)이라 서버사이드(Node.js)에서 바로 쓸 수 없음
-    - isomorphic-dompurify는 서버 환경에서도 동작하도록 가짜 DOM(jSDOM 등)을 내부적으로 처리하므로, 같은 코드로 양쪽 모두 안전하게 사용할 수 있음
-    - Next.js 등 SSR 환경에서 "일부 태그만 허용해 HTML 뷰에 노출"이 서비스 요건이 되면, 그 때는 반드시 isomorphic-dompurify를 사용해야 함
-        
-        ```jsx
-        function createSignUpSuccessPayload(name: string) {
-          const safeName = escapeHTML(name ?? "회원");
-          const messageHtml = DOMPurify.sanitize(`${pointedStyle(safeName)}님, 무빙 회원가입을 축하합니다!`);
-          
-          return {
-            type: $Enums.NotificationType.WELCOME,
-            payload: {
-              receivedName: name,
-              message: messageHtml,
-              timeStamp: new Date().toISOString()
-            }
-          };
         }
         ```
         
@@ -295,14 +175,10 @@ BE: https://github.com/sebiny/6-moving-team2-BE
             </time>
           </li>
         ```
-        
+ 
+</details>
 
-### Lesson Learned
 
-- 동적 입력 값을 HTML에 직접 삽입하면 인코딩(escape)이 누락되어 XSS 공격에 취약하다는 개념을 알게되었음
-- DOMPurify는 “허용 태그 화이트리스트”가 있을 때 유효함
-- 출력 컨텍스트 기반 인코딩은 필수
-- escape → parse 순서가 중요함, 엔티티 변환 후 파싱해야 태그 해석이 일어나지 않음
 
 ## 9. 최적화
 리뷰 라이트 하우스 성능 최적화
