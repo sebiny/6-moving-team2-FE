@@ -8,20 +8,28 @@ interface ShareDriverType {
   text: string;
   onKakaoShare?: () => void;
   onFacebookShare?: () => void;
+  linkToCopy?: string;
 }
 
-const ShareDriver = React.memo(function ShareDriver({ text, onKakaoShare, onFacebookShare }: ShareDriverType) {
+const ShareDriver = React.memo(function ShareDriver({
+  text,
+  onKakaoShare,
+  onFacebookShare,
+  linkToCopy
+}: ShareDriverType) {
   const tm = useTranslations("ToastModal");
 
   const handleCopyLink = useCallback(async () => {
     try {
-      const href = typeof window !== "undefined" ? window.location.href : "";
+      const href = linkToCopy ?? (typeof window !== "undefined" ? window.location.href : "");
+      if (!href) throw new Error("no href");
+
       await navigator.clipboard.writeText(href);
       ToastModal(tm("shareDriver.isCopyLinkTrue"));
     } catch {
       ToastModal(tm("shareDriver.isCopyLinkFalse"));
     }
-  }, [tm]);
+  }, [tm, linkToCopy]);
 
   const kakaoDisabled = !onKakaoShare;
   const fbDisabled = !onFacebookShare;

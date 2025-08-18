@@ -17,15 +17,20 @@ import { useCreateShareLink } from "@/lib/api/api-shareEstimate";
 import PageHeader from "@/components/common/PageHeader";
 import LoadingLottie from "@/components/loading/LoadingAnimation";
 import "dayjs/locale/ko";
+import { useEffect, useState } from "react";
+import { ToastModal } from "@/components/common-modal/ToastModal";
 
 export default function PastDetailPage() {
+  dayjs.locale("ko");
+
   const t = useTranslations("MyEstimates");
   const { id } = useParams();
   const { data } = useEstimateDetail(id as string);
-  const shareToKakao = useKakaoShare();
-  const { mutate: createShareLink } = useCreateShareLink();
+  const { mutateAsync: createShareLink } = useCreateShareLink();
 
-  dayjs.locale("ko");
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+
+  const shareToKakao = useKakaoShare();
 
   if (!data) {
     return (
@@ -41,61 +46,58 @@ export default function PastDetailPage() {
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
 
-  const handleKakaoShare = () => {
-    createShareLink(
-      { estimateId: id as string, sharedFrom: "CUSTOMER" },
-      {
-        onSuccess: (response) => {
-          const shareUrl = response?.shareUrl;
+  // 페이지 진입 시 공유 링크 선생성
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await createShareLink({ estimateId: id as string, sharedFrom: "CUSTOMER" });
+        if (mounted && res?.shareUrl) setShareUrl(res.shareUrl);
+      } catch {}
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [id, createShareLink]);
 
-          if (!shareUrl) {
-            alert("공유 URL을 생성하지 못했습니다.");
-            return;
-          }
-
-          shareToKakao({
-            title: `${driver.name} 기사님의 견적서`,
-            description: `가격: ${price.toLocaleString()}원`,
-            imageUrl: driver.profileImage
-              ? `https://www.moving-2.click${driver.profileImage}`
-              : "https://www.moving-2.click/assets/images/img_profile.svg",
-            link: {
-              mobileWebUrl: shareUrl,
-              webUrl: shareUrl
-            },
-            buttons: [
-              {
-                title: "견적서 보기",
-                link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
-              }
-            ]
-          });
-        },
-        onError: (error: any) => {
-          alert("공유 링크 생성 실패: " + error.message);
-        }
+  // 공유 URL 확보
+  const ensureShareUrl = async (): Promise<string | null> => {
+    if (shareUrl) return shareUrl;
+    try {
+      const res = await createShareLink({ estimateId: id as string, sharedFrom: "CUSTOMER" });
+      if (res?.shareUrl) {
+        setShareUrl(res.shareUrl);
+        return res.shareUrl;
       }
-    );
+    } catch {}
+    return null;
   };
 
-  const handleFacebookShare = () => {
-    createShareLink(
-      { estimateId: id as string, sharedFrom: "CUSTOMER" },
-      {
-        onSuccess: (response) => {
-          const shareUrl = response?.shareUrl;
-          if (!shareUrl) {
-            alert("공유 URL을 생성하지 못했습니다.");
-            return;
-          }
-          const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-          window.open(facebookShareUrl, "_blank", "width=600,height=400");
-        },
-        onError: (error: any) => {
-          alert("Facebook 공유 링크 생성 실패: " + error.message);
-        }
-      }
-    );
+  const handleKakaoShare = async () => {
+    const url = await ensureShareUrl();
+    if (!url) {
+      ToastModal("공유 URL을 생성하지 못했습니다.");
+      return;
+    }
+    shareToKakao({
+      title: `${driver.name} 기사님의 견적서`,
+      description: `가격: ${price.toLocaleString()}원`,
+      imageUrl: driver.profileImage
+        ? `https://www.moving-2.click${driver.profileImage}`
+        : "https://www.moving-2.click/assets/images/img_profile.svg",
+      link: { mobileWebUrl: url, webUrl: url },
+      buttons: [{ title: "견적서 보기", link: { mobileWebUrl: url, webUrl: url } }]
+    });
+  };
+
+  const handleFacebookShare = async () => {
+    const url = await ensureShareUrl();
+    if (!url) {
+      ToastModal("공유 URL을 생성하지 못했습니다.");
+      return;
+    }
+    const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    window.open(facebookShareUrl, "_blank", "width=600,height=400");
   };
 
   return (
@@ -176,6 +178,7 @@ export default function PastDetailPage() {
               text={t("shareEstimate")}
               onKakaoShare={handleKakaoShare}
               onFacebookShare={handleFacebookShare}
+              linkToCopy={shareUrl ?? undefined}
             />
           </aside>
         </div>
