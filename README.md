@@ -79,6 +79,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 #### 개인 개발 보고서
 
 📓 [안세빈 개발 리포트](https://www.notion.so/22afff3108c98004a243e75597d21347)
+📓 [오보람 개발 리포트](https://www.notion.so/218b7087731a805da4aaec67b7074aa5)
 
 ## 7. 개인별 주요 작업 내역
 
