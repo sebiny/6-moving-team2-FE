@@ -2,13 +2,13 @@
 
 # 복잡한 이사, 무빙으로 끝!
 
-<h2>url : https://www.moving-2.click</h2>
-<h2>
+<h3>url : https://www.moving-2.click</h3>
+<h3>
 FE: https://github.com/sebiny/6-moving-team2-FE
-</h2>
-<h2>
+</h3>
+<h3>
 BE: https://github.com/sebiny/6-moving-team2-BE
-</h2>
+</h3>
 
 ## 목차
 
