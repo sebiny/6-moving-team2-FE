@@ -360,8 +360,6 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 ### 🔍 성능 효과
 
 이렇게 변경하여 **번역이 동시에 진행되기 때문에 초기 렌더링이 훨씬 빨라지고**, Lighthouse 성능 점수도 더 높아진 것을 확인할 수 있었습니다.
-![라이팅하우스](https://example.com/lighthouse.png)
-![두 번째 이미지](https://example.com/image.png)
 ### 배경
 
 기존 리뷰 번역 로직은 `for...of`와 `await`를 사용하여 각 리뷰를 순차적으로 번역하였습니다. 이로 인해 네트워크 요청이 직렬로 처리되어 번역 완료까지 시간이 많이 소요되는 문제가 있었습니다.
