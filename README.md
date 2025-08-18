@@ -20,6 +20,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 7. [개인별 주요 작업 내역](#7-개인별-주요-작업-내역)
 8. [트러블 슈팅](#8-트러블-슈팅)
 9. [최적화](#9-최적화)
+10. [폴더 구조](#10-폴더-구조)
 
 
 ## 1. 프로젝트 소개
@@ -271,9 +272,8 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 - 코드 가독성과 유지보수성이 향상되었습니다.
 - 안정적인 에러 핸들링으로 서비스 신뢰성이 증가하였습니다.
 </details>
-<details>
-<summary><h3>📂 폴더 구조</h3></summary>
 
+## 10. 폴더 구조
 ```bash
 .
 ├── 📄 README.md
@@ -299,4 +299,5 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 │   ├── ⚛️ providers/     # Context Providers
 │   ├── 🗂️ types/         # 타입 정의 (TS Interfaces)
 │   └── 🛠️ utills/        # 공용 함수/유틸 모듈
+```
 
