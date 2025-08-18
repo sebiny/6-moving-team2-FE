@@ -303,77 +303,52 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 - DOMPurify는 “허용 태그 화이트리스트”가 있을 때 유효함
 - 출력 컨텍스트 기반 인코딩은 필수
 - escape → parse 순서가 중요함, 엔티티 변환 후 파싱해야 태그 해석이 일어나지 않음
+
 ## 9. 최적화
 리뷰 라이트 하우스 성능 최적화
 - **전 코드**
-    
     ```jsx
-    
     useEffect(() => {
-        // To only get one data;;
         const translateAllIntros = async () => {
-          if (!reviewables.length || locale === "ko") return;
-    
           const translations: Record<string, string> = {};
-    
           for (const item of reviewables) {
             const shortIntro = item.estimates[0].driver.shortIntro;
             if (!shortIntro) continue;
-    
             try {
               const translated = await translateWithDeepL(shortIntro, locale.toUpperCase());
               translations[item.id] = translated;
             } catch (e) {
               console.warn(`번역 실패 (ID: ${item.id})`, e);
-              translations[item.id] = shortIntro; // fallback
-            }
-          }
-    
-          setTranslatedIntros(translations);
-        };
-    
+              translations[item.id] = shortIntro; // fallback}}
+          setTranslatedIntros(translations); };
         translateAllIntros();
       }, [reviewables, locale]);
     ```
-    
 - **후 코드**
-    
     ```jsx
     useEffect(() => {
       const translateAllIntros = async () => {
-        if (!reviewables.length || locale === "ko") return;
-    
         try {
           const translationEntries = await Promise.all(
             reviewables.map(async (item) => {
               const shortIntro = item.estimates[0].driver.shortIntro;
               if (!shortIntro) return [item.id, ""];
-    
               try {
                 const translated = await translateWithDeepL(shortIntro, locale.toUpperCase());
                 return [item.id, translated];
               } catch (e) {
                 console.warn(`번역 실패 (ID: ${item.id})`, e);
-                return [item.id, shortIntro]; // fallback
-              }
-            })
-          );
-    
+                return [item.id, shortIntro]; // fallback}
+            }));
           // 배열을 객체로 변환하여 상태 저장
           const translations = Object.fromEntries(translationEntries);
           setTranslatedIntros(translations);
         } catch (error) {
-          console.error("전체 번역 실패", error);
-        }
-      };
-    
+          console.error("전체 번역 실패", error); }};
       translateAllIntros();
     }, [reviewables, locale]);
     ```
-    
-
 ### 📌 변경 포인트 요약
-
 | 항목 | 변경 전 | 변경 후 |
 | --- | --- | --- |
 | **루프 방식** | `for...of` + `await` | `Promise.all` + `map` |
@@ -382,14 +357,11 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 | **에러 핸들링** | 각 항목 단위로만 | 전체 try/catch 추가 |
 
 ---
-
 ### 🔍 성능 효과
 
 이렇게 변경하여 **번역이 동시에 진행되기 때문에 초기 렌더링이 훨씬 빨라지고**, Lighthouse 성능 점수도 더 높아진 것을 확인할 수 있었습니다.
-![라이팅하우스](https://user-images.githubusercontent.com/사용자ID/af4e66b5-056e-4889-8505-1eb6c8622197.png)
-![두 번째 이미지](https://user-images.githubusercontent.com/사용자ID/96e4a289-9576-4191-bf8d-893ed39830c1.png)
-
-
+![라이팅하우스](https://example.com/lighthouse.png)
+![두 번째 이미지](https://example.com/image.png)
 ### 배경
 
 기존 리뷰 번역 로직은 `for...of`와 `await`를 사용하여 각 리뷰를 순차적으로 번역하였습니다. 이로 인해 네트워크 요청이 직렬로 처리되어 번역 완료까지 시간이 많이 소요되는 문제가 있었습니다.
