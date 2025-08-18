@@ -166,7 +166,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 - **정규식 기반 Placeholder 패턴의 효과** - **배운 점**: HTML 태그를 임시 플레이스홀더로 치환 후 번역하는 방식이 매우 효과적 - **구현**: **`__SPAN_PLACEHOLDER_${index}__`** 패턴 사용 - **장점**: 번역 품질 유지 + HTML 구조 보존
 </details>
 <details>
-<summary><strong>[ 2. 보안을 위해 사용자 입력을 HTML로 직접 렌더링하지 않게 하는 방법 (XSS 방지) ]</strong>strong></summary>
+<summary><strong>[ 2. 보안을 위해 사용자 입력을 HTML로 직접 렌더링하지 않게 하는 방법 (XSS 방지) ]</strong></summary>
 
 #### Problem
 
