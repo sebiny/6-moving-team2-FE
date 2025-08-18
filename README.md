@@ -88,11 +88,19 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 
 ## 6. 팀 소개 및 문서
 
+#### 프로젝트 관리 문서
+- 📁 [노션](https://hungry-plate-76c.notion.site/217fff3108c98098bd43fdc393e922a1?v=217fff3108c981078f8c000cd9c3e859&pvs=74)
+- 🗒️ [칸반보드](https://hungry-plate-76c.notion.site/225fff3108c98096a904feb9f4227256?v=232fff3108c980f69543000c31ed8e93)
+  
 #### 개인 개발 보고서
 
 - 📓 [안세빈 개발 리포트](https://www.notion.so/22afff3108c98004a243e75597d21347)
 - 📓 [오보람 개발 리포트](https://www.notion.so/218b7087731a805da4aaec67b7074aa5)
 - 📓 [황수정 개발 리포트](https://hungry-plate-76c.notion.site/Moving-217fff3108c980c8a0b1e8cb1c83d33f)
+- 📓 [김단이 개발 리포트](https://danikim8.notion.site/part4-217826aac9d580268449cb2cab6e2a57)
+- 📓 [김다은 개발 리포트](https://rain-quartz-d59.notion.site/21733256dfa4800a88b7c0699dd76be7)
+- 📓 [최민경 개발 리포트](https://www.notion.so/218950ee37c980758568e076529feb1c)
+
 
 ## 7. 개인별 주요 작업 내역
 
@@ -216,7 +224,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 ## 9. 최적화
 
 <details>
-<summary><strong>[ 리뷰 라이트 하우스 성능 최적화 ]</strong>strong></summary>
+<summary><strong>[ 리뷰 라이트 하우스 성능 최적화 ]</strong></summary>
 	
 - **전 코드**
     ```jsx
