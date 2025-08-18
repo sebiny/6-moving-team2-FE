@@ -28,23 +28,40 @@ export default function PendingDetailPage() {
   const t = useTranslations("MyEstimates");
   const t1 = useTranslations("MyEstimate");
   const tC = useTranslations("Common");
+
+  const router = useRouter();
   const { id } = useParams();
   const { data } = useEstimateDetail(id as string);
 
   const queryClient = useQueryClient();
-
-  const router = useRouter();
-
   const { mutate: acceptEstimate } = useAcceptEstimate();
   const { mutateAsync: createShareLink } = useCreateShareLink();
+  const shareToKakao = useKakaoShare();
 
+  // 공유 URL 상태는 훅이므로 항상 상단에서 선언
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [isAccepting, setIsAccepting] = useState(false);
 
-  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  // ✅ 조기 반환보다 "위"에서 훅 호출
+  // 페이지 진입 시 공유 링크 미리 생성
+  useEffect(() => {
+    if (!id) return;
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await createShareLink({ estimateId: id as string, sharedFrom: "CUSTOMER" });
+        if (mounted && res?.shareUrl) setShareUrl(res.shareUrl);
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [id, createShareLink]);
 
-  const shareToKakao = useKakaoShare();
-
+  // 데이터 없을 때 로딩
   if (!data) {
     return (
       <main id="main-content" role="main" className="mt-70">
@@ -55,23 +72,44 @@ export default function PendingDetailPage() {
 
   const { status, comment, price, requestDate, moveDate, moveType, fromAddress, toAddress, driver, isDesignated } =
     data;
-
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
 
-  // 페이지 진입 시 공유 링크 선생성
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const res = await createShareLink({ estimateId: id as string, sharedFrom: "CUSTOMER" });
-        if (mounted && res?.shareUrl) setShareUrl(res.shareUrl);
-      } catch {}
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, [id, createShareLink]);
+  const ensureShareUrl = async (): Promise<string | null> => {
+    if (shareUrl) return shareUrl;
+    try {
+      const res = await createShareLink({ estimateId: id as string, sharedFrom: "CUSTOMER" });
+      if (res?.shareUrl) {
+        setShareUrl(res.shareUrl);
+        return res.shareUrl;
+      }
+    } catch {}
+    return null;
+  };
+
+  const handleKakaoShare = async () => {
+    const url = await ensureShareUrl();
+    if (!url) return ToastModal("공유 URL을 생성하지 못했습니다.");
+    shareToKakao({
+      title: `${driver.name} 기사님의 견적서`,
+      description: `가격: ${price.toLocaleString()}원`,
+      imageUrl: driver.profileImage
+        ? `https://www.moving-2.click${driver.profileImage}`
+        : "https://www.moving-2.click/assets/images/img_profile.svg",
+      link: { mobileWebUrl: url, webUrl: url },
+      buttons: [{ title: "견적서 보기", link: { mobileWebUrl: url, webUrl: url } }]
+    });
+  };
+
+  const handleFacebookShare = async () => {
+    const url = await ensureShareUrl();
+    if (!url) return ToastModal("공유 URL을 생성하지 못했습니다.");
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+      "_blank",
+      "width=600,height=400"
+    );
+  };
 
   const handleAcceptEstimate = async () => {
     if (isAccepting) return;
@@ -93,48 +131,6 @@ export default function PendingDetailPage() {
     } finally {
       router.push("/customer/my-estimates?tab=past");
     }
-  };
-
-  // 공유 URL 확보
-  const ensureShareUrl = async (): Promise<string | null> => {
-    if (shareUrl) return shareUrl;
-    try {
-      const res = await createShareLink({ estimateId: id as string, sharedFrom: "CUSTOMER" });
-      if (res?.shareUrl) {
-        setShareUrl(res.shareUrl);
-        return res.shareUrl;
-      }
-    } catch {}
-    return null;
-  };
-
-  // 카카오 공유
-  const handleKakaoShare = async () => {
-    const url = await ensureShareUrl();
-    if (!url) {
-      ToastModal("공유 URL을 생성하지 못했습니다.");
-      return;
-    }
-    shareToKakao({
-      title: `${driver.name} 기사님의 견적서`,
-      description: `가격: ${price.toLocaleString()}원`,
-      imageUrl: driver.profileImage
-        ? `https://www.moving-2.click${driver.profileImage}`
-        : "https://www.moving-2.click/assets/images/img_profile.svg",
-      link: { mobileWebUrl: url, webUrl: url },
-      buttons: [{ title: "견적서 보기", link: { mobileWebUrl: url, webUrl: url } }]
-    });
-  };
-
-  // 페이스북 공유
-  const handleFacebookShare = async () => {
-    const url = await ensureShareUrl();
-    if (!url) {
-      ToastModal("공유 URL을 생성하지 못했습니다.");
-      return;
-    }
-    const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-    window.open(facebookShareUrl, "_blank", "width=600,height=400");
   };
 
   return (
