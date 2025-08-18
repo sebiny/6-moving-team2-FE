@@ -182,7 +182,7 @@
 
 ## 9. 최적화
 <details>
-<summary><h3> 리뷰 라이트 하우스 성능 최적화</h3></summary>
+<summary>### 리뷰 라이트 하우스 성능 최적화</summary>
 - **전 코드**
     ```jsx
     useEffect(() => {
