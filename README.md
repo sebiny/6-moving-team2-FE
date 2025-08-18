@@ -1,9 +1,13 @@
 <img width="1353" height="740" alt="og-image" src="https://github.com/user-attachments/assets/7200effd-f56f-457d-b07a-212cf2234e0f" />
 
 # 복잡한 이사, 무빙으로 끝!
-url : https://www.moving-2.click
+<h2>url : https://www.moving-2.click</h2>
+<h2>
 FE: https://github.com/sebiny/6-moving-team2-FE
+</h2>
+<h2>
 BE: https://github.com/sebiny/6-moving-team2-BE
+</h2>
 
 
 ## 목차
@@ -56,9 +60,6 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 - react-toastify : 토스트 알림 메시지 표시
 
 ## 6. 팀 소개 및 문서
-#### 개인 개발 리포트
-
-
 #### 개인 개발 보고서
 
 ## 7. 개인별 주요 작업 내역
