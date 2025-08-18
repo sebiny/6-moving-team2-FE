@@ -61,7 +61,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 
 ## 6. 팀 소개 및 문서
 #### 개인 개발 보고서
-
+https://www.notion.so/22afff3108c98004a243e75597d21347
 ## 7. 개인별 주요 작업 내역
 ## 팀원 및 담당 역할
 
