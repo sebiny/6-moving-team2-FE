@@ -41,9 +41,10 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | <img src="https://github.com/user-attachments/assets/bdd5e59c-0769-4bf7-a0db-db2cc6db0371" width="230"/> | <img src="https://github.com/user-attachments/assets/71567cdc-ea2f-49b3-8be5-e4cca35f284d" width="230"/> | <img src="https://github.com/user-attachments/assets/7f8ca29a-5724-47b5-91ed-252c49d5267a" width="230"/> |
 
-| 내 견적 관리                                                                                 | 찜한 기사님                                                                                          
-| ------------------------------------------------------------------------------------------- | 
-| <img src="https://github.com/user-attachments/assets/412e2ee3-b381-4deb-878f-c50818c94e07" width="230"/> |
+| 내 견적관리                                                                                   | 찜한 기사님                                                                                          |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| <img src="https://github.com/user-attachments/assets/e4f245e3-e874-4f71-9e22-ce4b667218e1" width="230"/> | <img src="https://github.com/user-attachments/assets/c1ef691d-fcdb-4034-a536-b6be748b0404" width="230"/> |
+
 
 
 
