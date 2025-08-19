@@ -41,11 +41,13 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | <img src="https://github.com/user-attachments/assets/bdd5e59c-0769-4bf7-a0db-db2cc6db0371" width="230"/> | <img src="https://github.com/user-attachments/assets/71567cdc-ea2f-49b3-8be5-e4cca35f284d" width="230"/> | <img src="https://github.com/user-attachments/assets/7f8ca29a-5724-47b5-91ed-252c49d5267a" width="230"/> |
 
-| 내 견적관리                                                                                   | 찜한 기사님                                                                                          |
+| 내 견적관리                                                                                   | 찜한 기사님                                                                                          | 견적보내기                                                                                   |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| <img src="https://github.com/user-attachments/assets/501d16cd-2e47-49d7-b2a1-392c220acdf6" width="230"/> | <img src="https://github.com/user-attachments/assets/39893cb5-79c4-46ed-a791-c1de2c760fe5" width="230"/> | <img src="https://github.com/user-attachments/assets/c4d39b17-cebe-4629-88cb-628ae58692ca" width="230"/> |
+
+| 반려하기                                                                                     | 기사견적상세페이지                                                                                    |
 | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| <img src="https://github.com/user-attachments/assets/501d16cd-2e47-49d7-b2a1-392c220acdf6" width="230"/> | <img src="https://github.com/user-attachments/assets/39893cb5-79c4-46ed-a791-c1de2c760fe5" width="230"/> |
-
-
+| <img src="https://github.com/user-attachments/assets/aeb4c538-b243-43e6-a3bf-f0edbca2a864" width="230"/> | <img src="https://github.com/user-attachments/assets/3546da2a-d762-4738-998f-3056cc319437" width="230"/> |
 
 
 
