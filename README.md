@@ -101,6 +101,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 - 📓 [김단이 개발 리포트](https://danikim8.notion.site/part4-217826aac9d580268449cb2cab6e2a57)
 - 📓 [김다은 개발 리포트](https://rain-quartz-d59.notion.site/21733256dfa4800a88b7c0699dd76be7)
 - 📓 [최민경 개발 리포트](https://www.notion.so/218950ee37c980758568e076529feb1c)
+- 📓 [이지수 개발 리포트](https://sage-jonquil-a5b.notion.site/217ad69e00578019867af3efad427833?pvs=74)
 
 
 ## 7. 개인별 주요 작업 내역
