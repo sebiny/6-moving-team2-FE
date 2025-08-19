@@ -50,6 +50,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 
 
 ## 3. 시스템 아키텍처
+<img width="1792" height="1063" alt="undefined (2)" src="https://github.com/user-attachments/assets/31e81a2c-a227-4640-b9ff-2d69022a2952" />
 
 ## 4. 기술 스택
 
