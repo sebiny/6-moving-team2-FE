@@ -43,7 +43,6 @@ export default function PendingDetailPage() {
   const [showModal, setShowModal] = useState(false);
   const [isAccepting, setIsAccepting] = useState(false);
 
-  // ✅ 조기 반환보다 "위"에서 훅 호출
   // 페이지 진입 시 공유 링크 미리 생성
   useEffect(() => {
     if (!id) return;
@@ -52,9 +51,7 @@ export default function PendingDetailPage() {
       try {
         const res = await createShareLink({ estimateId: id as string, sharedFrom: "CUSTOMER" });
         if (mounted && res?.shareUrl) setShareUrl(res.shareUrl);
-      } catch {
-        /* ignore */
-      }
+      } catch {}
     })();
     return () => {
       mounted = false;
@@ -143,7 +140,7 @@ export default function PendingDetailPage() {
       {/* 상단 배경 + 프로필 */}
       <section className="relative" aria-label="기사 프로필">
         <OrangeBackground />
-        <div className="relative mx-auto max-w-[550px] md:max-w-[650px] lg:max-w-[1150px]">
+        <div className="relative mx-auto max-w-[350px] md:max-w-[540px] lg:max-w-[1150px]">
           <div className="relative -mt-10 md:-mt-20">
             <Image
               src={driver.profileImage ?? "/assets/images/img_profile.svg"}
