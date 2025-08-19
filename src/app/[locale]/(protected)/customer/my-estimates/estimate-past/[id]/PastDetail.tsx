@@ -27,10 +27,23 @@ export default function PastDetailPage() {
   const { id } = useParams();
   const { data } = useEstimateDetail(id as string);
   const { mutateAsync: createShareLink } = useCreateShareLink();
+  const shareToKakao = useKakaoShare();
 
   const [shareUrl, setShareUrl] = useState<string | null>(null);
 
-  const shareToKakao = useKakaoShare();
+  useEffect(() => {
+    if (!id) return;
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await createShareLink({ estimateId: id as string, sharedFrom: "CUSTOMER" });
+        if (mounted && res?.shareUrl) setShareUrl(res.shareUrl);
+      } catch {}
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [id, createShareLink]);
 
   if (!data) {
     return (
@@ -45,20 +58,6 @@ export default function PastDetailPage() {
 
   const labels: ("SMALL" | "HOME" | "OFFICE" | "REQUEST")[] =
     isDesignated && moveType !== "REQUEST" ? [moveType, "REQUEST"] : [moveType];
-
-  // 페이지 진입 시 공유 링크 선생성
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const res = await createShareLink({ estimateId: id as string, sharedFrom: "CUSTOMER" });
-        if (mounted && res?.shareUrl) setShareUrl(res.shareUrl);
-      } catch {}
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, [id, createShareLink]);
 
   // 공유 URL 확보
   const ensureShareUrl = async (): Promise<string | null> => {
@@ -113,7 +112,7 @@ export default function PastDetailPage() {
           기사 프로필
         </h2>
         <OrangeBackground /> {/* 내부 이미지는 alt="" 처리되었거나 aria-hidden 적용 권장 */}
-        <div className="relative mx-auto max-w-[550px] md:max-w-[650px] lg:max-w-[1150px]">
+        <div className="relative mx-auto max-w-[350px] md:max-w-[540px] lg:max-w-[1150px]">
           <div className="relative -mt-10 md:-mt-20">
             <Image
               src={driver.profileImage ?? "/assets/images/img_profile.svg"}
