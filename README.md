@@ -43,7 +43,7 @@ BE: https://github.com/sebiny/6-moving-team2-BE
 
 | 내 견적관리                                                                                   | 찜한 기사님                                                                                          | 견적보내기                                                                                   |
 | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| <img src="https://github.com/user-attachments/assets/501d16cd-2e47-49d7-b2a1-392c220acdf6" width="230"/> | <img src="https://github.com/user-attachments/assets/39893cb5-79c4-46ed-a791-c1de2c760fe5" width="230"/> | <img src="https://github.com/user-attachments/assets/c4d39b17-cebe-4629-88cb-628ae58692ca" width="230"/> |
+| <img src="https://github.com/user-attachments/assets/45467ed7-4ce2-4a49-a1b5-011a0293b1e2" width="230"/> | <img src="https://github.com/user-attachments/assets/39893cb5-79c4-46ed-a791-c1de2c760fe5" width="230"/> | <img src="https://github.com/user-attachments/assets/c4d39b17-cebe-4629-88cb-628ae58692ca" width="230"/> |
 
 | 반려하기                                                                                     | 기사견적상세페이지                                                                                    |
 | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
