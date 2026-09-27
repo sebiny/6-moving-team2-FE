@@ -1,336 +1,390 @@
-<img width="1353" height="740" alt="og-image" src="https://github.com/user-attachments/assets/7200effd-f56f-457d-b07a-212cf2234e0f" />
+# Moving — Simplify Your Move
 
-# 복잡한 이사, 무빙으로 끝!
+**URL:** https://www.moving-2.click
 
-<h3>url : https://www.moving-2.click</h3>
-<h3>
-FE: https://github.com/sebiny/6-moving-team2-FE
-</h3>
-<h3>
-BE: https://github.com/sebiny/6-moving-team2-BE
-</h3>
+**Frontend:** https://github.com/sebiny/6-moving-team2-FE
 
-## 목차
+**Backend:** https://github.com/sebiny/6-moving-team2-BE
 
-1. [프로젝트 소개](#1-프로젝트-소개)
-2. [영상](#2-영상)
-3. [시스템 아키텍처](#3-시스템-아키텍처)
-4. [기술 스택](#4-기술-스택)
-5. [주요 라이브러리](#5-주요-라이브러리)
-6. [팀 소개 및 문서](#6-팀-소개-및-문서)
-7. [개인별 주요 작업 내역](#7-개인별-주요-작업-내역)
-8. [트러블 슈팅](#8-트러블-슈팅)
-9. [최적화](#9-최적화)
-10. [폴더 구조](#10-폴더-구조)
+## Table of Contents
 
-## 1. 프로젝트 소개
-
-- 무빙은 이사 전문가와 고객을 연결해주는 플랫폼
-- 고객이 이사 정보를 요청하면, 여러 검증된 이사업체가 경쟁적으로 견적을 제시함
-- 고객은 이사 업체들이 제안한 다양한 견적을 한눈에 비교하고, 가장 합리적인 가격과 조건을 선택할 수 있음
-- 고객 리뷰를 통해 업체들의 자체적인 검증 가능
-- 투명하고 공정한 이사 준비를 지원하며, 고객의 경제적 부담을 덜어 줄 수 있음
-
-## 2. 영상
-
-| 랜딩페이지                                                                                  | 실시간 알림 도착                                                                            | 견적 요청                                                                                   |
-| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| <img src="https://github.com/user-attachments/assets/a41cfa4d-33ca-4beb-b673-c4d2c8375db7" width="230"/> | <img src="https://github.com/user-attachments/assets/370fa061-78f3-4d94-a416-5c941e27d650" width="230"/> | <img src="https://github.com/user-attachments/assets/ebbaec8b-1810-4b86-9376-4e8ce9a43722" width="230"/> |
-
-| 기사님 찾기                                                                                   | 리뷰                                                                                          | 다국어                                                                                       |
-| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| <img src="https://github.com/user-attachments/assets/bdd5e59c-0769-4bf7-a0db-db2cc6db0371" width="230"/> | <img src="https://github.com/user-attachments/assets/71567cdc-ea2f-49b3-8be5-e4cca35f284d" width="230"/> | <img src="https://github.com/user-attachments/assets/7f8ca29a-5724-47b5-91ed-252c49d5267a" width="230"/> |
-
-| 내 견적관리                                                                                   | 찜한 기사님                                                                                          | 견적보내기                                                                                   |
-| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| <img src="https://github.com/user-attachments/assets/45467ed7-4ce2-4a49-a1b5-011a0293b1e2" width="230"/> | <img src="https://github.com/user-attachments/assets/39893cb5-79c4-46ed-a791-c1de2c760fe5" width="230"/> | <img src="https://github.com/user-attachments/assets/c4d39b17-cebe-4629-88cb-628ae58692ca" width="230"/> |
-
-| 반려하기                                                                                     | 기사견적상세페이지                                                                                    |
-| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| <img src="https://github.com/user-attachments/assets/aeb4c538-b243-43e6-a3bf-f0edbca2a864" width="230"/> | <img src="https://github.com/user-attachments/assets/3546da2a-d762-4738-998f-3056cc319437" width="230"/> |
-
-
-
-## 3. 시스템 아키텍처
-<img width="1792" height="1063" alt="undefined (2)" src="https://github.com/user-attachments/assets/31e81a2c-a227-4640-b9ff-2d69022a2952" />
-
-## 4. 기술 스택
-
-#### ✅ Language
-
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-
-#### ✅ Framework & Libraries
-
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![Next.js](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
-![Tanstack Query](https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Sentry](https://img.shields.io/badge/Sentry-362D59?style=for-the-badge&logo=sentry&logoColor=white)
-![DeepL](https://img.shields.io/badge/DeepL-0F2027?style=for-the-badge&logo=deepl&logoColor=white)
-
-#### ✅ Hosting & Deployment
-
-![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
-
-#### ✅ Version Control
-
-![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
-![GitHub](https://img.shields.io/badge/github-%23121212.svg?style=for-the-badge&logo=github&logoColor=white)
-
-## 5. 주요 라이브러리
-
-- tanstack/react-query : 서버 상태 관리를 위한 데이터 동기화
-- clsx : 조건부 CSS 클래스 적용
-- event-source-polyfill : 구형 브라우저에서 SSE 통신 지원
-- html-react-parser : HTML 문자열을 리액트 컴포넌트로 변환할 때 사용
-- use-media : 미디어 쿼리 변화를 감지하는 커스텀 훅
-- react-simple-star-rating : 별점 UI를 구현하는 리액트 컴포넌트
-- react-toastify : 토스트 알림 메시지 표시
-
-## 6. 팀 소개 및 문서
-
-#### 프로젝트 관리 문서
-- 📁 [노션](https://hungry-plate-76c.notion.site/217fff3108c98098bd43fdc393e922a1?v=217fff3108c981078f8c000cd9c3e859&pvs=74)
-- 🗒️ [칸반보드](https://hungry-plate-76c.notion.site/225fff3108c98096a904feb9f4227256?v=232fff3108c980f69543000c31ed8e93)
-  
-#### 개인 개발 보고서
-
-- 📓 [안세빈 개발 리포트](https://www.notion.so/22afff3108c98004a243e75597d21347)
-- 📓 [오보람 개발 리포트](https://www.notion.so/218b7087731a805da4aaec67b7074aa5)
-- 📓 [황수정 개발 리포트](https://hungry-plate-76c.notion.site/Moving-217fff3108c980c8a0b1e8cb1c83d33f)
-- 📓 [김단이 개발 리포트](https://danikim8.notion.site/part4-217826aac9d580268449cb2cab6e2a57)
-- 📓 [김다은 개발 리포트](https://rain-quartz-d59.notion.site/21733256dfa4800a88b7c0699dd76be7)
-- 📓 [최민경 개발 리포트](https://www.notion.so/218950ee37c980758568e076529feb1c)
-- 📓 [이지수 개발 리포트](https://sage-jonquil-a5b.notion.site/217ad69e00578019867af3efad427833?pvs=74)
-
-
-## 7. 개인별 주요 작업 내역
-
-## 팀원 및 담당 역할
-
-| 팀원                | 담당 영역                           | 주요 기능                                                                                                                                       |
-| ------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **안세빈 (팀장)**   | 리뷰, 다국어                        | - 고객은 기사에 대한 리뷰를 남길 수 있습니다.<br>- 리뷰는 다국어로 제공됩니다.                                                                  |
-| **최민경 (부팀장)** | 기사님 마이페이지,<br>기사님 찾기, AWS | - 기사 리스트를 평점/위치/경력 등으로 필터링하여 조회할 수 있습니다.<br>- 기사를 찜할 수 있습니다.<br>- 기사 리스트에서 검색 기능을 제공합니다. |
-| **김단이**          | 견적(기사), 스키마                  | - 기사는 고객의 견적 요청서에 대한 견적을 제안할 수 있습니다.<br>- 기사는 지정 견적 요청서를 반려할 수 있습니다.                                |
-| **김다은**          | 견적(고객), 찜한 기사님             | - 고객은 기사에게 받은 견적서를 조회하고 확정할 수 있습니다.<br>- 고객은 받은 견적서를 반려할 수 있습니다.                                      |
-| **이지수A**         | 인증 및 유저, AWS                   | - 유저 유형별(고객/기사) 로그인 및 회원가입 가능<br>- 유저 유형별 프로필 등록/수정 가능<br>- 소셜 로그인 기능 지원                              |
-| **오보람**          | 견적 요청서 작성(고객)              | - 고객은 견적 요청서를 작성할 수 있습니다.<br>- 견적 요청서의 주소 입력 시 카카오 API 활용 가능                                                 |
-| **황수정**          | 알림, 랜딩페이지                    | - 실시간 알림 수신 가능<br>- 이사 당일 알림 제공                                                                                                |
-
-## 8. 트러블 슈팅
-
-<details>
-<summary><strong>[ 1. DeepL 번역 시 HTML 태그 중복으로 인한 스타일 오적용 문제 ]</strong></summary>
-	
-#### Problem
-- 백엔드에서 (텍스트 색상 변경)  html코드를 함께 전송하고 있음
-- 영어/중국어의 경우  HTML 태그가 중복 생성되어 스타일이 전체 텍스트에 잘못 적용됨
-<p align="center">
-  <img width="350" height="368" alt="noti-kr" src="https://github.com/user-attachments/assets/8abdf1b2-a84b-4177-881e-8a03f20651f6" width="40%"/>
-  &nbsp; 
-  <img width="321" height="333" alt="noti-en" src="https://github.com/user-attachments/assets/282f445a-6ba7-45c3-94d2-0d0835d21d06" width="40%" />
-</p>
-
-```jsx
-// 한국어
-{
-		...
-    "message": "<span style=\"color: #F9502E\">요정십일</span>님, 무빙 회원가입을 축하합니다!",
-		...
-}
-
-// 영어
-{
-    "translated": "<span style=\"color: #F9502E\">Congratulations, <span style=\"color: #F9502E\">FairySeventyEight</span>, on your Moving membership!"
-}
-```
-
-#### Product Context & Goals
-
-- HTML 태그 중복 문제 해결
-- 모든 언어에서 일관된 스타일 적용
-- 닉네임은 번역되지 않도록 적용
-
-#### Solutions
-
-- 회원가입 축하 알림 타입(WELCOME)일 경우
-- HTML이 적용되어야 할 텍스트(닉네임)를 제외하고 API 적용
-- Placeholder 방식으로 구현
-  - <span> 태그를 임시 플레이스 홀더로 교체
-  - <span>이 제거된 텍스트만 번역
-  - 번역 후 원본 span 태그 복원
-- 해결 ![소스코드 바로가기](https://github.com/sebiny/6-moving-team2-FE/blob/main/src/components/notification/_components/NotificationItem.tsx)
-<p align="center">
-	<img width="339" height="367" alt="tobe-noti-kr" src="https://github.com/user-attachments/assets/f37c983a-04da-4a86-adb2-379ad74105bb" width="40%" />
-	&nbsp; 
-	<img width="353" height="362" alt="tobe-noti-en" src="https://github.com/user-attachments/assets/0356599f-e620-430a-8dc0-fa0f77ff2ed7" width="40%" />
-</p>
-
-#### Lesson Learned
-
-- **번역 API의 HTML 처리 한계**
-  - **배운 점**: DeepL 등 번역 서비스는 HTML 태그를 텍스트로 인식하여 구조가 변형될 수 있음
-  - **영향**: 의도치 않은 태그 중복 및 스타일 오적용 발생
-  - **향후 적용**: HTML과 텍스트를 분리하여 처리하는 것이 안전함
-- **정규식 기반 Placeholder 패턴의 효과** - **배운 점**: HTML 태그를 임시 플레이스홀더로 치환 후 번역하는 방식이 매우 효과적 - **구현**: **`__SPAN_PLACEHOLDER_${index}__`** 패턴 사용 - **장점**: 번역 품질 유지 + HTML 구조 보존
-</details>
-<details>
-<summary><strong>[ 2. 보안을 위해 사용자 입력을 HTML로 직접 렌더링하지 않게 하는 방법 (XSS 방지) ]</strong></summary>
-
-#### Problem
-
-- BE 에서 아무 검증 없이 사용자 제공값(이름, 메시지 등)이나 외부 연동 데이터를 그대로 내려주면, FE가 HTML로 직접 렌더링할 때 악성 스크립트가 실행될 수 있음
-
-#### Solutions
-
-**동적 엔티티는 엔티티 변환으로 완전 무해화**
-**의도한 스타일만 React 컴포넌트로 렌더링**
-
-- **escapeHTML 함수 생성**
-  - 사용자가 입력한 텍스트나 외부 데이터를 HTML에 직접 출력할 때 XSS 공격을 방지하기 위해 특수문자를 HTML 엔티티로 변환해주는 역할
-  - escapeHTML 함수는 HTML에 신뢰할 수 없는 데이터를 보여줄 때 '스크립트 실행'이 아니라 '그냥 텍스트'만 보이게 해 XSS를 원천 차단하는 데 필수로 사용함
-    ```jsx
-    // 사용자가 입력한 값 중 아래 특수문자가 포함될 경우 변경처리해 보냄
-    function escapeHTML(str: string | undefined | null): string {
-      if (str == null) return "";
-      return str.replace(/[&<>"']/g, (m) => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      }[m] || m));
-    }
-    ```
-- **html-react-parser**
-  - HTML 코드 자체를 받아올 때 React 컴포넌트로 안전하게 변환하기 위해 사용
-  - escapeHTML 단독으로 사용하는 것 보다 효과적
-  - HTML 구조를 유지하면서도 보안을 확보할 수 있음
-    ```jsx
-    <li
-      ref={itemRef}
-      role={role}
-      aria-describedby={ariaDescribedBy}
-      className={`border-line-200 text-black-400 flex flex-col gap-[2px] border-b p-3 text-sm font-medium transition-colors`}
-    >
-      <p>{parse(displayMessage)}</p> // parse 적용해
-      <time dateTime={item.createdAt} className={`text-[13px] ${isInitiallyRead ? "text-gray-300" : "text-gray-400"}`}>
-        {displayTime}
-      </time>
-    </li>
-    ```
-
-</details>
-
-## 9. 최적화
-
-<details>
-<summary><strong>[ 리뷰 라이트 하우스 성능 최적화 ]</strong></summary>
-	
-- **전 코드**
-    ```jsx
-    useEffect(() => {
-        const translateAllIntros = async () => {
-          const translations: Record<string, string> = {};
-          for (const item of reviewables) {
-            const shortIntro = item.estimates[0].driver.shortIntro;
-            if (!shortIntro) continue;
-            try {
-              const translated = await translateWithDeepL(shortIntro, locale.toUpperCase());
-              translations[item.id] = translated;
-            } catch (e) {
-              console.warn(`번역 실패 (ID: ${item.id})`, e);
-              translations[item.id] = shortIntro; // fallback}}
-          setTranslatedIntros(translations); };
-        translateAllIntros();
-      }, [reviewables, locale]);
-    ```
-- **후 코드**
-    ```jsx
-    useEffect(() => {
-      const translateAllIntros = async () => {
-        try {
-          const translationEntries = await Promise.all(
-            reviewables.map(async (item) => {
-              const shortIntro = item.estimates[0].driver.shortIntro;
-              if (!shortIntro) return [item.id, ""];
-              try {
-                const translated = await translateWithDeepL(shortIntro, locale.toUpperCase());
-                return [item.id, translated];
-              } catch (e) {
-                console.warn(`번역 실패 (ID: ${item.id})`, e);
-                return [item.id, shortIntro]; // fallback}
-            }));
-          // 배열을 객체로 변환하여 상태 저장
-          const translations = Object.fromEntries(translationEntries);
-          setTranslatedIntros(translations);
-        } catch (error) {
-          console.error("전체 번역 실패", error); }};
-      translateAllIntros();
-    }, [reviewables, locale]);
-    ```
-### 📌 변경 포인트 요약
-| 항목 | 변경 전 | 변경 후 |
-| --- | --- | --- |
-| **루프 방식** | `for...of` + `await` | `Promise.all` + `map` |
-| **속도** | 순차 처리 | 병렬 처리 |
-| **변환 방식** | 직접 객체에 키 할당 | `Object.fromEntries()` 사용 |
-| **에러 핸들링** | 각 항목 단위로만 | 전체 try/catch 추가 |
+1. [Project Overview](#1-project-overview)
+2. [Demo](#2-demo)
+3. [System Architecture](#3-system-architecture)
+4. [Tech Stack](#4-tech-stack)
+5. [Key Libraries](#5-key-libraries)
+6. [Team & Documentation](#6-team--documentation)
+7. [My Contributions](#7-my-contributions)
+8. [Troubleshooting](#8-troubleshooting)
+9. [Optimization](#9-optimization)
+10. [Folder Structure](#10-folder-structure)
 
 ---
 
-### 🔍 성능 효과
+## 1. Project Overview
 
-이렇게 변경하여 **번역이 동시에 진행되기 때문에 초기 렌더링이 훨씬 빨라지고**, Lighthouse 성능 점수도 더 높아진 것을 확인할 수 있었습니다.
+**Moving** is a platform that connects customers with professional moving service providers.
 
-### 배경
+* Customers can submit their moving requirements and receive quotes from multiple verified moving companies.
+* Customers can compare different quotes at a glance and choose the option that best fits their budget and requirements.
+* Customer reviews help users evaluate and verify moving service providers.
+* Moving aims to make the moving process more transparent and accessible while reducing the financial burden on customers.
 
-기존 리뷰 번역 로직은 `for...of`와 `await`를 사용하여 각 리뷰를 순차적으로 번역하였습니다. 이로 인해 네트워크 요청이 직렬로 처리되어 번역 완료까지 시간이 많이 소요되는 문제가 있었습니다.
+---
 
-### 개선 사항
+## 2. Demo
 
-- **병렬 처리 적용**
-  `reviewables` 배열을 `map` 함수로 변환하여 모든 번역 요청을 동시에 실행하도록 변경하였으며, `Promise.all`을 사용해 병렬로 처리함으로써 번역 속도를 대폭 향상시켰습니다.
-- **데이터 변환 최적화**
-  번역 결과를 `[id, 번역문]` 형태의 배열로 받아, `Object.fromEntries`를 통해 객체로 한 번에 변환하여 코드의 간결성과 가독성을 높였습니다.
-- **에러 처리 강화**
-  개별 항목 번역 실패 시 원문을 대체하는 폴백 처리 외에, 전체 병렬 처리 구문을 `try/catch`로 감싸 예상치 못한 전반적 실패에도 대응 가능하도록 안정성을 개선하였습니다.
+| Landing Page                                                                                             | Real-time Notifications                                                                                  | Request a Quote                                                                                          |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| <img src="https://github.com/user-attachments/assets/a41cfa4d-33ca-4beb-b673-c4d2c8375db7" width="230"/> | <img src="https://github.com/user-attachments/assets/370fa061-78f3-4d94-a416-5c941e27d650" width="230"/> | <img src="https://github.com/user-attachments/assets/ebbaec8b-1810-4b86-9376-4e8ce9a43722" width="230"/> |
 
-### 효과
+| Find Drivers                                                                                             | Reviews                                                                                                  | Multilingual Support                                                                                     |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| <img src="https://github.com/user-attachments/assets/bdd5e59c-0769-4bf7-a0db-db2cc6db0371" width="230"/> | <img src="https://github.com/user-attachments/assets/71567cdc-ea2f-49b3-8be5-e4cca35f284d" width="230"/> | <img src="https://github.com/user-attachments/assets/7f8ca29a-5724-47b5-91ed-252c49d5267a" width="230"/> |
 
-- 전체 번역 처리 시간이 크게 단축되어 사용자 경험이 개선되었습니다.
-- 코드 가독성과 유지보수성이 향상되었습니다.
-- 안정적인 에러 핸들링으로 서비스 신뢰성이 증가하였습니다.
+| My Quotes                                                                                                | Favorite Drivers                                                                                         | Send a Quote                                                                                             |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| <img src="https://github.com/user-attachments/assets/45467ed7-4ce2-4a49-a1b5-011a0293b1e2" width="230"/> | <img src="https://github.com/user-attachments/assets/39893cb5-79c4-46ed-a791-c1de2c760fe5" width="230"/> | <img src="https://github.com/user-attachments/assets/c4d39b17-cebe-4629-88cb-628ae58692ca" width="230"/> |
+
+| Decline Quote                                                                                            | Driver Quote Details                                                                                     |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| <img src="https://github.com/user-attachments/assets/aeb4c538-b243-43e6-a3bf-f0edbca2a864" width="230"/> | <img src="https://github.com/user-attachments/assets/3546da2a-d762-4738-998f-3056cc319437" width="230"/> |
+
+---
+
+## 3. System Architecture
+
+<img width="1792" height="1063" alt="System Architecture" src="https://github.com/user-attachments/assets/31e81a2c-a227-4640-b9ff-2d69022a2952" />
+
+---
+
+## 4. Tech Stack
+
+### Language
+
+* JavaScript
+* TypeScript
+
+### Framework & Libraries
+
+* React
+* Next.js
+* TanStack Query
+* Tailwind CSS
+* Sentry
+* DeepL
+
+### Hosting & Deployment
+
+* Vercel
+
+### Version Control
+
+* Git
+* GitHub
+
+---
+
+## 5. Key Libraries
+
+* **@tanstack/react-query** — Server-state management and data synchronization
+* **clsx** — Conditional CSS class management
+* **event-source-polyfill** — SSE support for older browsers
+* **html-react-parser** — Converts HTML strings into React components
+* **use-media** — Detects media query changes
+* **react-simple-star-rating** — Star-rating UI component
+* **react-toastify** — Toast notification messages
+
+---
+
+## 6. Team & Documentation
+
+### Project Management
+
+* 📁 [Notion](https://hungry-plate-76c.notion.site/217fff3108c98098bd43fdc393e922a1?v=217fff3108c981078f8c000cd9c3e859&pvs=74)
+* 🗒️ [Kanban Board](https://hungry-plate-76c.notion.site/225fff3108c98096a904feb9f4227256?v=232fff3108c980f69543000c31ed8e93)
+
+### Individual Development Reports
+
+* 📓 [Sebin An — Development Report](https://www.notion.so/22afff3108c98004a243e75597d21347)
+* 📓 [Boram Oh — Development Report](https://www.notion.so/218b7087731a805da4aaec67b7074aa5)
+* 📓 [Sujeong Hwang — Development Report](https://hungry-plate-76c.notion.site/Moving-217fff3108c980c8a0b1e8cb1c83d33f)
+* 📓 [Dani Kim — Development Report](https://danikim8.notion.site/part4-217826aac9d580268449cb2cab6e2a57)
+* 📓 [Daeun Kim — Development Report](https://rain-quartz-d59.notion.site/21733256dfa4800a88b7c0699dd76be7)
+* 📓 [Minkyung Choi — Development Report](https://www.notion.so/218950ee37c980758568e076529feb1c)
+* 📓 [Jisoo Lee — Development Report](https://sage-jonquil-a5b.notion.site/217ad69e00578019867af3efad427833?pvs=74)
+
+---
+
+## 7. My Contributions
+
+### Team Members & Responsibilities
+
+| Team Member                        | Area                              | Key Features                                                                               |
+| ---------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Sebin An (Team Lead)**           | Reviews, Multilingual Support     | Customers can leave reviews for drivers. Reviews are available in multiple languages.      |
+| **Minkyung Choi (Vice Team Lead)** | Driver My Page, Find Drivers, AWS | Driver list filtering by rating, location, and experience; favorites; search functionality |
+| **Dani Kim**                       | Driver Quotes, Schema             | Drivers can submit quotes for customer requests and decline designated quote requests.     |
+| **Daeun Kim**                      | Customer Quotes, Favorite Drivers | Customers can view and confirm received quotes or decline them.                            |
+| **Jisoo Lee**                      | Authentication & Users, AWS       | Customer/driver registration and login, profile management, and social login               |
+| **Boram Oh**                       | Customer Quote Requests           | Customers can submit moving requests and enter addresses using the Kakao API.              |
+| **Sujeong Hwang**                  | Notifications, Landing Page       | Real-time notifications and moving-day notifications                                       |
+
+---
+
+## 8. Troubleshooting
+
+<details>
+<summary><strong>1. Incorrect Styling Caused by Duplicated HTML Tags During DeepL Translation</strong></summary>
+
+### Problem
+
+The backend included HTML markup for styling text.
+
+During translation, HTML tags were duplicated in English and Chinese, causing styles to be incorrectly applied to the entire message.
+
+### Product Context & Goals
+
+* Prevent duplicated HTML tags
+* Maintain consistent styling across languages
+* Prevent usernames from being translated
+
+### Solution
+
+For the `WELCOME` notification type:
+
+* Exclude text that requires HTML styling, such as usernames, from the translation request.
+* Replace `<span>` tags with temporary placeholders.
+* Translate only the text without the HTML tags.
+* Restore the original `<span>` tags after translation.
+
+This approach preserved both the translated content and the intended HTML structure.
+
+[View Source Code](https://github.com/sebiny/6-moving-team2-FE/blob/main/src/components/notification/_components/NotificationItem.tsx)
+
+### Lesson Learned
+
+**Limitations of HTML Processing in Translation APIs**
+
+* Translation services such as DeepL may interpret HTML tags as part of the text and modify their structure.
+* This can result in duplicated tags and unintended styling.
+* Separating HTML structure from translatable text is a safer approach.
+
+**Effectiveness of Placeholder-Based Processing**
+
+HTML tags can be temporarily replaced with placeholders before translation and restored afterward.
+
+The implementation used the pattern:
+
+`__SPAN_PLACEHOLDER_${index}__`
+
+This helped preserve the HTML structure while maintaining translation quality.
+
 </details>
 
-## 10. 폴더 구조
+<details>
+<summary><strong>2. Preventing XSS When Rendering User-Provided HTML</strong></summary>
+
+### Problem
+
+If user-provided values such as names or messages, or data received from external services, are rendered directly as HTML, malicious scripts could potentially be executed.
+
+### Solution
+
+**Escape dynamic user-generated data**
+
+An `escapeHTML` function was implemented to convert special characters into HTML entities before rendering untrusted data.
+
+```jsx
+function escapeHTML(str: string | undefined | null): string {
+  if (str == null) return "";
+
+  return str.replace(/[&<>"']/g, (m) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[m] || m));
+}
+```
+
+**html-react-parser**
+
+`html-react-parser` was used to convert HTML strings into React components while preserving the intended HTML structure.
+
+```jsx
+<li
+  ref={itemRef}
+  role={role}
+  aria-describedby={ariaDescribedBy}
+  className="border-line-200 text-black-400 flex flex-col gap-[2px] border-b p-3 text-sm font-medium transition-colors"
+>
+  <p>{parse(displayMessage)}</p>
+
+  <time
+    dateTime={item.createdAt}
+    className={`text-[13px] ${
+      isInitiallyRead ? "text-gray-300" : "text-gray-400"
+    }`}
+  >
+    {displayTime}
+  </time>
+</li>
+```
+
+</details>
+
+---
+
+## 9. Optimization
+
+<details>
+<summary><strong>Review Page Lighthouse Performance Optimization</strong></summary>
+
+### Before
+
+The original implementation translated each review sequentially using `for...of` and `await`.
+
+```jsx
+useEffect(() => {
+  const translateAllIntros = async () => {
+    const translations: Record<string, string> = {};
+
+    for (const item of reviewables) {
+      const shortIntro = item.estimates[0].driver.shortIntro;
+
+      if (!shortIntro) continue;
+
+      try {
+        const translated = await translateWithDeepL(
+          shortIntro,
+          locale.toUpperCase()
+        );
+
+        translations[item.id] = translated;
+      } catch (e) {
+        console.warn(`Translation failed (ID: ${item.id})`, e);
+        translations[item.id] = shortIntro;
+      }
+    }
+
+    setTranslatedIntros(translations);
+  };
+
+  translateAllIntros();
+}, [reviewables, locale]);
+```
+
+### After
+
+The implementation was changed to use `Promise.all()` and `map()` so that translation requests could run in parallel.
+
+```jsx
+useEffect(() => {
+  const translateAllIntros = async () => {
+    try {
+      const translationEntries = await Promise.all(
+        reviewables.map(async (item) => {
+          const shortIntro = item.estimates[0].driver.shortIntro;
+
+          if (!shortIntro) return [item.id, ""];
+
+          try {
+            const translated = await translateWithDeepL(
+              shortIntro,
+              locale.toUpperCase()
+            );
+
+            return [item.id, translated];
+          } catch (e) {
+            console.warn(`Translation failed (ID: ${item.id})`, e);
+            return [item.id, shortIntro];
+          }
+        })
+      );
+
+      const translations = Object.fromEntries(translationEntries);
+
+      setTranslatedIntros(translations);
+    } catch (error) {
+      console.error("Translation failed", error);
+    }
+  };
+
+  translateAllIntros();
+}, [reviewables, locale]);
+```
+
+### Key Changes
+
+| Category                | Before                   | After                                   |
+| ----------------------- | ------------------------ | --------------------------------------- |
+| **Processing**          | `for...of` + `await`     | `Promise.all()` + `map()`               |
+| **Execution**           | Sequential               | Parallel                                |
+| **Data Transformation** | Direct object assignment | `Object.fromEntries()`                  |
+| **Error Handling**      | Per-item handling        | Per-item fallback + overall `try/catch` |
+
+### Performance Impact
+
+The translation requests were previously processed sequentially, which increased the time required to complete all translations.
+
+By processing the requests in parallel, the overall translation time was significantly reduced, resulting in faster rendering and improved Lighthouse performance.
+
+### Background
+
+The original review translation logic used `for...of` with `await`, causing each network request to wait for the previous request to finish.
+
+### Improvements
+
+**Parallel Processing**
+
+The `reviewables` array is processed with `map()`, and `Promise.all()` executes multiple translation requests concurrently.
+
+**Data Transformation**
+
+Translation results are returned as `[id, translation]` pairs and converted into an object using `Object.fromEntries()`.
+
+**Improved Error Handling**
+
+Individual translation failures fall back to the original text, while an outer `try/catch` handles unexpected failures in the overall process.
+
+### Results
+
+* Reduced the overall translation processing time
+* Improved the user experience
+* Improved code readability and maintainability
+* Added more robust error handling
+
+</details>
+
+---
+
+## 10. Folder Structure
 
 ```bash
 .
-├── 📄 README.md
-├── 📦 package.json
-├── ⚙️ next.config.ts
-├── 🎨 tailwind.config.mjs
-├── 📝 tsconfig.json
-├── 📁 public
-│   ├── 🖼️ assets/        # 아이콘, 이미지, 폰트 등 정적 리소스
-│   ├── 🎬 lottie/        # 로티 애니메이션
-│   └── 🖼️ og-image*.webp # 메타 태그 이미지
-├── 📁 src
-│   ├── 📁 app/           # Next.js App Router 페이지
-│   │   ├── 🌐 [locale]/  # 다국어 라우팅
-│   │   ├── 🔌 api/       # API 라우트
-│   │   └── 🎨 globals.css
-│   ├── 🧩 components/    # 공용 UI 컴포넌트
-│   ├── 📌 constant/      # 상수 정의
-│   ├── 🪝 hooks/         # 커스텀 훅
-│   ├── 🌍 i18n/          # 다국어 라우팅/내비게이션 설정
-│   ├── 🔧 lib/           # API 클라이언트, 유틸리티
-│   ├── 💬 messages/      # 다국어 번역 JSON
-│   ├── ⚛️ providers/     # Context Providers
-│   ├── 🗂️ types/         # 타입 정의 (TS Interfaces)
-│   └── 🛠️ utills/        # 공용 함수/유틸 모듈
+├── README.md
+├── package.json
+├── next.config.ts
+├── tailwind.config.mjs
+├── tsconfig.json
+├── public
+│   ├── assets/          # Icons, images, fonts, and other static resources
+│   ├── lottie/          # Lottie animations
+│   └── og-image*.webp   # Open Graph images
+├── src
+│   ├── app/              # Next.js App Router pages
+│   │   ├── [locale]/     # Multilingual routing
+│   │   ├── api/          # API routes
+│   │   └── globals.css
+│   ├── components/       # Shared UI components
+│   ├── constant/         # Constants
+│   ├── hooks/             # Custom hooks
+│   ├── i18n/              # Internationalization routing/navigation
+│   ├── lib/               # API clients and utilities
+│   ├── messages/          # Translation JSON files
+│   ├── providers/         # Context providers
+│   ├── types/             # TypeScript interfaces and type definitions
+│   └── utills/            # Shared utility modules
 ```
