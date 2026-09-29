@@ -1,7 +1,5 @@
 # Moving — Simplify Your Move
 
-**URL:** https://www.moving-2.click
-
 **Frontend:** https://github.com/sebiny/6-moving-team2-FE
 
 **Backend:** https://github.com/sebiny/6-moving-team2-BE
